@@ -80,6 +80,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     
     self.topView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _width, _height * 0.15)];
     self.topView.image = [UIImage imageNamed:@"News_Image_Mask"];
+    self.topView.userInteractionEnabled = YES;
     [_backView addSubview:_topView];
     
     [self.playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];// 监听loadedTimeRanges属性
@@ -103,9 +104,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     
     //延迟线程
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
         [UIView animateWithDuration:0.5 animations:^{
-            
             _backView.alpha = 0;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }];
@@ -114,8 +113,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     
     //计时器
     [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(Stack) userInfo:nil repeats:YES];
-//    self.modalPresentationCapturesStatusBarAppearance = YES;
-    
 }
 #pragma mark - 横屏代码
 - (BOOL)shouldAutorotate{
