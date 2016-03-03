@@ -17,6 +17,11 @@
 		49B2B8831BED7D5A0003BFC2 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B2B8821BED7D5A0003BFC2 /* MoviePlayerViewController.m */; };
 		49CD65D11BF0C4EC0060DB9E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */; };
 		49F272801BF2330700FCC767 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F2727F1BF2330700FCC767 /* Info.plist */; };
+		CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC48ECD61C8863DB009CF0D0 /* Main.storyboard */; };
+		CC48ECDA1C88673F009CF0D0 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC48ECD91C88673F009CF0D0 /* SecondViewController.m */; };
+		CC48ECDD1C886D65009CF0D0 /* VideoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC48ECDC1C886D65009CF0D0 /* VideoPlayViewController.m */; };
+		CC48ECE01C8870E0009CF0D0 /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC48ECDF1C8870E0009CF0D0 /* ZFPlayerView.m */; };
+		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04C83594FBD4A53862B96DB0 /* Pods-Player.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Player.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Player/Pods-Player.debug.xcconfig"; sourceTree = "<group>"; };
+		0F0AF4757901EAD2A137190E /* libPods-Player.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Player.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43B3E208CB404062097185BA /* Pods-Player.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Player.release.xcconfig"; path = "Pods/Target Support Files/Pods-Player/Pods-Player.release.xcconfig"; sourceTree = "<group>"; };
 		490E5F7C1BF0353F009E8192 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		490E5F7D1BF0353F009E8192 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		4947F78A1BE996AC003093C8 /* Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Player.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +63,13 @@
 		49B2B8821BED7D5A0003BFC2 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
 		49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		49F2727F1BF2330700FCC767 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC48ECD61C8863DB009CF0D0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		CC48ECD81C88673F009CF0D0 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		CC48ECD91C88673F009CF0D0 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		CC48ECDB1C886D65009CF0D0 /* VideoPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayViewController.h; sourceTree = "<group>"; };
+		CC48ECDC1C886D65009CF0D0 /* VideoPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayViewController.m; sourceTree = "<group>"; };
+		CC48ECDE1C8870E0009CF0D0 /* ZFPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerView.h; sourceTree = "<group>"; };
+		CC48ECDF1C8870E0009CF0D0 /* ZFPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +78,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49CD65D11BF0C4EC0060DB9E /* MediaPlayer.framework in Frameworks */,
+				D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +107,8 @@
 				4947F7A61BE996AC003093C8 /* PlayerTests */,
 				4947F7B11BE996AC003093C8 /* PlayerUITests */,
 				4947F78B1BE996AC003093C8 /* Products */,
+				77BAA74D466CF5B1952CD7B0 /* Frameworks */,
+				CC1C7B5F4A5E09EB6369C382 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,6 +131,13 @@
 				490E5F7D1BF0353F009E8192 /* RootViewController.m */,
 				49B2B8811BED7D5A0003BFC2 /* MoviePlayerViewController.h */,
 				49B2B8821BED7D5A0003BFC2 /* MoviePlayerViewController.m */,
+				CC48ECDE1C8870E0009CF0D0 /* ZFPlayerView.h */,
+				CC48ECDF1C8870E0009CF0D0 /* ZFPlayerView.m */,
+				CC48ECD81C88673F009CF0D0 /* SecondViewController.h */,
+				CC48ECD91C88673F009CF0D0 /* SecondViewController.m */,
+				CC48ECDB1C886D65009CF0D0 /* VideoPlayViewController.h */,
+				CC48ECDC1C886D65009CF0D0 /* VideoPlayViewController.m */,
+				CC48ECD61C8863DB009CF0D0 /* Main.storyboard */,
 				4947F7991BE996AC003093C8 /* Assets.xcassets */,
 				4947F79B1BE996AC003093C8 /* LaunchScreen.storyboard */,
 				49F2727F1BF2330700FCC767 /* Info.plist */,
@@ -147,6 +172,23 @@
 			path = PlayerUITests;
 			sourceTree = "<group>";
 		};
+		77BAA74D466CF5B1952CD7B0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0F0AF4757901EAD2A137190E /* libPods-Player.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC1C7B5F4A5E09EB6369C382 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				04C83594FBD4A53862B96DB0 /* Pods-Player.debug.xcconfig */,
+				43B3E208CB404062097185BA /* Pods-Player.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -154,9 +196,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4947F7B71BE996AC003093C8 /* Build configuration list for PBXNativeTarget "Player" */;
 			buildPhases = (
+				B0690D66F5DA2C2D3A38053B /* Check Pods Manifest.lock */,
 				4947F7861BE996AC003093C8 /* Sources */,
 				4947F7871BE996AC003093C8 /* Frameworks */,
 				4947F7881BE996AC003093C8 /* Resources */,
+				ADE1CF7F672C2635278FFE95 /* Embed Pods Frameworks */,
+				421ADF53F979BB445BCDC413 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -253,6 +298,7 @@
 				4947F79D1BE996AC003093C8 /* LaunchScreen.storyboard in Resources */,
 				4947F79A1BE996AC003093C8 /* Assets.xcassets in Resources */,
 				49F272801BF2330700FCC767 /* Info.plist in Resources */,
+				CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,12 +318,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		421ADF53F979BB445BCDC413 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Player/Pods-Player-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ADE1CF7F672C2635278FFE95 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Player/Pods-Player-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B0690D66F5DA2C2D3A38053B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4947F7861BE996AC003093C8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC48ECDA1C88673F009CF0D0 /* SecondViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
+				CC48ECE01C8870E0009CF0D0 /* ZFPlayerView.m in Sources */,
+				CC48ECDD1C886D65009CF0D0 /* VideoPlayViewController.m in Sources */,
 				4947F78F1BE996AC003093C8 /* main.m in Sources */,
 				490E5F7E1BF0353F009E8192 /* RootViewController.m in Sources */,
 				49B2B8831BED7D5A0003BFC2 /* MoviePlayerViewController.m in Sources */,
@@ -409,6 +506,7 @@
 		};
 		4947F7B81BE996AC003093C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04C83594FBD4A53862B96DB0 /* Pods-Player.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: jianfei han (9BL72DXY76)";
@@ -423,6 +521,7 @@
 		};
 		4947F7B91BE996AC003093C8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43B3E208CB404062097185BA /* Pods-Player.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: jianfei han (9BL72DXY76)";
