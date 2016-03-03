@@ -45,6 +45,18 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
@@ -85,6 +97,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self customVideoSlider];
     
     self.activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.activity.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
     _activity.center = _backView.center;
     [self.view addSubview:_activity];
     [_activity startAnimating];
@@ -95,6 +108,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [UIView animateWithDuration:0.5 animations:^{
             
             _backView.alpha = 0;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }];
         
     });
@@ -127,10 +141,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     self.slider = [[UISlider alloc]initWithFrame:CGRectMake(100, _height-30, _width*0.7, 15)];
     [self.backView addSubview:_slider];
-    [_slider setThumbImage:[UIImage imageNamed:@"iconfont-yuan.png"] forState:UIControlStateNormal];
+    [_slider setThumbImage:[UIImage imageNamed:@"iconfont-yuanquan-2"] forState:UIControlStateNormal];
     [_slider addTarget:self action:@selector(progressSlider:) forControlEvents:UIControlEventValueChanged];
     _slider.minimumTrackTintColor = [UIColor colorWithRed:30 / 255.0 green:80 / 255.0 blue:100 / 255.0 alpha:1];
-    
+//    _slider.minimumTrackTintColor = [UIColor blackColor];
+//    _slider.maximumTrackTintColor = [UIColor blackColor];
 }
 
 #pragma mark - slider滑动事件
@@ -166,6 +181,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)createProgress
 {
     self.progress = [[UIProgressView alloc]initWithFrame:CGRectMake(102, _height-23, _width*0.69, 15)];
+    self.progress.progressTintColor = [UIColor whiteColor];
+    self.progress.trackTintColor = [UIColor grayColor];
     [_backView addSubview:_progress];
 }
 #pragma mark -
@@ -189,20 +206,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     return result;
 }
 - (void)customVideoSlider {
-    UIGraphicsBeginImageContextWithOptions((CGSize){ 1, 1 }, NO, 0.0f);
+    UIGraphicsBeginImageContextWithOptions((CGSize){ .7, .7 }, NO, 0.0f);
     UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-//    [self.slider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
+    //设置slider
+    [self.slider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
     [self.slider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
 }
-
-
-
-
-
-
-
 
 #pragma mark - 创建播放时间
 - (void)createCurrentTimeLabel
@@ -237,6 +247,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
     }
     if (_player.status == AVPlayerStatusReadyToPlay) {
         [_activity stopAnimating];
+        // 加载完成后，再添加拖拽手势
+        // 添加平移手势，用来控制音量和快进快退
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
+        [self.view addGestureRecognizer:pan];
     } else {
         [_activity startAnimating];
     }
@@ -304,7 +318,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.horizontalLabel.backgroundColor = [UIColor blackColor];
     self.horizontalLabel.alpha = 0.6;
     self.horizontalLabel.textAlignment = NSTextAlignmentCenter;
-    self.horizontalLabel.text = @"<< 00:00 / --:--";
+    self.horizontalLabel.text = @">> 00:00 / --:--";
     // 一上来先隐藏
     self.horizontalLabel.hidden = YES;
     [self.view addSubview:_horizontalLabel];
@@ -324,10 +338,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
             break;
         }
     }
-    
-    // 添加平移手势，用来控制音量和快进快退
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
-    [self.view addGestureRecognizer:pan];
 }
 #pragma mark - 轻拍方法
 - (void)tapAction:(UITapGestureRecognizer *)tap
@@ -336,11 +346,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [UIView animateWithDuration:0.5 animations:^{
             
             _backView.alpha = 0;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }];
     } else if (_backView.alpha == 0){
         [UIView animateWithDuration:0.5 animations:^{
             
             _backView.alpha = 1;
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         }];
     }
     if (_backView.alpha == 1) {
@@ -349,6 +361,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             [UIView animateWithDuration:0.5 animations:^{
                 
                 _backView.alpha = 0;
+                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
             }];
             
         });
