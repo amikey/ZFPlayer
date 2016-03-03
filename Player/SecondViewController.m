@@ -22,19 +22,10 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-//    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIDeviceOrientationLandscapeRight] forKey:@"orientation"];
-    //强制横屏
-    
-//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-//        
-//        [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
-//         
-//                                       withObject:@(UIInterfaceOrientationLandscapeRight)];
-//        
-//    }
-    
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

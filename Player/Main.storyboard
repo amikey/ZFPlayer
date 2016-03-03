@@ -58,10 +58,10 @@
             </objects>
             <point key="canvasLocation" x="1403.5" y="343.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Second View Controller-->
         <scene sceneID="Por-U2-cMz">
             <objects>
-                <viewController id="tuC-Bt-GHL" sceneMemberID="viewController">
+                <viewController id="tuC-Bt-GHL" customClass="SecondViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fw9-3d-SkH"/>
                         <viewControllerLayoutGuide type="bottom" id="uMG-uI-4gV"/>
