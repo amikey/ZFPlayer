@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MoviePlayerViewController : UIViewController
+/** 视频URL */
 @property (nonatomic, copy) NSString *videoURL;
 @end

@@ -147,35 +147,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 //    _slider.maximumTrackTintColor = [UIColor blackColor];
 }
 
-#pragma mark - slider滑动事件
-- (void)progressSlider:(UISlider *)slider
-{
-    //拖动改变视频播放进度
-    if (_player.status == AVPlayerStatusReadyToPlay) {
-        
-    //计算出拖动的当前秒数
-    CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-    
-//    NSLog(@"%f", total);
-    
-    NSInteger dragedSeconds = floorf(total * slider.value);
-    
-//    NSLog(@"dragedSeconds:%ld",dragedSeconds);
-    
-    //转换成CMTime才能给player来控制播放进度
-    
-    CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
-    
-    [_player pause];
-    
-    [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-        
-        [_player play];
-        
-    }];
-    
-    }
-}
+
 #pragma mark - 创建UIProgressView
 - (void)createProgress
 {
@@ -184,26 +156,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.progress.trackTintColor = [UIColor grayColor];
     [_backView addSubview:_progress];
 }
-#pragma mark -
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
-        NSTimeInterval timeInterval = [self availableDuration];// 计算缓冲进度
-//        NSLog(@"Time Interval:%f",timeInterval);
-        CMTime duration = self.playerItem.duration;
-        CGFloat totalDuration = CMTimeGetSeconds(duration);
-        [self.progress setProgress:timeInterval / totalDuration animated:NO];
-    }
-}
 
-- (NSTimeInterval)availableDuration {
-    NSArray *loadedTimeRanges = [[_player currentItem] loadedTimeRanges];
-    CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue];// 获取缓冲区域
-    float startSeconds = CMTimeGetSeconds(timeRange.start);
-    float durationSeconds = CMTimeGetSeconds(timeRange.duration);
-    NSTimeInterval result = startSeconds + durationSeconds;// 计算缓冲总进度
-    return result;
-}
 - (void)customVideoSlider {
     UIGraphicsBeginImageContextWithOptions((CGSize){ .7, .7 }, NO, 0.0f);
     UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -211,6 +164,29 @@ typedef NS_ENUM(NSInteger, PanDirection){
     //设置slider
     [self.slider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
     [self.slider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
+}
+
+#pragma mark - 播放和下一首按钮
+
+- (void)createButton
+{
+    UIButton *startButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    startButton.frame = CGRectMake(15, _height-38, 30, 30);
+    [self.backView addSubview:startButton];
+    if (_player.rate == 1.0) {
+        [startButton setImage:[UIImage imageNamed:@"kr-video-player-pause"] forState:UIControlStateNormal];
+    } else {
+        [startButton setImage:[UIImage imageNamed:@"kr-video-player-play"] forState:UIControlStateNormal];
+        
+    }
+    [startButton addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    nextButton.frame = CGRectMake(60, _height-35, 25, 25);
+    [self.backView addSubview:nextButton];
+    [nextButton setImage:[UIImage imageNamed:@"nextPlayer.png"] forState:UIControlStateNormal];
+    
+    
 }
 
 #pragma mark - 创建播放时间
@@ -222,8 +198,22 @@ typedef NS_ENUM(NSInteger, PanDirection){
     _currentTimeLabel.font = [UIFont systemFontOfSize:12];
     _currentTimeLabel.text = @"00:00/00:00";
     
-   
+    
 }
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
+        NSTimeInterval timeInterval = [self availableDuration];// 计算缓冲进度
+//        NSLog(@"Time Interval:%f",timeInterval);
+        CMTime duration = self.playerItem.duration;
+        CGFloat totalDuration = CMTimeGetSeconds(duration);
+        [self.progress setProgress:timeInterval / totalDuration animated:NO];
+    }
+}
+
+
 #pragma mark - 计时器事件
 - (void)Stack
 {
@@ -255,27 +245,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
     }
     
 }
-#pragma mark - 播放和下一首按钮
-- (void)createButton
-{
-    UIButton *startButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    startButton.frame = CGRectMake(15, _height-38, 30, 30);
-    [self.backView addSubview:startButton];
-    if (_player.rate == 1.0) {
-        [startButton setImage:[UIImage imageNamed:@"kr-video-player-pause"] forState:UIControlStateNormal];
-    } else {
-        [startButton setImage:[UIImage imageNamed:@"kr-video-player-play"] forState:UIControlStateNormal];
 
-    }
-    [startButton addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextButton.frame = CGRectMake(60, _height-35, 25, 25);
-    [self.backView addSubview:nextButton];
-    [nextButton setImage:[UIImage imageNamed:@"nextPlayer.png"] forState:UIControlStateNormal];
-    
-    
+- (NSTimeInterval)availableDuration {
+    NSArray *loadedTimeRanges = [[_player currentItem] loadedTimeRanges];
+    CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue];// 获取缓冲区域
+    float startSeconds = CMTimeGetSeconds(timeRange.start);
+    float durationSeconds = CMTimeGetSeconds(timeRange.duration);
+    NSTimeInterval result = startSeconds + durationSeconds;// 计算缓冲总进度
+    return result;
 }
+
 #pragma mark - 播放暂停按钮方法
 - (void)startAction:(UIButton *)button
 {
@@ -313,14 +292,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 水平滑动显示的进度label
     self.horizontalLabel = [[UILabel alloc]initWithFrame:CGRectMake(_width/2-80, _height / 2 + 20, 160, 40)];
     self.horizontalLabel.textColor = [UIColor whiteColor];
-    self.horizontalLabel.backgroundColor = [UIColor blackColor];
-    self.horizontalLabel.alpha = 0.6;
+    self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
     self.horizontalLabel.textAlignment = NSTextAlignmentCenter;
     self.horizontalLabel.text = @">> 00:00 / --:--";
     // 一上来先隐藏
     self.horizontalLabel.hidden = YES;
     [self.backView addSubview:_horizontalLabel];
+    
 }
+
+
 #pragma mark - 创建手势
 - (void)createGesture
 {
@@ -337,16 +318,41 @@ typedef NS_ENUM(NSInteger, PanDirection){
         }
     }
 }
+#pragma mark - slider滑动事件
+- (void)progressSlider:(UISlider *)slider
+{
+    //拖动改变视频播放进度
+    if (_player.status == AVPlayerStatusReadyToPlay) {
+        
+        //计算出拖动的当前秒数
+        CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        
+        //    NSLog(@"%f", total);
+        
+        NSInteger dragedSeconds = floorf(total * slider.value);
+        
+        //    NSLog(@"dragedSeconds:%ld",dragedSeconds);
+        
+        //转换成CMTime才能给player来控制播放进度
+        
+        CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+        
+        [_player pause];
+        
+        [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+            
+            [_player play];
+            
+        }];
+        
+    }
+}
+
 #pragma mark - 轻拍方法
+
 - (void)tapAction
 {
-    if (_backView.alpha == 1) {
-        [UIView animateWithDuration:0.5 animations:^{
-            
-            _backView.alpha = 0;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        }];
-    } else if (_backView.alpha == 0){
+    if (_backView.alpha == 0){
         [UIView animateWithDuration:0.5 animations:^{
             
             _backView.alpha = 1;
@@ -354,7 +360,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         }];
     }
     if (_backView.alpha == 1) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             [UIView animateWithDuration:0.5 animations:^{
                 
@@ -366,48 +372,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
     }
 }
-#pragma mark - 滑动调整音量大小
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-//{
-//    if(event.allTouches.count == 1){
-//        //保存当前触摸的位置
-//        CGPoint point = [[touches anyObject] locationInView:self.view];
-//        _startPoint = point;
-//    }
-//}
-//-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    
-//    if(event.allTouches.count == 1){
-//        //计算位移
-//        CGPoint point = [[touches anyObject] locationInView:self.view];
-//        //        float dx = point.x - startPoint.x;
-//        float dy = point.y - _startPoint.y;
-//        int index = (int)dy;
-//        if(index>0){
-//            if(index%5==0){//每10个像素声音减一格
-//                NSLog(@"%.2f",_systemVolume);
-//                if(_systemVolume>0.1){
-//                    _systemVolume = _systemVolume-0.05;
-//                    [_volumeViewSlider setValue:_systemVolume animated:YES];
-//                    [_volumeViewSlider sendActionsForControlEvents:UIControlEventTouchUpInside];
-//                }
-//            }
-//        }else{
-//            if(index%5==0){//每10个像素声音增加一格
-//                NSLog(@"+x ==%d",index);
-//                NSLog(@"%.2f",_systemVolume);
-//                if(_systemVolume>=0 && _systemVolume<1){
-//                    _systemVolume = _systemVolume+0.05;
-//                    [_volumeViewSlider setValue:_systemVolume animated:YES];
-//                    [_volumeViewSlider sendActionsForControlEvents:UIControlEventTouchUpInside];
-//                }
-//            }
-//        }
-//        //亮度调节
-//        //        [UIScreen mainScreen].brightness = (float) dx/self.view.bounds.size.width;
-//    }
-//}
-
 
 - (void)moviePlayDidEnd:(id)sender
 {
@@ -419,7 +383,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [_player pause];
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
-
 
 #pragma mark - 平移手势方法
 - (void)panDirection:(UIPanGestureRecognizer *)pan
@@ -475,8 +438,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
             // 比如水平移动结束时，要快进到指定位置，如果这里没有判断，当我们调节音量完之后，会出现屏幕跳动的bug
             switch (panDirection) {
                 case PanDirectionHorizontalMoved:{
-                    // 隐藏视图
-                    self.horizontalLabel.hidden = YES;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        
+                        // 隐藏视图
+                        self.horizontalLabel.hidden = YES;
+                    });
                     
                     //转换成CMTime才能给player来控制播放进度
                     
@@ -514,6 +480,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     // 更改系统的音量
     self.volumeViewSlider.value -= value / 10000; // 越小幅度越小
+    //亮度
+    //[UIScreen mainScreen].brightness = 10;
 }
 
 #pragma mark - pan水平移动的方法
