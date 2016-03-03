@@ -17,15 +17,6 @@
 		49B2B8831BED7D5A0003BFC2 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B2B8821BED7D5A0003BFC2 /* MoviePlayerViewController.m */; };
 		49CD65D11BF0C4EC0060DB9E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */; };
 		49F272801BF2330700FCC767 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F2727F1BF2330700FCC767 /* Info.plist */; };
-		49F272BF1BF2331B00FCC767 /* gobackBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 49F272861BF2331B00FCC767 /* gobackBtn.png */; };
-		49F272C01BF2331B00FCC767 /* gobackBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49F272871BF2331B00FCC767 /* gobackBtn@2x.png */; };
-		49F272C11BF2331B00FCC767 /* gobackBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49F272881BF2331B00FCC767 /* gobackBtn@3x.png */; };
-		49F272C21BF2331B00FCC767 /* iconfont-back.png in Resources */ = {isa = PBXBuildFile; fileRef = 49F272891BF2331B00FCC767 /* iconfont-back.png */; };
-		49F272C51BF2331B00FCC767 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F2728C1BF2331B00FCC767 /* Info.plist */; };
-		49F272E61BF2331B00FCC767 /* nextPlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = 49F272AE1BF2331B00FCC767 /* nextPlayer.png */; };
-		49F272E71BF2331B00FCC767 /* nextPlayer@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49F272AF1BF2331B00FCC767 /* nextPlayer@3x.png */; };
-		CC725C0D1C87E57400C3EAF2 /* iconfont-yuan.png in Resources */ = {isa = PBXBuildFile; fileRef = CC725C0B1C87E57400C3EAF2 /* iconfont-yuan.png */; };
-		CC725C0E1C87E57400C3EAF2 /* iconfont-yuanquan-2.png in Resources */ = {isa = PBXBuildFile; fileRef = CC725C0C1C87E57400C3EAF2 /* iconfont-yuanquan-2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,15 +55,6 @@
 		49B2B8821BED7D5A0003BFC2 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
 		49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		49F2727F1BF2330700FCC767 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49F272861BF2331B00FCC767 /* gobackBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gobackBtn.png; sourceTree = "<group>"; };
-		49F272871BF2331B00FCC767 /* gobackBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gobackBtn@2x.png"; sourceTree = "<group>"; };
-		49F272881BF2331B00FCC767 /* gobackBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gobackBtn@3x.png"; sourceTree = "<group>"; };
-		49F272891BF2331B00FCC767 /* iconfont-back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconfont-back.png"; sourceTree = "<group>"; };
-		49F2728C1BF2331B00FCC767 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49F272AE1BF2331B00FCC767 /* nextPlayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nextPlayer.png; sourceTree = "<group>"; };
-		49F272AF1BF2331B00FCC767 /* nextPlayer@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nextPlayer@3x.png"; sourceTree = "<group>"; };
-		CC725C0B1C87E57400C3EAF2 /* iconfont-yuan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconfont-yuan.png"; sourceTree = "<group>"; };
-		CC725C0C1C87E57400C3EAF2 /* iconfont-yuanquan-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconfont-yuanquan-2.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,7 +114,6 @@
 				49B2B8811BED7D5A0003BFC2 /* MoviePlayerViewController.h */,
 				49B2B8821BED7D5A0003BFC2 /* MoviePlayerViewController.m */,
 				4947F7991BE996AC003093C8 /* Assets.xcassets */,
-				49F272811BF2331B00FCC767 /* Resource */,
 				4947F79B1BE996AC003093C8 /* LaunchScreen.storyboard */,
 				49F2727F1BF2330700FCC767 /* Info.plist */,
 				4947F78D1BE996AC003093C8 /* Supporting Files */,
@@ -164,22 +145,6 @@
 				4947F7B41BE996AC003093C8 /* Info.plist */,
 			);
 			path = PlayerUITests;
-			sourceTree = "<group>";
-		};
-		49F272811BF2331B00FCC767 /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				49F272861BF2331B00FCC767 /* gobackBtn.png */,
-				49F272871BF2331B00FCC767 /* gobackBtn@2x.png */,
-				49F272881BF2331B00FCC767 /* gobackBtn@3x.png */,
-				49F272891BF2331B00FCC767 /* iconfont-back.png */,
-				49F2728C1BF2331B00FCC767 /* Info.plist */,
-				CC725C0B1C87E57400C3EAF2 /* iconfont-yuan.png */,
-				CC725C0C1C87E57400C3EAF2 /* iconfont-yuanquan-2.png */,
-				49F272AE1BF2331B00FCC767 /* nextPlayer.png */,
-				49F272AF1BF2331B00FCC767 /* nextPlayer@3x.png */,
-			);
-			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,18 +250,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49F272C01BF2331B00FCC767 /* gobackBtn@2x.png in Resources */,
-				CC725C0D1C87E57400C3EAF2 /* iconfont-yuan.png in Resources */,
 				4947F79D1BE996AC003093C8 /* LaunchScreen.storyboard in Resources */,
 				4947F79A1BE996AC003093C8 /* Assets.xcassets in Resources */,
-				49F272C11BF2331B00FCC767 /* gobackBtn@3x.png in Resources */,
 				49F272801BF2330700FCC767 /* Info.plist in Resources */,
-				49F272C21BF2331B00FCC767 /* iconfont-back.png in Resources */,
-				49F272BF1BF2331B00FCC767 /* gobackBtn.png in Resources */,
-				49F272E71BF2331B00FCC767 /* nextPlayer@3x.png in Resources */,
-				CC725C0E1C87E57400C3EAF2 /* iconfont-yuanquan-2.png in Resources */,
-				49F272E61BF2331B00FCC767 /* nextPlayer.png in Resources */,
-				49F272C51BF2331B00FCC767 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

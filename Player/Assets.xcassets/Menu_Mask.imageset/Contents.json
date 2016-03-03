@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "playBtn.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "Menu_Mask@2x.png",
       "scale" : "2x"
     },
     {

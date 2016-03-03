@@ -33,8 +33,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property(nonatomic,strong)UISlider *volumeViewSlider;
 @property(nonatomic,strong)UIActivityIndicatorView *activity; // 系统菊花
 @property(nonatomic,strong)UIProgressView *progress; // 缓冲条
-@property(nonatomic,strong)UIView *topView;
-@property (nonatomic, strong) UILabel *horizontalLabel; // 水平滑动时显示进度
+@property(nonatomic,strong)UIImageView *topView;
+@property(nonatomic,strong) UILabel *horizontalLabel; // 水平滑动时显示进度
 
 @end
 
@@ -78,9 +78,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self.view addSubview:_backView];
     _backView.backgroundColor = [UIColor clearColor];
     
-    self.topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _width, _height * 0.15)];
-    _topView.backgroundColor = [UIColor blackColor];
-    _topView.alpha = 0.5;
+    self.topView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _width, _height * 0.15)];
+    self.topView.image = [UIImage imageNamed:@"News_Image_Mask"];
     [_backView addSubview:_topView];
     
     [self.playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];// 监听loadedTimeRanges属性
@@ -263,10 +262,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
     startButton.frame = CGRectMake(15, _height-38, 30, 30);
     [self.backView addSubview:startButton];
     if (_player.rate == 1.0) {
-    
-    [startButton setBackgroundImage:[UIImage imageNamed:@"pauseBtn.png"] forState:UIControlStateNormal];
+        [startButton setImage:[UIImage imageNamed:@"kr-video-player-pause"] forState:UIControlStateNormal];
     } else {
-        [startButton setBackgroundImage:[UIImage imageNamed:@"playBtn.png"] forState:UIControlStateNormal];
+        [startButton setImage:[UIImage imageNamed:@"kr-video-player-play"] forState:UIControlStateNormal];
 
     }
     [startButton addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -274,7 +272,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
     nextButton.frame = CGRectMake(60, _height-35, 25, 25);
     [self.backView addSubview:nextButton];
-    [nextButton setBackgroundImage:[UIImage imageNamed:@"nextPlayer@3x.png"] forState:UIControlStateNormal];
+    [nextButton setImage:[UIImage imageNamed:@"nextPlayer.png"] forState:UIControlStateNormal];
     
     
 }
@@ -283,11 +281,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     if (button.selected) {
         [_player play];
-        [button setBackgroundImage:[UIImage imageNamed:@"pauseBtn.png"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"kr-video-player-pause"] forState:UIControlStateNormal];
 
     } else {
         [_player pause];
-        [button setBackgroundImage:[UIImage imageNamed:@"playBtn.png"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"kr-video-player-play"] forState:UIControlStateNormal];
 
     }
     button.selected =!button.selected;
@@ -297,8 +295,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)backButton
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(15, 20, 30, 30);
-    [button setBackgroundImage:[UIImage imageNamed:@"iconfont-back.png"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(15, 20, 25, 25);
+    [button setImage:[UIImage imageNamed:@"gobackBtn"] forState:UIControlStateNormal];
     [_topView addSubview:button];
     [button addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -321,12 +319,12 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.horizontalLabel.text = @">> 00:00 / --:--";
     // 一上来先隐藏
     self.horizontalLabel.hidden = YES;
-    [self.view addSubview:_horizontalLabel];
+    [self.backView addSubview:_horizontalLabel];
 }
 #pragma mark - 创建手势
 - (void)createGesture
 {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [self.view addGestureRecognizer:tap];
 
     //获取系统音量
@@ -340,7 +338,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     }
 }
 #pragma mark - 轻拍方法
-- (void)tapAction:(UITapGestureRecognizer *)tap
+- (void)tapAction
 {
     if (_backView.alpha == 1) {
         [UIView animateWithDuration:0.5 animations:^{
@@ -356,7 +354,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         }];
     }
     if (_backView.alpha == 1) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             [UIView animateWithDuration:0.5 animations:^{
                 
@@ -441,6 +439,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 panDirection = PanDirectionHorizontalMoved;
                 // 取消隐藏
                 self.horizontalLabel.hidden = NO;
+                // 模拟点击
+                [self tapAction];
                 // 给sumTime初值
                 CMTime time = self.player.currentTime;
                 sumTime = time.value/time.timescale;
