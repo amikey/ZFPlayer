@@ -328,6 +328,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
         
         NSInteger dragedSeconds = floorf(total * slider.value);
         
+        //        // 取消隐藏
+        //        self.horizontalLabel.hidden = NO;
+        //        // 模拟点击
+        //        [self tapAction];
+        //        [self horizontalMoved:slider.value];
         //    NSLog(@"dragedSeconds:%ld",dragedSeconds);
         
         //转换成CMTime才能给player来控制播放进度
