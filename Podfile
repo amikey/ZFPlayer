@@ -4,9 +4,7 @@
 # use_frameworks!
 
 target 'Player' do
-
 pod 'Masonry'
 pod 'MSWeakTimer'
-
 end
 

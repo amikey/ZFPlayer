@@ -7,8 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "RootViewController.h"
-#import "MoviePlayerViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -18,15 +17,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-//    self.window = [[UIWindow alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-//    self.window.backgroundColor = [UIColor whiteColor];
-//    [self.window makeKeyAndVisible];
-//    
-//    RootViewController *moviePlayer = [[RootViewController alloc]init];
-//    UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:moviePlayer];
-//    self.window.rootViewController = naVC;
-    
     return YES;
 }
 
