@@ -31,12 +31,12 @@
                     </constraints>
                     <state key="normal" image="kr-video-player-pause"/>
                 </button>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-mY-c8M">
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-mY-c8M">
                     <rect key="frame" x="86" y="209" width="301" height="2"/>
                     <color key="progressTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="trackTintColor" red="0.1176470588" green="0.31372549020000001" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
                 </progressView>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nSJ-HO-8mU">
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nSJ-HO-8mU">
                     <rect key="frame" x="84" y="194" width="305" height="31"/>
                     <color key="minimumTrackTintColor" red="0.11764705882352941" green="0.31372549019607843" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                 </slider>

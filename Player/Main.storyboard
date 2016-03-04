@@ -169,7 +169,7 @@
         <scene sceneID="GNS-Uz-8Xs">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7Xx-X8-Lzw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="topRated" id="vRI-7k-vg1"/>
+                    <tabBarItem key="tabBarItem" systemItem="mostViewed" id="vRI-7k-vg1"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MpB-sS-45J">
@@ -189,7 +189,7 @@
         <scene sceneID="QwU-pp-hN6">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HX3-NW-XW1" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="history" id="mrV-KX-krx"/>
+                    <tabBarItem key="tabBarItem" systemItem="downloads" id="mrV-KX-krx"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ROl-sd-bmh">

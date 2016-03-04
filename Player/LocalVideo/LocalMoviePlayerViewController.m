@@ -42,8 +42,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
 
-    NSURL *videoURL = [[NSBundle mainBundle] URLForResource:@"150511_JiveBike" withExtension:@"mov"];
-    self.playerView.videoURL = videoURL;
+    self.playerView.videoURL = self.videoURL;
 
      __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock = ^{
