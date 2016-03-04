@@ -7,7 +7,7 @@
 //
 
 #import "SecondViewController.h"
-
+#import "NetMoviePlayerViewController.h"
 
 @interface SecondViewController ()
 
@@ -38,6 +38,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    NetMoviePlayerViewController *movie = (NetMoviePlayerViewController *)segue.destinationViewController;
+    NSURL *URL = [NSURL URLWithString:@"http://baobab.cdn.wandoujia.com/14468618701471.mp4"];
+    movie.videoURL = URL;
 }
 
 

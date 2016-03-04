@@ -23,7 +23,7 @@
 		CC725C2C1C894D2500C3EAF2 /* NetMoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C291C894D2500C3EAF2 /* NetMoviePlayerViewController.m */; };
 		CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */; };
-		CC725C331C894D2D00C3EAF2 /* LocalVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* LocalVideoPlayerViewController.m */; };
+		CC725C331C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
@@ -75,8 +75,8 @@
 		CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		CC725C2E1C894D2D00C3EAF2 /* FirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		CC725C301C894D2D00C3EAF2 /* LocalVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalVideoPlayerViewController.h; sourceTree = "<group>"; };
-		CC725C311C894D2D00C3EAF2 /* LocalVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalVideoPlayerViewController.m; sourceTree = "<group>"; };
+		CC725C301C894D2D00C3EAF2 /* LocalMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalMoviePlayerViewController.h; sourceTree = "<group>"; };
+		CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalMoviePlayerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,8 +195,8 @@
 			children = (
 				CC725C2E1C894D2D00C3EAF2 /* FirstViewController.h */,
 				CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */,
-				CC725C301C894D2D00C3EAF2 /* LocalVideoPlayerViewController.h */,
-				CC725C311C894D2D00C3EAF2 /* LocalVideoPlayerViewController.m */,
+				CC725C301C894D2D00C3EAF2 /* LocalMoviePlayerViewController.h */,
+				CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */,
 			);
 			path = LocalVideo;
 			sourceTree = "<group>";
@@ -215,11 +215,11 @@
 		CC725C1F1C894CDA00C3EAF2 /* PlayerView */ = {
 			isa = PBXGroup;
 			children = (
+				CC725C231C894D1D00C3EAF2 /* ZFPlayerView.h */,
+				CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */,
 				CC725C201C894D1D00C3EAF2 /* ZFPlayerMaskView.h */,
 				CC725C211C894D1D00C3EAF2 /* ZFPlayerMaskView.m */,
 				CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */,
-				CC725C231C894D1D00C3EAF2 /* ZFPlayerView.h */,
-				CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */,
 			);
 			path = PlayerView;
 			sourceTree = "<group>";
@@ -410,7 +410,7 @@
 			files = (
 				CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
-				CC725C331C894D2D00C3EAF2 /* LocalVideoPlayerViewController.m in Sources */,
+				CC725C331C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */,
 				CC725C271C894D1D00C3EAF2 /* ZFPlayerView.m in Sources */,
 				CC725C2C1C894D2500C3EAF2 /* NetMoviePlayerViewController.m in Sources */,

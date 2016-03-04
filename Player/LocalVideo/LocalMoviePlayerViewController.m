@@ -6,18 +6,18 @@
 //  Copyright © 2016年 zhaoqingwen. All rights reserved.
 //
 
-#import "LocalVideoPlayerViewController.h"
+#import "LocalMoviePlayerViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFPlayerView.h"
 
-@interface LocalVideoPlayerViewController ()
+@interface LocalMoviePlayerViewController ()
 
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
 
 @end
 
-@implementation LocalVideoPlayerViewController
+@implementation LocalMoviePlayerViewController
 
 -(void)dealloc
 {
@@ -39,14 +39,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+    
+    self.view.backgroundColor = [UIColor whiteColor];
 
-        [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
-
-                                       withObject:@(UIInterfaceOrientationLandscapeRight)];
-
-    }
     NSURL *videoURL = [[NSBundle mainBundle] URLForResource:@"150511_JiveBike" withExtension:@"mov"];
     self.playerView.videoURL = videoURL;
 

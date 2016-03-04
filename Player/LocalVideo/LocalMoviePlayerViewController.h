@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LocalVideoPlayerViewController : UIViewController
-
+@interface LocalMoviePlayerViewController : UIViewController
+/** 视频URL */
+@property (nonatomic, strong) NSURL *videoURL;
 @end

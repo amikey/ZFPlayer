@@ -37,6 +37,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) CGFloat sumTime;
 /** 定义一个实例变量，保存枚举值 */
 @property (nonatomic, assign) PanDirection panDirection;
+/** 是否为全屏 */
+@property (nonatomic, assign) BOOL isFullScreen;
 
 @end
 
@@ -51,16 +53,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 -(void)layoutSubviews
 {
-    NSLog(@"layoutSubviews");
+    NSLog(@"layoutSubviews==%@",NSStringFromCGRect(self.bounds));
     self.playerLayer.frame = self.bounds;
 }
-
 
 -(void)setVideoURL:(NSURL *)videoURL
 {
     // 创建AVPlayer
-//    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"150511_JiveBike" withExtension:@"mov"];
-//    NSURL *URL = [NSURL URLWithString:videoURL];
     self.playerItem = [AVPlayerItem playerItemWithURL:videoURL];
     self.player = [AVPlayer playerWithPlayerItem:_playerItem];
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
@@ -86,9 +85,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self.maskView.videoSlider addTarget:self action:@selector(progressSlider:) forControlEvents:UIControlEventValueChanged];
     // 播放按钮点击事件
     [self.maskView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
-    // 返回按钮
+    // 返回按钮点击事件
     [self.maskView.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
-
+    // 全屏按钮点击事件
+    [self.maskView.fullScreenBtn addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     [self.playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];// 监听loadedTimeRanges属性
     
@@ -111,6 +112,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
                                                    userInfo:nil
                                                     repeats:YES
                                               dispatchQueue:dispatch_get_main_queue()];
+    // 监测设备方向
+    [self listeningRotating];
+    
 }
 
 
@@ -131,7 +135,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)Stack
 {
     if (_playerItem.duration.timescale != 0) {
-        
         self.maskView.videoSlider.maximumValue = 1;//音乐总共时长
         self.maskView.videoSlider.value = CMTimeGetSeconds([_playerItem currentTime]) / (_playerItem.duration.value / _playerItem.duration.timescale);//当前进度
         
@@ -146,6 +149,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         self.maskView.currentTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
         self.maskView.totalTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
     }
+    
     if (_player.status == AVPlayerStatusReadyToPlay) {
         [self.maskView.activity stopAnimating];
         // 加载完成后，再添加拖拽手势
@@ -166,6 +170,62 @@ typedef NS_ENUM(NSInteger, PanDirection){
     NSTimeInterval result = startSeconds + durationSeconds;// 计算缓冲总进度
     return result;
 }
+
+//监听设备旋转方向
+- (void)listeningRotating{
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDeviceOrientationChange)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil
+     ];
+    
+}
+
+- (void)onDeviceOrientationChange{
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
+    switch (interfaceOrientation) {
+            /**        case UIInterfaceOrientationUnknown:
+             NSLog(@"未知方向");
+             break;
+             */
+        case UIInterfaceOrientationPortraitUpsideDown:{
+            NSLog(@"第3个旋转方向---电池栏在下");
+            [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-fullscreen"] forState:UIControlStateNormal];
+            self.isFullScreen = NO;
+            
+        }
+            break;
+        case UIInterfaceOrientationPortrait:{
+            NSLog(@"第0个旋转方向---电池栏在上");
+            [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-fullscreen"] forState:UIControlStateNormal];
+            self.isFullScreen = NO;
+        }
+            break;
+        case UIInterfaceOrientationLandscapeLeft:{
+            NSLog(@"第2个旋转方向---电池栏在右");
+            [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
+            self.isFullScreen = YES;
+            
+        }
+            break;
+        case UIInterfaceOrientationLandscapeRight:{
+            
+            NSLog(@"第1个旋转方向---电池栏在左");
+            [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
+            self.isFullScreen = YES;
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
 
 #pragma mark - 播放暂停按钮方法
 - (void)startAction:(UIButton *)button
@@ -271,10 +331,52 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)backButtonAction
 {
-    [_player pause];
-    if (self.goBackBlock) {
-        self.goBackBlock();
+    if (!self.isFullScreen) {
+        [_player pause];
+        if (self.goBackBlock) {
+            self.goBackBlock();
+        }
+    }else {
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
     }
+}
+
+- (void)fullScreenAction:(UIButton *)sender
+{
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
+    switch (interfaceOrientation) {
+
+        case UIInterfaceOrientationPortraitUpsideDown:{
+            NSLog(@"第3个旋转方向---电池栏在下");
+            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+        }
+            break;
+        case UIInterfaceOrientationPortrait:{
+            NSLog(@"第0个旋转方向---电池栏在上");
+            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+        }
+            break;
+        case UIInterfaceOrientationLandscapeLeft:{
+            NSLog(@"第2个旋转方向---电池栏在右");
+            
+           [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
+            
+        }
+            break;
+        case UIInterfaceOrientationLandscapeRight:{
+            
+            NSLog(@"第1个旋转方向---电池栏在左");
+            
+            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+
 }
 
 #pragma mark - 平移手势方法

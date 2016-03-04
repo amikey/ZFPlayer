@@ -33,11 +33,12 @@
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     self.playerView.videoURL = self.videoURL;
      __weak typeof(self) weakSelf = self;
@@ -51,19 +52,20 @@
 {
     NSLog(@"====%zd",fromInterfaceOrientation);
 }
-#pragma mark - 横屏代码
-- (BOOL)shouldAutorotate{
-    return YES;
-} //NS_AVAILABLE_IOS(6_0);当前viewcontroller是否支持转屏
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    
-    return UIInterfaceOrientationMaskLandscape;
-} //当前viewcontroller支持哪些转屏方向
-
--(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationLandscapeRight;
-}
+//#pragma mark - 横屏代码
+//- (BOOL)shouldAutorotate{
+//    return YES;
+//} //NS_AVAILABLE_IOS(6_0);当前viewcontroller是否支持转屏
+//
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+//    
+//    return UIInterfaceOrientationMaskLandscape;
+//} //当前viewcontroller支持哪些转屏方向
+//
+//-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+//    return UIInterfaceOrientationLandscapeRight;
+//}
 
 /*
 #pragma mark - Navigation
