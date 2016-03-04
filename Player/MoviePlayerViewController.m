@@ -19,6 +19,11 @@
 
 @implementation MoviePlayerViewController
 
+-(void)dealloc
+{
+    NSLog(@"%@释放了",self.class);
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

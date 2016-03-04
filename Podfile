@@ -6,6 +6,7 @@
 target 'Player' do
 
 pod 'Masonry'
+pod 'MSWeakTimer'
 
 end
 

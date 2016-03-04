@@ -9,6 +9,7 @@
 #import "ZFPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <MSWeakTimer/MSWeakTimer.h>
 
 // 枚举值，包含水平移动方向和垂直移动方向
 typedef NS_ENUM(NSInteger, PanDirection){
@@ -38,13 +39,17 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property(nonatomic,strong)UIProgressView *progress; // 缓冲条
 @property(nonatomic,strong)UIImageView *topView;
 @property(nonatomic,strong) UILabel *horizontalLabel; // 水平滑动时显示进度
+
+@property (nonatomic, strong) MSWeakTimer *timer;
 @end
 
 @implementation ZFPlayerView
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    [self.timer invalidate];
 }
 
 - (void)setFrames:(CGRect)frames
@@ -118,7 +123,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
         });
         
         //计时器
-        [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(Stack) userInfo:nil repeats:YES];
+//        self.timer =[NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(Stack) userInfo:nil repeats:YES];
+        self.timer =[MSWeakTimer scheduledTimerWithTimeInterval:1.0f
+                                                         target:self
+                                                       selector:@selector(Stack)
+                                                       userInfo:nil
+                                                        repeats:YES
+                                                  dispatchQueue:dispatch_get_main_queue()];
     }
     return self;
 
