@@ -19,7 +19,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sPp-E4-38P">
                                 <rect key="frame" x="143" y="147" width="90" height="30"/>
-                                <state key="normal" title="点击网络视频"/>
+                                <state key="normal" title="播放网络视频"/>
                                 <connections>
                                     <segue destination="7NW-yb-BSh" kind="presentation" id="Ghy-rA-aHW"/>
                                 </connections>
@@ -51,7 +51,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJd-vt-Xpq" customClass="ZFPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="CJd-vt-Xpq" secondAttribute="height" multiplier="16:9" id="lta-DY-OHb"/>
                                 </constraints>
@@ -86,7 +86,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pMx-tP-nAh">
                                 <rect key="frame" x="142" y="147" width="90" height="30"/>
-                                <state key="normal" title="点击跳转本地"/>
+                                <state key="normal" title="播放本地视频"/>
                                 <connections>
                                     <segue destination="Dif-MC-umB" kind="presentation" id="fZL-fR-HYJ"/>
                                 </connections>
@@ -118,7 +118,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3fb-2P-Z86" customClass="ZFPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="3fb-2P-Z86" secondAttribute="height" multiplier="16:9" id="QhP-Q1-pQX"/>
                                 </constraints>

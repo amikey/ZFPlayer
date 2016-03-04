@@ -1,13 +1,14 @@
 # ZFPlayer
 ## 基于AVPlayer
-* 支持横屏
+* 支持横竖屏切换
+* 支持本地视频、网络视频播放
 * 上下滑动调节音量（模拟器调不了音量，请在真机调试）
 * 左右滑动调节播放进度
 
 
 ### 图片效果演示
 
-![图片效果演示](https://github.com/renzifeng/ZFPlayer/raw/master/screen.png)
+![图片效果演示](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)
 
 ### ps：本人最近swift做的项目，朋友们给点建议吧：
 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
