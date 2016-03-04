@@ -22,13 +22,14 @@
 -(void)dealloc
 {
     NSLog(@"%@释放了",self.class);
+    self.playerView.shouldExecuteDispatchBlock = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [UIApplication sharedApplication].statusBarHidden = NO;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    [UIApplication sharedApplication].statusBarHidden = NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated

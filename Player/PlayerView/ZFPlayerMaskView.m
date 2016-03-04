@@ -10,6 +10,11 @@
 
 @implementation ZFPlayerMaskView
 
+-(void)dealloc
+{
+    NSLog(@"%@释放了",self.class);
+}
+
 -(void)awakeFromNib
 {
     // 设置slider

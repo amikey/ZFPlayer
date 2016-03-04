@@ -20,6 +20,7 @@
 -(void)dealloc
 {
     NSLog(@"%@释放了",self.class);
+    self.playerView.shouldExecuteDispatchBlock = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated

@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)dealloc
 {
+    NSLog(@"%@释放了",self.class);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
     [self.timer invalidate];
@@ -96,14 +97,18 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self createGesture];
     
     [self.maskView.activity startAnimating];
-    
+    self.shouldExecuteDispatchBlock = YES;
     //延迟线程
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.5 animations:^{
-            self.maskView.alpha = 0;
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        }];
+        if (self.shouldExecuteDispatchBlock) {
+            [UIView animateWithDuration:0.5 animations:^{
+                self.maskView.alpha = 0;
+                [[UIApplication sharedApplication] setStatusBarHidden:YES];
+            }];
+        }
     });
+
+    [UIApplication sharedApplication].statusBarHidden = NO;
     
     //计时器
     self.timer =[MSWeakTimer scheduledTimerWithTimeInterval:1.0f
@@ -271,16 +276,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         //计算出拖动的当前秒数
         CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
         
-        //    NSLog(@"%f", total);
-        
         NSInteger dragedSeconds = floorf(total * slider.value);
-        
-        //        // 取消隐藏
-        //        self.horizontalLabel.hidden = NO;
-        //        // 模拟点击
-        //        [self tapAction];
-        //        [self horizontalMoved:slider.value];
-        //    NSLog(@"dragedSeconds:%ld",dragedSeconds);
         
         //转换成CMTime才能给player来控制播放进度
         
@@ -303,20 +299,18 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     if (self.maskView.alpha == 0){
         [UIView animateWithDuration:0.5 animations:^{
-            
             self.maskView.alpha = 1;
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+            [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }];
     }
     if (self.maskView.alpha == 1) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            [UIView animateWithDuration:0.5 animations:^{
-                
-                self.maskView.alpha = 0;
-                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-            }];
-            
+            if (self.shouldExecuteDispatchBlock) {
+                [UIView animateWithDuration:0.5 animations:^{
+                    self.maskView.alpha = 0;
+                    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+                }];
+            }
         });
         
     }

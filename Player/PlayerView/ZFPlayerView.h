@@ -15,5 +15,6 @@ typedef void(^GoBackBlock)(void);
 @property (nonatomic, strong) NSURL *videoURL;
 /** 返回按钮Block */
 @property (nonatomic, copy) GoBackBlock goBackBlock;
-
+/** 判断GCD延时block执行与否 */
+@property (nonatomic, assign) BOOL shouldExecuteDispatchBlock;
 @end
