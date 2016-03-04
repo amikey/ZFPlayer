@@ -17,4 +17,8 @@ typedef void(^GoBackBlock)(void);
 @property (nonatomic, copy) GoBackBlock goBackBlock;
 /** 判断GCD延时block执行与否 */
 @property (nonatomic, assign) BOOL shouldExecuteDispatchBlock;
+/**
+ *  取消延时
+ */
+- (void)cancelAutoFadeOutControlBar;
 @end

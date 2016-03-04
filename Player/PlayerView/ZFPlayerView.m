@@ -93,23 +93,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
     
     
     [self.playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];// 监听loadedTimeRanges属性
-    
+    // 添加手势
     [self createGesture];
     
     [self.maskView.activity startAnimating];
     self.shouldExecuteDispatchBlock = YES;
-    //延迟线程
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.shouldExecuteDispatchBlock) {
-            [UIView animateWithDuration:0.5 animations:^{
-                self.maskView.alpha = 0;
-                [[UIApplication sharedApplication] setStatusBarHidden:YES];
-            }];
-        }
-    });
 
     [UIApplication sharedApplication].statusBarHidden = NO;
     
+    //延迟线程
+    [self afterHideMaskView];
     //计时器
     self.timer =[MSWeakTimer scheduledTimerWithTimeInterval:1.0f
                                                      target:self
@@ -121,7 +114,24 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self listeningRotating];
     
 }
+- (void)afterHideMaskView
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideMaskView) object:nil];
+    [self performSelector:@selector(hideMaskView) withObject:nil afterDelay:7.0f];
 
+}
+- (void)cancelAutoFadeOutControlBar
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (void)hideMaskView
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        self.maskView.alpha = 0;
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }];
+}
 
 #pragma mark - KVO
 
@@ -304,14 +314,15 @@ typedef NS_ENUM(NSInteger, PanDirection){
         }];
     }
     if (self.maskView.alpha == 1) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (self.shouldExecuteDispatchBlock) {
-                [UIView animateWithDuration:0.5 animations:^{
-                    self.maskView.alpha = 0;
-                    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-                }];
-            }
-        });
+        [self afterHideMaskView];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            if (self.shouldExecuteDispatchBlock) {
+//                [UIView animateWithDuration:0.5 animations:^{
+//                    self.maskView.alpha = 0;
+//                    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+//                }];
+//            }
+//        });
         
     }
 }

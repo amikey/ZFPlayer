@@ -19,9 +19,9 @@
     [super viewDidLoad];
    // Do any additional setup after loading the view.
 }
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }

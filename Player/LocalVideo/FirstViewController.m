@@ -15,12 +15,13 @@
 
 @implementation FirstViewController
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 }

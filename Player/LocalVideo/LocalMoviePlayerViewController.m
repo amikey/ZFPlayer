@@ -23,6 +23,7 @@
 {
     NSLog(@"%@释放了",self.class);
     self.playerView.shouldExecuteDispatchBlock = NO;
+    [self.playerView cancelAutoFadeOutControlBar];
 }
 
 -(void)viewWillAppear:(BOOL)animated
