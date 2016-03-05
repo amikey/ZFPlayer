@@ -80,7 +80,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.player = [AVPlayer playerWithPlayerItem:_playerItem];
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
     //AVLayerVideoGravityResizeAspectFill / AVLayerVideoGravityResize
-    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    if([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]){
+        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    }else{
+        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    }
     [self.layer insertSublayer:self.playerLayer atIndex:1];
     [_player play];
     
