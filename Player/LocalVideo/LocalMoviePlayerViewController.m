@@ -22,7 +22,6 @@
 -(void)dealloc
 {
     NSLog(@"%@释放了",self.class);
-    self.playerView.shouldExecuteDispatchBlock = NO;
     [self.playerView cancelAutoFadeOutControlBar];
 }
 
@@ -37,7 +36,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
     [UIApplication sharedApplication].statusBarHidden = NO;
 }
 - (void)viewDidLoad {

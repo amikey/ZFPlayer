@@ -8,6 +8,14 @@
 
 #import "ZFPlayerMaskView.h"
 
+@interface ZFPlayerMaskView ()
+/** 渐变层*/
+@property (strong, nonatomic) CAGradientLayer *gradientLayer;
+/** bottomView*/
+@property (weak, nonatomic) IBOutlet UIImageView *bottomImageView;
+
+@end
+
 @implementation ZFPlayerMaskView
 
 -(void)dealloc
@@ -30,6 +38,24 @@
     self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
     self.horizontalLabel.hidden = YES; //先隐藏
     
+    //初始化渐变层
+    self.gradientLayer = [CAGradientLayer layer];
+    [self.bottomImageView.layer addSublayer:self.gradientLayer];
+    
+    //设置渐变颜色方向
+    self.gradientLayer.startPoint = CGPointMake(0, 0);
+    self.gradientLayer.endPoint = CGPointMake(0, 1);
+    //设定颜色组
+    self.gradientLayer.colors = @[(__bridge id)[UIColor clearColor].CGColor,
+                                  (__bridge id)[UIColor blackColor].CGColor];
+    //设定颜色分割点
+    self.gradientLayer.locations = @[@(0.0f) ,@(1.0f)];
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.gradientLayer.frame = self.bottomImageView.bounds;
 }
 
 + (instancetype)setupPlayerMaskView

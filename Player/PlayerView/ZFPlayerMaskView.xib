@@ -13,7 +13,6 @@
                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ngr-ji-6Se" userLabel="bottomView">
                     <rect key="frame" x="0.0" y="185" width="471" height="45"/>
                     <animations/>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.50369073279999999" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="gfd-xY-SbZ"/>
                     </constraints>
@@ -118,6 +117,7 @@
             <connections>
                 <outlet property="activity" destination="foM-tS-Rga" id="jkj-IQ-fmD"/>
                 <outlet property="backBtn" destination="4u0-DP-nds" id="x5g-7j-lsX"/>
+                <outlet property="bottomImageView" destination="ngr-ji-6Se" id="eqs-A0-JHt"/>
                 <outlet property="currentTimeLabel" destination="yIE-vF-c8O" id="bdx-Ti-WaH"/>
                 <outlet property="fullScreenBtn" destination="AEI-I4-hWP" id="Wnd-p1-skw"/>
                 <outlet property="horizontalLabel" destination="2Fx-sI-RKN" id="mnb-qJ-FjE"/>

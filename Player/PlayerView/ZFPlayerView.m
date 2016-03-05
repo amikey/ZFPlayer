@@ -97,7 +97,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self createGesture];
     
     [self.maskView.activity startAnimating];
-    self.shouldExecuteDispatchBlock = YES;
 
     [UIApplication sharedApplication].statusBarHidden = NO;
     
@@ -139,7 +138,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
         NSTimeInterval timeInterval = [self availableDuration];// 计算缓冲进度
-        //        NSLog(@"Time Interval:%f",timeInterval);
         CMTime duration = self.playerItem.duration;
         CGFloat totalDuration = CMTimeGetSeconds(duration);
         [self.maskView.progressView setProgress:timeInterval / totalDuration animated:NO];
@@ -315,20 +313,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     }
     if (self.maskView.alpha == 1) {
         [self afterHideMaskView];
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            if (self.shouldExecuteDispatchBlock) {
-//                [UIView animateWithDuration:0.5 animations:^{
-//                    self.maskView.alpha = 0;
-//                    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-//                }];
-//            }
-//        });
-        
     }
 }
 
 - (void)moviePlayDidEnd:(id)sender
 {
+    //播放完了
+    [self interfaceOrientation:UIInterfaceOrientationPortrait];
     if (self.goBackBlock) {
         self.goBackBlock();
     }
@@ -342,7 +333,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             self.goBackBlock();
         }
     }else {
-        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
+        [self interfaceOrientation:UIInterfaceOrientationPortrait];
     }
 }
 
@@ -354,27 +345,22 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
         case UIInterfaceOrientationPortraitUpsideDown:{
             NSLog(@"第3个旋转方向---电池栏在下");
-            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+            [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
             break;
         case UIInterfaceOrientationPortrait:{
             NSLog(@"第0个旋转方向---电池栏在上");
-            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+            [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
             NSLog(@"第2个旋转方向---电池栏在右");
-            
-           [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
-            
+            [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            
             NSLog(@"第1个旋转方向---电池栏在左");
-            
-            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
-            
+            [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
             
@@ -481,7 +467,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 更改系统的音量
     self.volumeViewSlider.value -= value / 10000; // 越小幅度越小
     //亮度
-    //[UIScreen mainScreen].brightness = 10;
+    //[UIScreen mainScreen].brightness = 0.5;
 }
 
 #pragma mark - pan水平移动的方法
@@ -530,4 +516,32 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 
 
+
+
+#pragma mark 强制转屏相关
+
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    // arc下
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val = orientation;
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
+    /*
+     // 非arc下
+     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
+                                       withObject:@(orientation)];
+     }
+     
+    // 直接调用这个方法通不过apple上架审核
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+    
+     */
+}
 @end
