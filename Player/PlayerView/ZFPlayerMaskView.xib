@@ -110,7 +110,9 @@
                 <constraint firstAttribute="trailing" secondItem="ngr-ji-6Se" secondAttribute="trailing" id="h3R-cT-11M"/>
                 <constraint firstItem="3mh-1N-825" firstAttribute="leading" secondItem="nSJ-HO-8mU" secondAttribute="trailing" constant="10" id="ho5-9l-ZSW"/>
                 <constraint firstItem="ngr-ji-6Se" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="s0j-Ao-eLH"/>
-                <constraint firstItem="4u0-DP-nds" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="yOg-Do-Nl3"/>
+                <constraint firstItem="4u0-DP-nds" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="yOg-Do-Nl3">
+                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                </constraint>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

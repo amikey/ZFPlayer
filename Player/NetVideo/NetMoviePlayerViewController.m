@@ -48,9 +48,13 @@
 
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    NSLog(@"====%zd",fromInterfaceOrientation);
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        self.view.backgroundColor  = [UIColor whiteColor];
+    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        self.view.backgroundColor = [UIColor blackColor];
+    }
 }
 
 //#pragma mark - 横屏代码

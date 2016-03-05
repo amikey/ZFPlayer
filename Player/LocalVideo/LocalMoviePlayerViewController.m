@@ -14,6 +14,7 @@
 @interface LocalMoviePlayerViewController ()
 
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
+@property (weak, nonatomic) IBOutlet UIView *statusView;
 
 @end
 
@@ -41,8 +42,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-
     self.playerView.videoURL = self.videoURL;
 
      __weak typeof(self) weakSelf = self;
@@ -51,9 +50,14 @@
     };
     
 }
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    NSLog(@"====%zd  %@",fromInterfaceOrientation,self.playerView);
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        self.view.backgroundColor  = [UIColor whiteColor];
+    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        self.view.backgroundColor = [UIColor blackColor];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

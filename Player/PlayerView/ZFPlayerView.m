@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 /** 是否为全屏 */
 @property (nonatomic, assign) BOOL isFullScreen;
 
+
 @end
 
 @implementation ZFPlayerView
@@ -111,6 +112,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                                               dispatchQueue:dispatch_get_main_queue()];
     // 监测设备方向
     [self listeningRotating];
+    [self onDeviceOrientationChange];
     
 }
 - (void)afterHideMaskView
@@ -128,7 +130,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     [UIView animateWithDuration:0.5 animations:^{
         self.maskView.alpha = 0;
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        if (self.isFullScreen) {
+            [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        }
     }];
 }
 
@@ -201,10 +205,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     switch (interfaceOrientation) {
-            /**        case UIInterfaceOrientationUnknown:
-             NSLog(@"未知方向");
-             break;
-             */
         case UIInterfaceOrientationPortraitUpsideDown:{
             NSLog(@"第3个旋转方向---电池栏在下");
             [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-fullscreen"] forState:UIControlStateNormal];
