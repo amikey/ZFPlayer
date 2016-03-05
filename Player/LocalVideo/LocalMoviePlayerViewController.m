@@ -11,10 +11,10 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFPlayerView.h"
 
-@interface LocalMoviePlayerViewController ()
+@interface LocalMoviePlayerViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
-@property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -30,7 +30,6 @@
 {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    [UIApplication sharedApplication].statusBarHidden = NO;
     self.navigationController.navigationBarHidden = YES;
 }
 
@@ -39,6 +38,7 @@
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -58,6 +58,17 @@
     }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         self.view.backgroundColor = [UIColor blackColor];
     }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 20;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"localCell"];
+    return cell;
 }
 
 - (void)didReceiveMemoryWarning {

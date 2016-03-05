@@ -9,7 +9,7 @@
 #import "NetMoviePlayerViewController.h"
 #import "ZFPlayerView.h"
 
-@interface NetMoviePlayerViewController ()
+@interface NetMoviePlayerViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet ZFPlayerView *playerView;
 
@@ -26,7 +26,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [UIApplication sharedApplication].statusBarHidden = NO;
+    self.navigationController.navigationBarHidden = YES;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
 
@@ -55,6 +55,17 @@
     }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         self.view.backgroundColor = [UIColor blackColor];
     }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 20;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"netCell"];
+    return cell;
 }
 
 //#pragma mark - 横屏代码

@@ -26,13 +26,20 @@
 -(void)awakeFromNib
 {
     // 设置slider
-    [self.videoSlider setThumbImage:[UIImage imageNamed:@"iconfont-yuanquan-2"] forState:UIControlStateNormal];
-    UIGraphicsBeginImageContextWithOptions((CGSize){ .7, .7 }, NO, 1.0f);
-    UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    //设置slider
-    [self.videoSlider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
-    [self.videoSlider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
+    [self.videoSlider setThumbImage:[UIImage imageNamed:@"slider"] forState:UIControlStateNormal];
+//    UIGraphicsBeginImageContextWithOptions((CGSize){ 1, 1 }, NO, 1.0f);
+//    UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    //设置slider
+//    [self.videoSlider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
+//    [self.videoSlider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
+    
+    [self insertSubview:self.progressView belowSubview:self.videoSlider];
+    self.videoSlider.minimumTrackTintColor = [UIColor whiteColor];
+    self.videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.3];
+    
+    self.progressView.progressTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
+    self.progressView.trackTintColor = [UIColor clearColor];
     
     //初始化渐变层
     self.gradientLayer = [CAGradientLayer layer];

@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (weak, nonatomic) IBOutlet UILabel *horizontalLabel;
 /** 系统菊花 */
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activity;
+@property (weak, nonatomic) IBOutlet UIButton *backBtn;
 
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayer *player;
@@ -52,10 +53,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 -(void)awakeFromNib
 {
+    self.backgroundColor = [UIColor blackColor];
     // 设置快进快退label
     self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
     self.horizontalLabel.hidden = YES; //先隐藏
-
+    
 }
 - (void)dealloc
 {
@@ -79,14 +81,15 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
 
     self.playerLayer.videoGravity = AVLayerVideoGravityResize;
-//    [self.layer addSublayer:self.playerLayer];
-    [self.layer insertSublayer:self.playerLayer atIndex:0];
+    [self.layer insertSublayer:self.playerLayer atIndex:1];
     [_player play];
+    
     //AVPlayer播放完成通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
     
     self.maskView = [ZFPlayerMaskView setupPlayerMaskView];
-    [self addSubview:self.maskView];
+    [self insertSubview:self.maskView belowSubview:self.backBtn];
+    
     [self.maskView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
     }];
@@ -101,7 +104,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 播放按钮点击事件
     [self.maskView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
     // 返回按钮点击事件
-    [self.maskView.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
     // 全屏按钮点击事件
     [self.maskView.fullScreenBtn addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -144,6 +147,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [UIView animateWithDuration:0.5 animations:^{
         self.maskView.alpha = 0;
         if (self.isFullScreen) {
+            self.backBtn.alpha = 0;
             [[UIApplication sharedApplication] setStatusBarHidden:YES];
         }
     }];
@@ -321,6 +325,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (self.maskView.alpha == 0){
         [UIView animateWithDuration:0.5 animations:^{
             self.maskView.alpha = 1;
+            self.backBtn.alpha = 1;
             [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }];
     }

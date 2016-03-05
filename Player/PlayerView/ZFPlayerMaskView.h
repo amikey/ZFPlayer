@@ -22,8 +22,6 @@
 @property (weak, nonatomic) IBOutlet UISlider *videoSlider;
 /** 全屏按钮 */
 @property (weak, nonatomic) IBOutlet UIButton *fullScreenBtn;
-/** 返回按钮 */
-@property (weak, nonatomic) IBOutlet UIButton *backBtn;
 
 /**
  *  类方法创建
