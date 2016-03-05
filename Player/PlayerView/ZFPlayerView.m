@@ -12,6 +12,7 @@
 #import <MSWeakTimer/MSWeakTimer.h>
 #import "ZFPlayerMaskView.h"
 #import <Masonry/Masonry.h>
+#import <XXNibBridge/XXNibBridge.h>
 
 // 枚举值，包含水平移动方向和垂直移动方向
 typedef NS_ENUM(NSInteger, PanDirection){
@@ -19,7 +20,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
     PanDirectionVerticalMoved
 };
 
-@interface ZFPlayerView ()
+@interface ZFPlayerView () <XXNibBridge>
+/** 快进快退label */
+@property (weak, nonatomic) IBOutlet UILabel *horizontalLabel;
+/** 系统菊花 */
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activity;
 
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayer *player;
@@ -45,6 +50,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 @implementation ZFPlayerView
 
+-(void)awakeFromNib
+{
+    // 设置快进快退label
+    self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
+    self.horizontalLabel.hidden = YES; //先隐藏
+
+}
 - (void)dealloc
 {
     NSLog(@"%@释放了",self.class);
@@ -67,7 +79,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
 
     self.playerLayer.videoGravity = AVLayerVideoGravityResize;
-    [self.layer addSublayer:self.playerLayer];
+//    [self.layer addSublayer:self.playerLayer];
+    [self.layer insertSublayer:self.playerLayer atIndex:0];
     [_player play];
     //AVPlayer播放完成通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
@@ -97,7 +110,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 添加手势
     [self createGesture];
     
-    [self.maskView.activity startAnimating];
+    [self.activity startAnimating];
 
     [UIApplication sharedApplication].statusBarHidden = NO;
     
@@ -168,13 +181,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     }
     
     if (_player.status == AVPlayerStatusReadyToPlay) {
-        [self.maskView.activity stopAnimating];
+        [self.activity stopAnimating];
         // 加载完成后，再添加拖拽手势
         // 添加平移手势，用来控制音量和快进快退
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
         [self addGestureRecognizer:pan];
     } else {
-        [self.maskView.activity startAnimating];
+        [self.activity startAnimating];
     }
     
 }
@@ -387,9 +400,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
             if (x > y) { // 水平移动
                 self.panDirection = PanDirectionHorizontalMoved;
                 // 取消隐藏
-                self.maskView.horizontalLabel.hidden = NO;
+                self.horizontalLabel.hidden = NO;
                 // 模拟点击
-                [self tapAction];
+                //[self tapAction];
                 // 给sumTime初值
                 CMTime time = self.player.currentTime;
                 self.sumTime = time.value/time.timescale;
@@ -427,7 +440,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         
                         // 隐藏视图
-                        self.maskView.horizontalLabel.hidden = YES;
+                        self.horizontalLabel.hidden = YES;
                     });
                     
                     //转换成CMTime才能给player来控制播放进度
@@ -499,7 +512,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 总时间
     NSString *durationTime = [self durationStringWithTime:(int)totalMovieDuration];
     // 给label赋值
-    self.maskView.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, nowTime, durationTime];
+    self.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, nowTime, durationTime];
     
     
 }

@@ -24,6 +24,7 @@
 		CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */; };
 		CC725C331C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */; };
+		CC8AC9B91C8AD970006B9A1B /* ZFPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
 		CC725C301C894D2D00C3EAF2 /* LocalMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalMoviePlayerViewController.h; sourceTree = "<group>"; };
 		CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalMoviePlayerViewController.m; sourceTree = "<group>"; };
+		CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 			children = (
 				CC725C231C894D1D00C3EAF2 /* ZFPlayerView.h */,
 				CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */,
+				CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */,
 				CC725C201C894D1D00C3EAF2 /* ZFPlayerMaskView.h */,
 				CC725C211C894D1D00C3EAF2 /* ZFPlayerMaskView.m */,
 				CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */,
@@ -336,6 +339,7 @@
 				49F272801BF2330700FCC767 /* Info.plist in Resources */,
 				CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */,
 				CC725C261C894D1D00C3EAF2 /* ZFPlayerMaskView.xib in Resources */,
+				CC8AC9B91C8AD970006B9A1B /* ZFPlayerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

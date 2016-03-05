@@ -34,10 +34,6 @@
     [self.videoSlider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
     [self.videoSlider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
     
-    // 设置快进快退label
-    self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
-    self.horizontalLabel.hidden = YES; //先隐藏
-    
     //初始化渐变层
     self.gradientLayer = [CAGradientLayer layer];
     [self.bottomImageView.layer addSublayer:self.gradientLayer];
