@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A2301" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tUM-Ta-yQP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tUM-Ta-yQP">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -18,13 +18,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sPp-E4-38P">
-                                <rect key="frame" x="143" y="147" width="90" height="30"/>
+                                <rect key="frame" x="143" y="103" width="90" height="30"/>
+                                <animations/>
                                 <state key="normal" title="播放网络视频"/>
                                 <connections>
-                                    <segue destination="7NW-yb-BSh" kind="presentation" id="Ghy-rA-aHW"/>
+                                    <segue destination="7NW-yb-BSh" kind="show" id="Ghy-rA-aHW"/>
                                 </connections>
                             </button>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="sPp-E4-38P" firstAttribute="centerX" secondItem="UHn-hc-d1Z" secondAttribute="centerX" id="pZ2-lY-L9n"/>
@@ -40,7 +42,7 @@
         <!--Local Movie Player View Controller-->
         <scene sceneID="w6M-Wm-SpO">
             <objects>
-                <viewController id="Dif-MC-umB" customClass="LocalMoviePlayerViewController" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="Dif-MC-umB" customClass="LocalMoviePlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5Zz-RQ-Ug6"/>
                         <viewControllerLayoutGuide type="bottom" id="Rk7-0X-Sdh"/>
@@ -51,12 +53,14 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJd-vt-Xpq" customClass="ZFPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
+                                <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="CJd-vt-Xpq" secondAttribute="height" multiplier="16:9" id="lta-DY-OHb"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="CJd-vt-Xpq" secondAttribute="trailing" id="KYu-uX-7oq"/>
@@ -85,13 +89,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pMx-tP-nAh">
-                                <rect key="frame" x="142" y="147" width="90" height="30"/>
+                                <rect key="frame" x="142" y="103" width="90" height="30"/>
+                                <animations/>
                                 <state key="normal" title="播放本地视频"/>
                                 <connections>
-                                    <segue destination="Dif-MC-umB" kind="presentation" id="fZL-fR-HYJ"/>
+                                    <segue destination="Dif-MC-umB" kind="show" id="fZL-fR-HYJ"/>
                                 </connections>
                             </button>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="pMx-tP-nAh" firstAttribute="top" secondItem="fw9-3d-SkH" secondAttribute="bottom" constant="83" id="27y-G1-80w"/>
@@ -107,7 +113,7 @@
         <!--Title-->
         <scene sceneID="i9V-0S-gpe">
             <objects>
-                <viewController id="7NW-yb-BSh" customClass="NetMoviePlayerViewController" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="7NW-yb-BSh" customClass="NetMoviePlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Q7p-fB-XPU"/>
                         <viewControllerLayoutGuide type="bottom" id="j2D-XK-4Xp"/>
@@ -118,12 +124,14 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3fb-2P-Z86" customClass="ZFPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
+                                <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="3fb-2P-Z86" secondAttribute="height" multiplier="16:9" id="QhP-Q1-pQX"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="3fb-2P-Z86" secondAttribute="trailing" id="8Fe-tG-E4s"/>
@@ -154,6 +162,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="f9b-Np-HgK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
@@ -168,13 +177,14 @@
         <!--Navigation Controller-->
         <scene sceneID="GNS-Uz-8Xs">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7Xx-X8-Lzw" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="7Xx-X8-Lzw" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="mostViewed" id="vRI-7k-vg1"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MpB-sS-45J">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -188,13 +198,14 @@
         <!--Navigation Controller-->
         <scene sceneID="QwU-pp-hN6">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HX3-NW-XW1" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="HX3-NW-XW1" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="downloads" id="mrV-KX-krx"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ROl-sd-bmh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

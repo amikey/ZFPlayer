@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A2301" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -12,45 +12,53 @@
             <subviews>
                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ngr-ji-6Se" userLabel="bottomView">
                     <rect key="frame" x="0.0" y="185" width="471" height="45"/>
+                    <animations/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.50369073279999999" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="gfd-xY-SbZ"/>
                     </constraints>
                 </imageView>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-mY-c8M">
-                    <rect key="frame" x="86" y="209" width="306" height="2"/>
+                    <rect key="frame" x="86" y="209" width="299" height="2"/>
+                    <animations/>
                     <color key="progressTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="trackTintColor" red="0.1176470588" green="0.31372549020000001" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="trackTintColor" red="0.15152359501031618" green="0.10325168487568838" blue="0.18619791666666652" alpha="1" colorSpace="calibratedRGB"/>
                 </progressView>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nSJ-HO-8mU">
-                    <rect key="frame" x="84" y="194" width="310" height="31"/>
+                    <rect key="frame" x="84" y="195" width="303.5" height="31"/>
+                    <animations/>
                     <color key="minimumTrackTintColor" red="0.11764705882352941" green="0.31372549019607843" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                 </slider>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yIE-vF-c8O">
-                    <rect key="frame" x="42" y="203" width="34" height="15"/>
+                    <rect key="frame" x="42" y="203" width="34" height="14.5"/>
+                    <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mh-1N-825">
-                    <rect key="frame" x="402" y="203" width="27" height="15"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mh-1N-825">
+                    <rect key="frame" x="395" y="203" width="34" height="14.5"/>
+                    <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AEI-I4-hWP">
                     <rect key="frame" x="431" y="195" width="30" height="30"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="9ec-Rc-dgl"/>
                         <constraint firstAttribute="width" constant="30" id="Dx8-uX-6UA"/>
                     </constraints>
                     <state key="normal" image="kr-video-player-fullscreen"/>
                 </button>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="foM-tS-Rga">
-                    <rect key="frame" x="217" y="96" width="37" height="37"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="foM-tS-Rga">
+                    <rect key="frame" x="226" y="105" width="20" height="20"/>
+                    <animations/>
                 </activityIndicatorView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;&gt; 00:00 / --:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fx-sI-RKN" userLabel="快进快退Label">
                     <rect key="frame" x="156" y="95" width="160" height="40"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="GFi-ke-76E"/>
                         <constraint firstAttribute="width" constant="160" id="jWJ-vw-67Q"/>
@@ -61,6 +69,7 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4u0-DP-nds">
                     <rect key="frame" x="15" y="20" width="30" height="30"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="0xN-ye-nJL"/>
                         <constraint firstAttribute="height" constant="30" id="BYX-zi-HeO"/>
@@ -69,6 +78,7 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIf-aw-BaL">
                     <rect key="frame" x="10" y="195" width="30" height="30"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="dS8-2R-0d2"/>
                         <constraint firstAttribute="width" constant="30" id="wYW-jz-Yvj"/>
@@ -76,6 +86,7 @@
                     <state key="normal" image="kr-video-player-pause"/>
                 </button>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="2Fx-sI-RKN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3as-cd-0xq"/>
@@ -91,7 +102,7 @@
                 <constraint firstItem="qIf-aw-BaL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="MWB-qG-yMB"/>
                 <constraint firstItem="4u0-DP-nds" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="P2H-eG-0L5"/>
                 <constraint firstItem="nSJ-HO-8mU" firstAttribute="leading" secondItem="yIE-vF-c8O" secondAttribute="trailing" constant="10" id="Q5d-d1-fTY"/>
-                <constraint firstItem="nSJ-HO-8mU" firstAttribute="centerY" secondItem="yIE-vF-c8O" secondAttribute="centerY" constant="-1.5" id="QFK-Tg-9TG"/>
+                <constraint firstItem="nSJ-HO-8mU" firstAttribute="centerY" secondItem="yIE-vF-c8O" secondAttribute="centerY" constant="-0.25" id="QFK-Tg-9TG"/>
                 <constraint firstAttribute="trailing" secondItem="AEI-I4-hWP" secondAttribute="trailing" constant="10" id="UMY-rd-kT8"/>
                 <constraint firstItem="yIE-vF-c8O" firstAttribute="centerY" secondItem="qIf-aw-BaL" secondAttribute="centerY" id="X08-NX-gCz"/>
                 <constraint firstItem="3mh-1N-825" firstAttribute="leading" secondItem="pHD-mY-c8M" secondAttribute="trailing" constant="10" id="YSw-1z-He4"/>

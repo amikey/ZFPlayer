@@ -31,6 +31,7 @@
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     [UIApplication sharedApplication].statusBarHidden = NO;
+    self.navigationController.navigationBarHidden = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -48,7 +49,7 @@
 
      __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock = ^{
-        [weakSelf dismissViewControllerAnimated:YES completion:^{}];
+        [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     
 }

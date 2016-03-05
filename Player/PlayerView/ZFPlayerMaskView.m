@@ -19,7 +19,7 @@
 {
     // 设置slider
     [self.videoSlider setThumbImage:[UIImage imageNamed:@"iconfont-yuanquan-2"] forState:UIControlStateNormal];
-    UIGraphicsBeginImageContextWithOptions((CGSize){ .7, .7 }, NO, 0.0f);
+    UIGraphicsBeginImageContextWithOptions((CGSize){ .7, .7 }, NO, 1.0f);
     UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     //设置slider
