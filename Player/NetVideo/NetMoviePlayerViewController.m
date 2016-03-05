@@ -11,6 +11,7 @@
 
 @interface NetMoviePlayerViewController ()<UITableViewDataSource,UITableViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet ZFPlayerView *playerView;
 
 @end
@@ -39,6 +40,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     
     self.playerView.videoURL = self.videoURL;
      __weak typeof(self) weakSelf = self;
@@ -66,6 +69,10 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"netCell"];
     return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 //#pragma mark - 横屏代码

@@ -27,11 +27,11 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="netListCell" id="GMP-fV-smq">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="netListCell" id="GMP-fV-smq">
                                         <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GMP-fV-smq" id="5zH-w5-J9b">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="点击加载网络视频" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g0f-9x-ixh">
@@ -72,6 +72,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="网络视频" id="PW6-tY-j6n"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="xPJ-vR-AzQ" id="hdz-VR-94A"/>
                     </connections>
@@ -100,7 +101,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SJq-wI-z0i">
-                                <rect key="frame" x="0.0" y="211" width="375" height="407"/>
+                                <rect key="frame" x="0.0" y="211" width="375" height="456"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="ArB-qc-OrO">
                                     <rect key="frame" x="0.0" y="72" width="375" height="44"/>
@@ -189,6 +190,7 @@
                             </mask>
                         </variation>
                     </view>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="playerView" destination="CJd-vt-Xpq" id="xOQ-Pg-sc2"/>
                         <outlet property="tableView" destination="SJq-wI-z0i" id="U70-GE-RdK"/>
@@ -225,6 +227,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="本地视频" id="ICO-w0-Zak"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R7w-8v-nBz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -347,6 +350,7 @@
                     <navigationItem key="navigationItem" id="gI0-aP-zOi"/>
                     <connections>
                         <outlet property="playerView" destination="3fb-2P-Z86" id="GDG-dv-4Ai"/>
+                        <outlet property="tableView" destination="dTE-uV-7rr" id="1Rd-ee-YEG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zn-mK-K8l" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -18,6 +18,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
     self.dataSource = @[@"http://baobab.wdjcdn.com/14562919706254.mp4",
                         @"http://baobab.wdjcdn.com/1456117847747a_x264.mp4",
                         @"http://baobab.wdjcdn.com/14525705791193.mp4",
@@ -31,9 +33,11 @@
                         @"http://baobab.wdjcdn.com/1455614108256t(2).mp4",
                         @"http://baobab.wdjcdn.com/1456317490140jiyiyuetai_x264.mp4",
                         @"http://baobab.wdjcdn.com/1455888619273255747085_x264.mp4",
-                        @"http://baobab.wdjcdn.com/1456734464766B(13).mp4"];
-   // Do any additional setup after loading the view.
+                        @"http://baobab.wdjcdn.com/1456734464766B(13).mp4",
+                        @"http://baobab.wdjcdn.com/1456653443902B.mp4",
+                        @"http://baobab.cdn.wandoujia.com/14468618701471.mp4"];
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -62,14 +66,11 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
     NetMoviePlayerViewController *movie = (NetMoviePlayerViewController *)segue.destinationViewController;
-//    NSURL *URL = [NSURL URLWithString:@"http://baobab.cdn.wandoujia.com/14468618701471.mp4"];
-//    NSURL *URL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1456653443902B.mp4"];
-    
     UITableViewCell *cell = (UITableViewCell *)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSURL *URL = [NSURL URLWithString:self.dataSource[indexPath.row]];
     movie.videoURL = URL;
 }

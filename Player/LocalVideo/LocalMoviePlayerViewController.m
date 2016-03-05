@@ -41,9 +41,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     
     self.playerView.videoURL = self.videoURL;
-
      __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock = ^{
         [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -69,6 +70,11 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"localCell"];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
