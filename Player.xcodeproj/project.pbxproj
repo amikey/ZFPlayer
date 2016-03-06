@@ -297,6 +297,7 @@
 				TargetAttributes = {
 					4947F7891BE996AC003093C8 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = XMR2WH3HMS;
 					};
 					4947F7A21BE996AC003093C8 = {
 						CreatedOnToolsVersion = 7.0;

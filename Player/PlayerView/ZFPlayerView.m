@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) PanDirection panDirection;
 /** 是否为全屏 */
 @property (nonatomic, assign) BOOL isFullScreen;
+// 是否在调节音量
+@property (nonatomic, assign) BOOL isVolume;
 
 
 @end
@@ -69,7 +71,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 -(void)layoutSubviews
 {
-    NSLog(@"layoutSubviews==%@",NSStringFromCGRect(self.bounds));
     self.playerLayer.frame = self.bounds;
 }
 
@@ -395,6 +396,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
 #pragma mark - 平移手势方法
 - (void)panDirection:(UIPanGestureRecognizer *)pan
 {
+    CGPoint locationPoint = [pan locationInView:self];
+    NSLog(@"========%@",NSStringFromCGPoint(locationPoint));
+    
     // 我们要响应水平移动和垂直移动
     // 根据上次和本次移动的位置，算出一个速率的point
     CGPoint veloctyPoint = [pan velocityInView:self];
@@ -410,8 +414,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 self.panDirection = PanDirectionHorizontalMoved;
                 // 取消隐藏
                 self.horizontalLabel.hidden = NO;
-                // 模拟点击
-                //[self tapAction];
                 // 给sumTime初值
                 CMTime time = self.player.currentTime;
                 self.sumTime = time.value/time.timescale;
@@ -420,7 +422,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
             else if (x < y){ // 垂直移动
                 self.panDirection = PanDirectionVerticalMoved;
                 // 显示音量控件
-                
+                if (locationPoint.x > self.bounds.size.width / 2) {
+                    self.isVolume = YES;
+                }else { // 显示亮度调节
+                    self.isVolume = NO;
+                }
                 // 开始滑动的时候，状态改为正在控制音量
                 
             }
@@ -447,7 +453,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
             switch (self.panDirection) {
                 case PanDirectionHorizontalMoved:{
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        
                         // 隐藏视图
                         self.horizontalLabel.hidden = YES;
                     });
@@ -459,6 +464,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
                     [_player pause];
                     
                     [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+                        //快进、快退时候把开始播放按钮改为播放状态
+                        self.maskView.startBtn.selected = YES;
+                        [self startAction:self.maskView.startBtn];
                         // ⚠️在滑动结束后，视屏要跳转
                         [_player play];
                         
@@ -471,6 +479,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 case PanDirectionVerticalMoved:{
                     // 垂直移动结束后，隐藏音量控件
                     // 且，把状态改为不再控制音量
+                    self.isVolume = NO;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        self.horizontalLabel.hidden = YES;
+                    });
                     break;
                 }
                 default:
@@ -486,10 +498,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
 #pragma mark - pan垂直移动的方法
 - (void)verticalMoved:(CGFloat)value
 {
-    // 更改系统的音量
-    self.volumeViewSlider.value -= value / 10000; // 越小幅度越小
-    //亮度
-    //[UIScreen mainScreen].brightness = 0.5;
+    if (self.isVolume) {
+        // 更改系统的音量
+        self.volumeViewSlider.value -= value / 10000; // 越小幅度越小
+    }else {
+        //亮度
+        [UIScreen mainScreen].brightness -= value / 10000;
+        NSString *brightness = [NSString stringWithFormat:@"亮度%.0f%%",[UIScreen mainScreen].brightness/1.0*100];
+        self.horizontalLabel.hidden = NO;
+        self.horizontalLabel.text = brightness;
+    }
 }
 
 #pragma mark - pan水平移动的方法
