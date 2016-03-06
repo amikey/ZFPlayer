@@ -53,6 +53,7 @@
                                   (__bridge id)[UIColor blackColor].CGColor];
     //设定颜色分割点
     self.gradientLayer.locations = @[@(0.0f) ,@(1.0f)];
+    
 }
 
 -(void)layoutSubviews
@@ -65,6 +66,5 @@
 {
     return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerMaskView" owner:nil options:nil].lastObject;
 }
-
 
 @end

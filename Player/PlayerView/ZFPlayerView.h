@@ -20,4 +20,5 @@ typedef void(^GoBackBlock)(void);
  *  取消延时
  */
 - (void)cancelAutoFadeOutControlBar;
+
 @end
