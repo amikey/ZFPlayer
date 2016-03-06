@@ -7,7 +7,7 @@
 //
 
 #import "SecondViewController.h"
-#import "NetMoviePlayerViewController.h"
+#import "MoviePlayerViewController.h"
 
 @interface SecondViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -67,7 +67,7 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
-    NetMoviePlayerViewController *movie = (NetMoviePlayerViewController *)segue.destinationViewController;
+    MoviePlayerViewController *movie = (MoviePlayerViewController *)segue.destinationViewController;
     UITableViewCell *cell = (UITableViewCell *)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

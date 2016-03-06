@@ -47,7 +47,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="7NW-yb-BSh" kind="show" id="rnh-7P-NJn"/>
+                                            <segue destination="Dif-MC-umB" kind="show" id="8B8-xC-tWR"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -81,10 +81,10 @@
             </objects>
             <point key="canvasLocation" x="819.5" y="1137.5"/>
         </scene>
-        <!--Local Movie Player View Controller-->
+        <!--Movie Player View Controller-->
         <scene sceneID="w6M-Wm-SpO">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="Dif-MC-umB" customClass="LocalMoviePlayerViewController" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="Dif-MC-umB" customClass="MoviePlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5Zz-RQ-Ug6"/>
                         <viewControllerLayoutGuide type="bottom" id="Rk7-0X-Sdh"/>
@@ -116,8 +116,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是本地视频" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eL8-Td-GUb">
-                                                    <rect key="frame" x="18" y="13" width="90" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是内容" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eL8-Td-GUb">
+                                                    <rect key="frame" x="18" y="13" width="60" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -198,7 +198,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Htv-Kw-f6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1344.75" y="363.375"/>
+            <point key="canvasLocation" x="1382.5" y="732.5"/>
         </scene>
         <!--本地视频-->
         <scene sceneID="Por-U2-cMz">
@@ -233,134 +233,10 @@
             </objects>
             <point key="canvasLocation" x="819.5" y="363.5"/>
         </scene>
-        <!--Net Movie Player View Controller-->
-        <scene sceneID="i9V-0S-gpe">
-            <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="7NW-yb-BSh" customClass="NetMoviePlayerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Q7p-fB-XPU"/>
-                        <viewControllerLayoutGuide type="bottom" id="j2D-XK-4Xp"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="n4y-Qh-1rE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3fb-2P-Z86" customClass="ZFPlayerView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="3fb-2P-Z86" secondAttribute="height" multiplier="16:9" id="QhP-Q1-pQX"/>
-                                </constraints>
-                            </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dTE-uV-7rr">
-                                <rect key="frame" x="0.0" y="211" width="375" height="456"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="0LC-gH-vV8">
-                                    <rect key="frame" x="0.0" y="72" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </view>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="netCell" id="CNx-1m-69z">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CNx-1m-69z" id="7GQ-AL-dxR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是网络视频" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tpi-b5-eD3">
-                                                    <rect key="frame" x="18" y="13" width="90" height="18"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Tpi-b5-eD3" firstAttribute="centerY" secondItem="7GQ-AL-dxR" secondAttribute="centerY" id="SHG-MF-uKU"/>
-                                                <constraint firstItem="Tpi-b5-eD3" firstAttribute="leading" secondItem="7GQ-AL-dxR" secondAttribute="leadingMargin" constant="10" id="tJC-w8-L2b"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="7NW-yb-BSh" id="EfT-VC-JJ5"/>
-                                    <outlet property="delegate" destination="7NW-yb-BSh" id="jyL-sk-UK5"/>
-                                </connections>
-                            </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sef-g9-4oK">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="v38-pr-eaS"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="v38-pr-eaS"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="v38-pr-eaS"/>
-                                    </mask>
-                                </variation>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="3fb-2P-Z86" secondAttribute="trailing" id="8Fe-tG-E4s"/>
-                            <constraint firstItem="sef-g9-4oK" firstAttribute="top" secondItem="n4y-Qh-1rE" secondAttribute="top" id="9dZ-1N-uI1"/>
-                            <constraint firstItem="3fb-2P-Z86" firstAttribute="leading" secondItem="n4y-Qh-1rE" secondAttribute="leading" id="9kD-m8-XA5"/>
-                            <constraint firstAttribute="bottom" secondItem="dTE-uV-7rr" secondAttribute="bottom" id="WJU-IT-laI"/>
-                            <constraint firstItem="dTE-uV-7rr" firstAttribute="top" secondItem="3fb-2P-Z86" secondAttribute="bottom" id="Xiu-nL-r9d"/>
-                            <constraint firstAttribute="trailing" secondItem="sef-g9-4oK" secondAttribute="trailing" id="bMc-4F-TE5"/>
-                            <constraint firstItem="3fb-2P-Z86" firstAttribute="top" secondItem="n4y-Qh-1rE" secondAttribute="top" id="bVo-AA-QgJ">
-                                <variation key="heightClass=regular-widthClass=compact" constant="20"/>
-                            </constraint>
-                            <constraint firstAttribute="trailing" secondItem="dTE-uV-7rr" secondAttribute="trailing" id="eVf-dM-CLH"/>
-                            <constraint firstItem="sef-g9-4oK" firstAttribute="leading" secondItem="n4y-Qh-1rE" secondAttribute="leading" id="lZD-aP-w8d"/>
-                            <constraint firstItem="j2D-XK-4Xp" firstAttribute="top" secondItem="dTE-uV-7rr" secondAttribute="bottom" id="s7u-Se-4Mc"/>
-                            <constraint firstItem="dTE-uV-7rr" firstAttribute="leading" secondItem="n4y-Qh-1rE" secondAttribute="leading" id="v1h-Pc-zRY"/>
-                            <constraint firstAttribute="bottom" secondItem="dTE-uV-7rr" secondAttribute="bottom" id="vAP-Mm-Mfg"/>
-                            <constraint firstItem="dTE-uV-7rr" firstAttribute="top" secondItem="3fb-2P-Z86" secondAttribute="bottom" id="yks-uP-vXG"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="sef-g9-4oK"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="9dZ-1N-uI1"/>
-                                <exclude reference="bMc-4F-TE5"/>
-                                <exclude reference="lZD-aP-w8d"/>
-                                <exclude reference="WJU-IT-laI"/>
-                                <exclude reference="Xiu-nL-r9d"/>
-                                <exclude reference="s7u-Se-4Mc"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="sef-g9-4oK"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="9dZ-1N-uI1"/>
-                                <include reference="bMc-4F-TE5"/>
-                                <include reference="lZD-aP-w8d"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <navigationItem key="navigationItem" id="gI0-aP-zOi"/>
-                    <connections>
-                        <outlet property="playerView" destination="3fb-2P-Z86" id="GDG-dv-4Ai"/>
-                        <outlet property="tableView" destination="dTE-uV-7rr" id="1Rd-ee-YEG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0zn-mK-K8l" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1344.75" y="1137.375"/>
-        </scene>
-        <!--Tab Bar Controller-->
+        <!--Main View Controller-->
         <scene sceneID="B5I-ua-aVA">
             <objects>
-                <tabBarController id="tUM-Ta-yQP" sceneMemberID="viewController">
+                <tabBarController id="tUM-Ta-yQP" customClass="MainViewController" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="f9b-Np-HgK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -417,4 +293,7 @@
             <point key="canvasLocation" x="305.5" y="363.5"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="8B8-xC-tWR"/>
+    </inferredMetricsTieBreakers>
 </document>

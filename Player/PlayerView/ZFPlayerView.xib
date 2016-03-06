@@ -42,7 +42,6 @@
                     <variation key="heightClass=regular-widthClass=compact" constant="10"/>
                 </constraint>
             </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="activity" destination="RMN-tc-wFo" id="kLZ-nk-O09"/>

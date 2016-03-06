@@ -11,7 +11,6 @@
 typedef void(^GoBackBlock)(void);
 
 @interface ZFPlayerView : UIView
-
 /** 视频URL */
 @property (nonatomic, strong) NSURL *videoURL;
 /** 返回按钮Block */

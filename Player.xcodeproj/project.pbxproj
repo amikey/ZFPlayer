@@ -15,15 +15,15 @@
 		4947F7B31BE996AC003093C8 /* PlayerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4947F7B21BE996AC003093C8 /* PlayerUITests.m */; };
 		49CD65D11BF0C4EC0060DB9E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */; };
 		49F272801BF2330700FCC767 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F2727F1BF2330700FCC767 /* Info.plist */; };
+		CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC113C0D1C8C4E5D0044FEEB /* MainViewController.m */; };
 		CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC48ECD61C8863DB009CF0D0 /* Main.storyboard */; };
 		CC725C181C893F8400C3EAF2 /* 150511_JiveBike.mov in Resources */ = {isa = PBXBuildFile; fileRef = CC725C171C893F8400C3EAF2 /* 150511_JiveBike.mov */; };
 		CC725C251C894D1D00C3EAF2 /* ZFPlayerMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C211C894D1D00C3EAF2 /* ZFPlayerMaskView.m */; };
 		CC725C261C894D1D00C3EAF2 /* ZFPlayerMaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */; };
 		CC725C271C894D1D00C3EAF2 /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */; };
-		CC725C2C1C894D2500C3EAF2 /* NetMoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C291C894D2500C3EAF2 /* NetMoviePlayerViewController.m */; };
 		CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */; };
-		CC725C331C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */; };
+		CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */; };
 		CC8AC9B91C8AD970006B9A1B /* ZFPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
@@ -63,6 +63,8 @@
 		4947F7B41BE996AC003093C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		49F2727F1BF2330700FCC767 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC113C0C1C8C4E5D0044FEEB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		CC113C0D1C8C4E5D0044FEEB /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		CC48ECD61C8863DB009CF0D0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CC725C171C893F8400C3EAF2 /* 150511_JiveBike.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = 150511_JiveBike.mov; sourceTree = "<group>"; };
 		CC725C201C894D1D00C3EAF2 /* ZFPlayerMaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerMaskView.h; sourceTree = "<group>"; };
@@ -70,14 +72,12 @@
 		CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerMaskView.xib; sourceTree = "<group>"; };
 		CC725C231C894D1D00C3EAF2 /* ZFPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerView.h; sourceTree = "<group>"; };
 		CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerView.m; sourceTree = "<group>"; };
-		CC725C281C894D2500C3EAF2 /* NetMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetMoviePlayerViewController.h; sourceTree = "<group>"; };
-		CC725C291C894D2500C3EAF2 /* NetMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetMoviePlayerViewController.m; sourceTree = "<group>"; };
 		CC725C2A1C894D2500C3EAF2 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		CC725C2E1C894D2D00C3EAF2 /* FirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		CC725C301C894D2D00C3EAF2 /* LocalMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalMoviePlayerViewController.h; sourceTree = "<group>"; };
-		CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalMoviePlayerViewController.m; sourceTree = "<group>"; };
+		CC725C301C894D2D00C3EAF2 /* MoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePlayerViewController.h; sourceTree = "<group>"; };
+		CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
 		CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +139,8 @@
 				CC725C1E1C894C8100C3EAF2 /* NetVideo */,
 				4947F7901BE996AC003093C8 /* AppDelegate.h */,
 				4947F7911BE996AC003093C8 /* AppDelegate.m */,
+				CC113C0C1C8C4E5D0044FEEB /* MainViewController.h */,
+				CC113C0D1C8C4E5D0044FEEB /* MainViewController.m */,
 				CC48ECD61C8863DB009CF0D0 /* Main.storyboard */,
 				4947F7991BE996AC003093C8 /* Assets.xcassets */,
 				CC725C171C893F8400C3EAF2 /* 150511_JiveBike.mov */,
@@ -197,8 +199,8 @@
 			children = (
 				CC725C2E1C894D2D00C3EAF2 /* FirstViewController.h */,
 				CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */,
-				CC725C301C894D2D00C3EAF2 /* LocalMoviePlayerViewController.h */,
-				CC725C311C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m */,
+				CC725C301C894D2D00C3EAF2 /* MoviePlayerViewController.h */,
+				CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */,
 			);
 			path = LocalVideo;
 			sourceTree = "<group>";
@@ -208,8 +210,6 @@
 			children = (
 				CC725C2A1C894D2500C3EAF2 /* SecondViewController.h */,
 				CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */,
-				CC725C281C894D2500C3EAF2 /* NetMoviePlayerViewController.h */,
-				CC725C291C894D2500C3EAF2 /* NetMoviePlayerViewController.m */,
 			);
 			path = NetVideo;
 			sourceTree = "<group>";
@@ -415,10 +415,10 @@
 			files = (
 				CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
-				CC725C331C894D2D00C3EAF2 /* LocalMoviePlayerViewController.m in Sources */,
+				CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */,
+				CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */,
 				CC725C271C894D1D00C3EAF2 /* ZFPlayerView.m in Sources */,
-				CC725C2C1C894D2500C3EAF2 /* NetMoviePlayerViewController.m in Sources */,
 				4947F78F1BE996AC003093C8 /* main.m in Sources */,
 				CC725C251C894D1D00C3EAF2 /* ZFPlayerMaskView.m in Sources */,
 			);

@@ -2,21 +2,23 @@
 //  MoviePlayerViewController.m
 //  Player
 //
-//  Created by 任子丰 on 15/11/7.
-//  Copyright © 2015年 任子丰. All rights reserved.
+//  Created by 任子丰 on 16/3/3.
+//  Copyright © 2016年 任子丰. All rights reserved.
 //
 
-#import "NetMoviePlayerViewController.h"
+#import "MoviePlayerViewController.h"
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import "ZFPlayerView.h"
 
-@interface NetMoviePlayerViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface MoviePlayerViewController ()<UITableViewDataSource,UITableViewDelegate>
 
+@property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) IBOutlet ZFPlayerView *playerView;
 
 @end
 
-@implementation NetMoviePlayerViewController
+@implementation MoviePlayerViewController
 
 -(void)dealloc
 {
@@ -27,8 +29,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -39,7 +41,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     
@@ -48,7 +49,7 @@
     self.playerView.goBackBlock = ^{
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
-
+    
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -67,27 +68,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"netCell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"localCell"];
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-//#pragma mark - 横屏代码
-//- (BOOL)shouldAutorotate{
-//    return YES;
-//} //NS_AVAILABLE_IOS(6_0);当前viewcontroller是否支持转屏
-//
-//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-//    
-//    return UIInterfaceOrientationMaskLandscape;
-//} //当前viewcontroller支持哪些转屏方向
-//
-//-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-//    return UIInterfaceOrientationLandscapeRight;
-//}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 /*
 #pragma mark - Navigation

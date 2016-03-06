@@ -7,7 +7,7 @@
 //
 
 #import "FirstViewController.h"
-#import "LocalMoviePlayerViewController.h"
+#import "MoviePlayerViewController.h"
 
 @interface FirstViewController ()
 
@@ -31,7 +31,7 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
-    LocalMoviePlayerViewController *movie = (LocalMoviePlayerViewController *)segue.destinationViewController;
+    MoviePlayerViewController *movie = (MoviePlayerViewController *)segue.destinationViewController;
     NSURL *videoURL = [[NSBundle mainBundle] URLForResource:@"150511_JiveBike" withExtension:@"mov"];
     movie.videoURL = videoURL;
 }
