@@ -6,5 +6,6 @@
 target 'Player' do
 pod 'Masonry'
 pod 'MSWeakTimer'
+pod 'XXNibBridge'
 end
 

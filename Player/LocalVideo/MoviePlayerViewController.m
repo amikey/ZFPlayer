@@ -1,28 +1,28 @@
 //
-//  VideoPlayViewController.m
+//  MoviePlayerViewController.m
 //  Player
 //
 //  Created by 任子丰 on 16/3/3.
 //  Copyright © 2016年 任子丰. All rights reserved.
 //
 
-#import "LocalMoviePlayerViewController.h"
+#import "MoviePlayerViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFPlayerView.h"
 
-@interface LocalMoviePlayerViewController ()
+@interface MoviePlayerViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
-@implementation LocalMoviePlayerViewController
+@implementation MoviePlayerViewController
 
 -(void)dealloc
 {
     NSLog(@"%@释放了",self.class);
-    self.playerView.shouldExecuteDispatchBlock = NO;
     [self.playerView cancelAutoFadeOutControlBar];
 }
 
@@ -30,31 +30,51 @@
 {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    [UIApplication sharedApplication].statusBarHidden = NO;
+    self.navigationController.navigationBarHidden = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationPortrait] forKey:@"orientation"];
     [UIApplication sharedApplication].statusBarHidden = NO;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     
-    self.view.backgroundColor = [UIColor whiteColor];
-
     self.playerView.videoURL = self.videoURL;
-
      __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock = ^{
-        [weakSelf dismissViewControllerAnimated:YES completion:^{}];
+        [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     
 }
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    NSLog(@"====%zd  %@",fromInterfaceOrientation,self.playerView);
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        self.view.backgroundColor  = [UIColor whiteColor];
+    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        self.view.backgroundColor = [UIColor blackColor];
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 20;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"localCell"];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
