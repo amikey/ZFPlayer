@@ -50,6 +50,12 @@
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-mY-c8M">
                     <rect key="frame" x="86" y="210" width="299" height="2"/>
                 </progressView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1aH-Q2-nW0">
+                    <rect key="frame" x="0.0" y="0.0" width="471" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="lQg-1d-jEY"/>
+                    </constraints>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vvY-b6-dD6">
                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                     <constraints>
@@ -91,8 +97,11 @@
                 <constraint firstItem="3mh-1N-825" firstAttribute="centerY" secondItem="AEI-I4-hWP" secondAttribute="centerY" id="aYL-9K-0C9"/>
                 <constraint firstAttribute="bottom" secondItem="ngr-ji-6Se" secondAttribute="bottom" id="cj6-72-ItE"/>
                 <constraint firstAttribute="trailing" secondItem="ngr-ji-6Se" secondAttribute="trailing" id="h3R-cT-11M"/>
+                <constraint firstItem="1aH-Q2-nW0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hMF-Cd-b6b"/>
                 <constraint firstItem="3mh-1N-825" firstAttribute="leading" secondItem="nSJ-HO-8mU" secondAttribute="trailing" constant="10" id="ho5-9l-ZSW"/>
+                <constraint firstItem="1aH-Q2-nW0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nRs-4Z-nXG"/>
                 <constraint firstItem="ngr-ji-6Se" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="s0j-Ao-eLH"/>
+                <constraint firstAttribute="trailing" secondItem="1aH-Q2-nW0" secondAttribute="trailing" id="xt3-zD-UVX"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
@@ -120,6 +129,7 @@
                 <outlet property="lockBtn" destination="vvY-b6-dD6" id="mSq-K2-3hG"/>
                 <outlet property="progressView" destination="pHD-mY-c8M" id="0Nn-4j-FPI"/>
                 <outlet property="startBtn" destination="qIf-aw-BaL" id="Lzy-OO-PP9"/>
+                <outlet property="topImageView" destination="1aH-Q2-nW0" id="Mj7-Py-gKG"/>
                 <outlet property="totalTimeLabel" destination="3mh-1N-825" id="68R-qh-J84"/>
                 <outlet property="videoSlider" destination="nSJ-HO-8mU" id="Rlm-7v-eCj"/>
             </connections>

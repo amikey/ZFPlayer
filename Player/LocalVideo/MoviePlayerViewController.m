@@ -44,12 +44,23 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     
+    //if use Masonry,Please open this annotation
+    /*
+     self.playerView = [ZFPlayerView setupZFPlayer];
+     [self.view addSubview:self.playerView];
+     [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.right.equalTo(self.view);
+        make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+     }];
+    */
+    
     self.playerView.videoURL = self.videoURL;
      __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock = ^{
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     
+
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

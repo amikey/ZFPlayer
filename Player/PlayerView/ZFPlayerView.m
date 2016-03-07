@@ -57,6 +57,12 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 @implementation ZFPlayerView
 
+/** 类方法创建，改方法适用于代码创建View */
++ (instancetype)setupZFPlayer
+{
+    return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerView" owner:nil options:nil].lastObject;
+}
+
 -(void)awakeFromNib
 {
     self.backgroundColor = [UIColor blackColor];

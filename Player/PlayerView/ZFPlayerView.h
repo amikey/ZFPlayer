@@ -20,4 +20,7 @@ typedef void(^GoBackBlock)(void);
  */
 - (void)cancelAutoFadeOutControlBar;
 
+/** 类方法创建，改方法适用于代码创建View */
++ (instancetype)setupZFPlayer;
+
 @end

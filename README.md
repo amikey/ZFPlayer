@@ -6,6 +6,36 @@
 * 右侧1/2位置上下滑动调节音量（模拟器调不了音量，请在真机调试）
 * 左右滑动调节播放进度
 
+### 用法（支持IB和代码）
+##### IB用法
+直接拖UIView到IB上，宽高比为16：9，代码部分只需要实现
+
+```objc
+self.playerView.videoURL = self.videoURL;
+// 返回按钮事件
+__weak typeof(self) weakSelf = self;
+self.playerView.goBackBlock = ^{
+	[weakSelf.navigationController popViewControllerAnimated:YES];
+};
+
+```
+
+##### 代码实现（Masonry）用法
+
+```objc
+self.playerView = [ZFPlayerView setupZFPlayer];
+[self.view addSubview:self.playerView];
+[self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+ 	make.left.top.right.equalTo(self.view);
+	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+}];
+self.playerView.videoURL = self.videoURL;
+// 返回按钮事件
+__weak typeof(self) weakSelf = self;
+self.playerView.goBackBlock = ^{
+	[weakSelf.navigationController popViewControllerAnimated:YES];
+};
+```
 
 ### 图片效果演示
 ![图片效果演示](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)
