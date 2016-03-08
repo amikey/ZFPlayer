@@ -6,6 +6,13 @@
 * 右侧1/2位置上下滑动调节音量（模拟器调不了音量，请在真机调试）
 * 左右滑动调节播放进度
 
+使用需要安装cocopods
+
+	$ cd ZFPlayer
+	$ pod install
+	
+Open the "Player.xcworkspace"
+
 ### 用法（支持IB和代码）
 ##### IB用法
 直接拖UIView到IB上，宽高比为16：9，代码部分只需要实现
@@ -48,6 +55,5 @@ self.playerView.goBackBlock = ^{
 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
 
 # 期待
-- 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我
+- 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我,或者微博联系我：[@微博](https://weibo.com/zifeng1300)
 - 如果觉得好用请Star!
-- 谢谢!
