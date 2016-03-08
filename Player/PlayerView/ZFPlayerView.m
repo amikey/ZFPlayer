@@ -129,7 +129,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 添加手势
     [self createGesture];
     //获取系统音量
-    [self getVolume];
+    [self configureVolume];
     
     [self.activity startAnimating];
 
@@ -160,7 +160,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 }
 
 //获取系统音量
-- (void)getVolume
+- (void)configureVolume
 {
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
     _volumeViewSlider = nil;
