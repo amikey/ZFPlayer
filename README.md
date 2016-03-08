@@ -55,5 +55,5 @@ self.playerView.goBackBlock = ^{
 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
 
 # 期待
-- 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我,或者微博联系我：[@微博](weibo.com/zifeng1300)
+- 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我,或者微博联系我：[@微博](https://weibo.com/zifeng1300)
 - 如果觉得好用请Star!
