@@ -51,8 +51,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) BOOL isVolume;
 /** 是否显示maskView*/
 @property (nonatomic, assign) BOOL isMaskShowing;
-/** 记录设备现在的状态*/
-@property (nonatomic, assign) UIInterfaceOrientation currentOrientation;
 @end
 
 @implementation ZFPlayerView
@@ -641,7 +639,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    self.currentOrientation = orientation;
     // arc下
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
         SEL selector = NSSelectorFromString(@"setOrientation:");
