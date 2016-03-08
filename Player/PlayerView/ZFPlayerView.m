@@ -80,6 +80,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
 }
 
