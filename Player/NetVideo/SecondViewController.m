@@ -18,8 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
     self.dataSource = @[@"http://baobab.wdjcdn.com/14562919706254.mp4",
                         @"http://baobab.wdjcdn.com/1456117847747a_x264.mp4",
                         @"http://baobab.wdjcdn.com/14525705791193.mp4",

@@ -41,8 +41,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     
     //if use Masonry,Please open this annotation
     /*
