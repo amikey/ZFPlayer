@@ -2,8 +2,8 @@
 //  PlayerUITests.m
 //  PlayerUITests
 //
-//  Created by dllo on 15/11/4.
-//  Copyright © 2015年 zhaoqingwen. All rights reserved.
+//  Created by 任子丰 on 15/11/4.
+//  Copyright © 2015年 任子丰. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

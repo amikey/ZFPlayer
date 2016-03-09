@@ -559,7 +559,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "181025ce-780f-40d8-a09d-9c9daa189f9a";
 			};
 			name = Debug;
 		};
@@ -575,7 +575,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "181025ce-780f-40d8-a09d-9c9daa189f9a";
 			};
 			name = Release;
 		};
