@@ -22,23 +22,16 @@
 
 @implementation ZFPlayerMaskView
 
--(void)dealloc
+- (void)dealloc
 {
-    NSLog(@"%@释放了",self.class);
+    //NSLog(@"%@释放了",self.class);
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
+    [self insertSubview:self.progressView belowSubview:self.videoSlider];
     // 设置slider
     [self.videoSlider setThumbImage:[UIImage imageNamed:@"slider"] forState:UIControlStateNormal];
-//    UIGraphicsBeginImageContextWithOptions((CGSize){ 1, 1 }, NO, 1.0f);
-//    UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    //设置slider
-//    [self.videoSlider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
-//    [self.videoSlider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
-    
-    [self insertSubview:self.progressView belowSubview:self.videoSlider];
     self.videoSlider.minimumTrackTintColor = [UIColor whiteColor];
     self.videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.3];
     
@@ -50,7 +43,7 @@
     
 }
 
--(void)layoutSubviews
+- (void)layoutSubviews
 {
     [super layoutSubviews];
     self.bottomGradientLayer.frame = self.bottomImageView.bounds;

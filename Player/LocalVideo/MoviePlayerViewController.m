@@ -22,7 +22,7 @@
 
 -(void)dealloc
 {
-    NSLog(@"%@释放了",self.class);
+    //NSLog(@"%@释放了",self.class);
     [self.playerView cancelAutoFadeOutControlBar];
 }
 

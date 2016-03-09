@@ -9,14 +9,16 @@
 #import "ZFPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "ZFPlayerMaskView.h"
 #import <Masonry/Masonry.h>
 #import <XXNibBridge/XXNibBridge.h>
+#import "ZFPlayerMaskView.h"
+
+static const CGFloat ZFPlayerAnimationTimeInterval = 7.0f;
 
 // 枚举值，包含水平移动方向和垂直移动方向
 typedef NS_ENUM(NSInteger, PanDirection){
-    PanDirectionHorizontalMoved,
-    PanDirectionVerticalMoved
+    PanDirectionHorizontalMoved, //横向移动
+    PanDirectionVerticalMoved    //纵向移动
 };
 
 @interface ZFPlayerView () <XXNibBridge>
@@ -45,37 +47,38 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) PanDirection panDirection;
 /** 是否为全屏 */
 @property (nonatomic, assign) BOOL isFullScreen;
+/** 是否锁定屏幕方向 */
 @property (nonatomic, assign) BOOL isLocked;
 /** 是否在调节音量*/
 @property (nonatomic, assign) BOOL isVolume;
 /** 是否显示maskView*/
 @property (nonatomic, assign) BOOL isMaskShowing;
+
 @end
 
 @implementation ZFPlayerView
 
-/** 类方法创建，改方法适用于代码创建View */
+/** 类方法创建，该方法适用于代码创建View */
 + (instancetype)setupZFPlayer
 {
     return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerView" owner:nil options:nil].lastObject;
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
     self.backgroundColor = [UIColor blackColor];
     // 设置快进快退label
     self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
     self.horizontalLabel.hidden = YES; //先隐藏
-    //每次初始化都解锁屏幕锁定
+    // 每次初始化都解锁屏幕锁定
     [self unLockTheScreen];
 }
 
 - (void)dealloc
 {
-    NSLog(@"%@释放了",self.class);
+    //NSLog(@"%@释放了",self.class);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
-    [self.timer invalidate];
 }
 
 - (void)layoutSubviews
@@ -97,7 +100,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     }
     [self.layer insertSublayer:self.playerLayer atIndex:0];
-    [_player play];
+    [self.player play];
     
     //AVPlayer播放完成通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
@@ -125,26 +128,28 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 锁定屏幕方向点击事件
     [self.maskView.lockBtn addTarget:self action:@selector(lockScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     
+    // 监听loadedTimeRanges属性
+    [self.playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];
+
+    [UIApplication sharedApplication].statusBarHidden = NO;
     
-    [self.playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];// 监听loadedTimeRanges属性
+    // 初始化显示maskView为YES
+    self.isMaskShowing = YES;
+    //延迟线程
+    [self afterHideMaskView];
+    //计时器
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(playerTimerAction) userInfo:nil repeats:YES];
+
+    // 监测设备方向
+    [self listeningRotating];
+    [self onDeviceOrientationChange];
+    
     // 添加手势
     [self createGesture];
     //获取系统音量
     [self configureVolume];
     
     [self.activity startAnimating];
-
-    [UIApplication sharedApplication].statusBarHidden = NO;
-    
-    self.isMaskShowing = YES;
-    //延迟线程
-    [self afterHideMaskView];
-    //计时器
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(stack) userInfo:nil repeats:YES];
-
-    // 监测设备方向
-    [self listeningRotating];
-    [self onDeviceOrientationChange];
     
 }
 
@@ -168,7 +173,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         }
     }
     
-    //使用这个category的应用不会随着手机静音键打开而静音，可在在手机静音下播放声音
+    // 使用这个category的应用不会随着手机静音键打开而静音，可在手机静音下播放声音
     NSError *setCategoryError = nil;
     BOOL success = [[AVAudioSession sharedInstance]
                     setCategory: AVAudioSessionCategoryPlayback
@@ -185,7 +190,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         return;
     }
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideMaskView) object:nil];
-    [self performSelector:@selector(hideMaskView) withObject:nil afterDelay:7.0f];
+    [self performSelector:@selector(hideMaskView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
 
 }
 - (void)cancelAutoFadeOutControlBar
@@ -238,7 +243,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 #pragma mark - 计时器事件
 
-- (void)stack
+- (void)playerTimerAction
 {
     if (_playerItem.duration.timescale != 0) {
         self.maskView.videoSlider.maximumValue = 1;//音乐总共时长
@@ -300,27 +305,26 @@ typedef NS_ENUM(NSInteger, PanDirection){
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     switch (interfaceOrientation) {
         case UIInterfaceOrientationPortraitUpsideDown:{
-            NSLog(@"第3个旋转方向---电池栏在下");
+            //NSLog(@"第3个旋转方向---电池栏在下");
             [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-fullscreen"] forState:UIControlStateNormal];
             self.isFullScreen = NO;
         }
             break;
         case UIInterfaceOrientationPortrait:{
-            NSLog(@"第0个旋转方向---电池栏在上");
+            //NSLog(@"第0个旋转方向---电池栏在上");
             [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-fullscreen"] forState:UIControlStateNormal];
             self.isFullScreen = NO;
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            NSLog(@"第2个旋转方向---电池栏在右");
+            //NSLog(@"第2个旋转方向---电池栏在右");
             [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
             self.isFullScreen = YES;
             
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            
-            NSLog(@"第1个旋转方向---电池栏在左");
+            //NSLog(@"第1个旋转方向---电池栏在左");
             [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
             self.isFullScreen = YES;
         }
@@ -431,22 +435,22 @@ typedef NS_ENUM(NSInteger, PanDirection){
     switch (interfaceOrientation) {
 
         case UIInterfaceOrientationPortraitUpsideDown:{
-            NSLog(@"fullScreenAction第3个旋转方向---电池栏在下");
+            //NSLog(@"fullScreenAction第3个旋转方向---电池栏在下");
             [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
             break;
         case UIInterfaceOrientationPortrait:{
-            NSLog(@"fullScreenAction第0个旋转方向---电池栏在上");
+            //NSLog(@"fullScreenAction第0个旋转方向---电池栏在上");
             [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            NSLog(@"fullScreenAction第2个旋转方向---电池栏在右");
+            //NSLog(@"fullScreenAction第2个旋转方向---电池栏在右");
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
+            //NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
@@ -461,7 +465,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     sender.selected = !sender.selected;
     self.isLocked = sender.selected;
-
+    // 根据UserDefaults的值，在TabBarController设置哪些页面支持旋转
     NSUserDefaults *settingsData = [NSUserDefaults standardUserDefaults];
     if (sender.selected) {
         [settingsData setObject:@"1" forKey:@"lockScreen"];
@@ -485,9 +489,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)panDirection:(UIPanGestureRecognizer *)pan
 {
-    //根据在view上Pan的位置，确定是跳音量、亮度
+    //根据在view上Pan的位置，确定是调音量还是亮度
     CGPoint locationPoint = [pan locationInView:self];
-    //NSLog(@"========%@",NSStringFromCGPoint(locationPoint));
+    //NSLog(@"locationPoint %@",NSStringFromCGPoint(locationPoint));
     
     // 我们要响应水平移动和垂直移动
     // 根据上次和本次移动的位置，算出一个速率的point
@@ -496,7 +500,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 判断是垂直移动还是水平移动
     switch (pan.state) {
         case UIGestureRecognizerStateBegan:{ // 开始移动
-            NSLog(@"x:%f  y:%f",veloctyPoint.x, veloctyPoint.y);
+            //NSLog(@"x:%f  y:%f",veloctyPoint.x, veloctyPoint.y);
             // 使用绝对值来判断移动的方向
             CGFloat x = fabs(veloctyPoint.x);
             CGFloat y = fabs(veloctyPoint.y);
@@ -507,17 +511,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 // 给sumTime初值
                 CMTime time = self.player.currentTime;
                 self.sumTime = time.value/time.timescale;
-                NSLog(@"===%f",self.sumTime);
+                //NSLog(@"===%f",self.sumTime);
             }
             else if (x < y){ // 垂直移动
                 self.panDirection = PanDirectionVerticalMoved;
-                // 显示音量控件
+                // 开始滑动的时候,状态改为正在控制音量
                 if (locationPoint.x > self.bounds.size.width / 2) {
                     self.isVolume = YES;
-                }else { // 显示亮度调节
+                }else { // 状态改为显示亮度调节
                     self.isVolume = NO;
                 }
-                // 开始滑动的时候，状态改为正在控制音量
                 
             }
             break;
@@ -554,7 +557,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                         //快进、快退时候把开始播放按钮改为播放状态
                         self.maskView.startBtn.selected = YES;
                         [self startAction:self.maskView.startBtn];
-                        // ⚠️在滑动结束后，视屏要跳转
+                        // 在滑动结束后，视屏要跳转
                         [_player play];
                         
                     }];
@@ -563,8 +566,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                     break;
                 }
                 case PanDirectionVerticalMoved:{
-                    // 垂直移动结束后，隐藏音量控件
-                    // 且，把状态改为不再控制音量
+                    // 垂直移动结束后，把状态改为不再控制音量
                     self.isVolume = NO;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         self.horizontalLabel.hidden = YES;
