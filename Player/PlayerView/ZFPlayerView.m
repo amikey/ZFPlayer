@@ -291,9 +291,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
         
         self.maskView.currentTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
         self.maskView.totalTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
-    }else {
-        self.horizontalLabel.hidden = NO;
-        self.horizontalLabel.text = @"加载失败";
     }
 }
 
