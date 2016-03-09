@@ -268,7 +268,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
             // Now you will have to stop this background task after your buffer is ready to go again
             if (self.playerItem.playbackLikelyToKeepUp){
                 [self.activity stopAnimating];
-                [self.player play];
             }
         }
     }
