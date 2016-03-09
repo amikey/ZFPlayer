@@ -78,7 +78,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     //NSLog(@"%@释放了",self.class);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.playerItem removeObserver:self forKeyPath:@"status"];
     [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    [self.playerItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
+    [self.playerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
 }
 
 - (void)layoutSubviews
@@ -128,8 +131,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 锁定屏幕方向点击事件
     [self.maskView.lockBtn addTarget:self action:@selector(lockScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     
+    // 监听播放状态
+    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     // 监听loadedTimeRanges属性
     [self.playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];
+    // Will warn you when your buffer is empty
+    [self.playerItem addObserver:self forKeyPath:@"playbackBufferEmpty" options:NSKeyValueObservingOptionNew context:nil];
+    // Will warn you when your buffer is good to go again.
+    [self.playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
 
     [UIApplication sharedApplication].statusBarHidden = NO;
     
@@ -233,11 +242,35 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
-        NSTimeInterval timeInterval = [self availableDuration];// 计算缓冲进度
-        CMTime duration = self.playerItem.duration;
-        CGFloat totalDuration = CMTimeGetSeconds(duration);
-        [self.maskView.progressView setProgress:timeInterval / totalDuration animated:NO];
+    if (object == self.playerItem) {
+        if ([keyPath isEqualToString:@"status"]) {
+            if (self.player.status == AVPlayerStatusReadyToPlay) {
+                [self.activity stopAnimating];
+                // 加载完成后，再添加拖拽手势
+                // 添加平移手势，用来控制音量和快进快退
+                UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
+                [self addGestureRecognizer:pan];
+            } else if (self.player.status == AVPlayerStatusFailed){
+                [self.activity startAnimating];
+            }
+        } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
+            NSTimeInterval timeInterval = [self availableDuration];// 计算缓冲进度
+            CMTime duration = self.playerItem.duration;
+            CGFloat totalDuration = CMTimeGetSeconds(duration);
+            [self.maskView.progressView setProgress:timeInterval / totalDuration animated:NO];
+        }else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
+            // Will warn you when your buffer is empty
+            if (self.playerItem.playbackBufferEmpty) {
+                [self.activity startAnimating];
+            }
+        }else if ([keyPath isEqualToString:@"playbackLikelyToKeepUp"]) {
+            // Will warn you when your buffer is good to go again.
+            // Now you will have to stop this background task after your buffer is ready to go again
+            if (self.playerItem.playbackLikelyToKeepUp){
+                [self.activity stopAnimating];
+                [self.player play];
+            }
+        }
     }
 }
 
@@ -259,18 +292,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
         
         self.maskView.currentTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
         self.maskView.totalTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
+    }else {
+        self.horizontalLabel.hidden = NO;
+        self.horizontalLabel.text = @"加载失败";
     }
-    
-    if (_player.status == AVPlayerStatusReadyToPlay) {
-        [self.activity stopAnimating];
-        // 加载完成后，再添加拖拽手势
-        // 添加平移手势，用来控制音量和快进快退
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
-        [self addGestureRecognizer:pan];
-    } else {
-        [self.activity startAnimating];
-    }
-    
 }
 
 - (NSTimeInterval)availableDuration {

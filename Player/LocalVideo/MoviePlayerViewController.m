@@ -11,10 +11,9 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFPlayerView.h"
 
-@interface MoviePlayerViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface MoviePlayerViewController ()
 
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -68,22 +67,6 @@
     }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         self.view.backgroundColor = [UIColor blackColor];
     }
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 20;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"localCell"];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
