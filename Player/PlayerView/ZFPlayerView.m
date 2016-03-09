@@ -9,7 +9,6 @@
 #import "ZFPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import <MSWeakTimer/MSWeakTimer.h>
 #import "ZFPlayerMaskView.h"
 #import <Masonry/Masonry.h>
 #import <XXNibBridge/XXNibBridge.h>
@@ -37,7 +36,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 /** 滑杆 */
 @property (nonatomic, strong) UISlider *volumeViewSlider;
 /** 计时器 */
-@property (nonatomic, strong) MSWeakTimer *timer;
+@property (nonatomic, strong) NSTimer *timer;
 /** 蒙版View */
 @property (nonatomic, strong) ZFPlayerMaskView *maskView;
 /**  用来保存快进的总时长 */
@@ -70,6 +69,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     //每次初始化都解锁屏幕锁定
     [self unLockTheScreen];
 }
+
 - (void)dealloc
 {
     NSLog(@"%@释放了",self.class);
@@ -78,13 +78,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self.timer invalidate];
 }
 
--(void)layoutSubviews
+- (void)layoutSubviews
 {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
 }
 
--(void)setVideoURL:(NSURL *)videoURL
+- (void)setVideoURL:(NSURL *)videoURL
 {
     // 创建AVPlayer
     self.playerItem = [AVPlayerItem playerItemWithURL:videoURL];
@@ -140,12 +140,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
     //延迟线程
     [self afterHideMaskView];
     //计时器
-    self.timer =[MSWeakTimer scheduledTimerWithTimeInterval:1.0f
-                                                     target:self
-                                                   selector:@selector(stack)
-                                                   userInfo:nil
-                                                    repeats:YES
-                                              dispatchQueue:dispatch_get_main_queue()];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(stack) userInfo:nil repeats:YES];
+
     // 监测设备方向
     [self listeningRotating];
     [self onDeviceOrientationChange];
@@ -171,6 +167,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
             break;
         }
     }
+    
+    //使用这个category的应用不会随着手机静音键打开而静音，可在在手机静音下播放声音
+    NSError *setCategoryError = nil;
+    BOOL success = [[AVAudioSession sharedInstance]
+                    setCategory: AVAudioSessionCategoryPlayback
+                    error: &setCategoryError];
+    
+    if (!success) { /* handle the error in setCategoryError */ }
 }
 
 #pragma mark - ShowOrHideMaskView
@@ -404,6 +408,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         return;
     }else {
         if (!self.isFullScreen) {
+            [self.timer invalidate];
             [_player pause];
             if (self.goBackBlock) {
                 self.goBackBlock();
