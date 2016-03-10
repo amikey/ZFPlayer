@@ -67,6 +67,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL isPauseByUser;
 /** 是否播放本地文件 */
 @property (nonatomic, assign) BOOL isLocalVideo;
+/** slider上次的值 */
+@property (nonatomic, assign) CGFloat sliderLastValue;
 
 @end
 
@@ -436,6 +438,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 // slider滑动中事件
 - (void)progressSliderValueChanged:(UISlider *)slider
 {
+    NSString *style = @"";
+    CGFloat value = slider.value - self.sliderLastValue;
+    if (value > 0) {
+        style = @">>";
+    } else if (value < 0) {
+        style = @"<<";
+    }
+     self.sliderLastValue = slider.value;
     //拖动改变视频播放进度
     if (_player.status == AVPlayerStatusReadyToPlay) {
         
@@ -452,8 +462,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSInteger proMin = (NSInteger)CMTimeGetSeconds(dragedCMTime) / 60;//当前秒
         NSInteger proSec = (NSInteger)CMTimeGetSeconds(dragedCMTime) % 60;//当前分钟
         
-        NSString *style = @"";
-        
         //duration 总时长
         NSInteger durMin = (NSInteger)total / 60;//总秒
         NSInteger durSec = (NSInteger)total % 60;//总分钟
@@ -464,6 +472,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.maskView.currentTimeLabel.text = currentTime;
         self.horizontalLabel.hidden = NO;
         self.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+        
     }
 }
 
