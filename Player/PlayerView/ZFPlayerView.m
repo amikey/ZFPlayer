@@ -120,8 +120,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [self.maskView.startBtn setImage:[UIImage imageNamed:@"kr-video-player-play"] forState:UIControlStateNormal];
     }
 
-    // slider滑动事件
-    [self.maskView.videoSlider addTarget:self action:@selector(progressSlider:) forControlEvents:UIControlEventValueChanged];
+    // slider开始滑动事件
+    [self.maskView.videoSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
+    // slider滑动中事件
+    [self.maskView.videoSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    // slider结束滑动事件
+    [self.maskView.videoSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
+    
     // 播放按钮点击事件
     [self.maskView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
     // 返回按钮点击事件
@@ -145,7 +150,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 初始化显示maskView为YES
     self.isMaskShowing = YES;
     //延迟线程
-    [self afterHideMaskView];
+    [self autoFadeOutControlBar];
     //计时器
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(playerTimerAction) userInfo:nil repeats:YES];
 
@@ -193,7 +198,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 #pragma mark - ShowOrHideMaskView
 
-- (void)afterHideMaskView
+- (void)autoFadeOutControlBar
 {
     if (!self.isMaskShowing) {
         return;
@@ -234,7 +239,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     } completion:^(BOOL finished) {
         self.isMaskShowing = YES;
-        [self afterHideMaskView];
+        [self autoFadeOutControlBar];
     }];
 }
 
@@ -262,6 +267,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             // Will warn you when your buffer is empty
             if (self.playerItem.playbackBufferEmpty) {
                 [self.activity startAnimating];
+                [_player play];
             }
         }else if ([keyPath isEqualToString:@"playbackLikelyToKeepUp"]) {
             // Will warn you when your buffer is good to go again.
@@ -357,6 +363,50 @@ typedef NS_ENUM(NSInteger, PanDirection){
     
 }
 
+#pragma mark - slider事件
+
+// slider开始滑动事件
+- (void)progressSliderTouchBegan:(UISlider *)slider
+{
+    [self cancelAutoFadeOutControlBar];
+}
+
+// slider滑动中事件
+- (void)progressSliderValueChanged:(UISlider *)slider
+{
+    //拖动改变视频播放进度
+    if (_player.status == AVPlayerStatusReadyToPlay) {
+        
+        //计算出拖动的当前秒数
+        CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        
+        NSInteger dragedSeconds = floorf(total * slider.value);
+        
+        //转换成CMTime才能给player来控制播放进度
+        
+        CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+        
+        [_player pause];
+        
+        [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+            
+            [_player play];
+            
+        }];
+        
+    }
+}
+
+// slider结束滑动事件
+- (void)progressSliderTouchEnded:(UISlider *)slider
+{
+    // 结束滑动时候把开始播放按钮改为播放状态
+    self.maskView.startBtn.selected = YES;
+    [self startAction:self.maskView.startBtn];
+    // 滑动结束隐藏maskView
+    [self autoFadeOutControlBar];
+}
+
 
 #pragma mark - Action
 
@@ -385,32 +435,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
         
     }
     button.selected =!button.selected;
-}
-
-//slider滑动事件
-- (void)progressSlider:(UISlider *)slider
-{
-    //拖动改变视频播放进度
-    if (_player.status == AVPlayerStatusReadyToPlay) {
-        
-        //计算出拖动的当前秒数
-        CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-        
-        NSInteger dragedSeconds = floorf(total * slider.value);
-        
-        //转换成CMTime才能给player来控制播放进度
-        
-        CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
-        
-        [_player pause];
-        
-        [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-            
-            [_player play];
-            
-        }];
-        
-    }
 }
 
 //播放完了
