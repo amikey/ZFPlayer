@@ -15,7 +15,7 @@ typedef void(^ZFPlayerGoBackBlock)(void);
 /** 视频URL */
 @property (nonatomic, strong) NSURL *videoURL;
 /** 返回按钮Block */
-@property (nonatomic, copy) ZFPlayerGoBackBlock goBackBlock;
+@property (nonatomic, copy)   ZFPlayerGoBackBlock goBackBlock;
 /**
  *  取消延时隐藏maskView的方法,在ViewController的delloc方法中调用
  *  用于解决：刚打开视频播放器，就关闭该页面，maskView的延时隐藏还未执行。

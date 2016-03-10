@@ -10,13 +10,13 @@
 
 @interface ZFPlayerMaskView ()
 /** bottom渐变层*/
-@property (strong, nonatomic) CAGradientLayer *bottomGradientLayer;
+@property (nonatomic, strong) CAGradientLayer *bottomGradientLayer;
 /** top渐变层 */
-@property (strong, nonatomic) CAGradientLayer *topGradientLayer;
+@property (nonatomic, strong) CAGradientLayer *topGradientLayer;
 /** bottomView*/
-@property (weak, nonatomic) IBOutlet UIImageView *bottomImageView;
+@property (weak, nonatomic)   IBOutlet UIImageView *bottomImageView;
 /** topView */
-@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
+@property (weak, nonatomic)   IBOutlet UIImageView *topImageView;
 
 @end
 

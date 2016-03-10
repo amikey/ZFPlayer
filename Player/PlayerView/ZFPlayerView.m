@@ -21,14 +21,22 @@ typedef NS_ENUM(NSInteger, PanDirection){
     PanDirectionVerticalMoved    //纵向移动
 };
 
+//播放器的几种状态
+typedef NS_ENUM(NSInteger, ZFPlayerState) {
+    ZFPlayerStateBuffering,  //缓冲中
+    ZFPlayerStatePlaying,    //播放中
+    ZFPlayerStateStopped,    //停止播放
+    ZFPlayerStatePause       //暂停播放
+};
+
 @interface ZFPlayerView () <XXNibBridge>
 
 /** 快进快退label */
-@property (weak, nonatomic) IBOutlet UILabel *horizontalLabel;
+@property (weak, nonatomic)   IBOutlet UILabel *horizontalLabel;
 /** 系统菊花 */
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activity;
+@property (weak, nonatomic)   IBOutlet UIActivityIndicatorView *activity;
 /** 返回按钮*/
-@property (weak, nonatomic) IBOutlet UIButton *backBtn;
+@property (weak, nonatomic)   IBOutlet UIButton *backBtn;
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayer *player;
 /** 播放属性 */
@@ -41,10 +49,12 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, strong) NSTimer *timer;
 /** 蒙版View */
 @property (nonatomic, strong) ZFPlayerMaskView *maskView;
-/**  用来保存快进的总时长 */
+/** 用来保存快进的总时长 */
 @property (nonatomic, assign) CGFloat sumTime;
 /** 定义一个实例变量，保存枚举值 */
 @property (nonatomic, assign) PanDirection panDirection;
+/** 播发器的几种状态 */
+@property (nonatomic, assign) ZFPlayerState state;
 /** 是否为全屏 */
 @property (nonatomic, assign) BOOL isFullScreen;
 /** 是否锁定屏幕方向 */
@@ -53,6 +63,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) BOOL isVolume;
 /** 是否显示maskView*/
 @property (nonatomic, assign) BOOL isMaskShowing;
+/** 是否被用户暂停 */
+@property (nonatomic, assign) BOOL isPauseByUser;
+/** 是否播放本地文件 */
+@property (nonatomic, assign) BOOL isLocalVideo;
 
 @end
 
@@ -72,6 +86,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.horizontalLabel.hidden = YES; //先隐藏
     // 每次初始化都解锁屏幕锁定
     [self unLockTheScreen];
+    self.state = ZFPlayerStateStopped;
 }
 
 - (void)dealloc
@@ -96,7 +111,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.playerItem = [AVPlayerItem playerItemWithURL:videoURL];
     self.player = [AVPlayer playerWithPlayerItem:_playerItem];
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-    //AVLayerVideoGravityResizeAspectFill / AVLayerVideoGravityResize
+    
     if([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]){
         self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     }else{
@@ -105,8 +120,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self.layer insertSublayer:self.playerLayer atIndex:0];
     [self.player play];
     
-    //AVPlayer播放完成通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
     
     self.maskView = [ZFPlayerMaskView setupPlayerMaskView];
     [self insertSubview:self.maskView belowSubview:self.backBtn];
@@ -115,17 +128,25 @@ typedef NS_ENUM(NSInteger, PanDirection){
         make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
     }];
     if (self.player.rate == 1.0) {
-        [self.maskView.startBtn setImage:[UIImage imageNamed:@"kr-video-player-pause"] forState:UIControlStateNormal];
+        self.maskView.startBtn.selected = YES;
+        self.isPauseByUser = NO;
     } else {
-        [self.maskView.startBtn setImage:[UIImage imageNamed:@"kr-video-player-play"] forState:UIControlStateNormal];
+        self.maskView.startBtn.selected = NO;
+        self.isPauseByUser = YES;
     }
+    // AVPlayer播放完成通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+    // app退到后台
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
+    // app进入前台
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayGround) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     // slider开始滑动事件
     [self.maskView.videoSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     // slider滑动中事件
     [self.maskView.videoSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     // slider结束滑动事件
-    [self.maskView.videoSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
+    [self.maskView.videoSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchCancel | UIControlEventTouchUpOutside];
     
     // 播放按钮点击事件
     [self.maskView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -145,13 +166,22 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // Will warn you when your buffer is good to go again.
     [self.playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
 
+    // 本地文件不设置ZFPlayerStateBuffering状态
+    if ([videoURL.scheme isEqualToString:@"file"]) {
+        self.state = ZFPlayerStatePlaying;
+        self.isLocalVideo = YES;
+    } else {
+        self.state = ZFPlayerStateBuffering;
+        self.isLocalVideo = NO;
+    }
+    
     [UIApplication sharedApplication].statusBarHidden = NO;
     
     // 初始化显示maskView为YES
     self.isMaskShowing = YES;
-    //延迟线程
+    // 延迟隐藏maskView
     [self autoFadeOutControlBar];
-    //计时器
+    // 计时器
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(playerTimerAction) userInfo:nil repeats:YES];
 
     // 监测设备方向
@@ -250,7 +280,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (object == self.playerItem) {
         if ([keyPath isEqualToString:@"status"]) {
             if (self.player.status == AVPlayerStatusReadyToPlay) {
-                [self.activity stopAnimating];
+                self.state = ZFPlayerStatePlaying;
                 // 加载完成后，再添加拖拽手势
                 // 添加平移手势，用来控制音量和快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
@@ -266,17 +296,47 @@ typedef NS_ENUM(NSInteger, PanDirection){
         }else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
             // Will warn you when your buffer is empty
             if (self.playerItem.playbackBufferEmpty) {
-                [self.activity startAnimating];
-                [_player play];
+                NSLog(@"playbackBufferEmpty");
+                self.state = ZFPlayerStateBuffering;
+                [self bufferingSomeSecond];
             }
         }else if ([keyPath isEqualToString:@"playbackLikelyToKeepUp"]) {
             // Will warn you when your buffer is good to go again.
-            // Now you will have to stop this background task after your buffer is ready to go again
             if (self.playerItem.playbackLikelyToKeepUp){
-                [self.activity stopAnimating];
+                self.state = ZFPlayerStatePlaying;
+                NSLog(@"playbackLikelyToKeepUp");
             }
         }
     }
+}
+
+- (void)bufferingSomeSecond
+{
+    [self.activity startAnimating];
+    // playbackBufferEmpty会反复进入，因此在bufferingOneSecond延时播放执行完之前再调用bufferingSomeSecond都忽略
+    static BOOL isBuffering = NO;
+    if (isBuffering) {
+        return;
+    }
+    isBuffering = YES;
+    
+    // 需要先暂停一小会之后再播放，否则网络状况不好的时候时间在走，声音播放不出来
+    [self.player pause];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        // 如果此时用户已经暂停了，则不再需要开启播放了
+        if (self.isPauseByUser) {
+            isBuffering = NO;
+            return;
+        }
+        
+        [self.player play];
+        // 如果执行了play还是没有播放则说明还没有缓存好，则再次缓存一段时间
+        isBuffering = NO;
+        if (!self.playerItem.isPlaybackLikelyToKeepUp) {
+            [self bufferingSomeSecond];
+        }
+    });
 }
 
 #pragma mark - 计时器事件
@@ -369,6 +429,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)progressSliderTouchBegan:(UISlider *)slider
 {
     [self cancelAutoFadeOutControlBar];
+    // 暂停timer
+    [self.timer setFireDate:[NSDate distantFuture]];
 }
 
 // slider滑动中事件
@@ -377,6 +439,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     //拖动改变视频播放进度
     if (_player.status == AVPlayerStatusReadyToPlay) {
         
+        [_player pause];
         //计算出拖动的当前秒数
         CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
         
@@ -385,32 +448,76 @@ typedef NS_ENUM(NSInteger, PanDirection){
         //转换成CMTime才能给player来控制播放进度
         
         CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+        // 拖拽的时长
+        NSInteger proMin = (NSInteger)CMTimeGetSeconds(dragedCMTime) / 60;//当前秒
+        NSInteger proSec = (NSInteger)CMTimeGetSeconds(dragedCMTime) % 60;//当前分钟
         
-        [_player pause];
+        NSString *style = @"";
         
-        [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-            
-            [_player play];
-            
-        }];
+        //duration 总时长
+        NSInteger durMin = (NSInteger)total / 60;//总秒
+        NSInteger durSec = (NSInteger)total % 60;//总分钟
         
+        NSString *currentTime = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
+        NSString *totalTime = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
+        
+        self.maskView.currentTimeLabel.text = currentTime;
+        self.horizontalLabel.hidden = NO;
+        self.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
     }
 }
 
 // slider结束滑动事件
 - (void)progressSliderTouchEnded:(UISlider *)slider
 {
+    // 继续开启timer
+    [self.timer setFireDate:[NSDate date]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.horizontalLabel.hidden = YES;
+    });
     // 结束滑动时候把开始播放按钮改为播放状态
     self.maskView.startBtn.selected = YES;
-    [self startAction:self.maskView.startBtn];
-    // 滑动结束隐藏maskView
+    self.isPauseByUser = NO;
+    
+    // 滑动结束延时隐藏maskView
     [self autoFadeOutControlBar];
+    
+    //计算出拖动的当前秒数
+    CGFloat total = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+    
+    NSInteger dragedSeconds = floorf(total * slider.value);
+    
+    //转换成CMTime才能给player来控制播放进度
+    
+    CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+    
+    [self endSlideTheVideo:dragedCMTime];
 }
 
 
 #pragma mark - Action
 
-//轻拍方法
+// 滑动结束视频跳转
+- (void)endSlideTheVideo:(CMTime)dragedCMTime
+{
+    [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+        NSLog(@"%@",[NSThread currentThread]);
+        // 如果点击了暂停按钮
+        if (self.isPauseByUser) {
+            NSLog(@"已暂停");
+            return ;
+        }
+        [_player play];
+        if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) {
+            self.state = ZFPlayerStateBuffering;
+            NSLog(@"显示菊花");
+            [self.activity startAnimating];
+        }
+        
+        NSLog(@"播放");
+    }];
+}
+// 轻拍方法
 - (void)tapAction:(UITapGestureRecognizer *)gesture
 {
     if (gesture.state == UIGestureRecognizerStateRecognized) {
@@ -422,30 +529,52 @@ typedef NS_ENUM(NSInteger, PanDirection){
     }
 }
 
-//播放、暂停
+// 播放、暂停
 - (void)startAction:(UIButton *)button
 {
+    button.selected =!button.selected;
+    self.isPauseByUser = !button.isSelected;
     if (button.selected) {
         [_player play];
-        [button setImage:[UIImage imageNamed:@"kr-video-player-pause"] forState:UIControlStateNormal];
-        
+        self.state = ZFPlayerStatePlaying;
     } else {
         [_player pause];
-        [button setImage:[UIImage imageNamed:@"kr-video-player-play"] forState:UIControlStateNormal];
-        
+        self.state = ZFPlayerStatePause;
     }
-    button.selected =!button.selected;
 }
 
-//播放完了
-- (void)moviePlayDidEnd:(id)sender
+// 播放完了
+- (void)moviePlayDidEnd:(NSNotification *)notification
 {
+    self.state = ZFPlayerStateStopped;
     NSUserDefaults *settingsData = [NSUserDefaults standardUserDefaults];
     [settingsData setObject:@"0" forKey:@"lockScreen"];
     [settingsData synchronize];
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
     if (self.goBackBlock) {
         self.goBackBlock();
+    }
+}
+
+// 应用退到后台
+- (void)appDidEnterBackground
+{
+    [_player pause];
+    self.state = ZFPlayerStatePause;
+    [self cancelAutoFadeOutControlBar];
+}
+
+// 应用进入前台
+- (void)appDidEnterPlayGround
+{
+    self.isMaskShowing = YES;
+    // 延迟隐藏maskView
+    [self autoFadeOutControlBar];
+    if (!self.isPauseByUser) {
+        self.state = ZFPlayerStatePlaying;
+        self.maskView.startBtn.selected = YES;
+        self.isPauseByUser = NO;
+        [_player play];
     }
 }
 
@@ -556,7 +685,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 // 给sumTime初值
                 CMTime time = self.player.currentTime;
                 self.sumTime = time.value/time.timescale;
-                //NSLog(@"===%f",self.sumTime);
+                
+                // 暂停视频播放
+                [_player pause];
+                // 暂停timer
+                [self.timer setFireDate:[NSDate distantFuture]];
             }
             else if (x < y){ // 垂直移动
                 self.panDirection = PanDirectionVerticalMoved;
@@ -590,22 +723,25 @@ typedef NS_ENUM(NSInteger, PanDirection){
             // 比如水平移动结束时，要快进到指定位置，如果这里没有判断，当我们调节音量完之后，会出现屏幕跳动的bug
             switch (self.panDirection) {
                 case PanDirectionHorizontalMoved:{
+                    
+                    // 继续播放
+                    [_player play];
+                    [self.timer setFireDate:[NSDate date]];
+                    
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         // 隐藏视图
                         self.horizontalLabel.hidden = YES;
                     });
+                    //快进、快退时候把开始播放按钮改为播放状态
+                    self.maskView.startBtn.selected = YES;
+                    self.isPauseByUser = NO;
                     
-                    //转换成CMTime才能给player来控制播放进度
+                    // 转换成CMTime才能给player来控制播放进度
                     CMTime dragedCMTime = CMTimeMake(self.sumTime, 1);
-                    [_player pause];
-                    [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-                        //快进、快退时候把开始播放按钮改为播放状态
-                        self.maskView.startBtn.selected = YES;
-                        [self startAction:self.maskView.startBtn];
-                        // 在滑动结束后，视屏要跳转
-                        [_player play];
-                        
-                    }];
+                    //[_player pause];
+                    
+                    [self endSlideTheVideo:dragedCMTime];
+
                     // 把sumTime滞空，不然会越加越多
                     self.sumTime = 0;
                     break;
@@ -713,6 +849,21 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
     
      */
+}
+
+
+#pragma mark - Setter 
+
+- (void)setState:(ZFPlayerState)state
+{
+    if (state != ZFPlayerStateBuffering) {
+        [self.activity stopAnimating];
+    }
+    
+    if (_state == state) {
+        return;
+    }
+    _state = state;
 }
 
 @end
