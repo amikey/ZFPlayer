@@ -13,6 +13,7 @@
 #import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerMaskView.h"
 
+#define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 static const CGFloat ZFPlayerAnimationTimeInterval = 7.0f;
 
 // 枚举值，包含水平移动方向和垂直移动方向
@@ -105,12 +106,20 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
-    
+
     // 屏幕方向一发生变化就会调用这里
     [UIApplication sharedApplication].statusBarHidden = NO;
     self.isMaskShowing = NO;
     // 延迟隐藏maskView
     [self animateShow];
+    
+    // 解决4s，屏幕宽高比不是16：9的问题
+    if (iPhone4s) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            CGFloat width = [UIScreen mainScreen].bounds.size.width;
+            make.height.mas_equalTo(width*320/480);
+        }];
+    }
 }
 
 - (void)setVideoURL:(NSURL *)videoURL
