@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     ZFPlayerStatePause       //暂停播放
 };
 
-@interface ZFPlayerView () <XXNibBridge>
+@interface ZFPlayerView () <XXNibBridge,UIGestureRecognizerDelegate>
 
 /** 快进快退label */
 @property (weak, nonatomic)   IBOutlet UILabel *horizontalLabel;
@@ -282,12 +282,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (object == self.playerItem) {
         if ([keyPath isEqualToString:@"status"]) {
             if (self.player.status == AVPlayerStatusReadyToPlay) {
+                
                 self.state = ZFPlayerStatePlaying;
                 // 加载完成后，再添加拖拽手势
                 // 添加平移手势，用来控制音量和快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
-                [self addGestureRecognizer:pan];
+                pan.delegate = self;
+                [self.maskView addGestureRecognizer:pan];
+                
             } else if (self.player.status == AVPlayerStatusFailed){
+                
                 [self.activity startAnimating];
             }
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
@@ -510,7 +514,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)endSlideTheVideo:(CMTime)dragedCMTime
 {
     [_player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-        NSLog(@"%@",[NSThread currentThread]);
         // 如果点击了暂停按钮
         if (self.isPauseByUser) {
             NSLog(@"已暂停");
@@ -522,8 +525,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             NSLog(@"显示菊花");
             [self.activity startAnimating];
         }
-        
-        NSLog(@"播放");
     }];
 }
 // 轻拍方法
@@ -822,6 +823,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, nowTime, durationTime];
 }
 
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    CGPoint point = [touch locationInView:gestureRecognizer.view];
+    if ([touch.view isKindOfClass:[UISlider class]] && (point.y > self.bounds.origin.y-40)) {
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - 根据时长求出字符串
 
 - (NSString *)durationStringWithTime:(int)time
@@ -874,5 +886,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
     _state = state;
 }
+
 
 @end
