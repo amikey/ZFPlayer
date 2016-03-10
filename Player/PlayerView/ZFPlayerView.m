@@ -288,7 +288,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 // 添加平移手势，用来控制音量和快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
                 pan.delegate = self;
-                [self.maskView addGestureRecognizer:pan];
+                [self addGestureRecognizer:pan];
                 
             } else if (self.player.status == AVPlayerStatusFailed){
                 
