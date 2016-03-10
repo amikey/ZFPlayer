@@ -105,6 +105,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
+    
+    // 屏幕方向一发生变化就会调用这里
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    self.isMaskShowing = NO;
+    // 延迟隐藏maskView
+    [self animateShow];
 }
 
 - (void)setVideoURL:(NSURL *)videoURL
@@ -176,8 +182,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.state = ZFPlayerStateBuffering;
         self.isLocalVideo = NO;
     }
-    
-    [UIApplication sharedApplication].statusBarHidden = NO;
     
     // 初始化显示maskView为YES
     self.isMaskShowing = YES;
@@ -285,7 +289,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 
                 self.state = ZFPlayerStatePlaying;
                 // 加载完成后，再添加拖拽手势
-                // 添加平移手势，用来控制音量和快进快退
+                // 添加平移手势，用来控制音量、亮度、快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
                 pan.delegate = self;
                 [self addGestureRecognizer:pan];
@@ -361,8 +365,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSInteger durMin = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale / 60;//总秒
         NSInteger durSec = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale % 60;//总分钟
         
-        self.maskView.currentTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
-        self.maskView.totalTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
+        self.maskView.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
+        self.maskView.totalTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
     }
 }
 
@@ -470,8 +474,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSInteger durMin = (NSInteger)total / 60;//总秒
         NSInteger durSec = (NSInteger)total % 60;//总分钟
         
-        NSString *currentTime = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
-        NSString *totalTime = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
+        NSString *currentTime = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
+        NSString *totalTime = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
         
         self.maskView.currentTimeLabel.text = currentTime;
         self.horizontalLabel.hidden = NO;
@@ -577,9 +581,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 // 应用进入前台
 - (void)appDidEnterPlayGround
 {
-    self.isMaskShowing = YES;
+    self.isMaskShowing = NO;
     // 延迟隐藏maskView
-    [self autoFadeOutControlBar];
+    [self animateShow];
     if (!self.isPauseByUser) {
         self.state = ZFPlayerStatePlaying;
         self.maskView.startBtn.selected = YES;
