@@ -1,10 +1,25 @@
 //
 //  MainViewController.m
-//  Player
 //
-//  Created by 任子丰 on 16/3/6.
-//  Copyright © 2016年 任子丰. All rights reserved.
+// Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "MainViewController.h"
 #import "MoviePlayerViewController.h"
@@ -28,10 +43,11 @@
 - (BOOL)shouldAutorotate{
     
     UINavigationController *nav = self.viewControllers[self.selectedIndex];
+    // MoviePlayerViewController这个页面支持自动转屏
     if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) {
         NSUserDefaults *settingsData = [NSUserDefaults standardUserDefaults];
-        NSString *hspData = [settingsData objectForKey:@"lockScreen"];
-        if([hspData isEqualToString:@"1"]){
+        NSString *hspData            = [settingsData objectForKey:@"lockScreen"];
+        if([hspData isEqualToString:@"1"]){ // 判断视频播放全屏模式下，是否开启了设备锁定方向
             return NO;
         }else{
             return YES;
@@ -40,13 +56,13 @@
     return NO;
 }
 
-//当前viewcontroller支持哪些转屏方向
+// viewcontroller支持哪些转屏方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-
+    
     UINavigationController *nav = self.viewControllers[self.selectedIndex];
-    if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) {
+    if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) { // MoviePlayerViewController这个页面支持转屏方向
         return UIInterfaceOrientationMaskAllButUpsideDown;
-    }else {
+    }else { // 其他页面支持转屏方向
         return UIInterfaceOrientationMaskPortrait;
     }
     return UIInterfaceOrientationMaskPortrait;
