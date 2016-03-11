@@ -1,10 +1,25 @@
 //
 //  ZFPlayerMaskView.m
-//  Player
 //
-//  Created by 任子丰 on 16/3/4.
-//  Copyright © 2016年 任子丰. All rights reserved.
+// Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "ZFPlayerMaskView.h"
 
@@ -14,9 +29,9 @@
 /** top渐变层 */
 @property (nonatomic, strong) CAGradientLayer *topGradientLayer;
 /** bottomView*/
-@property (weak, nonatomic)   IBOutlet UIImageView *bottomImageView;
+@property (weak, nonatomic  ) IBOutlet UIImageView     *bottomImageView;
 /** topView */
-@property (weak, nonatomic)   IBOutlet UIImageView *topImageView;
+@property (weak, nonatomic  ) IBOutlet UIImageView     *topImageView;
 
 @end
 
@@ -34,9 +49,9 @@
     [self.videoSlider setThumbImage:[UIImage imageNamed:@"slider"] forState:UIControlStateNormal];
     self.videoSlider.minimumTrackTintColor = [UIColor whiteColor];
     self.videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.3];
-    
-    self.progressView.progressTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
-    self.progressView.trackTintColor = [UIColor clearColor];
+
+    self.progressView.progressTintColor    = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
+    self.progressView.trackTintColor       = [UIColor clearColor];
     
     // 初始化渐变层
     [self initCAGradientLayer];
@@ -47,35 +62,35 @@
 {
     [super layoutSubviews];
     self.bottomGradientLayer.frame = self.bottomImageView.bounds;
-    self.topGradientLayer.frame = self.topImageView.bounds;
+    self.topGradientLayer.frame    = self.topImageView.bounds;
 }
 
 - (void)initCAGradientLayer
 {
     //初始化Bottom渐变层
-    self.bottomGradientLayer = [CAGradientLayer layer];
+    self.bottomGradientLayer            = [CAGradientLayer layer];
     [self.bottomImageView.layer addSublayer:self.bottomGradientLayer];
     //设置渐变颜色方向
     self.bottomGradientLayer.startPoint = CGPointMake(0, 0);
-    self.bottomGradientLayer.endPoint = CGPointMake(0, 1);
+    self.bottomGradientLayer.endPoint   = CGPointMake(0, 1);
     //设定颜色组
-    self.bottomGradientLayer.colors = @[(__bridge id)[UIColor clearColor].CGColor,
-                                        (__bridge id)[UIColor blackColor].CGColor];
+    self.bottomGradientLayer.colors     = @[(__bridge id)[UIColor clearColor].CGColor,
+                                            (__bridge id)[UIColor blackColor].CGColor];
     //设定颜色分割点
-    self.bottomGradientLayer.locations = @[@(0.0f) ,@(1.0f)];
+    self.bottomGradientLayer.locations  = @[@(0.0f) ,@(1.0f)];
 
-    
+
     //初始Top化渐变层
-    self.topGradientLayer = [CAGradientLayer layer];
+    self.topGradientLayer               = [CAGradientLayer layer];
     [self.topImageView.layer addSublayer:self.topGradientLayer];
     //设置渐变颜色方向
-    self.topGradientLayer.startPoint = CGPointMake(1, 0);
-    self.topGradientLayer.endPoint = CGPointMake(1, 1);
+    self.topGradientLayer.startPoint    = CGPointMake(1, 0);
+    self.topGradientLayer.endPoint      = CGPointMake(1, 1);
     //设定颜色组
-    self.topGradientLayer.colors = @[ (__bridge id)[UIColor blackColor].CGColor,
-                                      (__bridge id)[UIColor clearColor].CGColor];
+    self.topGradientLayer.colors        = @[ (__bridge id)[UIColor blackColor].CGColor,
+                                             (__bridge id)[UIColor clearColor].CGColor];
     //设定颜色分割点
-    self.topGradientLayer.locations = @[@(0.0f) ,@(1.0f)];
+    self.topGradientLayer.locations     = @[@(0.0f) ,@(1.0f)];
 
 }
 
