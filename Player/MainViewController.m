@@ -23,6 +23,9 @@
 
 #import "MainViewController.h"
 #import "MoviePlayerViewController.h"
+#import "AppDelegate.h"
+
+#define ApplicationDelegate   ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
 @interface MainViewController ()
 
@@ -45,13 +48,7 @@
     UINavigationController *nav = self.viewControllers[self.selectedIndex];
     // MoviePlayerViewController这个页面支持自动转屏
     if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) {
-        NSUserDefaults *settingsData = [NSUserDefaults standardUserDefaults];
-        NSString *hspData            = [settingsData objectForKey:@"lockScreen"];
-        if([hspData isEqualToString:@"1"]){ // 判断视频播放全屏模式下，是否开启了设备锁定方向
-            return NO;
-        }else{
-            return YES;
-        }
+        return !ApplicationDelegate.isLockScreen;  // 调用AppDelegate单例记录播放状态是否锁屏
     }
     return NO;
 }

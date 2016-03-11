@@ -27,8 +27,10 @@
 #import <Masonry/Masonry.h>
 #import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerMaskView.h"
+#import "AppDelegate.h"
 
 #define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+#define ApplicationDelegate   ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
 static const CGFloat ZFPlayerAnimationTimeInterval             = 7.0f;
 static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.5f;
@@ -656,23 +658,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     sender.selected              = !sender.selected;
     self.isLocked                = sender.selected;
-    // 根据UserDefaults的值，在TabBarController设置哪些页面支持旋转
-    NSUserDefaults *settingsData = [NSUserDefaults standardUserDefaults];
-    if (sender.selected) {
-        [settingsData setObject:@"1" forKey:@"lockScreen"];
-    }else {
-        [settingsData setObject:@"0" forKey:@"lockScreen"];
-    }
-    [settingsData synchronize];
+    // 调用AppDelegate单例记录播放状态是否锁屏，在TabBarController设置哪些页面支持旋转
+    ApplicationDelegate.isLockScreen = sender.selected;
 }
 
 // 解锁屏幕方向锁定
 - (void)unLockTheScreen
 {
-    NSUserDefaults *settingsData = [NSUserDefaults standardUserDefaults];
-    [settingsData setObject:@"0" forKey:@"lockScreen"];
-    [settingsData synchronize];
-    
+    // 调用AppDelegate单例记录播放状态是否锁屏
+    ApplicationDelegate.isLockScreen = NO;
     [self lockScreenAction:self.maskView.lockBtn];
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
 }
@@ -683,9 +677,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)moviePlayDidEnd:(NSNotification *)notification
 {
     self.state                   = ZFPlayerStateStopped;
-    NSUserDefaults *settingsData = [NSUserDefaults standardUserDefaults];
-    [settingsData setObject:@"0" forKey:@"lockScreen"];
-    [settingsData synchronize];
+    ApplicationDelegate.isLockScreen = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
     // 关闭定时器
     [self.timer invalidate];
@@ -900,9 +892,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
         SEL selector             = NSSelectorFromString(@"setOrientation:");
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        int val                  = orientation;
         [invocation setSelector:selector];
         [invocation setTarget:[UIDevice currentDevice]];
+        int val                  = orientation;
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
     }
