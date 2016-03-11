@@ -13,6 +13,7 @@
 #import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerMaskView.h"
 
+#define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 static const CGFloat ZFPlayerAnimationTimeInterval = 7.0f;
 
 // 枚举值，包含水平移动方向和垂直移动方向
@@ -105,6 +106,20 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
+
+    // 屏幕方向一发生变化就会调用这里
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    self.isMaskShowing = NO;
+    // 延迟隐藏maskView
+    [self animateShow];
+    
+    // 解决4s，屏幕宽高比不是16：9的问题
+    if (iPhone4s) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            CGFloat width = [UIScreen mainScreen].bounds.size.width;
+            make.height.mas_equalTo(width*320/480);
+        }];
+    }
 }
 
 - (void)setVideoURL:(NSURL *)videoURL
@@ -176,8 +191,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.state = ZFPlayerStateBuffering;
         self.isLocalVideo = NO;
     }
-    
-    [UIApplication sharedApplication].statusBarHidden = NO;
     
     // 初始化显示maskView为YES
     self.isMaskShowing = YES;
@@ -285,10 +298,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 
                 self.state = ZFPlayerStatePlaying;
                 // 加载完成后，再添加拖拽手势
-                // 添加平移手势，用来控制音量和快进快退
+                // 添加平移手势，用来控制音量、亮度、快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
                 pan.delegate = self;
-                [self.maskView addGestureRecognizer:pan];
+                [self addGestureRecognizer:pan];
                 
             } else if (self.player.status == AVPlayerStatusFailed){
                 
@@ -361,8 +374,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSInteger durMin = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale / 60;//总秒
         NSInteger durSec = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale % 60;//总分钟
         
-        self.maskView.currentTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
-        self.maskView.totalTimeLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
+        self.maskView.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
+        self.maskView.totalTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
     }
 }
 
@@ -470,8 +483,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSInteger durMin = (NSInteger)total / 60;//总秒
         NSInteger durSec = (NSInteger)total % 60;//总分钟
         
-        NSString *currentTime = [NSString stringWithFormat:@"%02ld:%02ld", proMin, proSec];
-        NSString *totalTime = [NSString stringWithFormat:@"%02ld:%02ld", durMin, durSec];
+        NSString *currentTime = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
+        NSString *totalTime = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
         
         self.maskView.currentTimeLabel.text = currentTime;
         self.horizontalLabel.hidden = NO;
@@ -577,9 +590,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 // 应用进入前台
 - (void)appDidEnterPlayGround
 {
-    self.isMaskShowing = YES;
+    self.isMaskShowing = NO;
     // 延迟隐藏maskView
-    [self autoFadeOutControlBar];
+    [self animateShow];
     if (!self.isPauseByUser) {
         self.state = ZFPlayerStatePlaying;
         self.maskView.startBtn.selected = YES;
@@ -827,8 +840,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    CGPoint point = [touch locationInView:gestureRecognizer.view];
-    if ([touch.view isKindOfClass:[UISlider class]] && (point.y > self.bounds.origin.y-40)) {
+    CGPoint point = [touch locationInView:self.maskView];
+    
+    // 屏幕下方slider区域不响应pan手势
+    if ((point.y > self.bounds.size.height-40)) {
         return NO;
     }
     return YES;

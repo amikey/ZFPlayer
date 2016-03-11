@@ -15,7 +15,7 @@ Open the "Player.xcworkspace"
 
 ### 用法（支持IB和代码）
 ##### IB用法
-直接拖UIView到IB上，宽高比为16：9，代码部分只需要实现
+直接拖UIView到IB上，宽高比为约束为16：9(优先级改为750，比1000低就行)，代码部分只需要实现
 
 ```objc
 self.playerView.videoURL = self.videoURL;
@@ -34,7 +34,8 @@ self.playerView = [ZFPlayerView setupZFPlayer];
 [self.view addSubview:self.playerView];
 [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
  	make.left.top.right.equalTo(self.view);
-	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+	// 注意此处，宽高比16：9优先级比1000低就行，在因为iPhone 4S宽高比不是16：9
+	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
 }];
 self.playerView.videoURL = self.videoURL;
 // 返回按钮事件
@@ -53,6 +54,9 @@ self.playerView.goBackBlock = ^{
 
 ### ps：本人最近swift做的项目，朋友们给点建议吧：
 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
+
+
+#有技术问题也可以加我的iOS技术群，互相讨论，群号为：213376937
 
 # 期待
 - 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我,或者微博联系我：[@任子丰](https://weibo.com/zifeng1300)

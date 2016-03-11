@@ -92,11 +92,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="CJd-vt-Xpq" secondAttribute="height" multiplier="16:9" id="lta-DY-OHb"/>
+                                    <constraint firstAttribute="width" secondItem="CJd-vt-Xpq" secondAttribute="height" multiplier="16:9" priority="750" id="lta-DY-OHb"/>
                                 </constraints>
-                                <variation key="heightClass=compact-widthClass=regular" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="0.0"/>
-                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JCd-dg-hvU" userLabel="statusView">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>

@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFPlayerView.h"
+#import <Masonry/Masonry.h>
 
 @interface MoviePlayerViewController ()
 
@@ -47,7 +48,7 @@
      [self.view addSubview:self.playerView];
      [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.equalTo(self.view);
-        make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+        make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
      }];
     */
     
