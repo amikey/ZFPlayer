@@ -574,6 +574,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [settingsData setObject:@"0" forKey:@"lockScreen"];
     [settingsData synchronize];
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
+    // 关闭定时器
+    [self.timer invalidate];
     if (self.goBackBlock) {
         self.goBackBlock();
     }
