@@ -1,5 +1,5 @@
 //
-//  FirstViewController.m
+//  ZFBrightnessView.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,37 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "FirstViewController.h"
-#import "MoviePlayerViewController.h"
-#import "ZFBrightnessView.h"
+#import <UIKit/UIKit.h>
 
-@interface FirstViewController ()
-
-@end
-
-@implementation FirstViewController
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = NO;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [ZFBrightnessView sharedBrightnesView];
-}
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-
-    MoviePlayerViewController *movie = (MoviePlayerViewController *)segue.destinationViewController;
-    NSURL *videoURL                  = [[NSBundle mainBundle] URLForResource:@"150511_JiveBike" withExtension:@"mov"];
-    movie.videoURL                   = videoURL;
-}
-
+@interface ZFBrightnessView : UIView
++ (instancetype)sharedBrightnesView;
 
 @end

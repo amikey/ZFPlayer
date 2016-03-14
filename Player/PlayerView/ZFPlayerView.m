@@ -821,9 +821,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }else {
         //亮度
         [UIScreen mainScreen].brightness -= value / 10000;
-        NSString *brightness             = [NSString stringWithFormat:@"亮度%.0f%%",[UIScreen mainScreen].brightness/1.0*100];
-        self.horizontalLabel.hidden      = NO;
-        self.horizontalLabel.text        = brightness;
+        //NSString *brightness             = [NSString stringWithFormat:@"亮度%.0f%%",[UIScreen mainScreen].brightness/1.0*100];
+        //self.horizontalLabel.hidden      = NO;
+        //self.horizontalLabel.text        = brightness;
     }
 }
 

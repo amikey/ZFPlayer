@@ -25,6 +25,7 @@
 		CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */; };
 		CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */; };
 		CC8AC9B91C8AD970006B9A1B /* ZFPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */; };
+		CCA71EB91C96FF4000B45739 /* ZFBrightnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,8 @@
 		CC725C301C894D2D00C3EAF2 /* MoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePlayerViewController.h; sourceTree = "<group>"; };
 		CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
 		CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerView.xib; sourceTree = "<group>"; };
+		CCA71EB71C96FF4000B45739 /* ZFBrightnessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFBrightnessView.h; sourceTree = "<group>"; };
+		CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFBrightnessView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +226,8 @@
 				CC725C201C894D1D00C3EAF2 /* ZFPlayerMaskView.h */,
 				CC725C211C894D1D00C3EAF2 /* ZFPlayerMaskView.m */,
 				CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */,
+				CCA71EB71C96FF4000B45739 /* ZFBrightnessView.h */,
+				CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */,
 			);
 			path = PlayerView;
 			sourceTree = "<group>";
@@ -413,6 +418,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCA71EB91C96FF4000B45739 /* ZFBrightnessView.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
 				CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */,

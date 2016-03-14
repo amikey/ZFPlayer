@@ -80,7 +80,7 @@
 {
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         self.view.backgroundColor = [UIColor whiteColor];
-    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         self.view.backgroundColor = [UIColor blackColor];
     }
 }
