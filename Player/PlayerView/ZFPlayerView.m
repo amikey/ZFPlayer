@@ -864,13 +864,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    CGPoint point = [touch locationInView:self.maskView];
-    
-    // 屏幕下方slider区域不响应pan手势
-    if ((point.y > self.bounds.size.height-40)) {
+    if([touch.view isKindOfClass:[UISlider class]])
+    {
         return NO;
     }
-    return YES;
+    else
+    {
+        return YES;
+    }
 }
 
 #pragma mark - 根据时长求出字符串
