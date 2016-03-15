@@ -28,12 +28,14 @@
 #define SCREEN_H ([UIScreen mainScreen].bounds.size.height)
 
 @interface ZFBrightnessView ()
+
 @property (nonatomic, strong) UIImageView		*backImage;
 @property (nonatomic, strong) UILabel			*title;
 @property (nonatomic, strong) UIView			*longView;
 @property (nonatomic, strong) NSMutableArray	*tipArray;
 @property (nonatomic, assign) BOOL				orientationDidChange;
 @property (nonatomic, strong) NSTimer			*timer;
+
 @end
 
 @implementation ZFBrightnessView
@@ -55,11 +57,11 @@
 		self.layer.cornerRadius = 10;
 		self.layer.masksToBounds = YES;
 		
-		self.backgroundColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.8];
-		
+		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"brightness_bg"]];
+        
 		self.backImage = ({
-			UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 120, 120)];
-			imgView.image = [UIImage imageNamed:@"player_bright_big"];
+			UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];
+			imgView.image = [UIImage imageNamed:@"playgesture_BrightnessSun6"];
 			[self addSubview:imgView];
 			imgView;
 		});
@@ -205,7 +207,7 @@
 }
 
 - (void)didMoveToSuperview {
-	NSLog(@"--- didMoveToSuperview");
+	//NSLog(@"--- didMoveToSuperview");
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {

@@ -18,14 +18,14 @@
 		CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC113C0D1C8C4E5D0044FEEB /* MainViewController.m */; };
 		CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC48ECD61C8863DB009CF0D0 /* Main.storyboard */; };
 		CC725C181C893F8400C3EAF2 /* 150511_JiveBike.mov in Resources */ = {isa = PBXBuildFile; fileRef = CC725C171C893F8400C3EAF2 /* 150511_JiveBike.mov */; };
-		CC725C251C894D1D00C3EAF2 /* ZFPlayerMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C211C894D1D00C3EAF2 /* ZFPlayerMaskView.m */; };
-		CC725C261C894D1D00C3EAF2 /* ZFPlayerMaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */; };
 		CC725C271C894D1D00C3EAF2 /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */; };
 		CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */; };
 		CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */; };
 		CC8AC9B91C8AD970006B9A1B /* ZFPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */; };
 		CCA71EB91C96FF4000B45739 /* ZFBrightnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */; };
+		CCB5BC961C97E5B80022C9AD /* ZFPlayerMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB5BC941C97E5B80022C9AD /* ZFPlayerMaskView.m */; };
+		CCB5BC971C97E5B80022C9AD /* ZFPlayerMaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCB5BC951C97E5B80022C9AD /* ZFPlayerMaskView.xib */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
@@ -68,9 +68,6 @@
 		CC113C0D1C8C4E5D0044FEEB /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		CC48ECD61C8863DB009CF0D0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CC725C171C893F8400C3EAF2 /* 150511_JiveBike.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = 150511_JiveBike.mov; sourceTree = "<group>"; };
-		CC725C201C894D1D00C3EAF2 /* ZFPlayerMaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerMaskView.h; sourceTree = "<group>"; };
-		CC725C211C894D1D00C3EAF2 /* ZFPlayerMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerMaskView.m; sourceTree = "<group>"; };
-		CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerMaskView.xib; sourceTree = "<group>"; };
 		CC725C231C894D1D00C3EAF2 /* ZFPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerView.h; sourceTree = "<group>"; };
 		CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerView.m; sourceTree = "<group>"; };
 		CC725C2A1C894D2500C3EAF2 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
@@ -82,6 +79,9 @@
 		CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerView.xib; sourceTree = "<group>"; };
 		CCA71EB71C96FF4000B45739 /* ZFBrightnessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFBrightnessView.h; sourceTree = "<group>"; };
 		CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFBrightnessView.m; sourceTree = "<group>"; };
+		CCB5BC931C97E5B80022C9AD /* ZFPlayerMaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerMaskView.h; sourceTree = "<group>"; };
+		CCB5BC941C97E5B80022C9AD /* ZFPlayerMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerMaskView.m; sourceTree = "<group>"; };
+		CCB5BC951C97E5B80022C9AD /* ZFPlayerMaskView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerMaskView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,9 +223,9 @@
 				CC725C231C894D1D00C3EAF2 /* ZFPlayerView.h */,
 				CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */,
 				CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */,
-				CC725C201C894D1D00C3EAF2 /* ZFPlayerMaskView.h */,
-				CC725C211C894D1D00C3EAF2 /* ZFPlayerMaskView.m */,
-				CC725C221C894D1D00C3EAF2 /* ZFPlayerMaskView.xib */,
+				CCB5BC931C97E5B80022C9AD /* ZFPlayerMaskView.h */,
+				CCB5BC941C97E5B80022C9AD /* ZFPlayerMaskView.m */,
+				CCB5BC951C97E5B80022C9AD /* ZFPlayerMaskView.xib */,
 				CCA71EB71C96FF4000B45739 /* ZFBrightnessView.h */,
 				CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */,
 			);
@@ -341,10 +341,10 @@
 			files = (
 				CC725C181C893F8400C3EAF2 /* 150511_JiveBike.mov in Resources */,
 				4947F79D1BE996AC003093C8 /* LaunchScreen.storyboard in Resources */,
+				CCB5BC971C97E5B80022C9AD /* ZFPlayerMaskView.xib in Resources */,
 				4947F79A1BE996AC003093C8 /* Assets.xcassets in Resources */,
 				49F272801BF2330700FCC767 /* Info.plist in Resources */,
 				CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */,
-				CC725C261C894D1D00C3EAF2 /* ZFPlayerMaskView.xib in Resources */,
 				CC8AC9B91C8AD970006B9A1B /* ZFPlayerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -420,13 +420,13 @@
 			files = (
 				CCA71EB91C96FF4000B45739 /* ZFBrightnessView.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */,
+				CCB5BC961C97E5B80022C9AD /* ZFPlayerMaskView.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
 				CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */,
 				CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */,
 				CC725C271C894D1D00C3EAF2 /* ZFPlayerView.m in Sources */,
 				4947F78F1BE996AC003093C8 /* main.m in Sources */,
-				CC725C251C894D1D00C3EAF2 /* ZFPlayerMaskView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,14 +558,14 @@
 			baseConfigurationReference = 04C83594FBD4A53862B96DB0 /* Pods-Player.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: yufeng chen (W6UQV432W8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yufeng chen (W6UQV432W8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Player/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a183bc14-b67a-4c31-b892-8cbfbdac24b3";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -574,14 +574,14 @@
 			baseConfigurationReference = 43B3E208CB404062097185BA /* Pods-Player.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = Player/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a183bc14-b67a-4c31-b892-8cbfbdac24b3";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

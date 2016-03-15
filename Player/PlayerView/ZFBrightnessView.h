@@ -24,6 +24,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ZFBrightnessView : UIView
+
 + (instancetype)sharedBrightnesView;
 
 @end

@@ -864,12 +864,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if([touch.view isKindOfClass:[UISlider class]])
-    {
+    if([touch.view isKindOfClass:[UISlider class]]){
         return NO;
-    }
-    else
-    {
+    }else {
         return YES;
     }
 }
