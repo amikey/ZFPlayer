@@ -441,7 +441,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationPortraitUpsideDown:{
             //NSLog(@"第3个旋转方向---电池栏在下");
             [self.maskView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
-            self.isFullScreen = NO;
+            self.isFullScreen = YES;
         }
             break;
         case UIInterfaceOrientationPortrait:{
