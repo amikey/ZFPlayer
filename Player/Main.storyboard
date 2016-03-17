@@ -76,6 +76,88 @@
             </objects>
             <point key="canvasLocation" x="819.5" y="1137.5"/>
         </scene>
+        <!--列表视频-->
+        <scene sceneID="KcN-Y8-2Q4">
+            <objects>
+                <tableViewController id="x8g-fk-vKS" customClass="ZFTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="253" sectionHeaderHeight="28" sectionFooterHeight="28" id="8f3-x6-scd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="playerCell" rowHeight="253" id="Kzk-rb-IGS" customClass="ZFPlayerCell">
+                                <rect key="frame" x="0.0" y="92" width="375" height="253"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kzk-rb-IGS" id="3dy-Pu-1jL">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="252"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading_bgView" translatesAutoresizingMaskIntoConstraints="NO" id="hXd-DO-bVF">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="hXd-DO-bVF" secondAttribute="height" multiplier="16:9" id="gSd-WV-Grq"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5LT-yX-98V">
+                                            <rect key="frame" x="18" y="223" width="38" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jv-0M-vXv">
+                                            <rect key="frame" x="163" y="81" width="50" height="50"/>
+                                            <state key="normal" image="video_list_cell_big_icon"/>
+                                            <connections>
+                                                <action selector="play:" destination="Kzk-rb-IGS" eventType="touchUpInside" id="dBS-b4-uTz"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="hXd-DO-bVF" firstAttribute="top" secondItem="3dy-Pu-1jL" secondAttribute="top" id="4Kc-rD-mPg"/>
+                                        <constraint firstItem="5LT-yX-98V" firstAttribute="leading" secondItem="3dy-Pu-1jL" secondAttribute="leadingMargin" constant="10" id="ApV-Nr-sPa"/>
+                                        <constraint firstAttribute="trailing" secondItem="hXd-DO-bVF" secondAttribute="trailing" id="R46-Zv-yrq"/>
+                                        <constraint firstItem="7jv-0M-vXv" firstAttribute="centerX" secondItem="hXd-DO-bVF" secondAttribute="centerX" id="X4P-jC-C0D"/>
+                                        <constraint firstItem="hXd-DO-bVF" firstAttribute="leading" secondItem="3dy-Pu-1jL" secondAttribute="leading" id="bnh-LJ-865"/>
+                                        <constraint firstItem="5LT-yX-98V" firstAttribute="top" secondItem="hXd-DO-bVF" secondAttribute="bottom" constant="12" id="gyD-dp-MW2"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="5LT-yX-98V" secondAttribute="bottom" id="kaO-GO-TSN"/>
+                                        <constraint firstItem="7jv-0M-vXv" firstAttribute="centerY" secondItem="hXd-DO-bVF" secondAttribute="centerY" id="sny-Ci-A0r"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="picView" destination="hXd-DO-bVF" id="5Lb-Uz-ufr"/>
+                                    <outlet property="playBtn" destination="7jv-0M-vXv" id="Ug6-gd-r4a"/>
+                                    <outlet property="titleLabel" destination="5LT-yX-98V" id="0Ym-Kt-VHs"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="x8g-fk-vKS" id="oMS-f2-smZ"/>
+                            <outlet property="delegate" destination="x8g-fk-vKS" id="qmw-E5-i8N"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="列表视频" id="nIO-gx-iSh"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="990-VC-cOh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="819.5" y="1884.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xRO-Dx-zsC">
+            <objects>
+                <navigationController id="7mG-mj-crH" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="search" id="3rB-RS-00r"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ghh-Jw-xLD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="x8g-fk-vKS" kind="relationship" relationship="rootViewController" id="uCc-IZ-SnQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vz9-r5-S9B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="305.5" y="1884.5"/>
+        </scene>
         <!--Movie Player View Controller-->
         <scene sceneID="w6M-Wm-SpO">
             <objects>
@@ -200,6 +282,7 @@
                     <connections>
                         <segue destination="HX3-NW-XW1" kind="relationship" relationship="viewControllers" id="daN-NH-F5B"/>
                         <segue destination="7Xx-X8-Lzw" kind="relationship" relationship="viewControllers" id="l9C-WC-lMf"/>
+                        <segue destination="7mG-mj-crH" kind="relationship" relationship="viewControllers" id="d73-mU-G68"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPx-h0-S2o" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -247,6 +330,10 @@
             <point key="canvasLocation" x="305.5" y="363.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="loading_bgView" width="1136" height="640"/>
+        <image name="video_list_cell_big_icon" width="50" height="50"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="8B8-xC-tWR"/>
     </inferredMetricsTieBreakers>

@@ -68,6 +68,7 @@
     */
     
     self.playerView.videoURL     = self.videoURL;
+    [self.playerView play];
     __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock  = ^{
         [weakSelf.navigationController popViewControllerAnimated:YES];
