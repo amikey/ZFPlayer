@@ -174,6 +174,7 @@ static ZFPlayerView* playerView = nil;
     [self removeFromSuperview];
     // vicontroller中页面消失
     self.viewDisappear = YES;
+    self.tableView = nil;
 }
 
 #pragma mark - 观察者、通知
@@ -1030,9 +1031,9 @@ static ZFPlayerView* playerView = nil;
         if (!self.isFullScreen) {
             // 在cell上播放视频
             if (self.isCellVideo) {
+                // 关闭player
                 [self resetPlayer];
                 [self removeFromSuperview];
-                self.viewDisappear = YES;
                 return;
             }
             // player加到控制器上，只有一个player时候
