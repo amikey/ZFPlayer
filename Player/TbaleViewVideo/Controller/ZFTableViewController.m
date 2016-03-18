@@ -39,7 +39,10 @@ static ZFPlayerView *currentPlayer = nil;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.tableView.estimatedRowHeight = 44.0f;
+    
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
     self.dataSource = @[].mutableCopy;
     NSString *path = [[NSBundle mainBundle] pathForResource:@"videoData" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:path];
@@ -62,8 +65,6 @@ static ZFPlayerView *currentPlayer = nil;
 {
     [super viewWillDisappear:animated];
     [self.playerView resetPlayer];
-    [self.playerView removeFromSuperview];
-    self.playerView.viewDisappear = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,12 +106,11 @@ static ZFPlayerView *currentPlayer = nil;
     __weak typeof(self) weakSelf = self;
     cell.playBlock = ^{
         weakSelf.playerView = [ZFPlayerView playerView];
-        [weakSelf.playerView addPlayerToCell:weakCell];
         weakSelf.playerView.isCellVideo = YES;
         weakSelf.playerView.tableView = weakSelf.tableView;
         weakSelf.playerView.indexPath = weakIndexPath;
         weakSelf.playerView.videoURL = [NSURL URLWithString:model.playUrl];
-        [weakSelf.playerView play];
+        [weakSelf.playerView addPlayerToCell:weakCell];
     };
     
     return cell;

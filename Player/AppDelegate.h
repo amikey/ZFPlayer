@@ -28,6 +28,7 @@
 @property (strong, nonatomic) UIWindow *window;
 // 调用AppDelegate单例记录播放状态是否锁屏
 @property (nonatomic, assign) BOOL     isLockScreen;
+@property (nonatomic, assign) BOOL isPo;
 
 @end
 

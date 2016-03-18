@@ -37,7 +37,7 @@
 
 -(void)dealloc
 {
-    //NSLog(@"%@释放了",self.class);
+    NSLog(@"%@释放了",self.class);
     [self.playerView cancelAutoFadeOutControlBar];
 }
 
@@ -68,7 +68,6 @@
     */
     
     self.playerView.videoURL     = self.videoURL;
-    [self.playerView play];
     __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock  = ^{
         [weakSelf.navigationController popViewControllerAnimated:YES];

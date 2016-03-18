@@ -21,9 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "ZFPlayerMaskView.h"
+#import "ZFPlayerControlView.h"
 
-@interface ZFPlayerMaskView ()
+@interface ZFPlayerControlView ()
 /** bottom渐变层*/
 @property (strong, nonatomic) CAGradientLayer *bottomGradientLayer;
 /** top渐变层 */
@@ -35,7 +35,7 @@
 
 @end
 
-@implementation ZFPlayerMaskView
+@implementation ZFPlayerControlView
 
 -(void)dealloc
 {
@@ -95,9 +95,20 @@
 
 }
 
-+ (instancetype)setupPlayerMaskView
+#pragma mark - Public Method
+
+/** 重置ControlView */
+- (void)resetControlView
 {
-    return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerMaskView" owner:nil options:nil].lastObject;
+    self.videoSlider.value = 0;
+    self.progressView.progress = 0;
+    self.currentTimeLabel.text = @"00:00";
+    self.totalTimeLabel.text = @"00:00";
+}
+
++ (instancetype)setupPlayerControlView
+{
+    return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerControlView" owner:nil options:nil].lastObject;
 }
 
 @end

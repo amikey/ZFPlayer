@@ -35,7 +35,7 @@ typedef void(^ZFPlayerGoBackBlock)(void);
 @property (nonatomic, strong) UITableView         *tableView;
 /** player所在cell的indexPath */
 @property (nonatomic, strong) NSIndexPath         *indexPath;
-/** 页面是否消失 */
+/** ViewController中页面是否消失 */
 @property (nonatomic, assign) BOOL                viewDisappear;
 /** 是否在cell上播放video */
 @property (nonatomic, assign) BOOL                isCellVideo;

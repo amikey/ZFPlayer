@@ -23,7 +23,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZFPlayerMaskView : UIView
+@interface ZFPlayerControlView : UIView
 
 /** 开始播放按钮 */
 @property (weak, nonatomic) IBOutlet UIButton       *startBtn;
@@ -39,9 +39,8 @@
 @property (weak, nonatomic) IBOutlet UIButton       *fullScreenBtn;
 @property (weak, nonatomic) IBOutlet UIButton       *lockBtn;
 
-/**
- *  类方法创建
- */
-+ (instancetype)setupPlayerMaskView;
-
+/** 类方法创建 */
++ (instancetype)setupPlayerControlView;
+/** 重置ControlView */
+- (void)resetControlView;
 @end
