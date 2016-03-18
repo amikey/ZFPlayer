@@ -102,13 +102,21 @@ static ZFPlayerView* playerView = nil;
 
 @implementation ZFPlayerView
 
-/** 类方法创建，该方法适用于代码创建View */
+/**
+ *  类方法创建，该方法适用于代码创建View
+ *
+ *  @return ZFPlayer
+ */
 + (instancetype)setupZFPlayer
 {
     return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerView" owner:nil options:nil].lastObject;
 }
 
-/** 单例 */
+/**
+ *  单例，用于列表cell上多个视频
+ *
+ *  @return ZFPlayer
+ */
 + (instancetype)playerView
 {
     static dispatch_once_t onceToken;
@@ -127,7 +135,7 @@ static ZFPlayerView* playerView = nil;
 
 - (void)dealloc
 {
-    NSLog(@"%@释放了",self.class);
+    //NSLog(@"%@释放了",self.class);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.player.currentItem removeObserver:self forKeyPath:@"status"];
     [self.player.currentItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
@@ -136,7 +144,9 @@ static ZFPlayerView* playerView = nil;
     [self removeTableViewObserver];
 }
 
-// 重置player
+/**
+ *  重置player
+ */
 - (void)resetPlayer
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -157,7 +167,8 @@ static ZFPlayerView* playerView = nil;
     self.viewDisappear = YES;
 }
 
-// 添加观察者、通知
+#pragma mark - 观察者、通知
+
 - (void)addObserverAndNotification {
     // AVPlayer播放完成通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
@@ -228,6 +239,8 @@ static ZFPlayerView* playerView = nil;
     
 }
 
+#pragma mark - layoutSubviews
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -247,6 +260,8 @@ static ZFPlayerView* playerView = nil;
         }];
     }
 }
+
+#pragma mark - 设置视频URL
 
 - (void)setVideoURL:(NSURL *)videoURL
 {
@@ -342,15 +357,15 @@ static ZFPlayerView* playerView = nil;
     if (!success) { /* handle the error in setCategoryError */ }
 }
 
-#pragma mark - ShowOrHidecontrolView
+#pragma mark - ShowOrHideControlView
 
 - (void)autoFadeOutControlBar
 {
     if (!self.isMaskShowing) {
         return;
     }
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidecontrolView) object:nil];
-    [self performSelector:@selector(hidecontrolView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
+    [self performSelector:@selector(hideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
 
 }
 - (void)cancelAutoFadeOutControlBar
@@ -358,7 +373,7 @@ static ZFPlayerView* playerView = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
-- (void)hidecontrolView
+- (void)hideControlView
 {
     if (!self.isMaskShowing) {
         return;
@@ -452,8 +467,11 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-#pragma mark - 当tableview滚动时处理playerView的位置
-
+/**
+ *  KVO TableviewContentOffset
+ *
+ *  @param dict void
+ */
 - (void)handleScrollOffsetWithDict:(NSDictionary*)dict
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
@@ -675,7 +693,11 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-// 添加到Cell上
+/**
+ *  player添加到cell上
+ *
+ *  @param cell 添加player的cell
+ */
 - (void)addPlayerToCell:(UITableViewCell *)cell
 {
     [cell addSubview:self];
@@ -855,7 +877,7 @@ static ZFPlayerView* playerView = nil;
             return;
         }
         if (self.isMaskShowing) {
-            [self hidecontrolView];
+            [self hideControlView];
         } else {
             [self animateShow];
         }
@@ -875,12 +897,17 @@ static ZFPlayerView* playerView = nil;
         self.state = ZFPlayerStatePause;
     }
 }
-
+/**
+ *  播放
+ */
 - (void)play
 {
     [_player play];
 }
 
+/**
+ * 暂停
+ */
 - (void)pause
 {
     [_player pause];
@@ -952,7 +979,7 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-#pragma mark - 平移手势方法
+#pragma mark - UIPanGestureRecognizer手势方法
 
 - (void)panDirection:(UIPanGestureRecognizer *)pan
 {
@@ -1055,8 +1082,11 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-#pragma mark - pan垂直移动的方法
-
+/**
+ *  pan垂直移动的方法
+ *
+ *  @param value void
+ */
 - (void)verticalMoved:(CGFloat)value
 {
     if (self.isVolume) {
@@ -1071,8 +1101,12 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-#pragma mark - pan水平移动的方法
 
+/**
+ *  pan水平移动的方法
+ *
+ *  @param value void
+ */
 - (void)horizontalMoved:(CGFloat)value
 {
     // 快进快退的方法
