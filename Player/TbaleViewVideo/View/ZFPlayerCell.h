@@ -23,7 +23,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ZFPlayerView.h"
-#import "PlayerModel.h"
+#import "ZFPlayerModel.h"
 
 typedef void(^PlayBtnCallBackBlock)(void);
 
@@ -33,7 +33,7 @@ typedef void(^PlayBtnCallBackBlock)(void);
 @property (weak, nonatomic  ) IBOutlet UIButton          *playBtn;
 @property (weak, nonatomic  ) IBOutlet UILabel           *titleLabel;
 /** model */
-@property (nonatomic, strong) PlayerModel                *model;
+@property (nonatomic, strong) ZFPlayerModel              *model;
 /** 播放按钮block */
 @property (nonatomic, copy  ) PlayBtnCallBackBlock       playBlock;
 

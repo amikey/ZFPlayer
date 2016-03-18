@@ -17,17 +17,17 @@
 		49F272801BF2330700FCC767 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F2727F1BF2330700FCC767 /* Info.plist */; };
 		CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC113C0D1C8C4E5D0044FEEB /* MainViewController.m */; };
 		CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC48ECD61C8863DB009CF0D0 /* Main.storyboard */; };
+		CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */; };
 		CC725C181C893F8400C3EAF2 /* 150511_JiveBike.mov in Resources */ = {isa = PBXBuildFile; fileRef = CC725C171C893F8400C3EAF2 /* 150511_JiveBike.mov */; };
 		CC725C271C894D1D00C3EAF2 /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */; };
 		CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */; };
-		CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */; };
 		CC8AC9B91C8AD970006B9A1B /* ZFPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */; };
 		CCA71EB91C96FF4000B45739 /* ZFBrightnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */; };
 		CCB5BC961C97E5B80022C9AD /* ZFPlayerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB5BC941C97E5B80022C9AD /* ZFPlayerControlView.m */; };
 		CCB5BC971C97E5B80022C9AD /* ZFPlayerControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCB5BC951C97E5B80022C9AD /* ZFPlayerControlView.xib */; };
 		CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */; };
-		CCE1C13B1C9AA11F004C95AC /* PlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13A1C9AA11F004C95AC /* PlayerModel.m */; };
+		CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13A1C9AA11F004C95AC /* ZFPlayerModel.m */; };
 		CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13D1C9AA128004C95AC /* ZFTableViewController.m */; };
 		CCE1C1401C9AA131004C95AC /* videoData.json in Resources */ = {isa = PBXBuildFile; fileRef = CCE1C13F1C9AA131004C95AC /* videoData.json */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
@@ -71,6 +71,8 @@
 		CC113C0C1C8C4E5D0044FEEB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		CC113C0D1C8C4E5D0044FEEB /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		CC48ECD61C8863DB009CF0D0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		CC6C7AE31C9BDFE90000AD58 /* MoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePlayerViewController.h; sourceTree = "<group>"; };
+		CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
 		CC725C171C893F8400C3EAF2 /* 150511_JiveBike.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = 150511_JiveBike.mov; sourceTree = "<group>"; };
 		CC725C231C894D1D00C3EAF2 /* ZFPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerView.h; sourceTree = "<group>"; };
 		CC725C241C894D1D00C3EAF2 /* ZFPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerView.m; sourceTree = "<group>"; };
@@ -78,8 +80,6 @@
 		CC725C2B1C894D2500C3EAF2 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		CC725C2E1C894D2D00C3EAF2 /* FirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		CC725C301C894D2D00C3EAF2 /* MoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePlayerViewController.h; sourceTree = "<group>"; };
-		CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
 		CC8AC9B81C8AD970006B9A1B /* ZFPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerView.xib; sourceTree = "<group>"; };
 		CCA71EB71C96FF4000B45739 /* ZFBrightnessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFBrightnessView.h; sourceTree = "<group>"; };
 		CCA71EB81C96FF4000B45739 /* ZFBrightnessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFBrightnessView.m; sourceTree = "<group>"; };
@@ -88,8 +88,8 @@
 		CCB5BC951C97E5B80022C9AD /* ZFPlayerControlView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZFPlayerControlView.xib; sourceTree = "<group>"; };
 		CCE1C1361C9AA115004C95AC /* ZFPlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerCell.h; sourceTree = "<group>"; };
 		CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerCell.m; sourceTree = "<group>"; };
-		CCE1C1391C9AA11F004C95AC /* PlayerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerModel.h; sourceTree = "<group>"; };
-		CCE1C13A1C9AA11F004C95AC /* PlayerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerModel.m; sourceTree = "<group>"; };
+		CCE1C1391C9AA11F004C95AC /* ZFPlayerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerModel.h; sourceTree = "<group>"; };
+		CCE1C13A1C9AA11F004C95AC /* ZFPlayerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerModel.m; sourceTree = "<group>"; };
 		CCE1C13C1C9AA128004C95AC /* ZFTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFTableViewController.h; sourceTree = "<group>"; };
 		CCE1C13D1C9AA128004C95AC /* ZFTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFTableViewController.m; sourceTree = "<group>"; };
 		CCE1C13F1C9AA131004C95AC /* videoData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = videoData.json; sourceTree = "<group>"; };
@@ -148,10 +148,11 @@
 		4947F78C1BE996AC003093C8 /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				CCE1C1321C9AA0D9004C95AC /* TbaleViewVideo */,
 				CC725C1F1C894CDA00C3EAF2 /* PlayerView */,
 				CC725C1D1C894C4A00C3EAF2 /* LocalVideo */,
+				CC6C7AE21C9BDFBA0000AD58 /* PlayerViewController */,
 				CC725C1E1C894C8100C3EAF2 /* NetVideo */,
+				CCE1C1321C9AA0D9004C95AC /* TbaleViewVideo */,
 				4947F7901BE996AC003093C8 /* AppDelegate.h */,
 				4947F7911BE996AC003093C8 /* AppDelegate.m */,
 				CC113C0C1C8C4E5D0044FEEB /* MainViewController.h */,
@@ -209,13 +210,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CC6C7AE21C9BDFBA0000AD58 /* PlayerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CC6C7AE31C9BDFE90000AD58 /* MoviePlayerViewController.h */,
+				CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */,
+			);
+			path = PlayerViewController;
+			sourceTree = "<group>";
+		};
 		CC725C1D1C894C4A00C3EAF2 /* LocalVideo */ = {
 			isa = PBXGroup;
 			children = (
 				CC725C2E1C894D2D00C3EAF2 /* FirstViewController.h */,
 				CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */,
-				CC725C301C894D2D00C3EAF2 /* MoviePlayerViewController.h */,
-				CC725C311C894D2D00C3EAF2 /* MoviePlayerViewController.m */,
 			);
 			path = LocalVideo;
 			sourceTree = "<group>";
@@ -276,8 +284,8 @@
 			isa = PBXGroup;
 			children = (
 				CCE1C13F1C9AA131004C95AC /* videoData.json */,
-				CCE1C1391C9AA11F004C95AC /* PlayerModel.h */,
-				CCE1C13A1C9AA11F004C95AC /* PlayerModel.m */,
+				CCE1C1391C9AA11F004C95AC /* ZFPlayerModel.h */,
+				CCE1C13A1C9AA11F004C95AC /* ZFPlayerModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -470,10 +478,10 @@
 			files = (
 				CCA71EB91C96FF4000B45739 /* ZFBrightnessView.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */,
+				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,
 				CCB5BC961C97E5B80022C9AD /* ZFPlayerControlView.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
-				CC725C331C894D2D00C3EAF2 /* MoviePlayerViewController.m in Sources */,
-				CCE1C13B1C9AA11F004C95AC /* PlayerModel.m in Sources */,
+				CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */,
 				CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */,
 				CC725C271C894D1D00C3EAF2 /* ZFPlayerView.m in Sources */,

@@ -23,11 +23,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PlayerModel : NSObject
+@interface ZFPlayerModel : NSObject
 
+/** 标题 */
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *descriptions;
+/** 描述 */
+@property (nonatomic, copy) NSString *video_descriptions;
+/** 视频地址 */
 @property (nonatomic, copy) NSString *playUrl;
+/** 封面图 */
 @property (nonatomic, copy) NSString *coverForFeed;
+/** 时间戳 */
+@property (nonatomic, assign) long   date;
 
 @end

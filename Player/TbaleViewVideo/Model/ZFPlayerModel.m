@@ -1,5 +1,5 @@
 //
-//  PlayerModel.m
+//  ZFPlayerModel.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,14 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "PlayerModel.h"
+#import "ZFPlayerModel.h"
 
-@implementation PlayerModel
+@implementation ZFPlayerModel
 
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
+    // 转换系统关键字description
     if ([key isEqualToString:@"description"]) {
-        self.descriptions = [NSString stringWithFormat:@"%@",value];
+        self.video_descriptions = [NSString stringWithFormat:@"%@",value];
     }
 }
 

@@ -23,7 +23,7 @@
 
 #import "ZFTableViewController.h"
 #import "ZFPlayerCell.h"
-#import "PlayerModel.h"
+#import "ZFPlayerModel.h"
 #import <Masonry/Masonry.h>
 
 static ZFPlayerView *currentPlayer = nil;
@@ -37,6 +37,8 @@ static ZFPlayerView *currentPlayer = nil;
 
 @implementation ZFTableViewController
 
+#pragma mark - life Cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.estimatedRowHeight = 44.0f;
@@ -48,12 +50,14 @@ static ZFPlayerView *currentPlayer = nil;
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     
-    NSArray *array = [rootDict objectForKey:@"dailyList"];
-    for (NSDictionary *dic in array) {
-        NSArray *arr = [dic objectForKey:@"videoList"];
+    
+    NSArray *dailyList = [rootDict objectForKey:@"dailyList"];
+    // 使用KVC解析json
+    for (NSDictionary *dic in dailyList) {
+        NSArray *videoList = [dic objectForKey:@"videoList"];
         NSMutableArray *sectionArray = @[].mutableCopy;
-        for (NSDictionary *dataDic in arr) {
-            PlayerModel *model = [[PlayerModel alloc] init];
+        for (NSDictionary *dataDic in videoList) {
+            ZFPlayerModel *model = [[ZFPlayerModel alloc] init];
             [model setValuesForKeysWithDictionary:dataDic];
             [sectionArray addObject:model];
         }
@@ -61,6 +65,7 @@ static ZFPlayerView *currentPlayer = nil;
     }
 }
 
+// 页面消失时候
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -98,7 +103,7 @@ static ZFPlayerView *currentPlayer = nil;
     static NSString *identifier = @"playerCell";
     ZFPlayerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 
-    __block PlayerModel *model = self.dataSource[indexPath.section][indexPath.row];
+    __block ZFPlayerModel *model = self.dataSource[indexPath.section][indexPath.row];
     cell.model = model;
     
     __block NSIndexPath *weakIndexPath = indexPath;
@@ -106,6 +111,7 @@ static ZFPlayerView *currentPlayer = nil;
     __weak typeof(self) weakSelf = self;
     cell.playBlock = ^{
         weakSelf.playerView = [ZFPlayerView playerView];
+        // 在cell上播放视频，以下参数毕传
         weakSelf.playerView.isCellVideo = YES;
         weakSelf.playerView.tableView = weakSelf.tableView;
         weakSelf.playerView.indexPath = weakIndexPath;
@@ -116,44 +122,26 @@ static ZFPlayerView *currentPlayer = nil;
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return [NSString stringWithFormat:@"第%zd区",section];
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSArray * modelArray = self.dataSource[section];
+    ZFPlayerModel *model = modelArray[0];
+    return [self getDateFromTimeInterval:model.date];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+/**
+ *  转换时间戳
+ *
+ *  @param timeInterval 时间戳
+ *
+ *  @return 时间字符串
+ */
+- (NSString *)getDateFromTimeInterval:(long)timeInterval {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyy月MM日dd";
+    NSDate *createDate = [NSDate dateWithTimeIntervalSince1970:timeInterval/1000];
+    NSString *createStr = [formatter stringFromDate:createDate];
+    return createStr;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 /*
 #pragma mark - Navigation
