@@ -26,8 +26,6 @@
 #import "ZFPlayerModel.h"
 #import <Masonry/Masonry.h>
 
-static ZFPlayerView *currentPlayer = nil;
-
 @interface ZFTableViewController ()
 
 @property (nonatomic, strong) NSMutableArray *dataSource;

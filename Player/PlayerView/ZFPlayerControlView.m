@@ -106,6 +106,7 @@
     self.totalTimeLabel.text = @"00:00";
 }
 
+/** 类方法创建 */
 + (instancetype)setupPlayerControlView
 {
     return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerControlView" owner:nil options:nil].lastObject;

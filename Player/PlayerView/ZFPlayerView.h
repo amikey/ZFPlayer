@@ -41,7 +41,7 @@ typedef void(^ZFPlayerGoBackBlock)(void);
 @property (nonatomic, assign) BOOL                isCellVideo;
 
 /**
- *  取消延时隐藏maskView的方法,在ViewController的delloc方法中调用
+ *  取消延时隐藏controlView的方法,在ViewController的delloc方法中调用
  *  用于解决：刚打开视频播放器，就关闭该页面，maskView的延时隐藏还未执行。
  */
 - (void)cancelAutoFadeOutControlBar;

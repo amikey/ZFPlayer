@@ -150,8 +150,8 @@
 			children = (
 				CC725C1F1C894CDA00C3EAF2 /* PlayerView */,
 				CC725C1D1C894C4A00C3EAF2 /* LocalVideo */,
-				CC6C7AE21C9BDFBA0000AD58 /* PlayerViewController */,
 				CC725C1E1C894C8100C3EAF2 /* NetVideo */,
+				CC6C7AE21C9BDFBA0000AD58 /* PlayerViewController */,
 				CCE1C1321C9AA0D9004C95AC /* TbaleViewVideo */,
 				4947F7901BE996AC003093C8 /* AppDelegate.h */,
 				4947F7911BE996AC003093C8 /* AppDelegate.m */,
