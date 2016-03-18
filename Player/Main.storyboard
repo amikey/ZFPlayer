@@ -104,8 +104,8 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jv-0M-vXv">
-                                            <rect key="frame" x="163" y="83" width="50" height="50"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jv-0M-vXv">
+                                            <rect key="frame" x="163" y="82" width="50" height="50"/>
                                             <state key="normal" image="video_list_cell_big_icon"/>
                                             <connections>
                                                 <action selector="play:" destination="Kzk-rb-IGS" eventType="touchUpInside" id="dBS-b4-uTz"/>
@@ -140,7 +140,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="990-VC-cOh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="819.5" y="1884.5"/>
+            <point key="canvasLocation" x="819.5" y="2004.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xRO-Dx-zsC">
@@ -157,7 +157,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vz9-r5-S9B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305.5" y="1884.5"/>
+            <point key="canvasLocation" x="305.5" y="2012.5"/>
         </scene>
         <!--Movie Player View Controller-->
         <scene sceneID="w6M-Wm-SpO">
@@ -288,7 +288,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPx-h0-S2o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-241.5" y="703.5"/>
+            <point key="canvasLocation" x="-385.5" y="1137.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GNS-Uz-8Xs">
