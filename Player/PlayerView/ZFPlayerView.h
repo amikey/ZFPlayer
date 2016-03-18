@@ -79,4 +79,13 @@ typedef void(^ZFPlayerGoBackBlock)(void);
  */
 - (void)pause;
 
+/**
+ *  用于cell上播放player
+ *
+ *  @param videoURL  视频的URL
+ *  @param tableView tableView
+ *  @param indexPath indexPath 
+ */
+- (void)setVideoURL:(NSURL *)videoURL withTableView:(UITableView *)tableView AtIndexPath:(NSIndexPath *)indexPath;
+
 @end

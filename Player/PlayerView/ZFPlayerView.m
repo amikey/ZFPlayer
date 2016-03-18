@@ -284,6 +284,27 @@ static ZFPlayerView* playerView = nil;
 
 #pragma mark - 设置视频URL
 
+/**
+ *  用于cell上播放player
+ *
+ *  @param videoURL  视频的URL
+ *  @param tableView tableView
+ *  @param indexPath indexPath
+ */
+- (void)setVideoURL:(NSURL *)videoURL withTableView:(UITableView *)tableView AtIndexPath:(NSIndexPath *)indexPath
+{
+    // 在cell上播放视频
+    self.isCellVideo = YES;
+    self.tableView = tableView;
+    self.indexPath = indexPath;
+    [self setVideoURL:videoURL];
+}
+
+/**
+ *  videoURL的setter方法
+ *
+ *  @param videoURL videoURL
+ */
 - (void)setVideoURL:(NSURL *)videoURL
 {
     self.horizontalLabel.hidden = YES;//先隐藏

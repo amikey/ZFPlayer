@@ -109,11 +109,9 @@
     __weak typeof(self) weakSelf = self;
     cell.playBlock = ^{
         weakSelf.playerView = [ZFPlayerView playerView];
-        // 在cell上播放视频，以下参数毕传
-        weakSelf.playerView.isCellVideo = YES;
-        weakSelf.playerView.tableView = weakSelf.tableView;
-        weakSelf.playerView.indexPath = weakIndexPath;
-        weakSelf.playerView.videoURL = [NSURL URLWithString:model.playUrl];
+        NSURL *videoURL = [NSURL URLWithString:model.playUrl];
+        // 设置player相关参数
+        [weakSelf.playerView setVideoURL:videoURL withTableView:weakSelf.tableView AtIndexPath:weakIndexPath];
         [weakSelf.playerView addPlayerToCell:weakCell];
     };
     
