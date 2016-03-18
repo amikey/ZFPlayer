@@ -537,12 +537,11 @@ static ZFPlayerView* playerView = nil;
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
             CGFloat width = ScreenWidth*0.5-20;
             make.width.mas_equalTo(width);
-            make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
             make.trailing.mas_equalTo(-10);
             make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
+            make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
         }];
     }
-
     self.isBottomVideo = YES;
     // 不显示控制层
     self.controlView.alpha = 0;
@@ -568,6 +567,11 @@ static ZFPlayerView* playerView = nil;
 - (void)setOrientationLandscape
 {
     if (self.tableView) {
+        [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.leading.mas_equalTo(15);
+            make.width.height.mas_equalTo(30);
+            make.top.mas_equalTo(20);
+        }];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         [[UIApplication sharedApplication].keyWindow addSubview:self];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -582,6 +586,11 @@ static ZFPlayerView* playerView = nil;
 - (void)setOrientationPortrait
 {
     if (self.tableView) {
+        [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.leading.mas_equalTo(5);
+            make.width.height.mas_equalTo(30);
+            make.top.mas_equalTo(5);
+        }];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         [self removeFromSuperview];
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
@@ -595,7 +604,7 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-#pragma mark 转屏相关
+#pragma mark 屏幕转屏相关
 
 /**
  *  强制屏幕转屏
@@ -616,18 +625,10 @@ static ZFPlayerView* playerView = nil;
     }
     
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
-        [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.leading.mas_equalTo(15);
-            make.width.height.mas_equalTo(30);
-            make.top.mas_equalTo(20);
-        }];
+        
         [self setOrientationLandscape];
     }else if (orientation == UIInterfaceOrientationPortrait) {
-        [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.leading.mas_equalTo(15);
-            make.width.height.mas_equalTo(30);
-            make.top.mas_equalTo(10);
-        }];
+       
         [self setOrientationPortrait];
         
     }
@@ -660,22 +661,22 @@ static ZFPlayerView* playerView = nil;
     switch (interfaceOrientation) {
             
         case UIInterfaceOrientationPortraitUpsideDown:{
-            ApplicationDelegate.isPortrait = NO;
+            ApplicationDelegate.isAllowLandscape = NO;
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
         case UIInterfaceOrientationPortrait:{
-            ApplicationDelegate.isPortrait = YES;
+            ApplicationDelegate.isAllowLandscape = YES;
             [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            ApplicationDelegate.isPortrait = NO;
+            ApplicationDelegate.isAllowLandscape = NO;
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            ApplicationDelegate.isPortrait = NO;
+            ApplicationDelegate.isAllowLandscape = NO;
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
@@ -707,7 +708,10 @@ static ZFPlayerView* playerView = nil;
         case UIInterfaceOrientationPortrait:{
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-fullscreen"] forState:UIControlStateNormal];
             if (self.isCellVideo) {
+                // 当设备转到竖屏时候，设置为竖屏约束
                 [self setOrientationPortrait];
+                // 改为只允许竖屏播放
+                ApplicationDelegate.isAllowLandscape = NO;
                 [self.backBtn setImage:[UIImage imageNamed:@"kr-video-player-close"] forState:UIControlStateNormal];
             }
             self.isFullScreen = NO;
