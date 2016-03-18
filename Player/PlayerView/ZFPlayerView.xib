@@ -39,7 +39,7 @@
                 <constraint firstItem="RMN-tc-wFo" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="peh-ku-1ft"/>
                 <constraint firstItem="RMN-tc-wFo" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="rNn-xL-dQd"/>
                 <constraint firstItem="gUJ-Pv-GeU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="750" constant="20" id="zuY-aP-7sb">
-                    <variation key="heightClass=regular-widthClass=compact" constant="20"/>
+                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
                 </constraint>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
