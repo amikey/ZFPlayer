@@ -64,39 +64,39 @@ static ZFPlayerView* playerView = nil;
 /** 返回按钮*/
 @property (weak, nonatomic  ) IBOutlet UIButton                *backBtn;
 /** 播放属性 */
-@property (nonatomic, strong) AVPlayer         *player;
+@property (nonatomic, strong) AVPlayer            *player;
 /** 播放属性 */
-@property (nonatomic, strong) AVPlayerItem     *playerItem;
+@property (nonatomic, strong) AVPlayerItem        *playerItem;
 /** playerLayer */
-@property (nonatomic, strong) AVPlayerLayer    *playerLayer;
+@property (nonatomic, strong) AVPlayerLayer       *playerLayer;
 /** 滑杆 */
-@property (nonatomic, strong) UISlider         *volumeViewSlider;
+@property (nonatomic, strong) UISlider            *volumeViewSlider;
 /** 计时器 */
-@property (nonatomic, strong) NSTimer          *timer;
+@property (nonatomic, strong) NSTimer             *timer;
 /** 蒙版View */
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 /** 用来保存快进的总时长 */
-@property (nonatomic, assign) CGFloat          sumTime;
+@property (nonatomic, assign) CGFloat             sumTime;
 /** 定义一个实例变量，保存枚举值 */
-@property (nonatomic, assign) PanDirection     panDirection;
+@property (nonatomic, assign) PanDirection        panDirection;
 /** 播发器的几种状态 */
-@property (nonatomic, assign) ZFPlayerState    state;
+@property (nonatomic, assign) ZFPlayerState       state;
 /** 是否为全屏 */
-@property (nonatomic, assign) BOOL             isFullScreen;
+@property (nonatomic, assign) BOOL                isFullScreen;
 /** 是否锁定屏幕方向 */
-@property (nonatomic, assign) BOOL             isLocked;
+@property (nonatomic, assign) BOOL                isLocked;
 /** 是否在调节音量*/
-@property (nonatomic, assign) BOOL             isVolume;
+@property (nonatomic, assign) BOOL                isVolume;
 /** 是否显示controlView*/
-@property (nonatomic, assign) BOOL             isMaskShowing;
+@property (nonatomic, assign) BOOL                isMaskShowing;
 /** 是否被用户暂停 */
-@property (nonatomic, assign) BOOL             isPauseByUser;
+@property (nonatomic, assign) BOOL                isPauseByUser;
 /** 是否播放本地文件 */
-@property (nonatomic, assign) BOOL             isLocalVideo;
+@property (nonatomic, assign) BOOL                isLocalVideo;
 /** slider上次的值 */
-@property (nonatomic, assign) CGFloat          sliderLastValue;
+@property (nonatomic, assign) CGFloat             sliderLastValue;
 /** 是否缩小视频在底部 */
-@property (nonatomic, assign) BOOL             isBottomVideo;
+@property (nonatomic, assign) BOOL                isBottomVideo;
 
 @end
 
@@ -252,8 +252,8 @@ static ZFPlayerView* playerView = nil;
     // 延迟隐藏controlView
     [self animateShow];
     
-    // 解决4s，屏幕宽高比不是16：9的问题
-    if (iPhone4s) {
+    // 解决4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
+    if (iPhone4s && !self.isCellVideo) {
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             CGFloat width = [UIScreen mainScreen].bounds.size.width;
             make.height.mas_equalTo(width*320/480);
@@ -492,13 +492,25 @@ static ZFPlayerView* playerView = nil;
         return ;
     }
     [[UIApplication sharedApplication].keyWindow addSubview:self];
-    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        CGFloat width = ScreenWidth*0.5-20;
-        make.width.mas_equalTo(width);
-        make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
-        make.trailing.mas_equalTo(-10);
-        make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
-    }];
+    // 解决4s，屏幕宽高比不是16：9的问题
+    if (iPhone4s) {
+        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+            CGFloat width = ScreenWidth*0.5-20;
+            make.width.mas_equalTo(width);
+            make.trailing.mas_equalTo(-10);
+            make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
+            make.height.mas_equalTo(width*320/480).with.priority(750);
+        }];
+    }else {
+        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+            CGFloat width = ScreenWidth*0.5-20;
+            make.width.mas_equalTo(width);
+            make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+            make.trailing.mas_equalTo(-10);
+            make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
+        }];
+    }
+
     self.isBottomVideo = YES;
     // 不显示控制层
     self.controlView.alpha = 0;
