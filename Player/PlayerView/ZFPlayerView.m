@@ -172,9 +172,13 @@ static ZFPlayerView* playerView = nil;
     // 重置控制层View
     [self.controlView resetControlView];
     [self removeFromSuperview];
-    // vicontroller中页面消失
-    self.viewDisappear = YES;
-    self.tableView = nil;
+    if (self.tableView) {
+        // vicontroller中页面消失
+        self.viewDisappear = YES;
+        
+        self.tableView = nil;
+        self.indexPath = nil;
+    }
 }
 
 #pragma mark - 观察者、通知
@@ -295,8 +299,16 @@ static ZFPlayerView* playerView = nil;
 {
     // 在cell上播放视频
     self.isCellVideo = YES;
+    // 如果页面没有消失过，并且playerItem有值，需要重置player
+    if (!self.viewDisappear && self.playerItem) {
+        [self resetPlayer];
+    }
+    // viewDisappear改为NO
+    self.viewDisappear = NO;
+    
     self.tableView = tableView;
     self.indexPath = indexPath;
+    // 设置视频URL
     [self setVideoURL:videoURL];
 }
 
@@ -311,12 +323,6 @@ static ZFPlayerView* playerView = nil;
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
     self.state = ZFPlayerStateStopped;
-    
-    // 如果页面没有消失过，并且playerItem有值
-    if (!self.viewDisappear && self.playerItem) {
-        [self resetPlayer];
-    }
-    self.viewDisappear = NO;
     
     // 初始化playerItem
     self.playerItem  = [AVPlayerItem playerItemWithURL:videoURL];
@@ -527,7 +533,7 @@ static ZFPlayerView* playerView = nil;
 - (void)handleScrollOffsetWithDict:(NSDictionary*)dict
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
-    NSArray *visableCells =self.tableView.visibleCells;
+    NSArray *visableCells = self.tableView.visibleCells;
     if ([visableCells containsObject:cell]) {
         //在显示中
         [self updataPlayerViewToCell];
