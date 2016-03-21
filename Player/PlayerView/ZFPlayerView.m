@@ -1348,9 +1348,9 @@ static ZFPlayerView* playerView = nil;
 {
     if (!_controlView) {
         _controlView = [ZFPlayerControlView setupPlayerControlView];
-        [self insertSubview:self.controlView belowSubview:self.backBtn];
+        [self insertSubview:_controlView belowSubview:_backBtn];
         
-        [self.controlView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_controlView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
         }];
     }
