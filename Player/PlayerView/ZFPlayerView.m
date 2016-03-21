@@ -73,7 +73,7 @@ static ZFPlayerView* playerView = nil;
 @property (nonatomic, strong) UISlider            *volumeViewSlider;
 /** 计时器 */
 @property (nonatomic, strong) NSTimer             *timer;
-/** 蒙版View */
+/** 控制层View */
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 /** 用来保存快进的总时长 */
 @property (nonatomic, assign) CGFloat             sumTime;
@@ -480,7 +480,8 @@ static ZFPlayerView* playerView = nil;
             if (self.player.status == AVPlayerStatusReadyToPlay) {
                 
                 self.state = ZFPlayerStatePlaying;
-                // 加载完成后，再添加拖拽手势
+                
+                // 加载完成后，再添加平移手势
                 // 添加平移手势，用来控制音量、亮度、快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
                 pan.delegate                = self;
@@ -1307,8 +1308,8 @@ static ZFPlayerView* playerView = nil;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     CGPoint point = [touch locationInView:self.controlView];
-    // 屏幕下方slider区域不响应pan手势
-    if ((point.y > self.bounds.size.height-40)) {
+    // （屏幕下方slider区域不响应pan手势） || （在cell上播放视频 && 不是全屏状态）
+    if ((point.y > self.bounds.size.height-40) || (self.isCellVideo && !self.isFullScreen)) {
         return NO;
     }
     return YES;
