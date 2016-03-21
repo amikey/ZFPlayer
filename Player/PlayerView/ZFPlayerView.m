@@ -799,6 +799,7 @@ static ZFPlayerView* playerView = nil;
     // 调用AppDelegate单例记录播放状态是否锁屏
     ApplicationDelegate.isLockScreen = NO;
     self.controlView.lockBtn.selected = NO;
+    self.isLocked = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
 }
 
