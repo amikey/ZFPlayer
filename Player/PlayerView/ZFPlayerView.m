@@ -28,6 +28,7 @@
 #import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerControlView.h"
 #import "AppDelegate.h"
+#import "ZFBrightnessView.h"
 
 #define kZFPlayerViewContentOffset @"contentOffset"
 #define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
@@ -606,7 +607,9 @@ static ZFPlayerView* playerView = nil;
             make.top.mas_equalTo(20);
         }];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-        [[UIApplication sharedApplication].keyWindow addSubview:self];
+        // 亮度view加到window最上层
+        ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnesView];
+        [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
         }];

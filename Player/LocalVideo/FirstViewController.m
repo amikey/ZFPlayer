@@ -23,7 +23,6 @@
 
 #import "FirstViewController.h"
 #import "MoviePlayerViewController.h"
-#import "ZFBrightnessView.h"
 
 @interface FirstViewController ()
 
@@ -40,7 +39,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [ZFBrightnessView sharedBrightnesView];
 }
 
 #pragma mark - Navigation
