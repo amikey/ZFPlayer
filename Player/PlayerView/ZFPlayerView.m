@@ -374,6 +374,10 @@ static ZFPlayerView* playerView = nil;
     self.isPauseByUser = NO;
     [self.activity startAnimating];
     
+    
+    //强制让系统调用layoutSubviews 两个方法必须同时写
+    [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
+    [self layoutIfNeeded]; //加上此代码立刻刷新
 }
 
 //创建手势
