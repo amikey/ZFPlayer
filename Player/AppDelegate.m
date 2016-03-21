@@ -28,7 +28,7 @@
 @end
 
 @implementation AppDelegate
-
+//测试上传
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
