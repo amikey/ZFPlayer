@@ -28,6 +28,7 @@
 #import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerControlView.h"
 #import "AppDelegate.h"
+#import "ZFBrightnessView.h"
 
 #define kZFPlayerViewContentOffset @"contentOffset"
 #define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
@@ -73,7 +74,7 @@ static ZFPlayerView* playerView = nil;
 @property (nonatomic, strong) UISlider            *volumeViewSlider;
 /** 计时器 */
 @property (nonatomic, strong) NSTimer             *timer;
-/** 蒙版View */
+/** 控制层View */
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 /** 用来保存快进的总时长 */
 @property (nonatomic, assign) CGFloat             sumTime;
@@ -131,6 +132,8 @@ static ZFPlayerView* playerView = nil;
     self.backgroundColor                 = [UIColor blackColor];
     // 设置快进快退label
     self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
+    // 亮度调节
+    [ZFBrightnessView sharedBrightnesView];
 }
 
 - (void)dealloc
@@ -172,9 +175,13 @@ static ZFPlayerView* playerView = nil;
     // 重置控制层View
     [self.controlView resetControlView];
     [self removeFromSuperview];
-    // vicontroller中页面消失
-    self.viewDisappear = YES;
-    self.tableView = nil;
+    if (self.tableView) {
+        // vicontroller中页面消失
+        self.viewDisappear = YES;
+        
+        self.tableView = nil;
+        self.indexPath = nil;
+    }
 }
 
 #pragma mark - 观察者、通知
@@ -295,8 +302,16 @@ static ZFPlayerView* playerView = nil;
 {
     // 在cell上播放视频
     self.isCellVideo = YES;
+    // 如果页面没有消失过，并且playerItem有值，需要重置player
+    if (!self.viewDisappear && self.playerItem) {
+        [self resetPlayer];
+    }
+    // viewDisappear改为NO
+    self.viewDisappear = NO;
+    
     self.tableView = tableView;
     self.indexPath = indexPath;
+    // 设置视频URL
     [self setVideoURL:videoURL];
 }
 
@@ -311,12 +326,6 @@ static ZFPlayerView* playerView = nil;
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
     self.state = ZFPlayerStateStopped;
-    
-    // 如果页面没有消失过，并且playerItem有值
-    if (!self.viewDisappear && self.playerItem) {
-        [self resetPlayer];
-    }
-    self.viewDisappear = NO;
     
     // 初始化playerItem
     self.playerItem  = [AVPlayerItem playerItemWithURL:videoURL];
@@ -368,6 +377,10 @@ static ZFPlayerView* playerView = nil;
     self.isPauseByUser = NO;
     [self.activity startAnimating];
     
+    
+    //强制让系统调用layoutSubviews 两个方法必须同时写
+    [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
+    [self layoutIfNeeded]; //加上此代码立刻刷新
 }
 
 //创建手势
@@ -474,7 +487,8 @@ static ZFPlayerView* playerView = nil;
             if (self.player.status == AVPlayerStatusReadyToPlay) {
                 
                 self.state = ZFPlayerStatePlaying;
-                // 加载完成后，再添加拖拽手势
+                
+                // 加载完成后，再添加平移手势
                 // 添加平移手势，用来控制音量、亮度、快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
                 pan.delegate                = self;
@@ -527,7 +541,7 @@ static ZFPlayerView* playerView = nil;
 - (void)handleScrollOffsetWithDict:(NSDictionary*)dict
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
-    NSArray *visableCells =self.tableView.visibleCells;
+    NSArray *visableCells = self.tableView.visibleCells;
     if ([visableCells containsObject:cell]) {
         //在显示中
         [self updataPlayerViewToCell];
@@ -595,7 +609,9 @@ static ZFPlayerView* playerView = nil;
             make.top.mas_equalTo(20);
         }];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-        [[UIApplication sharedApplication].keyWindow addSubview:self];
+        // 亮度view加到window最上层
+        ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnesView];
+        [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
         }];
@@ -783,6 +799,7 @@ static ZFPlayerView* playerView = nil;
     // 调用AppDelegate单例记录播放状态是否锁屏
     ApplicationDelegate.isLockScreen = NO;
     self.controlView.lockBtn.selected = NO;
+    self.isLocked = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
 }
 
@@ -1301,8 +1318,8 @@ static ZFPlayerView* playerView = nil;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     CGPoint point = [touch locationInView:self.controlView];
-    // 屏幕下方slider区域不响应pan手势
-    if ((point.y > self.bounds.size.height-40)) {
+    // （屏幕下方slider区域不响应pan手势） || （在cell上播放视频 && 不是全屏状态）
+    if ((point.y > self.bounds.size.height-40) || (self.isCellVideo && !self.isFullScreen)) {
         return NO;
     }
     return YES;
