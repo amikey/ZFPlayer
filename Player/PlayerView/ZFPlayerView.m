@@ -132,6 +132,8 @@ static ZFPlayerView* playerView = nil;
     self.backgroundColor                 = [UIColor blackColor];
     // 设置快进快退label
     self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
+    // 亮度调节
+    [ZFBrightnessView sharedBrightnesView];
 }
 
 - (void)dealloc
