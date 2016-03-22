@@ -643,7 +643,7 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-#pragma mark 屏幕转屏相关
+#pragma mark - 屏幕转屏相关
 
 /**
  *  强制屏幕转屏
@@ -731,6 +731,12 @@ static ZFPlayerView* playerView = nil;
 - (void)onDeviceOrientationChange{
     if (self.isLocked) {
         self.isFullScreen = YES;
+        return;
+    }
+    // 在cell上播放视频 && 不允许横屏（此时为竖屏状态）
+    if (self.isCellVideo && !ApplicationDelegate.isAllowLandscape) {
+        [self.backBtn setImage:[UIImage imageNamed:@"kr-video-player-close"] forState:UIControlStateNormal];
+        self.isFullScreen = NO;
         return;
     }
     UIDeviceOrientation orientation             = [UIDevice currentDevice].orientation;
