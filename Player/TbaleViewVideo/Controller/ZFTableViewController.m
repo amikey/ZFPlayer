@@ -133,7 +133,7 @@
  */
 - (NSString *)getDateFromTimeInterval:(long)timeInterval {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy月MM日dd";
+    formatter.dateFormat = @"yyyy年MM月dd日";
     NSDate *createDate = [NSDate dateWithTimeIntervalSince1970:timeInterval/1000];
     NSString *createStr = [formatter stringFromDate:createDate];
     return createStr;
