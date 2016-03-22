@@ -134,6 +134,8 @@ static ZFPlayerView* playerView = nil;
     self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
     // 亮度调节
     [ZFBrightnessView sharedBrightnesView];
+    [self.activity stopAnimating];
+    self.horizontalLabel.hidden = YES;
 }
 
 - (void)dealloc
@@ -322,7 +324,6 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)setVideoURL:(NSURL *)videoURL
 {
-    self.horizontalLabel.hidden = YES;//先隐藏
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
     self.state = ZFPlayerStateStopped;
