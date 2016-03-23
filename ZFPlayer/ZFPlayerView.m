@@ -29,13 +29,7 @@
 #import "ZFPlayerControlView.h"
 #import "AppDelegate.h"
 #import "ZFBrightnessView.h"
-
-#define kZFPlayerViewContentOffset @"contentOffset"
-#define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
-#define ApplicationDelegate   ((AppDelegate *)[[UIApplication sharedApplication] delegate])
-#define ScreenWidth                         [[UIScreen mainScreen] bounds].size.width
-#define ScreenHeight                        [[UIScreen mainScreen] bounds].size.height
-#define ZFPlayerTableHeight                 (ScreenWidth * 9 / 16)
+#import "ZFPlayerConst.h"
 
 static const CGFloat ZFPlayerAnimationTimeInterval             = 7.0f;
 static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.5f;
@@ -131,7 +125,7 @@ static ZFPlayerView* playerView = nil;
 {
     self.backgroundColor                 = [UIColor blackColor];
     // 设置快进快退label
-    self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Management_Mask"]];
+    self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"Management_Mask")]];
     // 亮度调节
     [ZFBrightnessView sharedBrightnesView];
     [self.activity stopAnimating];
@@ -210,9 +204,9 @@ static ZFPlayerView* playerView = nil;
     [self.controlView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
     // cell上播放视频的话，该返回按钮为×
     if (self.isCellVideo) {
-        [self.backBtn setImage:[UIImage imageNamed:@"kr-video-player-close"] forState:UIControlStateNormal];
+        [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
     }else {
-        [self.backBtn setImage:[UIImage imageNamed:@"play_back_full"] forState:UIControlStateNormal];
+        [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
     }
     // 返回按钮点击事件
     [self.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -643,7 +637,7 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
-#pragma mark - 屏幕转屏相关
+#pragma mark 屏幕转屏相关
 
 /**
  *  强制屏幕转屏
@@ -743,37 +737,37 @@ static ZFPlayerView* playerView = nil;
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     switch (interfaceOrientation) {
         case UIInterfaceOrientationPortraitUpsideDown:{
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
+            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
-                [self.backBtn setImage:[UIImage imageNamed:@"play_back_full"] forState:UIControlStateNormal];
+                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
             }
             self.isFullScreen = YES;
         }
             break;
         case UIInterfaceOrientationPortrait:{
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-fullscreen"] forState:UIControlStateNormal];
+            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-fullscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
                 // 当设备转到竖屏时候，设置为竖屏约束
                 [self setOrientationPortrait];
                 // 改为只允许竖屏播放
                 ApplicationDelegate.isAllowLandscape = NO;
-                [self.backBtn setImage:[UIImage imageNamed:@"kr-video-player-close"] forState:UIControlStateNormal];
+                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
             }
             self.isFullScreen = NO;
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
+            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
-                [self.backBtn setImage:[UIImage imageNamed:@"play_back_full"] forState:UIControlStateNormal];
+                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
             }
             self.isFullScreen = YES;
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:@"kr-video-player-shrinkscreen"] forState:UIControlStateNormal];
+            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
-                [self.backBtn setImage:[UIImage imageNamed:@"play_back_full"] forState:UIControlStateNormal];
+                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
             }
             self.isFullScreen = YES;
         }
@@ -834,7 +828,7 @@ static ZFPlayerView* playerView = nil;
 {
     [self.activity startAnimating];
     // playbackBufferEmpty会反复进入，因此在bufferingOneSecond延时播放执行完之前再调用bufferingSomeSecond都忽略
-    static BOOL isBuffering = NO;
+    __block BOOL isBuffering = NO;
     if (isBuffering) {
         return;
     }

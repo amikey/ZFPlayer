@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A2301" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15A2301" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -37,7 +37,7 @@
                         <constraint firstAttribute="height" constant="30" id="9ec-Rc-dgl"/>
                         <constraint firstAttribute="width" constant="30" id="Dx8-uX-6UA"/>
                     </constraints>
-                    <state key="normal" image="kr-video-player-fullscreen"/>
+                    <state key="normal" image="ZFPlayer.bundle/kr-video-player-fullscreen"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIf-aw-BaL">
                     <rect key="frame" x="10" y="195" width="30" height="30"/>
@@ -45,8 +45,8 @@
                         <constraint firstAttribute="height" constant="30" id="dS8-2R-0d2"/>
                         <constraint firstAttribute="width" constant="30" id="wYW-jz-Yvj"/>
                     </constraints>
-                    <state key="normal" image="kr-video-player-play"/>
-                    <state key="selected" image="kr-video-player-pause"/>
+                    <state key="normal" image="ZFPlayer.bundle/kr-video-player-play"/>
+                    <state key="selected" image="ZFPlayer.bundle/kr-video-player-pause"/>
                 </button>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="pHD-mY-c8M">
                     <rect key="frame" x="86" y="210" width="299" height="2"/>
@@ -63,8 +63,8 @@
                         <constraint firstAttribute="width" constant="40" id="bvc-LU-pUW"/>
                         <constraint firstAttribute="height" constant="40" id="oaY-iI-H7q"/>
                     </constraints>
-                    <state key="normal" image="unlock-nor"/>
-                    <state key="selected" image="lock-nor"/>
+                    <state key="normal" image="ZFPlayer.bundle/unlock-nor"/>
+                    <state key="selected" image="ZFPlayer.bundle/lock-nor"/>
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="bvc-LU-pUW"/>
@@ -138,10 +138,10 @@
         </view>
     </objects>
     <resources>
-        <image name="kr-video-player-fullscreen" width="15" height="15"/>
-        <image name="kr-video-player-pause" width="12" height="19"/>
-        <image name="kr-video-player-play" width="18" height="20"/>
-        <image name="lock-nor" width="27" height="27"/>
-        <image name="unlock-nor" width="27" height="27"/>
+        <image name="ZFPlayer.bundle/kr-video-player-fullscreen" width="15" height="15"/>
+        <image name="ZFPlayer.bundle/kr-video-player-pause" width="15" height="15"/>
+        <image name="ZFPlayer.bundle/kr-video-player-play" width="15" height="15"/>
+        <image name="ZFPlayer.bundle/lock-nor" width="15" height="15"/>
+        <image name="ZFPlayer.bundle/unlock-nor" width="15" height="15"/>
     </resources>
 </document>

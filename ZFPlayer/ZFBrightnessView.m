@@ -22,10 +22,7 @@
 // THE SOFTWARE.
 
 #import "ZFBrightnessView.h"
-
-
-#define SCREEN_W ([UIScreen mainScreen].bounds.size.width)
-#define SCREEN_H ([UIScreen mainScreen].bounds.size.height)
+#import "ZFPlayerConst.h"
 
 @interface ZFBrightnessView ()
 
@@ -57,11 +54,11 @@
 		self.layer.cornerRadius = 10;
 		self.layer.masksToBounds = YES;
 		
-		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"brightness_bg"]];
+		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"brightness_bg.png")]];
         
 		self.backImage = ({
 			UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];
-			imgView.image = [UIImage imageNamed:@"playgesture_BrightnessSun6"];
+			imgView.image = [UIImage imageNamed:ZFPlayerSrcName(@"playgesture_BrightnessSun6")];
 			[self addSubview:imgView];
 			imgView;
 		});

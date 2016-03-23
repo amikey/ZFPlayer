@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import "ZFPlayerControlView.h"
+#import "ZFPlayerConst.h"
 
 @interface ZFPlayerControlView ()
 /** bottom渐变层*/
@@ -45,7 +46,7 @@
 -(void)awakeFromNib
 {
     // 设置slider
-    [self.videoSlider setThumbImage:[UIImage imageNamed:@"slider"] forState:UIControlStateNormal];
+    [self.videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"slider")] forState:UIControlStateNormal];
     
     [self insertSubview:self.progressView belowSubview:self.videoSlider];
     self.videoSlider.minimumTrackTintColor = [UIColor whiteColor];
