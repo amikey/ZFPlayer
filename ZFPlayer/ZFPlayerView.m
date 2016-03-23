@@ -27,7 +27,6 @@
 #import <Masonry/Masonry.h>
 #import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerControlView.h"
-#import "AppDelegate.h"
 #import "ZFBrightnessView.h"
 #import "ZFPlayerConst.h"
 

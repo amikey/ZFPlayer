@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 
 #define SCREEN_W ([UIScreen mainScreen].bounds.size.width)
 #define SCREEN_H ([UIScreen mainScreen].bounds.size.height)
