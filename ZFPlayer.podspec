@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
     s.license      = 'MIT'
     s.authors      = { 'renzifeng' => 'zifeng1300@gmail.com' }
     s.platform     = :ios, '7.0'
-    s.source       = { :git => 'https://github.com/renzifeng/ZFPlayer.git', :tag => s.version.to_s, :commit => '307c8ff0be9bcbf0db43a091144681559aac2ae2'}
+    s.source       = { :git => 'https://github.com/renzifeng/ZFPlayer.git', :tag => s.version.to_s, :commit => '8bd2245aa7d520d8a240b6cf400a5e1d0d21f0f1'}
     s.source_files = 'ZFPlayer/*.{h,m}'
     s.resource_bundles = {
         'MyPodBundle' => ['ZFPlayer/*.{xib}']
