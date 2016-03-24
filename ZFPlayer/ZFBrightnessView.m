@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 
 #import "ZFBrightnessView.h"
-#import "ZFPlayerConst.h"
+#import "ZFPlayer.h"
 
 @interface ZFBrightnessView ()
 
@@ -49,7 +49,7 @@
 
 - (instancetype)init {
 	if (self = [super init]) {
-		self.frame = CGRectMake(SCREEN_W * 0.5, SCREEN_H * 0.5, 155, 155);
+		self.frame = CGRectMake(ScreenWidth * 0.5, ScreenHeight * 0.5, 155, 155);
 		
 		self.layer.cornerRadius = 10;
 		self.layer.masksToBounds = YES;
@@ -218,18 +218,18 @@
 		[UIView animateWithDuration:0.25 animations:^{
 			if ([UIDevice currentDevice].orientation == UIDeviceOrientationPortrait
 				|| [UIDevice currentDevice].orientation == UIDeviceOrientationFaceUp) {
-				self.center = CGPointMake(SCREEN_W * 0.5, (SCREEN_H - 10) * 0.5);
+				self.center = CGPointMake(ScreenWidth * 0.5, (ScreenHeight - 10) * 0.5);
 			} else {
-				self.center = CGPointMake(SCREEN_W * 0.5, SCREEN_H * 0.5);
+				self.center = CGPointMake(ScreenWidth * 0.5, ScreenHeight * 0.5);
 			}
 		} completion:^(BOOL finished) {
 			self.orientationDidChange = NO;
 		}];
 	} else {
 		if ([UIDevice currentDevice].orientation == UIDeviceOrientationPortrait) {
-			self.center = CGPointMake(SCREEN_W * 0.5, (SCREEN_H - 10) * 0.5);
+			self.center = CGPointMake(ScreenWidth * 0.5, (ScreenHeight - 10) * 0.5);
 		} else {
-			self.center = CGPointMake(SCREEN_W * 0.5, SCREEN_H * 0.5);
+			self.center = CGPointMake(ScreenWidth * 0.5, ScreenHeight * 0.5);
 		}
 	}
 	

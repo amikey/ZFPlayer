@@ -24,9 +24,7 @@
 #import "MainViewController.h"
 #import "MoviePlayerViewController.h"
 #import "ZFTableViewController.h"
-#import "AppDelegate.h"
-
-#define ApplicationDelegate   ((AppDelegate *)[[UIApplication sharedApplication] delegate])
+#import "ZFPlayer.h"
 
 @interface MainViewController ()
 
@@ -49,9 +47,9 @@
     UINavigationController *nav = self.viewControllers[self.selectedIndex];
     // MoviePlayerViewController这个页面支持自动转屏
     if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) {
-        return !ApplicationDelegate.isLockScreen;  // 调用AppDelegate单例记录播放状态是否锁屏
+        return !ZFPlayerShared.isLockScreen;  // 调用AppDelegate单例记录播放状态是否锁屏
     }else if ([nav.topViewController isKindOfClass:[ZFTableViewController class]]) {
-        return !ApplicationDelegate.isLockScreen;
+        return !ZFPlayerShared.isLockScreen;
     }
     return NO;
 }
@@ -63,7 +61,7 @@
     if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) { // MoviePlayerViewController这个页面支持转屏方向
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }else if ([nav.topViewController isKindOfClass:[ZFTableViewController class]]) {
-        if (ApplicationDelegate.isAllowLandscape) {
+        if (ZFPlayerShared.isAllowLandscape) {
             return UIInterfaceOrientationMaskAllButUpsideDown;
         }else {
             return UIInterfaceOrientationMaskPortrait;

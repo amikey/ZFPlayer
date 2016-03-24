@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 
 #import "ZFPlayerControlView.h"
-#import "ZFPlayerConst.h"
+#import "ZFPlayer.h"
 
 @interface ZFPlayerControlView ()
 /** bottom渐变层*/

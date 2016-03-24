@@ -1,5 +1,5 @@
 //
-//  ZFPlayerCell.h
+//  ZFPlayerSingleton.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,20 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "ZFPlayer.h"
-#import "ZFPlayerModel.h"
+#import <Foundation/Foundation.h>
 
-typedef void(^PlayBtnCallBackBlock)(void);
+@interface ZFPlayerSingleton : NSObject
 
-@interface ZFPlayerCell : UITableViewCell
+/** 调用AppDelegate单例记录播放状态是否锁屏*/
+@property (nonatomic, assign) BOOL     isLockScreen;
+/** cell上添加player时候，不允许横屏,只运行竖屏状态状态*/
+@property (nonatomic, assign) BOOL     isAllowLandscape;
 
-@property (weak, nonatomic  ) IBOutlet UIImageView       *picView;
-@property (weak, nonatomic  ) IBOutlet UIButton          *playBtn;
-@property (weak, nonatomic  ) IBOutlet UILabel           *titleLabel;
-/** model */
-@property (nonatomic, strong) ZFPlayerModel              *model;
-/** 播放按钮block */
-@property (nonatomic, copy  ) PlayBtnCallBackBlock       playBlock;
++ (instancetype)sharedZFPlayer;
 
 @end

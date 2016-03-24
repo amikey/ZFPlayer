@@ -1,5 +1,5 @@
 //
-//  ZFPlayerCell.h
+//  ZFPlayer.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,20 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "ZFPlayer.h"
-#import "ZFPlayerModel.h"
+#define kZFPlayerViewContentOffset @"contentOffset"
+#define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+//#define ApplicationDelegate   ((AppDelegate *)[[UIApplication sharedApplication] delegate])
+#define ZFPlayerShared                 [ZFPlayerSingleton sharedZFPlayer]
+#define ScreenWidth                         [[UIScreen mainScreen] bounds].size.width
+#define ScreenHeight                        [[UIScreen mainScreen] bounds].size.height
+#define ZFPlayerTableHeight                 (ScreenWidth * 9 / 16)
+// 图片路径
+#define ZFPlayerSrcName(file) [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
 
-typedef void(^PlayBtnCallBackBlock)(void);
+#import "ZFPlayerSingleton.h"
+#import "ZFPlayerView.h"
+#import "ZFPlayerControlView.h"
+#import "ZFBrightnessView.h"
 
-@interface ZFPlayerCell : UITableViewCell
 
-@property (weak, nonatomic  ) IBOutlet UIImageView       *picView;
-@property (weak, nonatomic  ) IBOutlet UIButton          *playBtn;
-@property (weak, nonatomic  ) IBOutlet UILabel           *titleLabel;
-/** model */
-@property (nonatomic, strong) ZFPlayerModel              *model;
-/** 播放按钮block */
-@property (nonatomic, copy  ) PlayBtnCallBackBlock       playBlock;
-
-@end

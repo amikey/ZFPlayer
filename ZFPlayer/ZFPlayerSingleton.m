@@ -1,5 +1,5 @@
 //
-//  ZFPlayerConst.h
+//  ZFPlayerSingleton.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,17 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "AppDelegate.h"
+#import "ZFPlayerSingleton.h"
 
-#define SCREEN_W ([UIScreen mainScreen].bounds.size.width)
-#define SCREEN_H ([UIScreen mainScreen].bounds.size.height)
+@implementation ZFPlayerSingleton
 
-#define kZFPlayerViewContentOffset @"contentOffset"
-#define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
-#define ApplicationDelegate   ((AppDelegate *)[[UIApplication sharedApplication] delegate])
-#define ScreenWidth                         [[UIScreen mainScreen] bounds].size.width
-#define ScreenHeight                        [[UIScreen mainScreen] bounds].size.height
-#define ZFPlayerTableHeight                 (ScreenWidth * 9 / 16)
-// 图片路径
-#define ZFPlayerSrcName(file) [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
++ (instancetype)sharedZFPlayer
+{
+    static ZFPlayerSingleton *_sharedPlayer = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedPlayer = [[ZFPlayerSingleton alloc] init];
+    });
+    return _sharedPlayer;
+}
+
+@end

@@ -28,7 +28,7 @@
 #import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerControlView.h"
 #import "ZFBrightnessView.h"
-#import "ZFPlayerConst.h"
+#import "ZFPlayer.h"
 
 static const CGFloat ZFPlayerAnimationTimeInterval             = 7.0f;
 static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.5f;
@@ -693,22 +693,22 @@ static ZFPlayerView* playerView = nil;
     switch (interfaceOrientation) {
             
         case UIInterfaceOrientationPortraitUpsideDown:{
-            ApplicationDelegate.isAllowLandscape = NO;
+            ZFPlayerShared.isAllowLandscape = NO;
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
         case UIInterfaceOrientationPortrait:{
-            ApplicationDelegate.isAllowLandscape = YES;
+            ZFPlayerShared.isAllowLandscape = YES;
             [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            ApplicationDelegate.isAllowLandscape = NO;
+            ZFPlayerShared.isAllowLandscape = NO;
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            ApplicationDelegate.isAllowLandscape = NO;
+            ZFPlayerShared.isAllowLandscape = NO;
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
@@ -727,7 +727,7 @@ static ZFPlayerView* playerView = nil;
         return;
     }
     // 在cell上播放视频 && 不允许横屏（此时为竖屏状态）
-    if (self.isCellVideo && !ApplicationDelegate.isAllowLandscape) {
+    if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
         [self.backBtn setImage:[UIImage imageNamed:@"kr-video-player-close"] forState:UIControlStateNormal];
         self.isFullScreen = NO;
         return;
@@ -749,7 +749,7 @@ static ZFPlayerView* playerView = nil;
                 // 当设备转到竖屏时候，设置为竖屏约束
                 [self setOrientationPortrait];
                 // 改为只允许竖屏播放
-                ApplicationDelegate.isAllowLandscape = NO;
+                ZFPlayerShared.isAllowLandscape = NO;
                 [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
             }
             self.isFullScreen = NO;
@@ -788,7 +788,7 @@ static ZFPlayerView* playerView = nil;
     sender.selected              = !sender.selected;
     self.isLocked                = sender.selected;
     // 调用AppDelegate单例记录播放状态是否锁屏，在TabBarController设置哪些页面支持旋转
-    ApplicationDelegate.isLockScreen = sender.selected;
+    ZFPlayerShared.isLockScreen = sender.selected;
 }
 
 /**
@@ -797,7 +797,7 @@ static ZFPlayerView* playerView = nil;
 - (void)unLockTheScreen
 {
     // 调用AppDelegate单例记录播放状态是否锁屏
-    ApplicationDelegate.isLockScreen = NO;
+    ZFPlayerShared.isLockScreen = NO;
     self.controlView.lockBtn.selected = NO;
     self.isLocked = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
@@ -1096,7 +1096,7 @@ static ZFPlayerView* playerView = nil;
 - (void)moviePlayDidEnd:(NSNotification *)notification
 {
     self.state = ZFPlayerStateStopped;
-    ApplicationDelegate.isLockScreen = NO;
+    ZFPlayerShared.isLockScreen = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
     // 关闭定时器
     [self.timer invalidate];
