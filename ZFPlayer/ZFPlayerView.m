@@ -327,11 +327,13 @@ static ZFPlayerView* playerView = nil;
     // 初始化playerLayer
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     
-    if([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]){
-        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    }else{
-        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    }
+    // AVLayerVideoGravityResize,       // 非均匀模式。两个维度完全填充至整个视图区域
+    // AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
+    // AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
+    
+    // 此处根据视频填充模式设置
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    
     // 添加playerLayer到self.layer
     [self.layer insertSublayer:self.playerLayer atIndex:0];
     
