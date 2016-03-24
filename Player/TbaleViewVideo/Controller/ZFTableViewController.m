@@ -98,18 +98,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    static NSString *identifier = @"playerCell";
-    ZFPlayerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    static NSString *identifier        = @"playerCell";
+    ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier];
 
-    __block ZFPlayerModel *model = self.dataSource[indexPath.section][indexPath.row];
-    cell.model = model;
-    
+    __block ZFPlayerModel *model       = self.dataSource[indexPath.section][indexPath.row];
+    cell.model                         = model;
+
     __block NSIndexPath *weakIndexPath = indexPath;
-    __block ZFPlayerCell *weakCell = cell;
-    __weak typeof(self) weakSelf = self;
+    __block ZFPlayerCell *weakCell     = cell;
+    __weak typeof(self) weakSelf       = self;
+    
     cell.playBlock = ^{
         weakSelf.playerView = [ZFPlayerView playerView];
-        NSURL *videoURL = [NSURL URLWithString:model.playUrl];
+        NSURL *videoURL     = [NSURL URLWithString:model.playUrl];
         // 设置player相关参数
         [weakSelf.playerView setVideoURL:videoURL withTableView:weakSelf.tableView AtIndexPath:weakIndexPath];
         [weakSelf.playerView addPlayerToCell:weakCell];
@@ -133,9 +134,9 @@
  */
 - (NSString *)getDateFromTimeInterval:(long)timeInterval {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy年MM月dd日";
-    NSDate *createDate = [NSDate dateWithTimeIntervalSince1970:timeInterval/1000];
-    NSString *createStr = [formatter stringFromDate:createDate];
+    formatter.dateFormat       = @"yyyy年MM月dd日";
+    NSDate *createDate         = [NSDate dateWithTimeIntervalSince1970:timeInterval/1000];
+    NSString *createStr        = [formatter stringFromDate:createDate];
     return createStr;
 }
 

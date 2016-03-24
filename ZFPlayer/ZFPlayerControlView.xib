@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15A2301" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -21,13 +21,13 @@
                     <rect key="frame" x="84" y="195" width="303" height="31"/>
                 </slider>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yIE-vF-c8O">
-                    <rect key="frame" x="42" y="203" width="34" height="15"/>
+                    <rect key="frame" x="42" y="203" width="34" height="14.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mh-1N-825">
-                    <rect key="frame" x="395" y="203" width="34" height="15"/>
+                    <rect key="frame" x="395" y="203" width="34" height="14.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -59,31 +59,20 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vvY-b6-dD6">
-                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                    <rect key="frame" x="15" y="95" width="40" height="40"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="40" id="bvc-LU-pUW"/>
-                        <constraint firstAttribute="height" constant="40" id="oaY-iI-H7q"/>
+                        <constraint firstAttribute="width" constant="40" id="4M6-bo-khP"/>
+                        <constraint firstAttribute="height" constant="40" id="Fv8-wx-nfY"/>
                     </constraints>
                     <state key="normal" image="ZFPlayer.bundle/unlock-nor"/>
                     <state key="selected" image="ZFPlayer.bundle/lock-nor"/>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="bvc-LU-pUW"/>
-                            <exclude reference="oaY-iI-H7q"/>
-                        </mask>
-                    </variation>
-                    <variation key="heightClass=compact">
-                        <mask key="constraints">
-                            <include reference="bvc-LU-pUW"/>
-                            <include reference="oaY-iI-H7q"/>
-                        </mask>
-                    </variation>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="vvY-b6-dD6" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="3Qe-o2-quc"/>
                 <constraint firstItem="AEI-I4-hWP" firstAttribute="leading" secondItem="3mh-1N-825" secondAttribute="trailing" constant="2" id="69I-NL-ymO"/>
+                <constraint firstItem="vvY-b6-dD6" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="6qx-A3-qBz"/>
                 <constraint firstAttribute="bottom" secondItem="AEI-I4-hWP" secondAttribute="bottom" constant="5" id="BDN-cK-eZ5"/>
                 <constraint firstItem="yIE-vF-c8O" firstAttribute="leading" secondItem="qIf-aw-BaL" secondAttribute="trailing" constant="2" id="CWI-05-Ie6"/>
                 <constraint firstItem="pHD-mY-c8M" firstAttribute="centerY" secondItem="yIE-vF-c8O" secondAttribute="centerY" id="GC7-12-GOk"/>
@@ -91,6 +80,7 @@
                 <constraint firstItem="vvY-b6-dD6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="H0F-I3-JKm"/>
                 <constraint firstAttribute="bottom" secondItem="qIf-aw-BaL" secondAttribute="bottom" constant="5" id="HVY-J3-B4W"/>
                 <constraint firstItem="qIf-aw-BaL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="MWB-qG-yMB"/>
+                <constraint firstItem="vvY-b6-dD6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="NXh-gg-P9j"/>
                 <constraint firstItem="nSJ-HO-8mU" firstAttribute="leading" secondItem="yIE-vF-c8O" secondAttribute="trailing" constant="10" id="Q5d-d1-fTY"/>
                 <constraint firstItem="nSJ-HO-8mU" firstAttribute="centerY" secondItem="yIE-vF-c8O" secondAttribute="centerY" constant="-0.25" id="QFK-Tg-9TG"/>
                 <constraint firstAttribute="trailing" secondItem="AEI-I4-hWP" secondAttribute="trailing" constant="10" id="UMY-rd-kT8"/>
@@ -107,21 +97,17 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="vvY-b6-dD6"/>
-                </mask>
                 <mask key="constraints">
                     <exclude reference="3Qe-o2-quc"/>
                     <exclude reference="H0F-I3-JKm"/>
                 </mask>
             </variation>
             <variation key="heightClass=compact">
-                <mask key="subviews">
-                    <include reference="vvY-b6-dD6"/>
-                </mask>
                 <mask key="constraints">
                     <include reference="3Qe-o2-quc"/>
+                    <exclude reference="6qx-A3-qBz"/>
                     <include reference="H0F-I3-JKm"/>
+                    <exclude reference="NXh-gg-P9j"/>
                 </mask>
             </variation>
             <connections>

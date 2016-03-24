@@ -529,8 +529,10 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
+#pragma mark - tableViewContentOffset
+
 /**
- *  KVO TableviewContentOffset
+ *  KVO TableViewContentOffset
  *
  *  @param dict void
  */
@@ -659,10 +661,11 @@ static ZFPlayerView* playerView = nil;
     }
     
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
-        
+        // 设置横屏
         [self setOrientationLandscape];
+        
     }else if (orientation == UIInterfaceOrientationPortrait) {
-       
+        // 设置竖屏
         [self setOrientationPortrait];
         
     }
@@ -730,7 +733,7 @@ static ZFPlayerView* playerView = nil;
     }
     // 在cell上播放视频 && 不允许横屏（此时为竖屏状态）
     if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
-        [self.backBtn setImage:[UIImage imageNamed:@"kr-video-player-close"] forState:UIControlStateNormal];
+        [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
         self.isFullScreen = NO;
         return;
     }
@@ -778,6 +781,8 @@ static ZFPlayerView* playerView = nil;
             break;
     }
     
+    // 设置显示or不显示锁定屏幕方向按钮
+    self.controlView.lockBtn.hidden = !self.isFullScreen;
 }
 
 /**
@@ -799,7 +804,7 @@ static ZFPlayerView* playerView = nil;
 - (void)unLockTheScreen
 {
     // 调用AppDelegate单例记录播放状态是否锁屏
-    ZFPlayerShared.isLockScreen = NO;
+    ZFPlayerShared.isLockScreen       = NO;
     self.controlView.lockBtn.selected = NO;
     self.isLocked = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
@@ -865,12 +870,12 @@ static ZFPlayerView* playerView = nil;
         self.controlView.videoSlider.value        = CMTimeGetSeconds([_playerItem currentTime]) / (_playerItem.duration.value / _playerItem.duration.timescale);//当前进度
 
         //当前时长进度progress
-        NSInteger proMin                       = (NSInteger)CMTimeGetSeconds([_player currentTime]) / 60;//当前秒
-        NSInteger proSec                       = (NSInteger)CMTimeGetSeconds([_player currentTime]) % 60;//当前分钟
+        NSInteger proMin                          = (NSInteger)CMTimeGetSeconds([_player currentTime]) / 60;//当前秒
+        NSInteger proSec                          = (NSInteger)CMTimeGetSeconds([_player currentTime]) % 60;//当前分钟
 
         //duration 总时长
-        NSInteger durMin                       = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale / 60;//总秒
-        NSInteger durSec                       = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale % 60;//总分钟
+        NSInteger durMin                          = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale / 60;//总秒
+        NSInteger durSec                          = (NSInteger)_playerItem.duration.value / _playerItem.duration.timescale % 60;//总分钟
 
         self.controlView.currentTimeLabel.text    = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
         self.controlView.totalTimeLabel.text      = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
@@ -964,7 +969,7 @@ static ZFPlayerView* playerView = nil;
     });
     // 结束滑动时候把开始播放按钮改为播放状态
     self.controlView.startBtn.selected = YES;
-    self.isPauseByUser              = NO;
+    self.isPauseByUser                 = NO;
     
     // 滑动结束延时隐藏controlView
     [self autoFadeOutControlBar];
@@ -1097,7 +1102,7 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)moviePlayDidEnd:(NSNotification *)notification
 {
-    self.state = ZFPlayerStateStopped;
+    self.state                  = ZFPlayerStateStopped;
     ZFPlayerShared.isLockScreen = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
     // 关闭定时器
@@ -1128,9 +1133,9 @@ static ZFPlayerView* playerView = nil;
     // 延迟隐藏controlView
     [self animateShow];
     if (!self.isPauseByUser) {
-        self.state                      = ZFPlayerStatePlaying;
+        self.state                         = ZFPlayerStatePlaying;
         self.controlView.startBtn.selected = YES;
-        self.isPauseByUser              = NO;
+        self.isPauseByUser                 = NO;
         [self play];
     }
 }
@@ -1213,10 +1218,10 @@ static ZFPlayerView* playerView = nil;
                     });
                     //快进、快退时候把开始播放按钮改为播放状态
                     self.controlView.startBtn.selected = YES;
-                    self.isPauseByUser              = NO;
+                    self.isPauseByUser                 = NO;
 
                     // 转换成CMTime才能给player来控制播放进度
-                    CMTime dragedCMTime             = CMTimeMake(self.sumTime, 1);
+                    CMTime dragedCMTime                = CMTimeMake(self.sumTime, 1);
                     //[_player pause];
                     
                     [self endSlideTheVideo:dragedCMTime];

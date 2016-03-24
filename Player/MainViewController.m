@@ -45,10 +45,11 @@
 - (BOOL)shouldAutorotate{
     
     UINavigationController *nav = self.viewControllers[self.selectedIndex];
-    // MoviePlayerViewController这个页面支持自动转屏
-    if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) {
-        return !ZFPlayerShared.isLockScreen;  // 调用AppDelegate单例记录播放状态是否锁屏
-    }else if ([nav.topViewController isKindOfClass:[ZFTableViewController class]]) {
+    
+    // MoviePlayerViewController 、ZFTableViewController 控制器支持自动转屏
+    if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]] || [nav.topViewController isKindOfClass:[ZFTableViewController class]]) {
+        
+        // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
         return !ZFPlayerShared.isLockScreen;
     }
     return NO;
@@ -60,15 +61,14 @@
     UINavigationController *nav = self.viewControllers[self.selectedIndex];
     if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]]) { // MoviePlayerViewController这个页面支持转屏方向
         return UIInterfaceOrientationMaskAllButUpsideDown;
-    }else if ([nav.topViewController isKindOfClass:[ZFTableViewController class]]) {
+    }else if ([nav.topViewController isKindOfClass:[ZFTableViewController class]]) { // ZFTableViewController这个页面支持转屏方向
         if (ZFPlayerShared.isAllowLandscape) {
             return UIInterfaceOrientationMaskAllButUpsideDown;
         }else {
             return UIInterfaceOrientationMaskPortrait;
         }
-    }else { // 其他页面支持转屏方向
-        return UIInterfaceOrientationMaskPortrait;
     }
+    // 其他页面
     return UIInterfaceOrientationMaskPortrait;
 }
 

@@ -38,13 +38,15 @@
 
 @implementation ZFPlayerControlView
 
--(void)dealloc
+- (void)dealloc
 {
     //NSLog(@"%@释放了",self.class);
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
+    // 默认隐藏锁定按钮
+    self.lockBtn.hidden = YES;
     // 设置slider
     [self.videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"slider")] forState:UIControlStateNormal];
     
@@ -60,7 +62,7 @@
     
 }
 
--(void)layoutSubviews
+- (void)layoutSubviews
 {
     [super layoutSubviews];
     self.bottomGradientLayer.frame = self.bottomImageView.bounds;

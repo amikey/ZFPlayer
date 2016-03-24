@@ -21,15 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#define kZFPlayerViewContentOffset @"contentOffset"
 #define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
-//#define ApplicationDelegate   ((AppDelegate *)[[UIApplication sharedApplication] delegate])
-#define ZFPlayerShared                 [ZFPlayerSingleton sharedZFPlayer]
+#define kZFPlayerViewContentOffset          @"contentOffset"
+#define ZFPlayerShared                      [ZFPlayerSingleton sharedZFPlayer]
 #define ScreenWidth                         [[UIScreen mainScreen] bounds].size.width
 #define ScreenHeight                        [[UIScreen mainScreen] bounds].size.height
 #define ZFPlayerTableHeight                 (ScreenWidth * 9 / 16)
 // 图片路径
-#define ZFPlayerSrcName(file) [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
+#define ZFPlayerSrcName(file)               [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
 
 #import "ZFPlayerSingleton.h"
 #import "ZFPlayerView.h"
