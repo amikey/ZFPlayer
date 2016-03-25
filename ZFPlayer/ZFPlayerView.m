@@ -56,7 +56,9 @@ static ZFPlayerView* playerView = nil;
 /** 系统菊花 */
 @property (weak, nonatomic  ) IBOutlet UIActivityIndicatorView *activity;
 /** 返回按钮*/
-@property (weak, nonatomic  ) IBOutlet UIButton                *backBtn;
+@property (weak, nonatomic  ) IBOutlet UIButton *backBtn;
+/** 重播按钮 */
+@property (weak, nonatomic  ) IBOutlet UIButton *repeatBtn;
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayer            *player;
 /** 播放属性 */
@@ -93,6 +95,8 @@ static ZFPlayerView* playerView = nil;
 @property (nonatomic, assign) BOOL                isBottomVideo;
 /** cell上imageView的tag */
 @property (nonatomic, assign) NSInteger           cellImageViewTag;
+/** 是否点了重播 */
+@property (nonatomic, assign) BOOL                repeatPlay;
 
 @end
 
@@ -131,6 +135,9 @@ static ZFPlayerView* playerView = nil;
     [ZFBrightnessView sharedBrightnesView];
     [self.activity stopAnimating];
     self.horizontalLabel.hidden = YES;
+    self.repeatBtn.hidden = YES;
+    // 每次播放视频都解锁屏幕锁定
+    [self unLockTheScreen];
 }
 
 - (void)dealloc
@@ -171,7 +178,10 @@ static ZFPlayerView* playerView = nil;
     self.isBottomVideo = NO;
     // 重置控制层View
     [self.controlView resetControlView];
-    [self removeFromSuperview];
+    // 重播时候不移除
+    if (!self.repeatPlay) {
+        [self removeFromSuperview];
+    }
     if (self.tableView) {
         // vicontroller中页面消失
         self.viewDisappear = YES;
@@ -325,8 +335,6 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)setVideoURL:(NSURL *)videoURL
 {
-    // 每次播放视频都解锁屏幕锁定
-    [self unLockTheScreen];
     self.state = ZFPlayerStateStopped;
     
     // 初始化playerItem
@@ -385,6 +393,8 @@ static ZFPlayerView* playerView = nil;
     //强制让系统调用layoutSubviews 两个方法必须同时写
     [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
     [self layoutIfNeeded]; //加上此代码立刻刷新
+    
+     _videoURL = videoURL;
 }
 
 //创建手势
@@ -956,10 +966,10 @@ static ZFPlayerView* playerView = nil;
         NSInteger durMin                    = (NSInteger)total / 60;//总秒
         NSInteger durSec                    = (NSInteger)total % 60;//总分钟
 
-        NSString *currentTime               = [NSString stringWithFormat:@"%2zd:%2zd", proMin, proSec];
-        NSString *totalTime                 = [NSString stringWithFormat:@"%2zd:%2zd", durMin, durSec];
+        NSString *currentTime               = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
+        NSString *totalTime                 = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
         
-        if (durMin > 0) {
+        if (durSec > 0) {
             // 当总时长>0时候才能拖动slider
             self.controlView.currentTimeLabel.text = currentTime;
             self.horizontalLabel.hidden            = NO;
@@ -1115,6 +1125,20 @@ static ZFPlayerView* playerView = nil;
         }
     }
 }
+/**
+ *  重播点击事件
+ *
+ *  @param sender sender
+ */
+- (IBAction)repeatPlay:(UIButton *)sender {
+    // 隐藏重播按钮
+    self.repeatBtn.hidden = YES;
+    self.repeatPlay       = YES;
+    // 重置Player
+    [self resetPlayer];
+    [self setVideoURL:self.videoURL];
+    
+}
 
 #pragma mark - NSNotification Action
 
@@ -1125,16 +1149,8 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)moviePlayDidEnd:(NSNotification *)notification
 {
-    self.state                  = ZFPlayerStateStopped;
-    ZFPlayerShared.isLockScreen = NO;
-    [self interfaceOrientation:UIInterfaceOrientationPortrait];
-    // 关闭定时器
-    [self.timer invalidate];
-    // 重置Player
-    [self resetPlayer];
-    if (self.goBackBlock) {
-        self.goBackBlock();
-    }
+    self.state            = ZFPlayerStateStopped;
+    self.repeatBtn.hidden = NO;
 }
 
 /**
