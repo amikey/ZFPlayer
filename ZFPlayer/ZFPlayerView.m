@@ -914,8 +914,11 @@ static ZFPlayerView* playerView = nil;
 - (void)progressSliderTouchBegan:(UISlider *)slider
 {
     [self cancelAutoFadeOutControlBar];
-    // 暂停timer
-    [self.timer setFireDate:[NSDate distantFuture]];
+    if (self.player.status == AVPlayerStatusReadyToPlay) {
+        
+        // 暂停timer
+        [self.timer setFireDate:[NSDate distantFuture]];
+    }
 }
 
 /**
@@ -925,16 +928,16 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)progressSliderValueChanged:(UISlider *)slider
 {
-    NSString *style = @"";
-    CGFloat value = slider.value - self.sliderLastValue;
-    if (value > 0) {
-        style = @">>";
-    } else if (value < 0) {
-        style = @"<<";
-    }
-     self.sliderLastValue = slider.value;
     //拖动改变视频播放进度
     if (self.player.status == AVPlayerStatusReadyToPlay) {
+        NSString *style = @"";
+        CGFloat value = slider.value - self.sliderLastValue;
+        if (value > 0) {
+            style = @">>";
+        } else if (value < 0) {
+            style = @"<<";
+        }
+        self.sliderLastValue = slider.value;
         
         [self pause];
         //计算出拖动的当前秒数
@@ -953,13 +956,22 @@ static ZFPlayerView* playerView = nil;
         NSInteger durMin                    = (NSInteger)total / 60;//总秒
         NSInteger durSec                    = (NSInteger)total % 60;//总分钟
 
-        NSString *currentTime               = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
-        NSString *totalTime                 = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
-
-        self.controlView.currentTimeLabel.text = currentTime;
-        self.horizontalLabel.hidden         = NO;
-        self.horizontalLabel.text           = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+        NSString *currentTime               = [NSString stringWithFormat:@"%2zd:%2zd", proMin, proSec];
+        NSString *totalTime                 = [NSString stringWithFormat:@"%2zd:%2zd", durMin, durSec];
         
+        if (durMin > 0) {
+            // 当总时长>0时候才能拖动slider
+            self.controlView.currentTimeLabel.text = currentTime;
+            self.horizontalLabel.hidden            = NO;
+            self.horizontalLabel.text              = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+        }else {
+            // 此时设置slider值为0
+            slider.value = 0;
+        }
+        
+    }else { // player状态加载失败
+        // 此时设置slider值为0
+        slider.value = 0;
     }
 }
 
@@ -970,28 +982,31 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)progressSliderTouchEnded:(UISlider *)slider
 {
-    // 继续开启timer
-    [self.timer setFireDate:[NSDate date]];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.horizontalLabel.hidden = YES;
-    });
-    // 结束滑动时候把开始播放按钮改为播放状态
-    self.controlView.startBtn.selected = YES;
-    self.isPauseByUser                 = NO;
-    
-    // 滑动结束延时隐藏controlView
-    [self autoFadeOutControlBar];
-    
-    //计算出拖动的当前秒数
-    CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-
-    NSInteger dragedSeconds = floorf(total * slider.value);
-
-    //转换成CMTime才能给player来控制播放进度
-
-    CMTime dragedCMTime     = CMTimeMake(dragedSeconds, 1);
-    
-    [self endSlideTheVideo:dragedCMTime];
+    if (self.player.status == AVPlayerStatusReadyToPlay) {
+        
+        // 继续开启timer
+        [self.timer setFireDate:[NSDate date]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.horizontalLabel.hidden = YES;
+        });
+        // 结束滑动时候把开始播放按钮改为播放状态
+        self.controlView.startBtn.selected = YES;
+        self.isPauseByUser                 = NO;
+        
+        // 滑动结束延时隐藏controlView
+        [self autoFadeOutControlBar];
+        
+        //计算出拖动的当前秒数
+        CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        
+        NSInteger dragedSeconds = floorf(total * slider.value);
+        
+        //转换成CMTime才能给player来控制播放进度
+        
+        CMTime dragedCMTime     = CMTimeMake(dragedSeconds, 1);
+        
+        [self endSlideTheVideo:dragedCMTime];
+    }
 }
 
 /**
