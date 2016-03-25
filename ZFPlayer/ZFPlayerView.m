@@ -96,7 +96,9 @@ static ZFPlayerView* playerView = nil;
 /** cell上imageView的tag */
 @property (nonatomic, assign) NSInteger           cellImageViewTag;
 /** 是否点了重播 */
-@property (nonatomic, assign) BOOL                repeatPlay;
+@property (nonatomic, assign) BOOL                repeatToPlay;
+/** 播放完了*/
+@property (nonatomic, assign) BOOL                playDidEnd;
 
 @end
 
@@ -178,11 +180,13 @@ static ZFPlayerView* playerView = nil;
     self.isBottomVideo = NO;
     // 重置控制层View
     [self.controlView resetControlView];
+    // 隐藏重播按钮
+    self.repeatBtn.hidden = YES;
     // 重播时候不移除
-    if (!self.repeatPlay) {
+    if (!self.repeatToPlay) {
         [self removeFromSuperview];
     }
-    if (self.tableView) {
+    if (self.tableView && !self.repeatToPlay) {
         // vicontroller中页面消失
         self.viewDisappear = YES;
         
@@ -312,6 +316,7 @@ static ZFPlayerView* playerView = nil;
 {
     // 在cell上播放视频
     self.isCellVideo = YES;
+    
     // 如果页面没有消失过，并且playerItem有值，需要重置player
     if (!self.viewDisappear && self.playerItem) {
         [self resetPlayer];
@@ -335,6 +340,10 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)setVideoURL:(NSURL *)videoURL
 {
+    // 每次加载视频URL都设置重播为NO
+    self.repeatToPlay = NO;
+    self.playDidEnd   = NO;
+    // 播放状态
     self.state = ZFPlayerStateStopped;
     
     // 初始化playerItem
@@ -456,12 +465,13 @@ static ZFPlayerView* playerView = nil;
     }
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
         self.controlView.alpha = 0;
-        if (self.isCellVideo) {
-            self.backBtn.alpha = 0;
-        }
-        if (self.isFullScreen) {
+        if (self.isFullScreen) { //全屏状态
             self.backBtn.alpha  = 0;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        }else if (self.isBottomVideo && !self.isFullScreen) { // 视频在底部bottom小屏,并且不是全屏状态
+            self.backBtn.alpha = 1;
+        }else {
+            self.backBtn.alpha = 0;
         }
     }completion:^(BOOL finished) {
         self.isMaskShowing = NO;
@@ -478,8 +488,10 @@ static ZFPlayerView* playerView = nil;
     }
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
         self.backBtn.alpha = 1;
-        // 视频在bottom小屏,并且不是全屏状态
+        // 视频在底部bottom小屏,并且不是全屏状态
         if (self.isBottomVideo && !self.isFullScreen) {
+            self.controlView.alpha = 0;
+        }else if (self.playDidEnd) { // 播放完了
             self.controlView.alpha = 0;
         }else {
             self.controlView.alpha = 1;
@@ -574,6 +586,12 @@ static ZFPlayerView* playerView = nil;
 {
     if (self.isBottomVideo) {
         return ;
+    }
+    if (self.playDidEnd) { //如果播放完了，滑动到小屏bottom位置时，直接resetPlayer
+        self.repeatToPlay = NO;
+        self.playDidEnd   = NO;
+        [self resetPlayer];
+        return;
     }
     [[UIApplication sharedApplication].keyWindow addSubview:self];
     // 解决4s，屏幕宽高比不是16：9的问题
@@ -679,7 +697,6 @@ static ZFPlayerView* playerView = nil;
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
     }
-    
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
         // 设置横屏
         [self setOrientationLandscape];
@@ -689,6 +706,7 @@ static ZFPlayerView* playerView = nil;
         [self setOrientationPortrait];
         
     }
+    
     /*
      // 非arc下
      if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
@@ -1026,7 +1044,6 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)endSlideTheVideo:(CMTime)dragedCMTime
 {
-    //[_player pause];
     [self.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
         // 如果点击了暂停按钮
         if (self.isPauseByUser) {
@@ -1133,7 +1150,7 @@ static ZFPlayerView* playerView = nil;
 - (IBAction)repeatPlay:(UIButton *)sender {
     // 隐藏重播按钮
     self.repeatBtn.hidden = YES;
-    self.repeatPlay       = YES;
+    self.repeatToPlay     = YES;
     // 重置Player
     [self resetPlayer];
     [self setVideoURL:self.videoURL];
@@ -1150,7 +1167,18 @@ static ZFPlayerView* playerView = nil;
 - (void)moviePlayDidEnd:(NSNotification *)notification
 {
     self.state            = ZFPlayerStateStopped;
-    self.repeatBtn.hidden = NO;
+    if (self.isBottomVideo && !self.isFullScreen) { // 播放完了，如果是在小屏模式切在bottom位置，直接关闭播放器
+        self.repeatToPlay = NO;
+        self.playDidEnd   = NO;
+        [self resetPlayer];
+    }else {
+        self.playDidEnd       = YES;
+        self.repeatBtn.hidden = NO;
+        // 初始化显示controlView为YES
+        self.isMaskShowing    = NO;
+        // 延迟隐藏controlView
+        [self animateShow];
+    }
 }
 
 /**
@@ -1397,7 +1425,6 @@ static ZFPlayerView* playerView = nil;
 {
     if (!_player) {
         _player = [AVPlayer playerWithPlayerItem:self.playerItem];
-        
     }
     return _player;
 }
