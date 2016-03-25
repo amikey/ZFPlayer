@@ -284,7 +284,13 @@ static ZFPlayerView* playerView = nil;
 {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
-
+    
+    // 屏幕旋转时候判断palyer的状态，来显示菊花
+    if (self.state == ZFPlayerStateBuffering) {
+        [self.activity startAnimating];
+    }else {
+        [self.activity stopAnimating];
+    }
     // 屏幕方向一发生变化就会调用这里
     [UIApplication sharedApplication].statusBarHidden = NO;
     self.isMaskShowing = NO;
