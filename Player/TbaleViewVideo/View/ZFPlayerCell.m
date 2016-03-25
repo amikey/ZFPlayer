@@ -35,6 +35,8 @@
 - (void)awakeFromNib {
     // Initialization code
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    [self cutRoundView:self.avatarImageView];
+    
     // 设置imageView的tag，在PlayerView中取
     self.picView.tag = 101;
     
@@ -47,6 +49,17 @@
         make.center.equalTo(self.picView);
     }];
 }
+
+// 切圆角
+- (void)cutRoundView:(UIImageView *)imageView
+{
+    CGFloat corner = imageView.frame.size.width / 2;
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:imageView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(corner, corner)];
+    shapeLayer.path = path.CGPath;
+    imageView.layer.mask = shapeLayer;
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

@@ -248,6 +248,7 @@
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="avatarImageView" destination="npk-sd-R1Y" id="Ruz-gn-mzS"/>
                                     <outlet property="picView" destination="hXd-DO-bVF" id="5Lb-Uz-ufr"/>
                                     <outlet property="titleLabel" destination="5LT-yX-98V" id="0Ym-Kt-VHs"/>
                                 </connections>

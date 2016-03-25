@@ -29,12 +29,13 @@ typedef void(^PlayBtnCallBackBlock)(UIButton *);
 
 @interface ZFPlayerCell : UITableViewCell
 
-@property (weak, nonatomic  ) IBOutlet UIImageView       *picView;
-@property (weak, nonatomic  ) IBOutlet UILabel           *titleLabel;
-@property (nonatomic, strong) UIButton                   *playBtn;
+@property (weak, nonatomic  ) IBOutlet UIImageView          *avatarImageView;
+@property (weak, nonatomic  ) IBOutlet UIImageView          *picView;
+@property (weak, nonatomic  ) IBOutlet UILabel              *titleLabel;
+@property (nonatomic, strong) UIButton             *playBtn;
 /** model */
-@property (nonatomic, strong) ZFPlayerModel              *model;
+@property (nonatomic, strong) ZFPlayerModel        *model;
 /** 播放按钮block */
-@property (nonatomic, copy  ) PlayBtnCallBackBlock       playBlock;
+@property (nonatomic, copy  ) PlayBtnCallBackBlock playBlock;
 
 @end
