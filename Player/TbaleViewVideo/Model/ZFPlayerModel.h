@@ -28,7 +28,7 @@
 /** 标题 */
 @property (nonatomic, copy) NSString *title;
 /** 描述 */
-@property (nonatomic, copy) NSString *video_descriptions;
+@property (nonatomic, copy) NSString *video_description;
 /** 视频地址 */
 @property (nonatomic, copy) NSString *playUrl;
 /** 封面图 */

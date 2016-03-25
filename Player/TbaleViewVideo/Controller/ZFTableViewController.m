@@ -100,22 +100,24 @@
 
     static NSString *identifier        = @"playerCell";
     ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier];
-
+    // 取到对应cell的model
     __block ZFPlayerModel *model       = self.dataSource[indexPath.section][indexPath.row];
+    // 赋值model
     cell.model                         = model;
-
-    __block NSIndexPath *weakIndexPath = indexPath;
-    __block ZFPlayerCell *weakCell     = cell;
-    __weak typeof(self) weakSelf       = self;
     
-    cell.playBlock = ^{
+    __block NSIndexPath *weakIndexPath = indexPath;
+    __weak typeof(self) weakSelf       = self;
+    // 点击播放的回调
+    cell.playBlock = ^(UIButton *btn){
         weakSelf.playerView = [ZFPlayerView playerView];
         NSURL *videoURL     = [NSURL URLWithString:model.playUrl];
-        // 设置player相关参数
-        [weakSelf.playerView setVideoURL:videoURL withTableView:weakSelf.tableView AtIndexPath:weakIndexPath];
-        [weakSelf.playerView addPlayerToCell:weakCell];
+        // 设置player相关参数(需要设置imageView的tag值，此处设置的为101)
+        [weakSelf.playerView setVideoURL:videoURL
+                           withTableView:weakSelf.tableView
+                             AtIndexPath:weakIndexPath
+                        withImageViewTag:101];
     };
-    
+
     return cell;
 }
 

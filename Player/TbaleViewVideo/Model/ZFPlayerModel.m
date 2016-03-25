@@ -25,11 +25,11 @@
 
 @implementation ZFPlayerModel
 
--(void)setValue:(id)value forUndefinedKey:(NSString *)key
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
     // 转换系统关键字description
     if ([key isEqualToString:@"description"]) {
-        self.video_descriptions = [NSString stringWithFormat:@"%@",value];
+        self.video_description = [NSString stringWithFormat:@"%@",value];
     }
 }
 

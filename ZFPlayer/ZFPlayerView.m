@@ -91,6 +91,8 @@ static ZFPlayerView* playerView = nil;
 @property (nonatomic, assign) CGFloat             sliderLastValue;
 /** 是否缩小视频在底部 */
 @property (nonatomic, assign) BOOL                isBottomVideo;
+/** cell上imageView的tag */
+@property (nonatomic, assign) NSInteger           cellImageViewTag;
 
 @end
 
@@ -293,7 +295,10 @@ static ZFPlayerView* playerView = nil;
  *  @param tableView tableView
  *  @param indexPath indexPath
  */
-- (void)setVideoURL:(NSURL *)videoURL withTableView:(UITableView *)tableView AtIndexPath:(NSIndexPath *)indexPath
+- (void)setVideoURL:(NSURL *)videoURL
+      withTableView:(UITableView *)tableView
+        AtIndexPath:(NSIndexPath *)indexPath
+   withImageViewTag:(NSInteger)tag
 {
     // 在cell上播放视频
     self.isCellVideo = YES;
@@ -303,8 +308,11 @@ static ZFPlayerView* playerView = nil;
     }
     // viewDisappear改为NO
     self.viewDisappear = NO;
-    
+    // 设置imageView的tag
+    self.cellImageViewTag = tag;
+    // 设置tableview
     self.tableView = tableView;
+    // 设置indexPath
     self.indexPath = indexPath;
     // 设置视频URL
     [self setVideoURL:videoURL];
@@ -635,7 +643,9 @@ static ZFPlayerView* playerView = nil;
             self.isBottomVideo = NO;
             [self updataPlayerViewToBottom];
         }else {
-            [self addPlayerToCell:cell];
+            // 根据tag取到对应的cellImageView
+            UIImageView *cellImageView = [cell viewWithTag:self.cellImageViewTag];
+            [self addPlayerToCellImageView:cellImageView];
         }
     }
 }
@@ -811,18 +821,16 @@ static ZFPlayerView* playerView = nil;
 }
 
 /**
- *  player添加到cell上
+ *  player添加到cellImageView上
  *
- *  @param cell 添加player的cell
+ *  @param cell 添加player的cellImageView
  */
-- (void)addPlayerToCell:(UITableViewCell *)cell
+- (void)addPlayerToCellImageView:(UIImageView *)imageView
 {
-    [cell addSubview:self];
+    [imageView addSubview:self];
     [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.trailing.leading.mas_equalTo(0);
-        make.height.mas_equalTo(ScreenWidth*9/16);
+        make.top.leading.trailing.bottom.mas_equalTo(0);
     }];
-    
 }
 
 #pragma mark - 缓冲较差时候
@@ -1380,6 +1388,5 @@ static ZFPlayerView* playerView = nil;
     }
     return _controlView;
 }
-
 
 @end

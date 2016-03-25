@@ -62,18 +62,20 @@ typedef void(^ZFPlayerGoBackBlock)(void);
 /**
  *  player添加到cell上
  *
- *  @param cell 添加player的cell
+ *  @param cell 添加player的cellImageView
  */
-- (void)addPlayerToCell:(UITableViewCell *)cell;
+- (void)addPlayerToCellImageView:(UIImageView *)imageView;
 
 /**
  *  重置player
  */
 - (void)resetPlayer;
+
 /** 
  *  播放
  */
 - (void)play;
+
 /** 
   * 暂停 
  */
@@ -85,7 +87,11 @@ typedef void(^ZFPlayerGoBackBlock)(void);
  *  @param videoURL  视频的URL
  *  @param tableView tableView
  *  @param indexPath indexPath 
+ *  @param ImageViewTag ImageViewTag
  */
-- (void)setVideoURL:(NSURL *)videoURL withTableView:(UITableView *)tableView AtIndexPath:(NSIndexPath *)indexPath;
+- (void)setVideoURL:(NSURL *)videoURL
+      withTableView:(UITableView *)tableView
+        AtIndexPath:(NSIndexPath *)indexPath
+   withImageViewTag:(NSInteger)tag;
 
 @end
