@@ -107,6 +107,7 @@
     
     __block NSIndexPath *weakIndexPath = indexPath;
     __weak typeof(self) weakSelf       = self;
+    __weak ZFPlayerCell *weakCell = cell;
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
         weakSelf.playerView = [ZFPlayerView playerView];
@@ -116,6 +117,7 @@
                            withTableView:weakSelf.tableView
                              AtIndexPath:weakIndexPath
                         withImageViewTag:101];
+        [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
     };
 
     return cell;
