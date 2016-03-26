@@ -145,14 +145,8 @@ static ZFPlayerView* playerView = nil;
 - (void)dealloc
 {
     //NSLog(@"%@释放了",self.class);
-    // 移除通知
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    // 移除观察者
-    [self.player.currentItem removeObserver:self forKeyPath:@"status"];
-    [self.player.currentItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
-    [self.player.currentItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
-    [self.player.currentItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
-    [self removeTableViewObserver];
+    // 移除所有通知、观察者
+    [self removeNotifications];
 }
 
 /**
@@ -160,14 +154,8 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)resetPlayer
 {
-    // 移除通知
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    // 移除观察者
-    [self.player.currentItem removeObserver:self forKeyPath:@"status"];
-    [self.player.currentItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
-    [self.player.currentItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
-    [self.player.currentItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
-    [self removeTableViewObserver];
+    // 移除所有通知、观察者
+    [self removeNotifications];
     // 关闭定时器
     [self.timer invalidate];
     // 暂停
@@ -198,7 +186,7 @@ static ZFPlayerView* playerView = nil;
 #pragma mark - 观察者、通知
 
 /**
- *  添加观察者
+ *  添加观察者、通知
  */
 - (void)addObserverAndNotification {
     // AVPlayer播放完成通知
@@ -246,6 +234,20 @@ static ZFPlayerView* playerView = nil;
 }
 
 /**
+ *  移除所有通知、观察者
+ */
+- (void)removeNotifications {
+    // 移除通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // 移除观察者
+    [self.player.currentItem removeObserver:self forKeyPath:@"status"];
+    [self.player.currentItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    [self.player.currentItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
+    [self.player.currentItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
+    [self removeTableViewObserver];
+}
+
+/**
  *  添加Tableview观察者
  */
 - (void)addTableViewObserver {
@@ -254,6 +256,7 @@ static ZFPlayerView* playerView = nil;
         [self.tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil];
     }
 }
+
 /**
  *  移除TableView观察者
  */
