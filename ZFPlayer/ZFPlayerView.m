@@ -759,6 +759,11 @@ static ZFPlayerView* playerView = nil;
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.leading.mas_equalTo(5);
                 }];
+            }else {
+                [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(5);
+                    make.leading.mas_equalTo(15);
+                }];
             }
             self.isFullScreen = NO;
             
@@ -768,11 +773,11 @@ static ZFPlayerView* playerView = nil;
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
-                [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.top.mas_equalTo(20);
-                    make.leading.mas_equalTo(15);
-                }];
             }
+            [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(20);
+                make.leading.mas_equalTo(15);
+            }];
             self.isFullScreen = YES;
         }
             break;
@@ -780,11 +785,11 @@ static ZFPlayerView* playerView = nil;
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
-                [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.top.mas_equalTo(20);
-                    make.leading.mas_equalTo(15);
-                }];
             }
+            [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(20);
+                make.leading.mas_equalTo(15);
+            }];
             self.isFullScreen = YES;
         }
             break;

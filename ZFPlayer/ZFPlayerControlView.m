@@ -154,7 +154,7 @@
 
     [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.mas_equalTo(15);
-        make.top.mas_equalTo(20);
+        make.top.mas_equalTo(5);
         make.width.height.mas_equalTo(30);
     }];
     
@@ -242,7 +242,7 @@
     if (!_bottomImageView) {
         _bottomImageView = [[UIImageView alloc] init];
         _bottomImageView.userInteractionEnabled = YES;
-        _bottomImageView.image = [UIImage imageNamed:@"poster_shadow_90_38"];
+        _bottomImageView.image = [UIImage imageNamed:ZFPlayerSrcName(@"poster_shadow_90_38")];
     }
     return _bottomImageView;
 }

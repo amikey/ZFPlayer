@@ -48,18 +48,11 @@
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     
-    
-    NSArray *dailyList = [rootDict objectForKey:@"dailyList"];
-    // 使用KVC解析json
-    for (NSDictionary *dic in dailyList) {
-        NSArray *videoList = [dic objectForKey:@"videoList"];
-        NSMutableArray *sectionArray = @[].mutableCopy;
-        for (NSDictionary *dataDic in videoList) {
-            ZFPlayerModel *model = [[ZFPlayerModel alloc] init];
-            [model setValuesForKeysWithDictionary:dataDic];
-            [sectionArray addObject:model];
-        }
-        [self.dataSource addObject:sectionArray];
+    NSArray *videoList = [rootDict objectForKey:@"videoList"];
+    for (NSDictionary *dataDic in videoList) {
+        ZFPlayerModel *model = [[ZFPlayerModel alloc] init];
+        [model setValuesForKeysWithDictionary:dataDic];
+        [self.dataSource addObject:model];
     }
 }
 
@@ -87,12 +80,12 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.dataSource.count;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSArray * arr = self.dataSource[section];
-    return arr.count;
+//    NSArray * arr = self.dataSource[section];
+    return self.dataSource.count;
 }
 
 
@@ -101,7 +94,7 @@
     static NSString *identifier        = @"playerCell";
     ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier];
     // 取到对应cell的model
-    __block ZFPlayerModel *model       = self.dataSource[indexPath.section][indexPath.row];
+    __block ZFPlayerModel *model       = self.dataSource[indexPath.row];
     // 赋值model
     cell.model                         = model;
     
@@ -121,27 +114,6 @@
     };
 
     return cell;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSArray * modelArray = self.dataSource[section];
-    ZFPlayerModel *model = modelArray[0];
-    return [self getDateFromTimeInterval:model.date];
-}
-
-/**
- *  转换时间戳
- *
- *  @param timeInterval 时间戳
- *
- *  @return 时间字符串
- */
-- (NSString *)getDateFromTimeInterval:(long)timeInterval {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat       = @"yyyy年MM月dd日";
-    NSDate *createDate         = [NSDate dateWithTimeIntervalSince1970:timeInterval/1000];
-    NSString *createStr        = [formatter stringFromDate:createDate];
-    return createStr;
 }
 
 /*
