@@ -24,8 +24,8 @@
 #import "MoviePlayerViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "ZFPlayer.h"
 #import <Masonry/Masonry.h>
+#import "ZFPlayer.h"
 
 @interface MoviePlayerViewController ()
 
@@ -59,14 +59,14 @@
     
     //if use Masonry,Please open this annotation
     /*
-     self.playerView = [ZFPlayerView setupZFPlayer];
+     self.playerView = [ZFPlayerView alloc] init];
      [self.view addSubview:self.playerView];
      [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.equalTo(self.view);
         make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
      }];
     */
-    
+
     self.playerView.videoURL     = self.videoURL;
     __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock  = ^{

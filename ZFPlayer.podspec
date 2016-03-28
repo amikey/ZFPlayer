@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'ZFPlayer'
-    s.version      = '0.0.4'
+    s.version      = '0.0.7'
     s.summary      = 'An easy way to user Player'
     s.homepage     = 'https://github.com/renzifeng/ZFPlayer'
     s.license      = 'MIT'
@@ -13,7 +13,6 @@ Pod::Spec.new do |s|
     }
     s.resource     = 'ZFPlayer/ZFPlayer.bundle'
     s.framework    = 'UIKit','MediaPlayer'
-    s.dependency 'Masonry', '~> 0.6.4'
-    s.dependency 'XXNibBridge', '~> 2.2.3'
+    s.dependency 'Masonry'
     s.requires_arc = true
 end

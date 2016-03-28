@@ -25,7 +25,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <Masonry/Masonry.h>
-#import <XXNibBridge/XXNibBridge.h>
 #import "ZFPlayerControlView.h"
 #import "ZFBrightnessView.h"
 #import "ZFPlayer.h"
@@ -49,16 +48,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 static ZFPlayerView* playerView = nil;
 
-@interface ZFPlayerView () <XXNibBridge,UIGestureRecognizerDelegate>
+@interface ZFPlayerView () <UIGestureRecognizerDelegate>
 
-/** 快进快退label */
-@property (weak, nonatomic  ) IBOutlet UILabel                 *horizontalLabel;
-/** 系统菊花 */
-@property (weak, nonatomic  ) IBOutlet UIActivityIndicatorView *activity;
-/** 返回按钮*/
-@property (weak, nonatomic  ) IBOutlet UIButton *backBtn;
-/** 重播按钮 */
-@property (weak, nonatomic  ) IBOutlet UIButton *repeatBtn;
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayer            *player;
 /** 播放属性 */
@@ -105,16 +96,6 @@ static ZFPlayerView* playerView = nil;
 @implementation ZFPlayerView
 
 /**
- *  类方法创建，该方法适用于代码创建View
- *
- *  @return ZFPlayer
- */
-+ (instancetype)setupZFPlayer
-{
-    return [[NSBundle mainBundle] loadNibNamed:@"ZFPlayerView" owner:nil options:nil].lastObject;
-}
-
-/**
  *  单例，用于列表cell上多个视频
  *
  *  @return ZFPlayer
@@ -123,23 +104,23 @@ static ZFPlayerView* playerView = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        playerView = [[[NSBundle mainBundle] loadNibNamed:@"ZFPlayerView" owner:nil options:nil] lastObject];
+        playerView = [[ZFPlayerView alloc] init];
     });
     return playerView;
 }
 
-- (void)awakeFromNib
+- (instancetype)init
 {
-    self.backgroundColor                 = [UIColor blackColor];
-    // 设置快进快退label
-    self.horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"Management_Mask")]];
-    // 亮度调节
-    [ZFBrightnessView sharedBrightnesView];
-    [self.activity stopAnimating];
-    self.horizontalLabel.hidden = YES;
-    self.repeatBtn.hidden = YES;
-    // 每次播放视频都解锁屏幕锁定
-    [self unLockTheScreen];
+    self = [super init];
+    if (self) {
+        // 亮度调节
+        [ZFBrightnessView sharedBrightnesView];
+        self.backgroundColor = [UIColor blackColor];
+        // 每次播放视频都解锁屏幕锁定
+        [self unLockTheScreen];
+        
+    }
+    return self;
 }
 
 - (void)dealloc
@@ -158,6 +139,8 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)resetPlayer
 {
+    // 改为为播放完
+    self.playDidEnd = NO;
     self.playerItem = nil;
     // 移除所有通知、观察者
     [self removeNotifications];
@@ -172,10 +155,9 @@ static ZFPlayerView* playerView = nil;
     // 重置控制层View
     [self.controlView resetControlView];
     // 隐藏重播按钮
-    self.repeatBtn.hidden = YES;
+    self.controlView.repeatBtn.hidden = YES;
     // 列表中悬浮且非重播时，从 view hierarchy 中移除
-    if (self.isBottomVideo
-        && !self.repeatToPlay) {
+    if (self.isBottomVideo && !self.repeatToPlay) {
         [self removeFromSuperview];
     }
     // 底部播放video改为NO
@@ -183,7 +165,6 @@ static ZFPlayerView* playerView = nil;
     if (self.tableView && !self.repeatToPlay) {
         // vicontroller中页面消失
         self.viewDisappear = YES;
-        
         self.tableView = nil;
         self.indexPath = nil;
     }
@@ -211,17 +192,18 @@ static ZFPlayerView* playerView = nil;
     [self.controlView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
     // cell上播放视频的话，该返回按钮为×
     if (self.isCellVideo) {
-        [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
     }else {
-        [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
     }
     // 返回按钮点击事件
-    [self.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.controlView.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
     // 全屏按钮点击事件
     [self.controlView.fullScreenBtn addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     // 锁定屏幕方向点击事件
     [self.controlView.lockBtn addTarget:self action:@selector(lockScreenAction:) forControlEvents:UIControlEventTouchUpInside];
-
+    // 重播
+    [self.controlView.repeatBtn addTarget:self action:@selector(repeatPlay:) forControlEvents:UIControlEventTouchUpInside];
     // 监测设备方向
     [self listeningRotating];
 }
@@ -258,9 +240,9 @@ static ZFPlayerView* playerView = nil;
     
     // 屏幕旋转时候判断palyer的状态，来显示菊花
     if (self.state == ZFPlayerStateBuffering) {
-        [self.activity startAnimating];
+        [self.controlView.activity startAnimating];
     }else {
-        [self.activity stopAnimating];
+        [self.controlView.activity stopAnimating];
     }
     // 屏幕方向一发生变化就会调用这里
     [UIApplication sharedApplication].statusBarHidden = NO;
@@ -373,7 +355,7 @@ static ZFPlayerView* playerView = nil;
     [self play];
     self.controlView.startBtn.selected = YES;
     self.isPauseByUser = NO;
-    [self.activity startAnimating];
+    [self.controlView.activity startAnimating];
     
     
     //强制让系统调用layoutSubviews 两个方法必须同时写
@@ -441,14 +423,14 @@ static ZFPlayerView* playerView = nil;
         return;
     }
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
-        self.controlView.alpha = 0;
+        [self.controlView hideControlView];
         if (self.isFullScreen) { //全屏状态
-            self.backBtn.alpha  = 0;
+            self.controlView.backBtn.alpha  = 0;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }else if (self.isBottomVideo && !self.isFullScreen) { // 视频在底部bottom小屏,并且不是全屏状态
-            self.backBtn.alpha = 1;
+            self.controlView.backBtn.alpha = 1;
         }else {
-            self.backBtn.alpha = 0;
+            self.controlView.backBtn.alpha = 0;
         }
     }completion:^(BOOL finished) {
         self.isMaskShowing = NO;
@@ -464,14 +446,14 @@ static ZFPlayerView* playerView = nil;
         return;
     }
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
-        self.backBtn.alpha = 1;
+        self.controlView.backBtn.alpha = 1;
         // 视频在底部bottom小屏,并且不是全屏状态
         if (self.isBottomVideo && !self.isFullScreen) {
-            self.controlView.alpha = 0;
+            [self.controlView hideControlView];
         }else if (self.playDidEnd) { // 播放完了
-            self.controlView.alpha = 0;
+            [self.controlView hideControlView];
         }else {
-            self.controlView.alpha = 1;
+            [self.controlView showControlView];
         }
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     } completion:^(BOOL finished) {
@@ -499,7 +481,7 @@ static ZFPlayerView* playerView = nil;
                 
             } else if (self.player.status == AVPlayerStatusFailed){
                 
-                [self.activity startAnimating];
+                [self.controlView.activity startAnimating];
             }
             
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
@@ -591,7 +573,7 @@ static ZFPlayerView* playerView = nil;
     }
     self.isBottomVideo = YES;
     // 不显示控制层
-    self.controlView.alpha = 0;
+    [self.controlView hideControlView];
 }
 
 /**
@@ -606,6 +588,7 @@ static ZFPlayerView* playerView = nil;
     self.isBottomVideo = NO;
      // 显示控制层
     self.controlView.alpha = 1;
+    [self.controlView showControlView];
 }
 
 /**
@@ -614,11 +597,6 @@ static ZFPlayerView* playerView = nil;
 - (void)setOrientationLandscape
 {
     if (self.tableView) {
-        [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.leading.mas_equalTo(15);
-            make.width.height.mas_equalTo(30);
-            make.top.mas_equalTo(20);
-        }];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         // 亮度view加到window最上层
         ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnesView];
@@ -635,11 +613,6 @@ static ZFPlayerView* playerView = nil;
 - (void)setOrientationPortrait
 {
     if (self.tableView) {
-        [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.leading.mas_equalTo(5);
-            make.width.height.mas_equalTo(30);
-            make.top.mas_equalTo(5);
-        }];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         [self removeFromSuperview];
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
@@ -748,8 +721,14 @@ static ZFPlayerView* playerView = nil;
     }
     // 在cell上播放视频 && 不允许横屏（此时为竖屏状态）
     if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
-        [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
         self.isFullScreen = NO;
+        // 设置显示or不显示锁定屏幕方向按钮
+        self.controlView.lockBtn.hidden = !self.isFullScreen;
+        // 关闭按钮的约束
+        [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.leading.mas_equalTo(5);
+        }];
         return;
     }
     UIDeviceOrientation orientation             = [UIDevice currentDevice].orientation;
@@ -758,9 +737,15 @@ static ZFPlayerView* playerView = nil;
         case UIInterfaceOrientationPortraitUpsideDown:{
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
-                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
             }
+            // 设置返回按钮的约束
+            [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(20);
+                make.leading.mas_equalTo(15);
+            }];
             self.isFullScreen = YES;
+
         }
             break;
         case UIInterfaceOrientationPortrait:{
@@ -770,15 +755,23 @@ static ZFPlayerView* playerView = nil;
                 [self setOrientationPortrait];
                 // 改为只允许竖屏播放
                 ZFPlayerShared.isAllowLandscape = NO;
-                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+                [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.top.leading.mas_equalTo(5);
+                }];
             }
             self.isFullScreen = NO;
+            
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
-                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(20);
+                    make.leading.mas_equalTo(15);
+                }];
             }
             self.isFullScreen = YES;
         }
@@ -786,7 +779,11 @@ static ZFPlayerView* playerView = nil;
         case UIInterfaceOrientationLandscapeRight:{
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
-                [self.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(20);
+                    make.leading.mas_equalTo(15);
+                }];
             }
             self.isFullScreen = YES;
         }
@@ -845,7 +842,7 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)bufferingSomeSecond
 {
-    [self.activity startAnimating];
+    [self.controlView.activity startAnimating];
     // playbackBufferEmpty会反复进入，因此在bufferingOneSecond延时播放执行完之前再调用bufferingSomeSecond都忽略
     __block BOOL isBuffering = NO;
     if (isBuffering) {
@@ -967,8 +964,8 @@ static ZFPlayerView* playerView = nil;
         if (durSec > 0) {
             // 当总时长>0时候才能拖动slider
             self.controlView.currentTimeLabel.text = currentTime;
-            self.horizontalLabel.hidden            = NO;
-            self.horizontalLabel.text              = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+            self.controlView.horizontalLabel.hidden            = NO;
+            self.controlView.horizontalLabel.text              = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
         }else {
             // 此时设置slider值为0
             slider.value = 0;
@@ -992,7 +989,7 @@ static ZFPlayerView* playerView = nil;
         // 继续开启timer
         [self.timer setFireDate:[NSDate date]];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.horizontalLabel.hidden = YES;
+            self.controlView.horizontalLabel.hidden = YES;
         });
         // 结束滑动时候把开始播放按钮改为播放状态
         self.controlView.startBtn.selected = YES;
@@ -1031,7 +1028,7 @@ static ZFPlayerView* playerView = nil;
         if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) {
             self.state = ZFPlayerStateBuffering;
             //NSLog(@"显示菊花");
-            [self.activity startAnimating];
+            [self.controlView.activity startAnimating];
         }
     }];
 }
@@ -1124,10 +1121,10 @@ static ZFPlayerView* playerView = nil;
  *
  *  @param sender sender
  */
-- (IBAction)repeatPlay:(UIButton *)sender {
+- (void)repeatPlay:(UIButton *)sender {
     // 隐藏重播按钮
-    self.repeatBtn.hidden = YES;
-    self.repeatToPlay     = YES;
+    self.controlView.repeatBtn.hidden = YES;
+    self.repeatToPlay                 = YES;
     // 重置Player
     [self resetPlayer];
     [self setVideoURL:self.videoURL];
@@ -1144,13 +1141,13 @@ static ZFPlayerView* playerView = nil;
 - (void)moviePlayDidEnd:(NSNotification *)notification
 {
     self.state            = ZFPlayerStateStopped;
-    if (self.isBottomVideo && !self.isFullScreen) { // 播放完了，如果是在小屏模式切在bottom位置，直接关闭播放器
+    if (self.isBottomVideo && !self.isFullScreen) { // 播放完了，如果是在小屏模式 && 在bottom位置，直接关闭播放器
         self.repeatToPlay = NO;
         self.playDidEnd   = NO;
         [self resetPlayer];
     }else {
         self.playDidEnd       = YES;
-        self.repeatBtn.hidden = NO;
+        self.controlView.repeatBtn.hidden = NO;
         // 初始化显示controlView为YES
         self.isMaskShowing    = NO;
         // 延迟隐藏controlView
@@ -1209,7 +1206,7 @@ static ZFPlayerView* playerView = nil;
             if (x > y) { // 水平移动
                 self.panDirection           = PanDirectionHorizontalMoved;
                 // 取消隐藏
-                self.horizontalLabel.hidden = NO;
+                self.controlView.horizontalLabel.hidden = NO;
                 // 给sumTime初值
                 CMTime time                 = self.player.currentTime;
                 self.sumTime                = time.value/time.timescale;
@@ -1258,7 +1255,7 @@ static ZFPlayerView* playerView = nil;
                     
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         // 隐藏视图
-                        self.horizontalLabel.hidden = YES;
+                        self.controlView.horizontalLabel.hidden = YES;
                     });
                     //快进、快退时候把开始播放按钮改为播放状态
                     self.controlView.startBtn.selected = YES;
@@ -1278,7 +1275,7 @@ static ZFPlayerView* playerView = nil;
                     // 垂直移动结束后，把状态改为不再控制音量
                     self.isVolume = NO;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        self.horizontalLabel.hidden = YES;
+                        self.controlView.horizontalLabel.hidden = YES;
                     });
                     break;
                 }
@@ -1345,7 +1342,7 @@ static ZFPlayerView* playerView = nil;
     // 总时间
     NSString *durationTime    = [self durationStringWithTime:(int)totalMovieDuration];
     // 给label赋值
-    self.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, nowTime, durationTime];
+    self.controlView.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, nowTime, durationTime];
 }
 
 /**
@@ -1369,8 +1366,8 @@ static ZFPlayerView* playerView = nil;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     CGPoint point = [touch locationInView:self.controlView];
-    // （屏幕下方slider区域不响应pan手势） || （在cell上播放视频 && 不是全屏状态）
-    if ((point.y > self.bounds.size.height-40) || (self.isCellVideo && !self.isFullScreen)) {
+    // （屏幕下方slider区域） || （在cell上播放视频 && 不是全屏状态） || (播放完了) =====>  不响应pan手势
+    if ((point.y > self.bounds.size.height-40) || (self.isCellVideo && !self.isFullScreen) || self.playDidEnd) {
         return NO;
     }
     return YES;
@@ -1387,7 +1384,7 @@ static ZFPlayerView* playerView = nil;
 {
     _state = state;
     if (state != ZFPlayerStateBuffering) {
-        [self.activity stopAnimating];
+        [self.controlView.activity stopAnimating];
     }
 }
 
@@ -1448,9 +1445,8 @@ static ZFPlayerView* playerView = nil;
 - (ZFPlayerControlView *)controlView
 {
     if (!_controlView) {
-        _controlView = [ZFPlayerControlView setupPlayerControlView];
-        [self insertSubview:_controlView belowSubview:_backBtn];
-        
+        _controlView = [[ZFPlayerControlView alloc] init];
+        [self addSubview:_controlView];
         [_controlView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
         }];

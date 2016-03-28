@@ -5,7 +5,6 @@
 
 target 'Player' do
 pod 'Masonry'
-pod 'XXNibBridge'
 pod 'SDWebImage'
 end
 
