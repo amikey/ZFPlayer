@@ -26,8 +26,6 @@
 #import "ZFPlayer.h"
 
 @interface ZFPlayerControlView ()
-/** top渐变层 */
-@property (nonatomic, strong) CAGradientLayer *topGradientLayer;
 /** 开始播放按钮 */
 @property (nonatomic, strong) UIButton                *startBtn;
 /** 当前播放时长label */
@@ -62,12 +60,6 @@
 - (void)dealloc
 {
     //NSLog(@"%@释放了",self.class);
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.topGradientLayer.frame = self.topImageView.bounds;
 }
 
 - (instancetype)init
@@ -215,26 +207,9 @@
     if (!_topImageView) {
         _topImageView = [[UIImageView alloc] init];
         _topImageView.userInteractionEnabled = YES;
+        _topImageView.image = [UIImage imageNamed:ZFPlayerSrcName(@"top_shadow")];
     }
     return _topImageView;
-}
-
-- (CAGradientLayer *)topGradientLayer
-{
-    if (!_topGradientLayer) {
-        //初始Top化渐变层
-        _topGradientLayer               = [CAGradientLayer layer];
-        [self.topImageView.layer addSublayer:_topGradientLayer];
-        //设置渐变颜色方向
-        _topGradientLayer.startPoint    = CGPointMake(1, 0);
-        _topGradientLayer.endPoint      = CGPointMake(1, 1);
-        //设定颜色组
-        _topGradientLayer.colors        = @[(__bridge id)[UIColor blackColor].CGColor,
-                                            (__bridge id)[UIColor clearColor].CGColor];
-        //设定颜色分割点
-        _topGradientLayer.locations     = @[@(0.0f) ,@(1.0f)];
-    }
-    return _topGradientLayer;
 }
 
 - (UIImageView *)bottomImageView
@@ -242,7 +217,7 @@
     if (!_bottomImageView) {
         _bottomImageView = [[UIImageView alloc] init];
         _bottomImageView.userInteractionEnabled = YES;
-        _bottomImageView.image = [UIImage imageNamed:ZFPlayerSrcName(@"poster_shadow_90_38")];
+        _bottomImageView.image = [UIImage imageNamed:ZFPlayerSrcName(@"bottom_shadow")];
     }
     return _bottomImageView;
 }

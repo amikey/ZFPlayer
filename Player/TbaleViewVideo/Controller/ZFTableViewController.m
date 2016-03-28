@@ -84,7 +84,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    NSArray * arr = self.dataSource[section];
     return self.dataSource.count;
 }
 
