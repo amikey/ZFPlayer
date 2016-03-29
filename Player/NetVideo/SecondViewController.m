@@ -66,6 +66,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"netListCell"];
+    cell.textLabel.text = [NSString stringWithFormat:@"网络视频%zd",indexPath.row+1];
     return cell;
 }
 

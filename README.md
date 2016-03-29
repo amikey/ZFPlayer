@@ -6,18 +6,22 @@
 ## 基于AVPlayer，实现了各大视频软件的功能
 * 支持横、竖屏切换，在全屏播放模式下还可以锁定屏幕方向
 * 支持本地视频、网络视频播放
+* 支持在TableviewCell播放视频
 * 左侧1/2位置上下滑动调节屏幕亮度（模拟器调不了亮度，请在真机调试）
 * 右侧1/2位置上下滑动调节音量（模拟器调不了音量，请在真机调试）
 * 左右滑动调节播放进度
 
-使用需要安装cocopods
+### 下载先来运行报错的，请先确认安装cocopods环境
 
 	$ cd ZFPlayer
 	$ pod install
 	
-Open the "Player.xcworkspace"
+打开"Player.xcworkspace"
 
 ### 用法（支持IB和代码）
+##### 设置状态栏颜色
+请在info.plist中增加"View controller-based status bar appearance"字段，并改为NO
+
 ##### IB用法
 直接拖UIView到IB上，宽高比为约束为16：9(优先级改为750，比1000低就行)，代码部分只需要实现
 
@@ -37,7 +41,8 @@ self.playerView.goBackBlock = ^{
 self.playerView = [[ZFPlayerView alloc] init];
 [self.view addSubview:self.playerView];
 [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
- 	make.left.top.right.equalTo(self.view);
+ 	make.top.equalTo(self.view).offset(20);
+ 	make.left.right.equalTo(self.view);
 	// 注意此处，宽高比16：9优先级比1000低就行，在因为iPhone 4S宽高比不是16：9
 	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
 }];
@@ -49,7 +54,15 @@ self.playerView.goBackBlock = ^{
 };
 ```
 
+##### 设置视频的填充模式（可选设置）
+
+```objc
+ // （可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
+ self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
+```
+ 
 ### 图片效果演示
+
 ![图片效果演示](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)
 
 ![声音调节演示](https://github.com/renzifeng/ZFPlayer/raw/master/volume.png)
