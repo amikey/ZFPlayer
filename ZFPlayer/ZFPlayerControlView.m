@@ -97,19 +97,19 @@
 - (void)makeSubViewsConstraints
 {
     [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.top.mas_equalTo(0);
+        make.leading.trailing.top.equalTo(self);
         make.height.mas_equalTo(50);
     }];
     
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.bottom.mas_equalTo(0);
+        make.leading.trailing.bottom.equalTo(self);
         make.height.mas_equalTo(50);
     }];
     
     [self.startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.mas_equalTo(5);
+        make.leading.equalTo(self.bottomImageView.mas_leading).offset(5);
+        make.bottom.equalTo(self.bottomImageView.mas_bottom).offset(-5);
         make.width.height.mas_equalTo(30);
-        make.bottom.mas_equalTo(-5);
     }];
     
     [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -119,7 +119,7 @@
     
     [self.fullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(30);
-        make.trailing.mas_equalTo(-5);
+        make.trailing.equalTo(self.bottomImageView.mas_trailing).offset(-5);
         make.centerY.equalTo(self.startBtn.mas_centerY);
     }];
     
@@ -141,14 +141,14 @@
     }];
     
     [self.lockBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.mas_equalTo(15);
-        make.width.height.mas_equalTo(40);
+        make.leading.equalTo(self.mas_leading).offset(15);
         make.centerY.equalTo(self.mas_centerY);
+        make.width.height.mas_equalTo(40);
     }];
 
     [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.mas_equalTo(15);
-        make.top.mas_equalTo(5);
+        make.leading.equalTo(self.mas_leading).offset(15);
+        make.top.equalTo(self.mas_top).offset(5);
         make.width.height.mas_equalTo(30);
     }];
     
