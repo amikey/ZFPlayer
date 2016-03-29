@@ -819,7 +819,7 @@ static ZFPlayerView* playerView = nil;
 {
     [imageView addSubview:self];
     [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.leading.trailing.bottom.mas_equalTo(0);
+        make.top.leading.trailing.bottom.equalTo(imageView);
     }];
 }
 
@@ -1463,7 +1463,7 @@ static ZFPlayerView* playerView = nil;
         _controlView = [[ZFPlayerControlView alloc] init];
         [self addSubview:_controlView];
         [_controlView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.leading.trailing.bottom.mas_equalTo(0);
+            make.top.leading.trailing.bottom.equalTo(self);
         }];
     }
     return _controlView;
