@@ -82,14 +82,25 @@ static ZFPlayerView* playerView = nil;
 @property (nonatomic, assign) BOOL                isLocalVideo;
 /** slider上次的值 */
 @property (nonatomic, assign) CGFloat             sliderLastValue;
-/** 是否缩小视频在底部 */
-@property (nonatomic, assign) BOOL                isBottomVideo;
-/** cell上imageView的tag */
-@property (nonatomic, assign) NSInteger           cellImageViewTag;
 /** 是否点了重播 */
 @property (nonatomic, assign) BOOL                repeatToPlay;
 /** 播放完了*/
 @property (nonatomic, assign) BOOL                playDidEnd;
+
+#pragma mark - UITableViewCell PlayerView
+
+/** palyer加到tableView */
+@property (nonatomic, strong) UITableView         *tableView;
+/** player所在cell的indexPath */
+@property (nonatomic, strong) NSIndexPath         *indexPath;
+/** cell上imageView的tag */
+@property (nonatomic, assign) NSInteger           cellImageViewTag;
+/** ViewController中页面是否消失 */
+@property (nonatomic, assign) BOOL                viewDisappear;
+/** 是否在cell上播放video */
+@property (nonatomic, assign) BOOL                isCellVideo;
+/** 是否缩小视频在底部 */
+@property (nonatomic, assign) BOOL                isBottomVideo;
 
 @end
 
@@ -300,14 +311,9 @@ static ZFPlayerView* playerView = nil;
     [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
     // 初始化playerLayer
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    
-    // AVLayerVideoGravityResize,       // 非均匀模式。两个维度完全填充至整个视图区域
-    // AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
-    // AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
-    
-    // 此处根据视频填充模式设置
+
+    // 此处为默认视频填充模式
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    
     // 添加playerLayer到self.layer
     [self.layer insertSublayer:self.playerLayer atIndex:0];
     
@@ -1003,13 +1009,11 @@ static ZFPlayerView* playerView = nil;
     [self.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
         // 如果点击了暂停按钮
         if (self.isPauseByUser) {
-            //NSLog(@"已暂停");
             return ;
         }
         [self play];
         if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) {
             self.state = ZFPlayerStateBuffering;
-            //NSLog(@"显示菊花");
             [self.controlView.activity startAnimating];
         }
     }];
@@ -1206,7 +1210,6 @@ static ZFPlayerView* playerView = nil;
                 }else { // 状态改为显示亮度调节
                     self.isVolume = NO;
                 }
-                
             }
             break;
         }
@@ -1284,12 +1287,8 @@ static ZFPlayerView* playerView = nil;
     }else {
         //亮度
         [UIScreen mainScreen].brightness -= value / 10000;
-        //NSString *brightness             = [NSString stringWithFormat:@"亮度%.0f%%",[UIScreen mainScreen].brightness/1.0*100];
-        //self.horizontalLabel.hidden      = NO;
-        //self.horizontalLabel.text        = brightness;
     }
 }
-
 
 /**
  *  pan水平移动的方法
@@ -1306,7 +1305,6 @@ static ZFPlayerView* playerView = nil;
     else if (value > 0){
         style = @">>";
     }
-    
     // 每次滑动需要叠加时间
     self.sumTime += value / 200;
     
@@ -1369,7 +1367,11 @@ static ZFPlayerView* playerView = nil;
         [self.controlView.activity stopAnimating];
     }
 }
-
+/**
+ *  根据playerItem，来添加移除观察者
+ *
+ *  @param playerItem playerItem
+ */
 - (void)setPlayerItem:(AVPlayerItem *)playerItem {
     if (_playerItem == playerItem) return;
 
@@ -1392,6 +1394,11 @@ static ZFPlayerView* playerView = nil;
     }
 }
 
+/**
+ *  根据tableview的值来添加、移除观察者
+ *
+ *  @param tableView tableView 
+ */
 - (void)setTableView:(UITableView *)tableView {
     if (_tableView == tableView) return;
 
@@ -1401,6 +1408,32 @@ static ZFPlayerView* playerView = nil;
     _tableView = tableView;
     if (tableView) {
         [tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil];
+    }
+}
+
+/**
+ *  设置playerLayer的填充模式
+ *
+ *  @param playerLayerGravity playerLayerGravity
+ */
+- (void)setPlayerLayerGravity:(ZFPlayerLayerGravity)playerLayerGravity
+{
+    _playerLayerGravity = playerLayerGravity;
+    // AVLayerVideoGravityResize,           // 非均匀模式。两个维度完全填充至整个视图区域
+    // AVLayerVideoGravityResizeAspect,     // 等比例填充，直到一个维度到达区域边界
+    // AVLayerVideoGravityResizeAspectFill  // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
+    switch (playerLayerGravity) {
+        case ZFPlayerLayerGravityResize:
+            self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+            break;
+        case ZFPlayerLayerGravityResizeAspect:
+            self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+            break;
+        case ZFPlayerLayerGravityResizeAspectFill:
+            self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            break;
+        default:
+            break;
     }
 }
 

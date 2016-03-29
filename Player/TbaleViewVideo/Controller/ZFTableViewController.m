@@ -110,6 +110,9 @@
                              AtIndexPath:weakIndexPath
                         withImageViewTag:101];
         [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
+        
+        // （可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
+        weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspectFill;
     };
 
     return cell;

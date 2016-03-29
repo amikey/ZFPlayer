@@ -67,9 +67,11 @@
      }];
     */
 
-    self.playerView.videoURL     = self.videoURL;
+    self.playerView.videoURL = self.videoURL;
+    // （可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
+    self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
     __weak typeof(self) weakSelf = self;
-    self.playerView.goBackBlock  = ^{
+    self.playerView.goBackBlock = ^{
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     
