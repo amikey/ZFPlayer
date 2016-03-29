@@ -48,7 +48,6 @@
     
     // MoviePlayerViewController 、ZFTableViewController 控制器支持自动转屏
     if ([nav.topViewController isKindOfClass:[MoviePlayerViewController class]] || [nav.topViewController isKindOfClass:[ZFTableViewController class]]) {
-        
         // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
         return !ZFPlayerShared.isLockScreen;
     }

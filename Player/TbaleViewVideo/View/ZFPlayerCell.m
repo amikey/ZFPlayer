@@ -37,7 +37,7 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self cutRoundView:self.avatarImageView];
     
-    // 设置imageView的tag，在PlayerView中取
+    // 设置imageView的tag，在PlayerView中取（建议设置100以上）
     self.picView.tag = 101;
     
     // 代码添加playerBtn到imageView上

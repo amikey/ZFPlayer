@@ -68,7 +68,6 @@
     
     if (self) {
         
-        [self addSubview:self.lockBtn];
         [self addSubview:self.topImageView];
         [self addSubview:self.bottomImageView];
         [self.bottomImageView addSubview:self.startBtn];
@@ -78,6 +77,7 @@
         [self.bottomImageView addSubview:self.totalTimeLabel];
         [self.bottomImageView addSubview:self.fullScreenBtn];
         
+        [self addSubview:self.lockBtn];
         [self addSubview:self.backBtn];
         [self addSubview:self.activity];
         [self addSubview:self.repeatBtn];
@@ -87,7 +87,7 @@
         
         [self.activity stopAnimating];
         self.horizontalLabel.hidden = YES;
-        self.repeatBtn.hidden = YES;
+        self.repeatBtn.hidden       = YES;
         // 初始化时重置controlView
         [self resetControlView];
     }
@@ -177,6 +177,7 @@
     self.progressView.progress = 0;
     self.currentTimeLabel.text = @"00:00";
     self.totalTimeLabel.text   = @"00:00";
+    self.backgroundColor = [UIColor clearColor];
 }
 
 - (void)showControlView
@@ -247,9 +248,9 @@
 - (UILabel *)currentTimeLabel
 {
     if (!_currentTimeLabel) {
-        _currentTimeLabel = [[UILabel alloc] init];
+        _currentTimeLabel           = [[UILabel alloc] init];
         _currentTimeLabel.textColor = [UIColor whiteColor];
-        _currentTimeLabel.font = [UIFont systemFontOfSize:12.0f];
+        _currentTimeLabel.font      = [UIFont systemFontOfSize:12.0f];
     }
     return _currentTimeLabel;
 }

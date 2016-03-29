@@ -1,4 +1,8 @@
 # ZFPlayer
+![Build Status](https://camo.githubusercontent.com/474a2feaf657f12a6d2f1109a07886ba92fe3d31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6275696c642d70617373696e672d627269676874677265656e2e737667)
+![Cocoapods Compatible](https://img.shields.io/cocoapods/v/ZFPlayer.svg)
+![Language](https://camo.githubusercontent.com/c0e82513e10f9760e334cbed2799b3c86adf08d5/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c616e67756167652d6f626a632d3537383765352e737667)
+![License](https://camo.githubusercontent.com/e7302c620b3589a361fc5503732f3505347205d4/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d4d49542d627269676874677265656e2e737667)
 ## 基于AVPlayer，实现了各大视频软件的功能
 * 支持横、竖屏切换，在全屏播放模式下还可以锁定屏幕方向
 * 支持本地视频、网络视频播放
@@ -30,7 +34,7 @@ self.playerView.goBackBlock = ^{
 ##### 代码实现（Masonry）用法
 
 ```objc
-self.playerView = [ZFPlayerView setupZFPlayer];
+self.playerView = [[ZFPlayerView alloc] init];
 [self.view addSubview:self.playerView];
 [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
  	make.left.top.right.equalTo(self.view);

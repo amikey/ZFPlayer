@@ -46,8 +46,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     ZFPlayerStatePause       //暂停播放
 };
 
-static ZFPlayerView* playerView = nil;
-
 @interface ZFPlayerView () <UIGestureRecognizerDelegate>
 
 /** 播放属性 */
@@ -106,6 +104,8 @@ static ZFPlayerView* playerView = nil;
 
 @implementation ZFPlayerView
 
+#pragma mark - life Cycle
+
 /**
  *  单例，用于列表cell上多个视频
  *
@@ -113,6 +113,7 @@ static ZFPlayerView* playerView = nil;
  */
 + (instancetype)sharedPlayerView
 {
+    static ZFPlayerView *playerView = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         playerView = [[ZFPlayerView alloc] init];
@@ -120,6 +121,9 @@ static ZFPlayerView* playerView = nil;
     return playerView;
 }
 
+/**
+ *  带初始化调用此方法
+ */
 - (instancetype)init
 {
     self = [super init];
@@ -131,6 +135,19 @@ static ZFPlayerView* playerView = nil;
         [self unLockTheScreen];
     }
     return self;
+}
+
+/**
+ *  storyboard、xib加载playerView会调用此方法
+ */
+- (void)awakeFromNib
+{
+    // 亮度调节
+    [ZFBrightnessView sharedBrightnesView];
+    self.backgroundColor = [UIColor blackColor];
+    // 每次播放视频都解锁屏幕锁定
+    [self unLockTheScreen];
+
 }
 
 - (void)dealloc
@@ -280,15 +297,15 @@ static ZFPlayerView* playerView = nil;
         [self resetPlayer];
     }
     // 在cell上播放视频
-    self.isCellVideo = YES;
+    self.isCellVideo      = YES;
     // viewDisappear改为NO
-    self.viewDisappear = NO;
+    self.viewDisappear    = NO;
     // 设置imageView的tag
     self.cellImageViewTag = tag;
     // 设置tableview
-    self.tableView = tableView;
+    self.tableView        = tableView;
     // 设置indexPath
-    self.indexPath = indexPath;
+    self.indexPath        = indexPath;
     // 设置视频URL
     [self setVideoURL:videoURL];
 }
@@ -350,7 +367,7 @@ static ZFPlayerView* playerView = nil;
     // 开始播放
     [self play];
     self.controlView.startBtn.selected = YES;
-    self.isPauseByUser = NO;
+    self.isPauseByUser                 = NO;
     [self.controlView.activity startAnimating];
     
     
@@ -421,7 +438,7 @@ static ZFPlayerView* playerView = nil;
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
         [self.controlView hideControlView];
         if (self.isFullScreen) { //全屏状态
-            self.controlView.backBtn.alpha  = 0;
+            self.controlView.backBtn.alpha = 0;
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         }else if (self.isBottomVideo && !self.isFullScreen) { // 视频在底部bottom小屏,并且不是全屏状态
             self.controlView.backBtn.alpha = 1;
@@ -578,10 +595,10 @@ static ZFPlayerView* playerView = nil;
     if (!self.isBottomVideo) {
         return;
     }
-    [self setOrientationPortrait];
-    self.isBottomVideo = NO;
-     // 显示控制层
+    self.isBottomVideo     = NO;
+    // 显示控制层
     self.controlView.alpha = 1;
+    [self setOrientationPortrait];
     [self.controlView showControlView];
 }
 
@@ -590,7 +607,7 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)setOrientationLandscape
 {
-    if (self.tableView) {
+    if (self.isCellVideo) {
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         // 亮度view加到window最上层
         ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnesView];
@@ -606,11 +623,11 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)setOrientationPortrait
 {
-    if (self.tableView) {
+    if (self.isCellVideo) {
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         [self removeFromSuperview];
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
-        NSArray *visableCells = [self.tableView visibleCells];
+        NSArray *visableCells = self.tableView.visibleCells;
         if (![visableCells containsObject:cell]) {
             self.isBottomVideo = NO;
             [self updataPlayerViewToBottom];
@@ -638,6 +655,7 @@ static ZFPlayerView* playerView = nil;
         [invocation setSelector:selector];
         [invocation setTarget:[UIDevice currentDevice]];
         int val                  = orientation;
+        // 从2开始是因为0 1 两个参数已经被selector和target占用
         [invocation setArgument:&val atIndex:2];
         [invocation invoke];
     }
@@ -921,7 +939,7 @@ static ZFPlayerView* playerView = nil;
     //拖动改变视频播放进度
     if (self.player.status == AVPlayerStatusReadyToPlay) {
         NSString *style = @"";
-        CGFloat value = slider.value - self.sliderLastValue;
+        CGFloat value   = slider.value - self.sliderLastValue;
         if (value > 0) {
             style = @">>";
         } else if (value < 0) {
@@ -930,9 +948,10 @@ static ZFPlayerView* playerView = nil;
         self.sliderLastValue = slider.value;
         
         [self pause];
-        //计算出拖动的当前秒数
+        
         CGFloat total                       = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
 
+        //计算出拖动的当前秒数
         NSInteger dragedSeconds             = floorf(total * slider.value);
 
         //转换成CMTime才能给player来控制播放进度
@@ -949,11 +968,11 @@ static ZFPlayerView* playerView = nil;
         NSString *currentTime               = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
         NSString *totalTime                 = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
         
-        if (durSec > 0) {
-            // 当总时长>0时候才能拖动slider
-            self.controlView.currentTimeLabel.text = currentTime;
-            self.controlView.horizontalLabel.hidden            = NO;
-            self.controlView.horizontalLabel.text              = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+        if (total > 0) {
+            // 当总时长 > 0时候才能拖动slider
+            self.controlView.currentTimeLabel.text  = currentTime;
+            self.controlView.horizontalLabel.hidden = NO;
+            self.controlView.horizontalLabel.text   = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
         }else {
             // 此时设置slider值为0
             slider.value = 0;
@@ -1048,7 +1067,7 @@ static ZFPlayerView* playerView = nil;
  */
 - (void)startAction:(UIButton *)button
 {
-    button.selected = !button.selected;
+    button.selected    = !button.selected;
     self.isPauseByUser = !button.isSelected;
     if (button.selected) {
         [self play];
@@ -1132,10 +1151,11 @@ static ZFPlayerView* playerView = nil;
         self.playDidEnd   = NO;
         [self resetPlayer];
     }else {
-        self.playDidEnd       = YES;
+        self.controlView.backgroundColor  = RGBA(0, 0, 0, .6);
+        self.playDidEnd                   = YES;
         self.controlView.repeatBtn.hidden = NO;
         // 初始化显示controlView为YES
-        self.isMaskShowing    = NO;
+        self.isMaskShowing                = NO;
         // 延迟隐藏controlView
         [self animateShow];
     }

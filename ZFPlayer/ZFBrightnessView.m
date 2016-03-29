@@ -51,31 +51,31 @@
 	if (self = [super init]) {
 		self.frame = CGRectMake(ScreenWidth * 0.5, ScreenHeight * 0.5, 155, 155);
 		
-		self.layer.cornerRadius = 10;
-		self.layer.masksToBounds = YES;
+        self.layer.cornerRadius  = 10;
+        self.layer.masksToBounds = YES;
 		
 		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"brightness_bg.png")]];
         
 		self.backImage = ({
-			UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];
-			imgView.image = [UIImage imageNamed:ZFPlayerSrcName(@"playgesture_BrightnessSun6")];
+            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];
+            imgView.image        = [UIImage imageNamed:ZFPlayerSrcName(@"playgesture_BrightnessSun6")];
 			[self addSubview:imgView];
 			imgView;
 		});
 		
 		self.title = ({
-			UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.bounds.size.width, 30)];
-			title.font = [UIFont systemFontOfSize:16];
-			title.textColor = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
-			title.textAlignment = NSTextAlignmentCenter;
-			title.text = @"亮度";
+            UILabel *title      = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.bounds.size.width, 30)];
+            title.font          = [UIFont systemFontOfSize:16];
+            title.textColor     = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
+            title.textAlignment = NSTextAlignmentCenter;
+            title.text          = @"亮度";
 			[self addSubview:title];
 			title;
 		});
 		
 		self.longView = ({
-			UIView *longView = [[UIView alloc]initWithFrame:CGRectMake(13, 132, self.bounds.size.width - 26, 7)];
-			longView.backgroundColor = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
+            UIView *longView         = [[UIView alloc]initWithFrame:CGRectMake(13, 132, self.bounds.size.width - 26, 7)];
+            longView.backgroundColor = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
 			[self addSubview:longView];
 			longView;
 		});
@@ -99,10 +99,10 @@
 	CGFloat tipY = 1;
 	
 	for (int i = 0; i < 16; i++) {
-		CGFloat tipX = i * (tipW + 1) + 1;
-		UIImageView *image = [[UIImageView alloc] init];
-		image.backgroundColor = [UIColor whiteColor];
-		image.frame = CGRectMake(tipX, tipY, tipW, tipH);
+        CGFloat tipX          = i * (tipW + 1) + 1;
+        UIImageView *image    = [[UIImageView alloc] init];
+        image.backgroundColor = [UIColor whiteColor];
+        image.frame           = CGRectMake(tipX, tipY, tipW, tipH);
 		[self.longView addSubview:image];
 		[self.tipArray addObject:image];
 	}

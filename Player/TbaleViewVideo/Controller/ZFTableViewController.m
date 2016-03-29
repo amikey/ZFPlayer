@@ -43,11 +43,11 @@
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
-    self.dataSource = @[].mutableCopy;
     NSString *path = [[NSBundle mainBundle] pathForResource:@"videoData" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     
+    self.dataSource = @[].mutableCopy;
     NSArray *videoList = [rootDict objectForKey:@"videoList"];
     for (NSDictionary *dataDic in videoList) {
         ZFPlayerModel *model = [[ZFPlayerModel alloc] init];
@@ -98,8 +98,8 @@
     cell.model                         = model;
     
     __block NSIndexPath *weakIndexPath = indexPath;
+    __block ZFPlayerCell *weakCell     = cell;
     __weak typeof(self) weakSelf       = self;
-    __weak ZFPlayerCell *weakCell = cell;
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
         weakSelf.playerView = [ZFPlayerView sharedPlayerView];
