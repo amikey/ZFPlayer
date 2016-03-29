@@ -88,6 +88,8 @@
         [self.activity stopAnimating];
         self.horizontalLabel.hidden = YES;
         self.repeatBtn.hidden = YES;
+        // 初始化时重置controlView
+        [self resetControlView];
     }
     return self;
 }
@@ -112,36 +114,36 @@
     
     [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.startBtn.mas_trailing).offset(2);
-        make.centerY.equalTo(self.startBtn);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
     }];
     
     [self.fullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(30);
         make.trailing.mas_equalTo(-5);
-        make.centerY.equalTo(self.startBtn);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
     }];
     
     [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(self.fullScreenBtn.mas_leading).offset(-2);
-        make.centerY.equalTo(self.startBtn);;
+        make.centerY.equalTo(self.startBtn.mas_centerY);;
     }];
     
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(8);
         make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-8);
-        make.centerY.equalTo(self.startBtn);
+        make.centerY.equalTo(self.startBtn.mas_centerY);
     }];
     
     [self.videoSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(8);
         make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-8);
-        make.centerY.equalTo(self.currentTimeLabel).offset(-0.25);
+        make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-0.25);
     }];
     
     [self.lockBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.mas_equalTo(15);
         make.width.height.mas_equalTo(40);
-        make.centerY.mas_equalTo(0);
+        make.centerY.equalTo(self.mas_centerY);
     }];
 
     [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -151,9 +153,9 @@
     }];
     
     [self.horizontalLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self);
         make.width.mas_equalTo(160);
         make.height.mas_equalTo(40);
+        make.center.equalTo(self);
     }];
     
     [self.activity mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -171,24 +173,24 @@
 /** 重置ControlView */
 - (void)resetControlView
 {
-    self.videoSlider.value = 0;
+    self.videoSlider.value     = 0;
     self.progressView.progress = 0;
     self.currentTimeLabel.text = @"00:00";
-    self.totalTimeLabel.text = @"00:00";
+    self.totalTimeLabel.text   = @"00:00";
 }
 
 - (void)showControlView
 {
-    self.topImageView.alpha = 1;
+    self.topImageView.alpha    = 1;
     self.bottomImageView.alpha = 1;
-    self.lockBtn.alpha = 1;
+    self.lockBtn.alpha         = 1;
 }
 
 - (void)hideControlView
 {
-    self.topImageView.alpha = 0;
+    self.topImageView.alpha    = 0;
     self.bottomImageView.alpha = 0;
-    self.lockBtn.alpha = 0;
+    self.lockBtn.alpha         = 0;
 }
 
 #pragma mark - getter
@@ -205,9 +207,9 @@
 - (UIImageView *)topImageView
 {
     if (!_topImageView) {
-        _topImageView = [[UIImageView alloc] init];
+        _topImageView                        = [[UIImageView alloc] init];
         _topImageView.userInteractionEnabled = YES;
-        _topImageView.image = [UIImage imageNamed:ZFPlayerSrcName(@"top_shadow")];
+        _topImageView.image                  = [UIImage imageNamed:ZFPlayerSrcName(@"top_shadow")];
     }
     return _topImageView;
 }
@@ -215,9 +217,9 @@
 - (UIImageView *)bottomImageView
 {
     if (!_bottomImageView) {
-        _bottomImageView = [[UIImageView alloc] init];
+        _bottomImageView                        = [[UIImageView alloc] init];
         _bottomImageView.userInteractionEnabled = YES;
-        _bottomImageView.image = [UIImage imageNamed:ZFPlayerSrcName(@"bottom_shadow")];
+        _bottomImageView.image                  = [UIImage imageNamed:ZFPlayerSrcName(@"bottom_shadow")];
     }
     return _bottomImageView;
 }
@@ -246,7 +248,6 @@
 {
     if (!_currentTimeLabel) {
         _currentTimeLabel = [[UILabel alloc] init];
-        _currentTimeLabel.text = @"00:00";
         _currentTimeLabel.textColor = [UIColor whiteColor];
         _currentTimeLabel.font = [UIFont systemFontOfSize:12.0f];
     }
@@ -256,10 +257,9 @@
 - (UIProgressView *)progressView
 {
     if (!_progressView) {
-        _progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-        _progressView.progress = .0f;
-        _progressView.progressTintColor    = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
-        _progressView.trackTintColor       = [UIColor clearColor];
+        _progressView                   = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+        _progressView.progressTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
+        _progressView.trackTintColor    = [UIColor clearColor];
     }
     return _progressView;
 }
@@ -267,10 +267,10 @@
 - (UISlider *)videoSlider
 {
     if (!_videoSlider) {
-        _videoSlider = [[UISlider alloc] init];
+        _videoSlider                       = [[UISlider alloc] init];
         // 设置slider
         [_videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"slider")] forState:UIControlStateNormal];
-        
+
         _videoSlider.minimumTrackTintColor = [UIColor whiteColor];
         _videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.6];
     }
@@ -280,10 +280,9 @@
 - (UILabel *)totalTimeLabel
 {
     if (!_totalTimeLabel) {
-        _totalTimeLabel = [[UILabel alloc] init];
-        _totalTimeLabel.text = @"00:00";
+        _totalTimeLabel           = [[UILabel alloc] init];
         _totalTimeLabel.textColor = [UIColor whiteColor];
-        _totalTimeLabel.font = [UIFont systemFontOfSize:12.0f];
+        _totalTimeLabel.font      = [UIFont systemFontOfSize:12.0f];
     }
     return _totalTimeLabel;
 }
@@ -300,9 +299,9 @@
 - (UILabel *)horizontalLabel
 {
     if (!_horizontalLabel) {
-        _horizontalLabel = [[UILabel alloc] init];
-        _horizontalLabel.textColor = [UIColor whiteColor];
-        _horizontalLabel.textAlignment = NSTextAlignmentCenter;
+        _horizontalLabel                 = [[UILabel alloc] init];
+        _horizontalLabel.textColor       = [UIColor whiteColor];
+        _horizontalLabel.textAlignment   = NSTextAlignmentCenter;
         // 设置快进快退label
         _horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"Management_Mask")]];
     }

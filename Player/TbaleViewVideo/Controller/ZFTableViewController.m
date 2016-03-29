@@ -91,7 +91,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     static NSString *identifier        = @"playerCell";
-    ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier];
+    ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     // 取到对应cell的model
     __block ZFPlayerModel *model       = self.dataSource[indexPath.row];
     // 赋值model
@@ -102,7 +102,7 @@
     __weak ZFPlayerCell *weakCell = cell;
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
-        weakSelf.playerView = [ZFPlayerView playerView];
+        weakSelf.playerView = [ZFPlayerView sharedPlayerView];
         NSURL *videoURL     = [NSURL URLWithString:model.playUrl];
         // 设置player相关参数(需要设置imageView的tag值，此处设置的为101)
         [weakSelf.playerView setVideoURL:videoURL

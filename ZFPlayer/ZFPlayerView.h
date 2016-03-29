@@ -51,7 +51,7 @@ typedef void(^ZFPlayerGoBackBlock)(void);
  *
  *  @return ZFPlayer
  */
-+ (instancetype)playerView;
++ (instancetype)sharedPlayerView;
 
 /**
  *  player添加到cell上

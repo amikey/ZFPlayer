@@ -100,7 +100,7 @@ static ZFPlayerView* playerView = nil;
  *
  *  @return ZFPlayer
  */
-+ (instancetype)playerView
++ (instancetype)sharedPlayerView
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -118,7 +118,6 @@ static ZFPlayerView* playerView = nil;
         self.backgroundColor = [UIColor blackColor];
         // 每次播放视频都解锁屏幕锁定
         [self unLockTheScreen];
-        
     }
     return self;
 }
@@ -126,12 +125,10 @@ static ZFPlayerView* playerView = nil;
 - (void)dealloc
 {
     //NSLog(@"%@释放了",self.class);
-
     self.playerItem = nil;
     self.tableView = nil;
-
-    // 移除所有通知
-    [self removeNotifications];
+    // 移除通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /**
@@ -142,8 +139,8 @@ static ZFPlayerView* playerView = nil;
     // 改为为播放完
     self.playDidEnd = NO;
     self.playerItem = nil;
-    // 移除所有通知、观察者
-    [self removeNotifications];
+    // 移除通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     // 关闭定时器
     [self.timer invalidate];
     // 暂停
@@ -156,17 +153,19 @@ static ZFPlayerView* playerView = nil;
     [self.controlView resetControlView];
     // 隐藏重播按钮
     self.controlView.repeatBtn.hidden = YES;
-    // 列表中悬浮且非重播时，从 view hierarchy 中移除
-    if (self.isBottomVideo && !self.repeatToPlay) {
+    // 非重播时，移除当前playerView
+    if (!self.repeatToPlay) {
         [self removeFromSuperview];
     }
     // 底部播放video改为NO
     self.isBottomVideo = NO;
-    if (self.tableView && !self.repeatToPlay) {
+    // cell上播放视频 && 不是重播时
+    if (self.isCellVideo && !self.repeatToPlay) {
         // vicontroller中页面消失
         self.viewDisappear = YES;
-        self.tableView = nil;
-        self.indexPath = nil;
+        self.isCellVideo   = NO;
+        self.tableView     = nil;
+        self.indexPath     = nil;
     }
 }
 
@@ -206,14 +205,6 @@ static ZFPlayerView* playerView = nil;
     [self.controlView.repeatBtn addTarget:self action:@selector(repeatPlay:) forControlEvents:UIControlEventTouchUpInside];
     // 监测设备方向
     [self listeningRotating];
-}
-
-/**
- *  移除所有通知
- */
-- (void)removeNotifications {
-    // 移除通知
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /**
@@ -273,13 +264,12 @@ static ZFPlayerView* playerView = nil;
         AtIndexPath:(NSIndexPath *)indexPath
    withImageViewTag:(NSInteger)tag
 {
-    // 在cell上播放视频
-    self.isCellVideo = YES;
-    
-    // 如果页面没有消失过，并且playerItem有值，需要重置player
+    // 如果页面没有消失，并且playerItem有值，需要重置player(其实就是点击播放其他视频时候)
     if (!self.viewDisappear && self.playerItem) {
         [self resetPlayer];
     }
+    // 在cell上播放视频
+    self.isCellVideo = YES;
     // viewDisappear改为NO
     self.viewDisappear = NO;
     // 设置imageView的tag
@@ -495,7 +485,6 @@ static ZFPlayerView* playerView = nil;
             
             // 当缓冲是空的时候
             if (self.playerItem.playbackBufferEmpty) {
-                //NSLog(@"playbackBufferEmpty");
                 self.state = ZFPlayerStateBuffering;
                 [self bufferingSomeSecond];
             }
@@ -504,7 +493,6 @@ static ZFPlayerView* playerView = nil;
             
             // 当缓冲好的时候
             if (self.playerItem.playbackLikelyToKeepUp){
-                //NSLog(@"playbackLikelyToKeepUp");
                 self.state = ZFPlayerStatePlaying;
             }
             
@@ -719,18 +707,6 @@ static ZFPlayerView* playerView = nil;
         self.isFullScreen = YES;
         return;
     }
-    // 在cell上播放视频 && 不允许横屏（此时为竖屏状态）
-    if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
-        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
-        self.isFullScreen = NO;
-        // 设置显示or不显示锁定屏幕方向按钮
-        self.controlView.lockBtn.hidden = !self.isFullScreen;
-        // 关闭按钮的约束
-        [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.leading.mas_equalTo(5);
-        }];
-        return;
-    }
     UIDeviceOrientation orientation             = [UIDevice currentDevice].orientation;
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     switch (interfaceOrientation) {
@@ -759,6 +735,8 @@ static ZFPlayerView* playerView = nil;
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.leading.mas_equalTo(5);
                 }];
+                
+                [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
             }else {
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.mas_equalTo(5);
@@ -797,7 +775,6 @@ static ZFPlayerView* playerView = nil;
         default:
             break;
     }
-    
     // 设置显示or不显示锁定屏幕方向按钮
     self.controlView.lockBtn.hidden = !self.isFullScreen;
 }
@@ -1453,7 +1430,7 @@ static ZFPlayerView* playerView = nil;
         _controlView = [[ZFPlayerControlView alloc] init];
         [self addSubview:_controlView];
         [_controlView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
+            make.top.leading.trailing.bottom.mas_equalTo(0);
         }];
     }
     return _controlView;
