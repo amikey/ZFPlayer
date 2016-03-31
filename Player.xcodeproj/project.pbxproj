@@ -30,6 +30,17 @@
 		CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13A1C9AA11F004C95AC /* ZFPlayerModel.m */; };
 		CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13D1C9AA128004C95AC /* ZFTableViewController.m */; };
 		CCE1C1401C9AA131004C95AC /* videoData.json in Resources */ = {isa = PBXBuildFile; fileRef = CCE1C13F1C9AA131004C95AC /* videoData.json */; };
+		CCEF1BF41CAA826900B0DD78 /* ZFDownloadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1BF31CAA826900B0DD78 /* ZFDownloadingCell.m */; };
+		CCEF1BF91CACB28E00B0DD78 /* ZFDownloadedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1BF81CACB28E00B0DD78 /* ZFDownloadedCell.m */; };
+		CCEF1C041CAD09D300B0DD78 /* ZFBaseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1BFD1CAD09D300B0DD78 /* ZFBaseOperation.m */; };
+		CCEF1C051CAD09D300B0DD78 /* ZFDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1BFF1CAD09D300B0DD78 /* ZFDownloadOperation.m */; };
+		CCEF1C061CAD09D300B0DD78 /* ZFHttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C011CAD09D300B0DD78 /* ZFHttpManager.m */; };
+		CCEF1C071CAD09D300B0DD78 /* ZFHttpOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C031CAD09D300B0DD78 /* ZFHttpOperation.m */; };
+		CCEF1C0C1CAD09DB00B0DD78 /* ZFDownloadSessionTask.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C091CAD09DB00B0DD78 /* ZFDownloadSessionTask.m */; };
+		CCEF1C0D1CAD09DB00B0DD78 /* ZFSessionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C0B1CAD09DB00B0DD78 /* ZFSessionDownloadManager.m */; };
+		CCEF1C101CAD0A3B00B0DD78 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C0F1CAD0A3B00B0DD78 /* Reachability.m */; };
+		CCEF1C161CAD114C00B0DD78 /* UIView+ZFViewProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C151CAD114C00B0DD78 /* UIView+ZFViewProperty.m */; };
+		CCEF1C191CAD19BB00B0DD78 /* ZFDownloadObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C181CAD19BB00B0DD78 /* ZFDownloadObject.m */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +106,28 @@
 		CCE1C13C1C9AA128004C95AC /* ZFTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFTableViewController.h; sourceTree = "<group>"; };
 		CCE1C13D1C9AA128004C95AC /* ZFTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFTableViewController.m; sourceTree = "<group>"; };
 		CCE1C13F1C9AA131004C95AC /* videoData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = videoData.json; sourceTree = "<group>"; };
+		CCEF1BF21CAA826900B0DD78 /* ZFDownloadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadingCell.h; sourceTree = "<group>"; };
+		CCEF1BF31CAA826900B0DD78 /* ZFDownloadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadingCell.m; sourceTree = "<group>"; };
+		CCEF1BF71CACB28E00B0DD78 /* ZFDownloadedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadedCell.h; sourceTree = "<group>"; };
+		CCEF1BF81CACB28E00B0DD78 /* ZFDownloadedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadedCell.m; sourceTree = "<group>"; };
+		CCEF1BFC1CAD09D300B0DD78 /* ZFBaseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFBaseOperation.h; sourceTree = "<group>"; };
+		CCEF1BFD1CAD09D300B0DD78 /* ZFBaseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFBaseOperation.m; sourceTree = "<group>"; };
+		CCEF1BFE1CAD09D300B0DD78 /* ZFDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadOperation.h; sourceTree = "<group>"; };
+		CCEF1BFF1CAD09D300B0DD78 /* ZFDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadOperation.m; sourceTree = "<group>"; };
+		CCEF1C001CAD09D300B0DD78 /* ZFHttpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFHttpManager.h; sourceTree = "<group>"; };
+		CCEF1C011CAD09D300B0DD78 /* ZFHttpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFHttpManager.m; sourceTree = "<group>"; };
+		CCEF1C021CAD09D300B0DD78 /* ZFHttpOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFHttpOperation.h; sourceTree = "<group>"; };
+		CCEF1C031CAD09D300B0DD78 /* ZFHttpOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFHttpOperation.m; sourceTree = "<group>"; };
+		CCEF1C081CAD09DB00B0DD78 /* ZFDownloadSessionTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadSessionTask.h; sourceTree = "<group>"; };
+		CCEF1C091CAD09DB00B0DD78 /* ZFDownloadSessionTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadSessionTask.m; sourceTree = "<group>"; };
+		CCEF1C0A1CAD09DB00B0DD78 /* ZFSessionDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFSessionDownloadManager.h; sourceTree = "<group>"; };
+		CCEF1C0B1CAD09DB00B0DD78 /* ZFSessionDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFSessionDownloadManager.m; sourceTree = "<group>"; };
+		CCEF1C0E1CAD0A3B00B0DD78 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		CCEF1C0F1CAD0A3B00B0DD78 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		CCEF1C141CAD114C00B0DD78 /* UIView+ZFViewProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZFViewProperty.h"; sourceTree = "<group>"; };
+		CCEF1C151CAD114C00B0DD78 /* UIView+ZFViewProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZFViewProperty.m"; sourceTree = "<group>"; };
+		CCEF1C171CAD19BB00B0DD78 /* ZFDownloadObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadObject.h; sourceTree = "<group>"; };
+		CCEF1C181CAD19BB00B0DD78 /* ZFDownloadObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +248,7 @@
 		CC2CC6301CA24D4B0028BBDD /* ZFPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				CCEF1BFB1CAD09AC00B0DD78 /* ZFDownload */,
 				CC2CC6331CA24D4B0028BBDD /* ZFPlayer.bundle */,
 				CC2CC6541CA38A710028BBDD /* ZFPlayer.h */,
 				CC2CC6511CA388800028BBDD /* ZFPlayerSingleton.h */,
@@ -243,6 +277,12 @@
 			children = (
 				CC725C2E1C894D2D00C3EAF2 /* FirstViewController.h */,
 				CC725C2F1C894D2D00C3EAF2 /* FirstViewController.m */,
+				CCEF1BF21CAA826900B0DD78 /* ZFDownloadingCell.h */,
+				CCEF1BF31CAA826900B0DD78 /* ZFDownloadingCell.m */,
+				CCEF1BF71CACB28E00B0DD78 /* ZFDownloadedCell.h */,
+				CCEF1BF81CACB28E00B0DD78 /* ZFDownloadedCell.m */,
+				CCEF1C141CAD114C00B0DD78 /* UIView+ZFViewProperty.h */,
+				CCEF1C151CAD114C00B0DD78 /* UIView+ZFViewProperty.m */,
 			);
 			path = LocalVideo;
 			sourceTree = "<group>";
@@ -292,6 +332,29 @@
 				CCE1C13A1C9AA11F004C95AC /* ZFPlayerModel.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		CCEF1BFB1CAD09AC00B0DD78 /* ZFDownload */ = {
+			isa = PBXGroup;
+			children = (
+				CCEF1BFC1CAD09D300B0DD78 /* ZFBaseOperation.h */,
+				CCEF1BFD1CAD09D300B0DD78 /* ZFBaseOperation.m */,
+				CCEF1BFE1CAD09D300B0DD78 /* ZFDownloadOperation.h */,
+				CCEF1BFF1CAD09D300B0DD78 /* ZFDownloadOperation.m */,
+				CCEF1C001CAD09D300B0DD78 /* ZFHttpManager.h */,
+				CCEF1C011CAD09D300B0DD78 /* ZFHttpManager.m */,
+				CCEF1C021CAD09D300B0DD78 /* ZFHttpOperation.h */,
+				CCEF1C031CAD09D300B0DD78 /* ZFHttpOperation.m */,
+				CCEF1C081CAD09DB00B0DD78 /* ZFDownloadSessionTask.h */,
+				CCEF1C091CAD09DB00B0DD78 /* ZFDownloadSessionTask.m */,
+				CCEF1C0A1CAD09DB00B0DD78 /* ZFSessionDownloadManager.h */,
+				CCEF1C0B1CAD09DB00B0DD78 /* ZFSessionDownloadManager.m */,
+				CCEF1C0E1CAD0A3B00B0DD78 /* Reachability.h */,
+				CCEF1C0F1CAD0A3B00B0DD78 /* Reachability.m */,
+				CCEF1C171CAD19BB00B0DD78 /* ZFDownloadObject.h */,
+				CCEF1C181CAD19BB00B0DD78 /* ZFDownloadObject.m */,
+			);
+			path = ZFDownload;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -479,17 +542,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCEF1C071CAD09D300B0DD78 /* ZFHttpOperation.m in Sources */,
+				CCEF1C061CAD09D300B0DD78 /* ZFHttpManager.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* SecondViewController.m in Sources */,
 				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
 				CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */,
+				CCEF1C0D1CAD09DB00B0DD78 /* ZFSessionDownloadManager.m in Sources */,
+				CCEF1C0C1CAD09DB00B0DD78 /* ZFDownloadSessionTask.m in Sources */,
+				CCEF1C101CAD0A3B00B0DD78 /* Reachability.m in Sources */,
+				CCEF1C161CAD114C00B0DD78 /* UIView+ZFViewProperty.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* FirstViewController.m in Sources */,
+				CCEF1C041CAD09D300B0DD78 /* ZFBaseOperation.m in Sources */,
 				CC2CC63F1CA24D4B0028BBDD /* ZFPlayerView.m in Sources */,
+				CCEF1C191CAD19BB00B0DD78 /* ZFDownloadObject.m in Sources */,
 				CC2CC6531CA388800028BBDD /* ZFPlayerSingleton.m in Sources */,
+				CCEF1C051CAD09D300B0DD78 /* ZFDownloadOperation.m in Sources */,
 				CC2CC63B1CA24D4B0028BBDD /* ZFBrightnessView.m in Sources */,
 				CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */,
 				CC2CC63D1CA24D4B0028BBDD /* ZFPlayerControlView.m in Sources */,
+				CCEF1BF91CACB28E00B0DD78 /* ZFDownloadedCell.m in Sources */,
 				CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */,
+				CCEF1BF41CAA826900B0DD78 /* ZFDownloadingCell.m in Sources */,
 				CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */,
 				4947F78F1BE996AC003093C8 /* main.m in Sources */,
 			);

@@ -231,6 +231,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.controlView.lockBtn addTarget:self action:@selector(lockScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     // 重播
     [self.controlView.repeatBtn addTarget:self action:@selector(repeatPlay:) forControlEvents:UIControlEventTouchUpInside];
+    // 下载
+    [self.controlView.downLoadBtn addTarget:self action:@selector(downloadVideo:) forControlEvents:UIControlEventTouchUpInside];
     // 监测设备方向
     [self listeningRotating];
 }
@@ -359,6 +361,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if ([videoURL.scheme isEqualToString:@"file"]) {
         self.state = ZFPlayerStatePlaying;
         self.isLocalVideo = YES;
+        self.controlView.downLoadBtn.enabled = NO;
     } else {
         self.state = ZFPlayerStateBuffering;
         self.isLocalVideo = NO;
@@ -1134,6 +1137,141 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self resetPlayer];
     [self setVideoURL:self.videoURL];
     
+}
+
+- (void)downloadVideo:(UIButton *)sender
+{
+//    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+//        
+//    } state:^(DownloadState state) {
+//        
+//    }];
+
+    NSString * suffix = [[ZFHttpManager shared] fileFormatWithUrl:self.videoURL.absoluteString];
+    NSString * fileName = ZFFileName(self.videoURL.absoluteString);
+    __weak typeof(self) weakSelf = self;
+#if ZFBackgroundDownload
+    [[ZFSessionDownloadManager shared] setBundleIdentifier:@"com.ZF.ZFNetWorkKit.backgroundsession"];
+    ZFDownloadSessionTask * downloadTask = [[ZFSessionDownloadManager shared]
+                                              download:kZFDefaultDownloadUrl
+                                              savePath:[ZFDownloadObject videoDirectory]
+                                              saveFileName:fileName
+                                              response:^(ZFBaseOperation *operation, NSError *error, BOOL isOK) {
+                                                  ZFDownloadOperation * downloadOperation = (ZFDownloadOperation*)operation;
+                                                  ZFDownloadObject * downloadObject = [ZFDownloadObject readDiskCache:operation.strUrl];
+                                                  if (downloadObject == nil) {
+                                                      [weakSelf.view toast:@"已经添加到下载队列"];
+                                                      downloadObject = [ZFDownloadObject new];
+                                                  }
+                                                  downloadObject.fileName = downloadOperation.saveFileName;
+                                                  downloadObject.downloadPath = downloadOperation.strUrl;
+                                                  downloadObject.downloadState = ZFDownloading;
+                                                  downloadObject.currentDownloadLenght = downloadOperation.recvDataLenght;
+                                                  downloadObject.totalLenght = downloadOperation.fileTotalLenght;
+                                                  [downloadObject writeDiskCache];
+                                              } process:^(ZFBaseOperation *operation, uint64_t recvLength, uint64_t totalLength, NSString *speed) {
+                                                  NSLog(@"recvLength = %llu , totalLength = %llu , speed = %@",recvLength , totalLength , speed);
+                                              } didFinished:^(ZFBaseOperation *operation, NSData *data, NSError *error, BOOL isSuccess) {
+                                                  if (isSuccess) {
+                                                      [weakSelf.view toast:@"下载成功"];
+                                                      [weakSelf saveDownloadStateOperation:(ZFDownloadOperation *)operation];
+                                                  }else {
+                                                      [weakSelf.view toast:error.userInfo[NSLocalizedDescriptionKey]];
+                                                      if (error != nil &&
+                                                          error.code == ZFCancelDownloadError) {
+                                                          [weakSelf saveDownloadStateOperation:(ZFDownloadOperation *)operation];
+                                                      }
+                                                  }
+                                              }];
+    
+#else
+    ZFDownloadOperation * downloadTask = nil;
+    downloadTask = [[ZFHttpManager shared] download:self.videoURL.absoluteString
+                                             savePath:[ZFDownloadObject videoDirectory]
+                                         saveFileName:fileName
+                                             response:^(ZFBaseOperation *operation, NSError *error, BOOL isOK) {
+                                                 if (isOK) {
+                                                     
+                                                     ZFDownloadOperation * downloadOperation = (ZFDownloadOperation*)operation;
+                                                     ZFDownloadObject * downloadObject = [ZFDownloadObject readDiskCache:operation.strUrl];
+                                                     if (downloadObject == nil) {
+                                                         NSLog(@"已经添加到下载队列");
+                                                         downloadObject = [ZFDownloadObject new];
+                                                     }
+                                                     downloadObject.fileName = downloadOperation.saveFileName;
+                                                     downloadObject.downloadPath = downloadOperation.strUrl;
+                                                     downloadObject.downloadState = ZFDownloading;
+                                                     downloadObject.currentDownloadLenght = downloadOperation.recvDataLenght;
+                                                     downloadObject.totalLenght = downloadOperation.fileTotalLenght;
+                                                     [downloadObject writeDiskCache];
+                                                 }else {
+                                                     [weakSelf errorHandle:(ZFDownloadOperation *)operation error:error];
+                                                 }
+                                             } process:^(ZFBaseOperation *operation, uint64_t recvLength, uint64_t totalLength, NSString *speed) {
+                                                 NSLog(@"recvLength = %llu totalLength = %llu speed = %@",recvLength , totalLength , speed);
+                                             } didFinished:^(ZFBaseOperation *operation, NSData *data, NSError *error, BOOL isSuccess) {
+                                                 if (isSuccess) {
+                                                      NSLog(@"下载成功");
+                                                     [weakSelf saveDownloadStateOperation:(ZFDownloadOperation *)operation];
+                                                 }else {
+                                                     [weakSelf errorHandle:(ZFDownloadOperation *)operation error:error];
+                                                     if (error != nil &&
+                                                         error.code == ZFCancelDownloadError) {
+                                                         [weakSelf saveDownloadStateOperation:(ZFDownloadOperation *)operation];
+                                                     }
+                                                 }
+                                             }];
+    
+#endif
+    if (downloadTask.requestStatus == ZFHttpRequestNone) {
+#if ZFBackgroundDownload 
+        if (![[ZFSessionDownloadManager shared] waitingDownload]) {
+            return;
+        }
+#else
+        if (![[ZFHttpManager shared] waitingDownload]) {
+            return;
+        }
+#endif
+        ZFDownloadObject * downloadObject = [ZFDownloadObject readDiskCache:downloadTask.strUrl];
+        if (downloadObject == nil) {
+            NSLog(@"已经添加到下载队列") ;
+            downloadObject = [ZFDownloadObject new];
+        }
+        downloadObject.fileName = fileName;
+        downloadObject.downloadPath = self.videoURL.absoluteString;
+        downloadObject.downloadState = ZFDownloadWaitting;
+        downloadObject.currentDownloadLenght = 0;
+        downloadObject.totalLenght = 0;
+        [downloadObject writeDiskCache];
+    }
+
+}
+
+- (void)saveDownloadStateOperation:(ZFDownloadOperation *)operation {
+    ZFDownloadObject * downloadObject = [ZFDownloadObject readDiskCache:operation.strUrl];
+    if (downloadObject != nil) {
+        downloadObject.currentDownloadLenght = operation.recvDataLenght;
+        downloadObject.totalLenght = operation.fileTotalLenght;
+        [downloadObject writeDiskCache];
+    }
+}
+
+- (void) errorHandle:(ZFDownloadOperation *)operation error:(NSError *)error {
+    NSString * errInfo = error.userInfo[NSLocalizedDescriptionKey];
+    if ([errInfo containsString:@"404"]) {
+        NSLog(@"该文件不存在");
+        ZFDownloadObject * downloadObject = [ZFDownloadObject readDiskCache:operation.strUrl];
+        if (downloadObject != nil) {
+            [downloadObject removeFromDisk];
+        }
+    }else {
+        if ([errInfo containsString:@"已经在下载中"]) {
+//            [self.view toast:errInfo];
+        }else {
+//            [self.view toast:@"下载失败"];
+        }
+    }
 }
 
 #pragma mark - NSNotification Action

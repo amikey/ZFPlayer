@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ZFDownloadingCell.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -23,7 +23,25 @@
 
 #import <UIKit/UIKit.h>
 #import "ZFDownloadObject.h"
+#import "ZFPlayer.h"
 
-@interface FirstViewController : UIViewController
+@protocol ZFOffLineVideoCellDelegate <NSObject>
+
+- (void)videoDownload:(NSError *)error index:(NSInteger)index strUrl:(NSString *)strUrl;
+- (void)updateDownloadValue:(ZFDownloadObject *)downloadObject index:(NSInteger)index;
+- (void)videoPlayerIndex:(NSInteger)index;
+@end
+
+@interface ZFDownloadingCell : UITableViewCell <ZFDownloadDelegate>
+
+@property (nonatomic , weak)id<ZFOffLineVideoCellDelegate> delegate;
+@property (nonatomic , assign)NSInteger index;
+
+@property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
+@property (weak, nonatomic) IBOutlet UIProgressView *progress;
+@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UILabel *speedLabel;
+@property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
+- (void)displayCell:(ZFDownloadObject *)object index:(NSInteger)index;
 
 @end

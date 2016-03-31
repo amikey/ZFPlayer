@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ZFDownloadSessionTask.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,9 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "ZFDownloadObject.h"
+#import "ZFDownloadSessionTask.h"
 
-@interface FirstViewController : UIViewController
+@implementation ZFDownloadSessionTask
+
+- (void)cancelDownloadTaskAndDeleteFile:(BOOL)isDelete {
+    if (isDelete) {
+        [_downloadTask cancel];
+    }
+}
+
+- (void)handleResponse:(NSURLResponse *)response {
+    [self connection:nil didReceiveResponse:response];
+}
 
 @end

@@ -52,6 +52,8 @@
 @property (nonatomic, strong) UIImageView             *bottomImageView;
 /** topView */
 @property (nonatomic, strong) UIImageView             *topImageView;
+/** 缓存按钮 */
+@property (nonatomic, strong) UIButton                *downLoadBtn;
 
 @end
 
@@ -77,6 +79,7 @@
         [self.bottomImageView addSubview:self.totalTimeLabel];
         [self.bottomImageView addSubview:self.fullScreenBtn];
         
+        [self.topImageView addSubview:self.downLoadBtn];
         [self addSubview:self.lockBtn];
         [self addSubview:self.backBtn];
         [self addSubview:self.activity];
@@ -96,9 +99,21 @@
 
 - (void)makeSubViewsConstraints
 {
+    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.mas_leading).offset(15);
+        make.top.equalTo(self.mas_top).offset(5);
+        make.width.height.mas_equalTo(30);
+    }];
+    
     [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.top.equalTo(self);
-        make.height.mas_equalTo(50);
+        make.height.mas_equalTo(80);
+    }];
+    
+    [self.downLoadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.mas_equalTo(40);
+        make.trailing.equalTo(self.topImageView.mas_trailing).offset(-10);
+        make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
     
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -144,12 +159,6 @@
         make.leading.equalTo(self.mas_leading).offset(15);
         make.centerY.equalTo(self.mas_centerY);
         make.width.height.mas_equalTo(40);
-    }];
-
-    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.mas_leading).offset(15);
-        make.top.equalTo(self.mas_top).offset(5);
-        make.width.height.mas_equalTo(30);
     }];
     
     [self.horizontalLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -324,6 +333,16 @@
         [_repeatBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"repeat_video")] forState:UIControlStateNormal];
     }
     return _repeatBtn;
+}
+
+- (UIButton *)downLoadBtn
+{
+    if (!_downLoadBtn) {
+        _downLoadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"player_downLoad")] forState:UIControlStateNormal];
+        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"player_not_downLoad")] forState:UIControlStateDisabled];
+    }
+    return _downLoadBtn;
 }
 
 @end

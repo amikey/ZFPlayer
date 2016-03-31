@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ZFHttpOperation.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,9 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "ZFDownloadObject.h"
+#import "ZFBaseOperation.h"
 
-@interface FirstViewController : UIViewController
+@interface ZFHttpOperation : ZFBaseOperation
 
 @end

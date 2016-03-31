@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ZFDownloadSessionTask.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,9 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "ZFDownloadObject.h"
+#import "ZFDownloadOperation.h"
 
-@interface FirstViewController : UIViewController
+/**
+ * 说明: ZFDownloadSessionTask  单个后台下载任务类
+ */
 
+@interface ZFDownloadSessionTask : ZFDownloadOperation
+
+/**
+ * 当前后台下载任务对象
+ */
+@property (nonatomic , strong)NSURLSessionDownloadTask * downloadTask;
+
+/**
+ * 函数说明: 取消当前下载任务
+ * @param: isDelete 取消下载任务的同时是否删除下载缓存的文件
+ */
+
+- (void)cancelDownloadTaskAndDeleteFile:(BOOL)isDelete;
+
+/**
+ * 函数说明: 处理下载应答
+ * @param: response 下载应答对象
+ */
+
+- (void)handleResponse:(NSURLResponse *)response;
 @end

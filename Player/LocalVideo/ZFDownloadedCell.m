@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ZFDownloadedCell.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,9 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "ZFDownloadObject.h"
+#import "ZFDownloadedCell.h"
 
-@interface FirstViewController : UIViewController
+@implementation ZFDownloadedCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+-(void)setDownloadObject:(ZFDownloadObject *)downloadObject
+{
+    _downloadObject = downloadObject;
+    self.fileNameLabel.text = downloadObject.fileName;
+    self.sizeLabel.text = downloadObject.totalLenghtToString;
+}
 
 @end

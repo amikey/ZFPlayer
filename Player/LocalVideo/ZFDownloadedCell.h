@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ZFDownloadedCell.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,8 +22,10 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import "ZFDownloadObject.h"
+#import "ZFPlayer.h"
 
-@interface FirstViewController : UIViewController
-
+@interface ZFDownloadedCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *sizeLabel;
+@property (nonatomic, strong) ZFDownloadObject *downloadObject;
 @end

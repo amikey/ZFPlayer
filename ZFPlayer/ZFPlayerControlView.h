@@ -51,6 +51,8 @@
 @property (nonatomic, strong, readonly) UIImageView             *bottomImageView;
 /** topView */
 @property (nonatomic, strong, readonly) UIImageView             *topImageView;
+/** 缓存按钮 */
+@property (nonatomic, strong, readonly) UIButton                *downLoadBtn;
 
 /** 重置ControlView */
 - (void)resetControlView;
