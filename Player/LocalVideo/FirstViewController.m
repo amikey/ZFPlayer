@@ -134,16 +134,17 @@
     return YES;
 }
 
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSInteger row = indexPath.row;
-    ZFDownloadObject * downloadObject = _downloadObjectArr[row];
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray *downloadArray = _downloadObjectArr[indexPath.section];
+    ZFDownloadObject * downloadObject = downloadArray[indexPath.row];
 #if ZFBackgroundDownload
     [[ZFSessionDownloadManager shared] cancelDownloadWithFileName:downloadObject.fileName deleteFile:YES];
 #else
     [[ZFHttpManager shared] cancelDownloadWithFileName:downloadObject.fileName deleteFile:YES];
 #endif
     [downloadObject removeFromDisk];
-    [_downloadObjectArr removeObjectAtIndex:row];
+    [downloadArray removeObject:downloadObject];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
 }
 
