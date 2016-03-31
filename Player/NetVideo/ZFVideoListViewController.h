@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ZFVideoListViewController.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,8 +22,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import "ZFDownloadObject.h"
 
-@interface FirstViewController : UIViewController
+@interface ZFVideoListViewController : UIViewController
 
 @end

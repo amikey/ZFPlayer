@@ -1,5 +1,5 @@
 //
-//  FirstViewController.m
+//  ZFDownloadViewController.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,19 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "FirstViewController.h"
+#import "ZFDownloadViewController.h"
 #import "MoviePlayerViewController.h"
 #import "ZFPlayer.h"
 #import "ZFDownloadingCell.h"
 #import "ZFDownloadedCell.h"
 
-@interface FirstViewController ()<ZFOffLineVideoCellDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface ZFDownloadViewController ()<ZFOffLineVideoCellDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic  ) IBOutlet UITableView    *tableView;
 @property (nonatomic, strong) NSMutableArray *downloadObjectArr;
 @end
 
-@implementation FirstViewController
+@implementation ZFDownloadViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {

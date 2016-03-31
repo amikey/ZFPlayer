@@ -21,15 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "SecondViewController.h"
+#import "ZFVideoListViewController.h"
 #import "MoviePlayerViewController.h"
 
-@interface SecondViewController ()
+@interface ZFVideoListViewController ()
 @property (weak, nonatomic  ) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray     *dataSource;
 @end
 
-@implementation SecondViewController
+@implementation ZFVideoListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

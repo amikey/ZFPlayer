@@ -1,5 +1,5 @@
 //
-//  SecondViewController.h
+//  ZFDownloadViewController.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,7 +22,8 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "ZFDownloadObject.h"
 
-@interface SecondViewController : UIViewController
+@interface ZFDownloadViewController : UIViewController
 
 @end

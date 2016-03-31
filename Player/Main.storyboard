@@ -10,7 +10,7 @@
         <!--网络视频-->
         <scene sceneID="38U-Mm-uZ0">
             <objects>
-                <viewController id="yGq-uZ-KfD" customClass="SecondViewController" sceneMemberID="viewController">
+                <viewController id="yGq-uZ-KfD" customClass="ZFVideoListViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NUz-BQ-IDa"/>
                         <viewControllerLayoutGuide type="bottom" id="UGh-5n-REU"/>
@@ -357,7 +357,7 @@
         <!--本地视频-->
         <scene sceneID="Por-U2-cMz">
             <objects>
-                <viewController id="tuC-Bt-GHL" customClass="FirstViewController" sceneMemberID="viewController">
+                <viewController id="tuC-Bt-GHL" customClass="ZFDownloadViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fw9-3d-SkH"/>
                         <viewControllerLayoutGuide type="bottom" id="uMG-uI-4gV"/>
@@ -583,6 +583,6 @@
         <image name="video_list" width="79" height="71"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PT2-y1-2eg"/>
+        <segue reference="8B8-xC-tWR"/>
     </inferredMetricsTieBreakers>
 </document>
