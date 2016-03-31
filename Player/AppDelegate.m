@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import "AppDelegate.h"
+#import "ZFPlayer.h"
 
 @interface AppDelegate ()
 
@@ -31,6 +32,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    // 监听网络
+    [[ZFHttpManager shared] registerNetworkStatusMoniterEvent];
     return YES;
 }
 

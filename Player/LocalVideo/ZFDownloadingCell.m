@@ -104,6 +104,9 @@
         case ZFDownloadCompleted:
             [self.downloadBtn setTitle:@"▶" forState:UIControlStateNormal];
             strSpeed = @"完成";
+            if (_delegate && [_delegate respondsToSelector:@selector(videoDownloadDidFinished)]) {
+                [_delegate videoDownloadDidFinished];
+            }
         case ZFNone:
             break;
     }
@@ -115,35 +118,27 @@
     switch (_downloadObject.downloadState) {
         case ZFDownloading:
             _downloadObject.downloadState = ZFDownloadCanceled;
-#if ZFBackgroundDownload
-            [[ZFSessionDownloadManager shared] cancelDownloadWithFileName:_downloadObject.fileName deleteFile:NO];
-#else
             [[ZFHttpManager shared] cancelDownloadWithFileName:_downloadObject.fileName deleteFile:NO];
-#endif
             break;
         case ZFDownloadCanceled:{
             _downloadObject.downloadState = ZFDownloadWaitting;
-#if ZFBackgroundDownload
-            ZFDownloadSessionTask * downloadTask = [[ZFSessionDownloadManager shared] download:_downloadObject.downloadPath
-                                                                                          savePath:[ZFDownloadObject videoDirectory]
-                                                                                      saveFileName:_downloadObject.fileName delegate:self];
-            downloadTask.index = self.index;
-            
-#else
             ZFDownloadOperation * operation = [[ZFHttpManager shared] download:_downloadObject.downloadPath
                                                                           savePath:[ZFDownloadObject videoDirectory]
                                                                       saveFileName:_downloadObject.fileName delegate:self];
             operation.index = self.index;
-#endif
             [self updateDownloadValue];
         }
             break;
-        case ZFDownloadWaitting:
+        case ZFDownloadWaitting: {
+            _downloadObject.downloadState = ZFDownloadWaitting;
+            ZFDownloadOperation * operation = [[ZFHttpManager shared] download:_downloadObject.downloadPath
+                                                                      savePath:[ZFDownloadObject videoDirectory]
+                                                                  saveFileName:_downloadObject.fileName delegate:self];
+            operation.index = self.index;
+            [self updateDownloadValue];
+        }
             break;
         case ZFDownloadCompleted:
-            if (_delegate && [_delegate respondsToSelector:@selector(videoPlayerIndex:)]) {
-                [_delegate videoPlayerIndex:_index];
-            }
             break;
         default:
             break;
@@ -157,15 +152,7 @@
         _downloadObject.downloadState == ZFDownloading ) {
         _downloadObject.downloadState = ZFDownloadWaitting;
     }
-#if ZFBackgroundDownload
-    ZFDownloadSessionTask * downloadTask = [[ZFSessionDownloadManager shared] replaceCurrentDownloadOperationDelegate:self fileName:_downloadObject.fileName];
-    if ([[ZFSessionDownloadManager shared] existDownloadOperationTaskWithFileName:_downloadObject.fileName]) {
-        if (_downloadObject.downloadState == ZFDownloadCanceled) {
-            _downloadObject.downloadState = ZFDownloadWaitting;
-        }
-    }
-    downloadTask.index = index;
-#else
+
     ZFDownloadOperation * operation = [[ZFHttpManager shared] replaceCurrentDownloadOperationDelegate:self fileName:_downloadObject.fileName];
     if ([[ZFHttpManager shared] existDownloadOperationTaskWithFileName:_downloadObject.fileName]) {
         if (_downloadObject.downloadState == ZFDownloadCanceled) {
@@ -173,7 +160,7 @@
         }
     }
     operation.index = index;
-#endif
+
     [self updateDownloadValue];
     [self removeDownloadAnimtion];
 }

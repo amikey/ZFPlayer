@@ -60,11 +60,11 @@ const static double k1MB = 1024 * 1024;
 }
 
 + (NSString *)cacheDirectory {
-    return [NSString stringWithFormat:@"%@/Library/Caches/ZFDownloadObjectCache/",NSHomeDirectory()];
+    return [NSString stringWithFormat:@"%@/Documents/ZFDownloadObjectCache/",NSHomeDirectory()];
 }
 
 + (NSString *)cachePlistDirectory {
-    return [NSString stringWithFormat:@"%@/Library/Caches/ZFCachePlistDirectory/",NSHomeDirectory()];
+    return [NSString stringWithFormat:@"%@/Documents/ZFCachePlistDirectory/",NSHomeDirectory()];
 }
 
 + (NSString *)cachePlistPath {
@@ -72,7 +72,7 @@ const static double k1MB = 1024 * 1024;
 }
 
 + (NSString *)videoDirectory {
-    return [NSString stringWithFormat:@"%@/Library/Caches/ZFVideos/",NSHomeDirectory()];
+    return [NSString stringWithFormat:@"%@/Documents/ZFVideos/",NSHomeDirectory()];
 }
 
 + (ZFDownloadObject *)readDiskCache:(NSString *)downloadPath {

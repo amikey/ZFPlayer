@@ -37,14 +37,6 @@
 // 图片路径
 #define ZFPlayerSrcName(file)               [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
 
-#define ZFBackgroundDownload (0)
-
-#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFVideos"]
-// 保存文件名
-#define ZFFileName(url)  [[url componentsSeparatedByString:@"/"] lastObject]
-// 文件的存放路径（caches）
-#define ZFFileFullpath(url) [ZFCachesDirectory stringByAppendingPathComponent:url]
-
 #import "ZFPlayerSingleton.h"
 #import "ZFPlayerView.h"
 #import "ZFPlayerControlView.h"

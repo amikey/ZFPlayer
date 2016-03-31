@@ -43,36 +43,10 @@
     [self.tableView reloadData];
 }
 
-#pragma mark - ZFOffLineVideoCellDelegate
-
-- (void)videoDownload:(NSError *)error index:(NSInteger)index strUrl:(NSString *)strUrl {
-    
-    if (error) { NSLog(@"error = %@",error.userInfo[NSLocalizedDescriptionKey]);}
-    ZFDownloadObject * downloadObject = _downloadObjectArr[1][index];
-    [downloadObject removeFromDisk];
-    [_downloadObjectArr removeObjectAtIndex:index];
-    [self.tableView reloadData];
-}
-
-- (void)updateDownloadValue:(ZFDownloadObject *)downloadObject index:(NSInteger)index {
-    if (downloadObject != nil) {
-        ZFDownloadObject * tempDownloadObject = _downloadObjectArr[1][index];
-        tempDownloadObject.currentDownloadLenght = downloadObject.currentDownloadLenght;
-        tempDownloadObject.totalLenght = downloadObject.totalLenght;
-        tempDownloadObject.downloadSpeed = downloadObject.downloadSpeed;
-        tempDownloadObject.downloadState = downloadObject.downloadState;
-    }
-}
-
-- (void)videoPlayerIndex:(NSInteger)index
-{
-//    ZFDownloadObject * tempDownloadObject = _downloadObjectArr[1][index];
-    
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     NSLog(@"%@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
 
 }
@@ -94,8 +68,37 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - ZFOffLineVideoCellDelegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (void)videoDownload:(NSError *)error index:(NSInteger)index strUrl:(NSString *)strUrl {
+    
+    if (error) { NSLog(@"error = %@",error.userInfo[NSLocalizedDescriptionKey]);}
+    ZFDownloadObject * downloadObject = _downloadObjectArr[1][index];
+    [downloadObject removeFromDisk];
+    [_downloadObjectArr removeObjectAtIndex:index];
+    [self.tableView reloadData];
+}
+
+- (void)updateDownloadValue:(ZFDownloadObject *)downloadObject index:(NSInteger)index {
+    if (downloadObject != nil) {
+        ZFDownloadObject * tempDownloadObject = _downloadObjectArr[1][index];
+        tempDownloadObject.currentDownloadLenght = downloadObject.currentDownloadLenght;
+        tempDownloadObject.totalLenght = downloadObject.totalLenght;
+        tempDownloadObject.downloadSpeed = downloadObject.downloadSpeed;
+        tempDownloadObject.downloadState = downloadObject.downloadState;
+    }
+}
+
+- (void)videoDownloadDidFinished
+{
+    [self initData];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 2;
 }
    
@@ -138,11 +141,7 @@
 {
     NSMutableArray *downloadArray = _downloadObjectArr[indexPath.section];
     ZFDownloadObject * downloadObject = downloadArray[indexPath.row];
-#if ZFBackgroundDownload
-    [[ZFSessionDownloadManager shared] cancelDownloadWithFileName:downloadObject.fileName deleteFile:YES];
-#else
     [[ZFHttpManager shared] cancelDownloadWithFileName:downloadObject.fileName deleteFile:YES];
-#endif
     [downloadObject removeFromDisk];
     [downloadArray removeObject:downloadObject];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
@@ -157,6 +156,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
     UITableViewCell *cell            = (UITableViewCell *)sender;
     NSIndexPath *indexPath           = [self.tableView indexPathForCell:cell];
     ZFDownloadObject *model          = self.downloadObjectArr[indexPath.section][indexPath.row];

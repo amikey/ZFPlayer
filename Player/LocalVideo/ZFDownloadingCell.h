@@ -29,7 +29,8 @@
 
 - (void)videoDownload:(NSError *)error index:(NSInteger)index strUrl:(NSString *)strUrl;
 - (void)updateDownloadValue:(ZFDownloadObject *)downloadObject index:(NSInteger)index;
-- (void)videoPlayerIndex:(NSInteger)index;
+- (void)videoDownloadDidFinished;
+
 @end
 
 @interface ZFDownloadingCell : UITableViewCell <ZFDownloadDelegate>

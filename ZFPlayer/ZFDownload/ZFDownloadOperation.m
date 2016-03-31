@@ -25,7 +25,7 @@
 
 @interface ZFDownloadOperation () {
     uint64_t                  _localFileSizeLenght;   //文件尺寸大小
-    NSFileHandle            * _fileHandle;         //文件句柄
+    NSFileHandle              * _fileHandle;         //文件句柄
 }
 
 @end

@@ -23,6 +23,12 @@
 
 #import <Foundation/Foundation.h>
 
+#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFVideos"]
+// 保存文件名
+#define ZFFileName(url)  [[url componentsSeparatedByString:@"/"] lastObject]
+// 文件的存放路径（caches）
+#define ZFFileFullpath(url) [ZFCachesDirectory stringByAppendingPathComponent:url]
+
 typedef NS_ENUM(NSUInteger, ZFDownloadState) {
     ZFNone,
     ZFDownloading,
