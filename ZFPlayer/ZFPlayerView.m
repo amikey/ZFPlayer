@@ -543,6 +543,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
     NSArray *visableCells = self.tableView.visibleCells;
+
     if ([visableCells containsObject:cell]) {
         //在显示中
         [self updataPlayerViewToCell];
@@ -560,6 +561,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (self.isBottomVideo) {
         return ;
     }
+    self.isBottomVideo = YES;
     if (self.playDidEnd) { //如果播放完了，滑动到小屏bottom位置时，直接resetPlayer
         self.repeatToPlay = NO;
         self.playDidEnd   = NO;
@@ -585,7 +587,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
         }];
     }
-    self.isBottomVideo = YES;
     // 不显示控制层
     [self.controlView hideControlView];
 }
@@ -602,6 +603,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 显示控制层
     self.controlView.alpha = 1;
     [self setOrientationPortrait];
+
     [self.controlView showControlView];
 }
 
@@ -611,6 +613,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setOrientationLandscape
 {
     if (self.isCellVideo) {
+        
+        // 横屏时候移除tableView的观察者
+        [self.tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
+        
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         // 亮度view加到window最上层
         ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnesView];
@@ -631,8 +637,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         [self removeFromSuperview];
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
         NSArray *visableCells = self.tableView.visibleCells;
+        self.isBottomVideo = NO;
         if (![visableCells containsObject:cell]) {
-            self.isBottomVideo = NO;
             [self updataPlayerViewToBottom];
         }else {
             // 根据tag取到对应的cellImageView
@@ -729,7 +735,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  屏幕方向发生变化会调用这里
  */
-- (void)onDeviceOrientationChange{
+- (void)onDeviceOrientationChange {
+    
+    self.isFullScreen = !self.isFullScreen;
     if (self.isLocked) {
         self.isFullScreen = YES;
         return;
@@ -754,8 +762,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationPortrait:{
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-fullscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
-                // 当设备转到竖屏时候，设置为竖屏约束
-                [self setOrientationPortrait];
                 // 改为只允许竖屏播放
                 ZFPlayerShared.isAllowLandscape = NO;
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
@@ -763,7 +769,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                     make.top.leading.mas_equalTo(5);
                 }];
                 
-                [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
+                // 点击播放URL时候不会调用次方法
+                if (!self.isFullScreen) {
+                    // 竖屏时候table滑动到可视范围
+                    [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+                    // 重新监听tableview偏移量
+                    [self.tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil];
+                }
+                // 当设备转到竖屏时候，设置为竖屏约束
+                [self setOrientationPortrait];
+                
             }else {
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.mas_equalTo(5);
@@ -1227,9 +1242,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
     }else {
         if ([errInfo containsString:@"已经在下载中"]) {
-//            [self.view toast:errInfo];
+            NSLog(@"%@",errInfo);
         }else {
-//            [self.view toast:@"下载失败"];
+            NSLog(@"下载失败");
         }
     }
 }
