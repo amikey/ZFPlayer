@@ -1,8 +1,11 @@
 # ZFPlayer
-![Build Status](https://camo.githubusercontent.com/474a2feaf657f12a6d2f1109a07886ba92fe3d31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6275696c642d70617373696e672d627269676874677265656e2e737667)
-![Cocoapods Compatible](https://img.shields.io/cocoapods/v/ZFPlayer.svg)
-![Language](https://camo.githubusercontent.com/c0e82513e10f9760e334cbed2799b3c86adf08d5/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c616e67756167652d6f626a632d3537383765352e737667)
-![License](https://camo.githubusercontent.com/e7302c620b3589a361fc5503732f3505347205d4/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d4d49542d627269676874677265656e2e737667)
+
+<a href="https://travis-ci.org/renzifeng/ZFPlayer"><img src="https://travis-ci.org/renzifeng/ZFPlayer.svg?branch=master"></a>
+<a href="https://img.shields.io/cocoapods/v/ZFPlayer.svg"><img src="https://img.shields.io/cocoapods/v/ZFPlayer.svg"></a>
+<a href="https://img.shields.io/cocoapods/v/ZFPlayer.svg"><img src="https://img.shields.io/github/license/renzifeng/ZFPlayer.svg?style=flat"></a>
+<a href="http://cocoadocs.org/docsets/ZFPlayer"><img src="https://img.shields.io/cocoapods/p/ZFPlayer.svg?style=flat"></a>
+<a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
+
 ## 基于AVPlayer，实现了各大视频软件的功能
 * 支持横、竖屏切换，在全屏播放模式下还可以锁定屏幕方向
 * 支持本地视频、网络视频播放
@@ -11,14 +14,23 @@
 * 右侧1/2位置上下滑动调节音量（模拟器调不了音量，请在真机调试）
 * 左右滑动调节播放进度
 
-### 下载先来运行报错的，请先确认安装cocopods环境
+## 安装
 
-	$ cd ZFPlayer
-	$ pod install
-	
-打开"Player.xcworkspace"
+### CocoaPods    
 
-### 用法（支持IB和代码）
+```ruby
+pod 'ZFPlayer'
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+#### 下载运行项目运行错误,请确认安装cocopods环境,pod install,然后打开“Player.xcworkspace”
+
+## 使用 （支持IB和代码）
 ##### 设置状态栏颜色
 请在info.plist中增加"View controller-based status bar appearance"字段，并改为NO
 
