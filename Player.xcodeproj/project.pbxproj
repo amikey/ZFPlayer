@@ -40,6 +40,8 @@
 		CCEF1C101CAD0A3B00B0DD78 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C0F1CAD0A3B00B0DD78 /* Reachability.m */; };
 		CCEF1C161CAD114C00B0DD78 /* UIView+ZFViewProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C151CAD114C00B0DD78 /* UIView+ZFViewProperty.m */; };
 		CCEF1C191CAD19BB00B0DD78 /* ZFDownloadObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C181CAD19BB00B0DD78 /* ZFDownloadObject.m */; };
+		CCEF1C251CAE76D300B0DD78 /* ZFDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C221CAE76D300B0DD78 /* ZFDownloadManager.m */; };
+		CCEF1C261CAE76D300B0DD78 /* ZFSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C241CAE76D300B0DD78 /* ZFSessionModel.m */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +128,10 @@
 		CCEF1C151CAD114C00B0DD78 /* UIView+ZFViewProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZFViewProperty.m"; sourceTree = "<group>"; };
 		CCEF1C171CAD19BB00B0DD78 /* ZFDownloadObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadObject.h; sourceTree = "<group>"; };
 		CCEF1C181CAD19BB00B0DD78 /* ZFDownloadObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadObject.m; sourceTree = "<group>"; };
+		CCEF1C211CAE76D300B0DD78 /* ZFDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadManager.h; sourceTree = "<group>"; };
+		CCEF1C221CAE76D300B0DD78 /* ZFDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadManager.m; sourceTree = "<group>"; };
+		CCEF1C231CAE76D300B0DD78 /* ZFSessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFSessionModel.h; sourceTree = "<group>"; };
+		CCEF1C241CAE76D300B0DD78 /* ZFSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFSessionModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +251,7 @@
 		CC2CC6301CA24D4B0028BBDD /* ZFPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				CCEF1C201CAE767A00B0DD78 /* ZFPlayerDownload */,
 				CCEF1BFB1CAD09AC00B0DD78 /* ZFDownload */,
 				CC2CC6331CA24D4B0028BBDD /* ZFPlayer.bundle */,
 				CC2CC6541CA38A710028BBDD /* ZFPlayer.h */,
@@ -352,6 +359,17 @@
 				CCEF1C181CAD19BB00B0DD78 /* ZFDownloadObject.m */,
 			);
 			path = ZFDownload;
+			sourceTree = "<group>";
+		};
+		CCEF1C201CAE767A00B0DD78 /* ZFPlayerDownload */ = {
+			isa = PBXGroup;
+			children = (
+				CCEF1C211CAE76D300B0DD78 /* ZFDownloadManager.h */,
+				CCEF1C221CAE76D300B0DD78 /* ZFDownloadManager.m */,
+				CCEF1C231CAE76D300B0DD78 /* ZFSessionModel.h */,
+				CCEF1C241CAE76D300B0DD78 /* ZFSessionModel.m */,
+			);
+			path = ZFPlayerDownload;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -540,6 +558,7 @@
 			files = (
 				CCEF1C071CAD09D300B0DD78 /* ZFHttpOperation.m in Sources */,
 				CCEF1C061CAD09D300B0DD78 /* ZFHttpManager.m in Sources */,
+				CCEF1C261CAE76D300B0DD78 /* ZFSessionModel.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */,
 				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
@@ -553,6 +572,7 @@
 				CC2CC63F1CA24D4B0028BBDD /* ZFPlayerView.m in Sources */,
 				CCEF1C191CAD19BB00B0DD78 /* ZFDownloadObject.m in Sources */,
 				CC2CC6531CA388800028BBDD /* ZFPlayerSingleton.m in Sources */,
+				CCEF1C251CAE76D300B0DD78 /* ZFDownloadManager.m in Sources */,
 				CCEF1C051CAD09D300B0DD78 /* ZFDownloadOperation.m in Sources */,
 				CC2CC63B1CA24D4B0028BBDD /* ZFBrightnessView.m in Sources */,
 				CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */,

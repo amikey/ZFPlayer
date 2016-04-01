@@ -45,4 +45,5 @@
 #import "ZFSessionDownloadManager.h"
 #import "ZFBaseOperation.h"
 #import "ZFDownloadObject.h"
+#import "ZFDownloadManager.h"
 

@@ -43,4 +43,12 @@
     self.sizeLabel.text = downloadObject.totalLenghtToString;
 }
 
+-(void)setSessionModel:(ZFSessionModel *)sessionModel
+{
+    _sessionModel = sessionModel;
+    self.fileNameLabel.text = sessionModel.fileName;
+    self.sizeLabel.text = sessionModel.totalSize;
+
+}
+
 @end

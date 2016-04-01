@@ -42,6 +42,34 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     [self initData];
     [self.tableView reloadData];
+    
+//    NSMutableArray *downloads = [[ZFDownloadManager sharedInstance] getSessionModels].mutableCopy;
+//    self.downloadObjectArr = @[].mutableCopy;
+//    NSMutableArray *downladed = @[].mutableCopy;
+//    NSMutableArray *downloading = @[].mutableCopy;
+//    for (ZFSessionModel *obj in downloads) {
+//        if ([[ZFDownloadManager sharedInstance] isCompletion:obj.url]) {
+//            [downladed addObject:obj];
+//        }else {
+//            [downloading addObject:obj];
+//        }
+//    }
+//    [self.downloadObjectArr addObject:downladed];
+//    [self.downloadObjectArr addObject:downloading];
+//    [self.tableView reloadData];
+//
+//    NSArray *currentDownload = [[ZFDownloadManager sharedInstance] currentDownloads];
+//    int i = 0;
+//    for (NSString *url in currentDownload) {
+//        [[ZFDownloadManager sharedInstance] isFileDownloadingForUrl:url withProgressBlock:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+//            NSLog(@"progress = %f, speed= %@, remainingTime = %@, writtenSize = %@, totalSize= %@",progress,speed,remainingTime,writtenSize,totalSize);
+//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:1];
+//            ZFDownloadingCell *cell = (ZFDownloadingCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//            cell.fileNameLabel.text = speed;
+//        }];
+//        i++;
+//    }
+//    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
@@ -123,6 +151,18 @@
         return cell;
     }
     return nil;
+    
+//    ZFSessionModel *downloadObject = self.downloadObjectArr[indexPath.section][indexPath.row];
+//    if (indexPath.section == 0) {
+//        ZFDownloadedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadedCell"];
+//        cell.sessionModel = downloadObject;
+//        return cell;
+//    }else if (indexPath.section == 1) {
+//        ZFDownloadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadingCell"];
+//
+//        return cell;
+//    }
+//    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -161,11 +201,11 @@
     UITableViewCell *cell            = (UITableViewCell *)sender;
     NSIndexPath *indexPath           = [self.tableView indexPathForCell:cell];
     ZFDownloadObject *model          = self.downloadObjectArr[indexPath.section][indexPath.row];
+//    ZFSessionModel *model            = self.downloadObjectArr[indexPath.section][indexPath.row];
     NSURL *videoURL                  = [NSURL fileURLWithPath:ZFFileFullpath(model.fileName)];
 
     MoviePlayerViewController *movie = (MoviePlayerViewController *)segue.destinationViewController;
     movie.videoURL                   = videoURL;
-//    NSURL *videoURL                  = [[NSBundle mainBundle] URLForResource:@"150511_JiveBike" withExtension:@"mov"];
 }
 
 

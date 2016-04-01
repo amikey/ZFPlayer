@@ -1156,6 +1156,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)downloadVideo:(UIButton *)sender
 {
+//    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+//        
+//    } state:^(DownloadState state) {
+//        
+//    }];
     if ([ZFHttpManager shared].networkStatus != ReachableViaWiFi) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"当前非wifi网络,确定要下载吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         alert.tag = 110;
