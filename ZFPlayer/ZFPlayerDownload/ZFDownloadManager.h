@@ -24,10 +24,33 @@
 #import <UIKit/UIKit.h>
 #import "ZFSessionModel.h"
 
+// 缓存主目录
+#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFCache"]
+
+// 保存文件名
+#define ZFFileName(url)  [[url componentsSeparatedByString:@"/"] lastObject]
+
+// 文件的存放路径（caches）
+#define ZFFileFullpath(url) [ZFCachesDirectory stringByAppendingPathComponent:ZFFileName(url)]
+
+// 文件的已下载长度
+#define ZFDownloadLength(url) [[[NSFileManager defaultManager] attributesOfItemAtPath:ZFFileFullpath(url) error:nil][NSFileSize] integerValue]
+
+// 存储文件信息的路径（caches）
+#define ZFDownloadDetailPath [ZFCachesDirectory stringByAppendingPathComponent:@"downloadDetail.data"]
+
+@protocol ZFDownloadDelegate <NSObject>
+
+- (void)downloadResponse:(ZFSessionModel *)sessionModel;
+
+@end
+
 @interface ZFDownloadManager : NSObject
 
 /** 保存所有下载相关信息 */
 @property (nonatomic, strong, readonly) NSMutableDictionary *sessionModels;
+@property (nonatomic, assign) id<ZFDownloadDelegate> delegate;
+
 /**
  *  单例
  *
@@ -70,13 +93,6 @@
 - (NSArray *)getAllDownloadingURL;
 
 /**
- *  获取所有沙盒缓存文件的信息
- *
- *  @return 缓存文件的信息数组
- */
-- (NSArray *)gatAllFilesInfo;
-
-/**
  *  获取该资源总大小
  *
  *  @param url 下载地址
@@ -106,8 +122,6 @@
  */
 - (void)deleteAllFile;
 
-- (NSString *)filePath:(NSString *)url;
-
 /**
  *  开始下载
  */
@@ -132,4 +146,5 @@
  *  @return 视频URL的数组
  */
 - (NSArray *)currentDownloads;
+
 @end

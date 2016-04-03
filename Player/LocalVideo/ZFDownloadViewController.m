@@ -27,7 +27,7 @@
 #import "ZFDownloadingCell.h"
 #import "ZFDownloadedCell.h"
 
-@interface ZFDownloadViewController ()<ZFOffLineVideoCellDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface ZFDownloadViewController ()<ZFDownloadDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic  ) IBOutlet UITableView    *tableView;
 @property (nonatomic, strong) NSMutableArray *downloadObjectArr;
@@ -40,53 +40,24 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    // 更新数据源
     [self initData];
-    [self.tableView reloadData];
-    
-//    NSMutableArray *downloads = [[ZFDownloadManager sharedInstance] getSessionModels].mutableCopy;
-//    self.downloadObjectArr = @[].mutableCopy;
-//    NSMutableArray *downladed = @[].mutableCopy;
-//    NSMutableArray *downloading = @[].mutableCopy;
-//    for (ZFSessionModel *obj in downloads) {
-//        if ([[ZFDownloadManager sharedInstance] isCompletion:obj.url]) {
-//            [downladed addObject:obj];
-//        }else {
-//            [downloading addObject:obj];
-//        }
-//    }
-//    [self.downloadObjectArr addObject:downladed];
-//    [self.downloadObjectArr addObject:downloading];
-//    [self.tableView reloadData];
-//
-//    NSArray *currentDownload = [[ZFDownloadManager sharedInstance] currentDownloads];
-//    int i = 0;
-//    for (NSString *url in currentDownload) {
-//        [[ZFDownloadManager sharedInstance] isFileDownloadingForUrl:url withProgressBlock:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
-//            NSLog(@"progress = %f, speed= %@, remainingTime = %@, writtenSize = %@, totalSize= %@",progress,speed,remainingTime,writtenSize,totalSize);
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:1];
-//            ZFDownloadingCell *cell = (ZFDownloadingCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-//            cell.fileNameLabel.text = speed;
-//        }];
-//        i++;
-//    }
-//    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableFooterView = [UIView new];
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
-    NSLog(@"%@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
-
+//    NSLog(@"%@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
 }
 
 - (void)initData{
-    NSMutableArray *downloads = [ZFDownloadObject readDiskAllCache].mutableCopy;
+    NSMutableArray *downloads = [[ZFDownloadManager sharedInstance] getSessionModels].mutableCopy;
     self.downloadObjectArr = @[].mutableCopy;
     NSMutableArray *downladed = @[].mutableCopy;
     NSMutableArray *downloading = @[].mutableCopy;
-    for (ZFDownloadObject *obj in downloads) {
-        if (obj.downloadState == ZFDownloadCompleted) {
+    for (ZFSessionModel *obj in downloads) {
+        if ([[ZFDownloadManager sharedInstance] isCompletion:obj.url]) {
             [downladed addObject:obj];
         }else {
             [downloading addObject:obj];
@@ -95,33 +66,44 @@
     [self.downloadObjectArr addObject:downladed];
     [self.downloadObjectArr addObject:downloading];
     [self.tableView reloadData];
+
 }
 
-#pragma mark - ZFOffLineVideoCellDelegate
+#pragma mark - ZFDownloadDelegate
 
-- (void)videoDownload:(NSError *)error index:(NSInteger)index strUrl:(NSString *)strUrl {
-    
-    if (error) { NSLog(@"error = %@",error.userInfo[NSLocalizedDescriptionKey]);}
-    ZFDownloadObject * downloadObject = _downloadObjectArr[1][index];
-    [downloadObject removeFromDisk];
-    [_downloadObjectArr removeObjectAtIndex:index];
-    [self.tableView reloadData];
-}
-
-- (void)updateDownloadValue:(ZFDownloadObject *)downloadObject index:(NSInteger)index {
-    if (downloadObject != nil) {
-        ZFDownloadObject * tempDownloadObject = _downloadObjectArr[1][index];
-        tempDownloadObject.currentDownloadLenght = downloadObject.currentDownloadLenght;
-        tempDownloadObject.totalLenght = downloadObject.totalLenght;
-        tempDownloadObject.downloadSpeed = downloadObject.downloadSpeed;
-        tempDownloadObject.downloadState = downloadObject.downloadState;
-    }
-}
-
-- (void)videoDownloadDidFinished
+- (void)downloadResponse:(ZFSessionModel *)sessionModel
 {
-    [self initData];
-    [self.tableView reloadData];
+    // 取到对应的cell上的model
+    NSArray *downloadings = self.downloadObjectArr[1];
+    for (ZFSessionModel *model in downloadings) {
+        if ([model.url isEqualToString:sessionModel.url]) {
+            // 取到当前下载model在数组的位置，来确定cell的具体位置
+            NSInteger index = [downloadings indexOfObject:model];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:1];
+            __weak ZFDownloadingCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+            sessionModel.progressBlock = ^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@ (%.2f%%)",writtenSize,totalSize,progress*100];
+                    cell.speedLabel.text    = speed;
+                    cell.progress.progress  = progress;
+                });
+            };
+            sessionModel.stateBlock = ^(DownloadState state){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (state == DownloadStateStart) {
+                        [cell addDownloadAnimation];
+                    }else if (state == DownloadStateCompleted) {
+                        // 更新数据源
+                        [self initData];
+                        [cell removeDownloadAnimtion];
+                    }else if (state == DownloadStateSuspended) {
+                        [cell removeDownloadAnimtion];
+                        cell.speedLabel.text = @"已暂停";
+                    }
+                });
+            };
+        }
+    }
 }
 
 #pragma mark - Table view data source
@@ -139,30 +121,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ZFDownloadObject *downloadObject = self.downloadObjectArr[indexPath.section][indexPath.row];
+    __block ZFSessionModel *downloadObject = self.downloadObjectArr[indexPath.section][indexPath.row];
     if (indexPath.section == 0) {
         ZFDownloadedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadedCell"];
-        cell.downloadObject = downloadObject;
+        cell.sessionModel = downloadObject;
         return cell;
     }else if (indexPath.section == 1) {
         ZFDownloadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadingCell"];
-        cell.delegate = self;
-        [cell displayCell:downloadObject index:indexPath.row];
+        cell.sessionModel = downloadObject;
+        [ZFDownloadManager sharedInstance].delegate = self;
+        cell.downloadBlock = ^ {
+            [[ZFDownloadManager sharedInstance] download:downloadObject.url progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {} state:^(DownloadState state) {}];
+        };
         return cell;
     }
     return nil;
-    
-//    ZFSessionModel *downloadObject = self.downloadObjectArr[indexPath.section][indexPath.row];
-//    if (indexPath.section == 0) {
-//        ZFDownloadedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadedCell"];
-//        cell.sessionModel = downloadObject;
-//        return cell;
-//    }else if (indexPath.section == 1) {
-//        ZFDownloadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadingCell"];
-//
-//        return cell;
-//    }
-//    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -181,9 +154,9 @@
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *downloadArray = _downloadObjectArr[indexPath.section];
-    ZFDownloadObject * downloadObject = downloadArray[indexPath.row];
-    [[ZFHttpManager shared] cancelDownloadWithFileName:downloadObject.fileName deleteFile:YES];
-    [downloadObject removeFromDisk];
+    ZFSessionModel * downloadObject = downloadArray[indexPath.row];
+    // 根据url删除该条数据
+    [[ZFDownloadManager sharedInstance] deleteFile:downloadObject.url];
     [downloadArray removeObject:downloadObject];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
 }
@@ -200,8 +173,7 @@
     
     UITableViewCell *cell            = (UITableViewCell *)sender;
     NSIndexPath *indexPath           = [self.tableView indexPathForCell:cell];
-    ZFDownloadObject *model          = self.downloadObjectArr[indexPath.section][indexPath.row];
-//    ZFSessionModel *model            = self.downloadObjectArr[indexPath.section][indexPath.row];
+    ZFSessionModel *model            = self.downloadObjectArr[indexPath.section][indexPath.row];
     NSURL *videoURL                  = [NSURL fileURLWithPath:ZFFileFullpath(model.fileName)];
 
     MoviePlayerViewController *movie = (MoviePlayerViewController *)segue.destinationViewController;

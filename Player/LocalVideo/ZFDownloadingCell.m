@@ -22,13 +22,12 @@
 // THE SOFTWARE.
 
 #import "ZFDownloadingCell.h"
-#import "UIView+ZFViewProperty.h"
 
-@implementation ZFDownloadingCell {
-    UIButton                  * _downloadArrowButton;
-    ZFDownloadObject          * _downloadObject;
-    BOOL                        _hasDownloadAnimation;
-}
+@interface ZFDownloadingCell ()
+@property (nonatomic, assign) BOOL hasDownloadAnimation;
+@end
+
+@implementation ZFDownloadingCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -43,240 +42,67 @@
     // Configure the view for the selected state
 }
 
+/**
+ *  添加下载的动画
+ */
 - (void)addDownloadAnimation {
-    if(_downloadArrowButton){
-        [UIView animateWithDuration:1.2 animations:^{
-            _downloadArrowButton.y = _downloadArrowButton.height;
-        }completion:^(BOOL finished) {
-            _downloadArrowButton.y = -_downloadArrowButton.height;
-            [self addDownloadAnimation];
-        }];
-    }
-}
-
-- (void)startDownloadAnimation {
-    if (_downloadArrowButton == nil) {
-        _downloadArrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _downloadArrowButton.enabled = false;
-        _downloadArrowButton.frame = _downloadBtn.bounds;
-        [_downloadArrowButton setTitle:@"↓" forState:UIControlStateNormal];
-        [_downloadArrowButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        _downloadArrowButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    }
-    if (!_hasDownloadAnimation) {
-        _hasDownloadAnimation = true;
-        _downloadArrowButton.y = -_downloadArrowButton.height;
-        [_downloadBtn addSubview:_downloadArrowButton];
-        [self addDownloadAnimation];
-    }
-}
-
-- (void)removeDownloadAnimtion {
-    _hasDownloadAnimation = false;
-    if (_downloadArrowButton != nil) {
-        [_downloadArrowButton removeFromSuperview];
-        _downloadArrowButton = nil;
-    }
-}
-
-- (void)updateDownloadValue {
-    self.fileNameLabel.text = _downloadObject.fileName;
-    self.progress.progress = _downloadObject.downloadProcessValue;
-    self.progressLabel.text = _downloadObject.downloadProcessText;
-    NSString * strSpeed = _downloadObject.downloadSpeed;
-    if (_downloadObject.downloadState != ZFDownloading) {
-        [self removeDownloadAnimtion];
-    }else {
-        [self startDownloadAnimation];
-    }
-    switch (_downloadObject.downloadState) {
-        case ZFDownloadWaitting:
-            [self.downloadBtn setTitle:@"🕘" forState:UIControlStateNormal];
-            strSpeed = @"等待";
-            break;
-        case ZFDownloading:
-            [self.downloadBtn setTitle:@"" forState:UIControlStateNormal];
-            break;
-        case ZFDownloadCanceled:
-            [self.downloadBtn setTitle:@"■" forState:UIControlStateNormal];
-            strSpeed = @"暂停";
-            break;
-        case ZFDownloadCompleted:
-            [self.downloadBtn setTitle:@"▶" forState:UIControlStateNormal];
-            strSpeed = @"完成";
-            if (_delegate && [_delegate respondsToSelector:@selector(videoDownloadDidFinished)]) {
-                [_delegate videoDownloadDidFinished];
-            }
-        case ZFNone:
-            break;
-    }
-    _speedLabel.text = strSpeed;
-}
-
-
-- (IBAction)clickDownload:(UIButton *)sender {
-    switch (_downloadObject.downloadState) {
-        case ZFDownloading:
-            _downloadObject.downloadState = ZFDownloadCanceled;
-            [[ZFHttpManager shared] cancelDownloadWithFileName:_downloadObject.fileName deleteFile:NO];
-            break;
-        case ZFDownloadCanceled:{
-            _downloadObject.downloadState = ZFDownloadWaitting;
-            ZFDownloadOperation * operation = [[ZFHttpManager shared] download:_downloadObject.downloadPath
-                                                                          savePath:[ZFDownloadObject videoDirectory]
-                                                                      saveFileName:_downloadObject.fileName delegate:self];
-            operation.index = self.index;
-            [self updateDownloadValue];
-        }
-            break;
-        case ZFDownloadWaitting: {
-            _downloadObject.downloadState = ZFDownloadWaitting;
-            ZFDownloadOperation * operation = [[ZFHttpManager shared] download:_downloadObject.downloadPath
-                                                                      savePath:[ZFDownloadObject videoDirectory]
-                                                                  saveFileName:_downloadObject.fileName delegate:self];
-            operation.index = self.index;
-            [self updateDownloadValue];
-        }
-            break;
-        case ZFDownloadCompleted:
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)displayCell:(ZFDownloadObject *)object index:(NSInteger)index {
-    self.index = index;
-    _downloadObject = object;
-    if (_downloadObject.downloadState == ZFNone ||
-        _downloadObject.downloadState == ZFDownloading ) {
-        _downloadObject.downloadState = ZFDownloadWaitting;
-    }
-
-    ZFDownloadOperation * operation = [[ZFHttpManager shared] replaceCurrentDownloadOperationDelegate:self fileName:_downloadObject.fileName];
-    if ([[ZFHttpManager shared] existDownloadOperationTaskWithFileName:_downloadObject.fileName]) {
-        if (_downloadObject.downloadState == ZFDownloadCanceled) {
-            _downloadObject.downloadState = ZFDownloadWaitting;
-        }
-    }
-    operation.index = index;
-
-    [self updateDownloadValue];
-    [self removeDownloadAnimtion];
-}
-
-- (void)saveDownloadState:(ZFDownloadOperation *)operation {
-    _downloadObject.currentDownloadLenght = operation.recvDataLenght;
-    _downloadObject.totalLenght = operation.fileTotalLenght;
-    [_downloadObject writeDiskCache];
-}
-
-//ZFDownloadSessionTask : ZFDownloadOperation
-
-#pragma mark - ZFDownloadDelegate -
-- (void)ZFDownloadResponse:(nonnull ZFDownloadOperation *)operation
-                      error:(nullable NSError *)error
-                         ok:(BOOL)isOK {
-    if (isOK) {
-        if (self.index == operation.index) {
-            _downloadObject.downloadState = ZFDownloading;
-            _downloadObject.currentDownloadLenght = operation.recvDataLenght;
-            _downloadObject.totalLenght = operation.fileTotalLenght;
-            [self updateDownloadValue];
-        }else {
-            ZFDownloadObject * tempDownloadObject = [ZFDownloadObject readDiskCache:operation.strUrl];
-            if (tempDownloadObject != nil) {
-                tempDownloadObject.downloadState = ZFDownloading;
-                tempDownloadObject.currentDownloadLenght = operation.recvDataLenght;
-                tempDownloadObject.totalLenght = operation.fileTotalLenght;
-                [tempDownloadObject writeDiskCache];
-                if (_delegate && [_delegate respondsToSelector:@selector(updateDownloadValue: index:)]) {
-                    [_delegate updateDownloadValue:tempDownloadObject index:operation.index];
-                }
-            }
-        }
-    }else {
-        _downloadObject.downloadState = ZFNone;
-        if (_delegate &&
-            [_delegate respondsToSelector:@selector(videoDownload:index:strUrl:)]) {
-            [_delegate videoDownload:error index:_index strUrl:operation.strUrl];
-        }
-    }
-}
-
-- (void)ZFDownloadProgress:(nonnull ZFDownloadOperation *)operation
-                       recv:(uint64_t)recvLength
-                      total:(uint64_t)totalLength
-                      speed:(nullable NSString *)speed {
-    if (operation.index == self.index) {
-        if (_downloadObject.totalLenght < 10) {
-            _downloadObject.totalLenght = totalLength;
-        }
-        _downloadObject.currentDownloadLenght = recvLength;
-        _downloadObject.downloadSpeed = speed;
-        _downloadObject.downloadState = ZFDownloading;
-        [self updateDownloadValue];
-        [self startDownloadAnimation];
-    }
-}
-
-- (void)ZFDownloadDidFinished:(nonnull ZFDownloadOperation *)operation
-                          data:(nullable NSData *)data
-                         error:(nullable NSError *)error
-                       success:(BOOL)isSuccess {
-    if (isSuccess) {
-        if (self.index == operation.index) {
-            _downloadObject.downloadState = ZFDownloadCompleted;
-            [self saveDownloadState:operation];
-        }else {
-            ZFDownloadObject * tempDownloadObject = [ZFDownloadObject readDiskCache:operation.strUrl];
-            if (tempDownloadObject != nil) {
-                tempDownloadObject.downloadState = ZFDownloadCompleted;
-                tempDownloadObject.currentDownloadLenght = operation.recvDataLenght;
-                tempDownloadObject.totalLenght = operation.fileTotalLenght;
-                [tempDownloadObject writeDiskCache];
-                if (_delegate && [_delegate respondsToSelector:@selector(updateDownloadValue:index:)]) {
-                    [_delegate updateDownloadValue:tempDownloadObject index:operation.index];
-                }
-            }
-        }
-    }else {
+    if(self.downloadBtn && !self.hasDownloadAnimation){
+        self.hasDownloadAnimation = YES;
+        //1.创建关键帧动画并设置动画属性
+        CAKeyframeAnimation *keyframeAnimation=[CAKeyframeAnimation animationWithKeyPath:@"position"];
         
-        ZFDownloadObject * tempDownloadObject;
-        if (self.index == operation.index) {
-            _downloadObject.downloadState = ZFDownloadCanceled;
-        }else {
-            tempDownloadObject = [ZFDownloadObject readDiskCache:operation.strUrl];
-            if (tempDownloadObject != nil) {
-                tempDownloadObject.downloadState = ZFDownloadCanceled;
-            }
-        }
-        if (error != nil &&
-            error.code == ZFCancelDownloadError &&
-            !operation.isDeleted) {
-            if (self.index == operation.index) {
-                [self saveDownloadState:operation];
-            }else {
-                if (tempDownloadObject != nil) {
-                    tempDownloadObject.currentDownloadLenght = operation.recvDataLenght;
-                    tempDownloadObject.totalLenght = operation.fileTotalLenght;
-                    [tempDownloadObject writeDiskCache];
-                }
-                
-            }
-            [self saveDownloadState:operation];
-        }else {
-            [[[UIAlertView alloc] initWithTitle:@"下载失败" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
-        }
-        if (tempDownloadObject != nil) {
-            if (_delegate && [_delegate respondsToSelector:@selector(updateDownloadValue:index:)]) {
-                [_delegate updateDownloadValue:tempDownloadObject index:operation.index];
-            }
-        }
+        //2.设置关键帧,这里有四个关键帧
+        NSValue *key1 = [NSValue valueWithCGPoint:CGPointMake(self.downloadBtn.center.x, self.downloadBtn.frame.origin.y)];//对于关键帧动画初始值不能省略
+        NSValue *key2 = [NSValue valueWithCGPoint:CGPointMake(self.downloadBtn.center.x, self.downloadBtn.frame.size.height+self.downloadBtn.frame.origin.y)];
+        NSArray *values = @[key1,key2];
+        keyframeAnimation.values = values;
+        //设置其他属性
+        keyframeAnimation.duration = 1;
+        keyframeAnimation.repeatCount = MAXFLOAT;
+        
+        //3.添加动画到图层，添加动画后就会执行动画
+        [self.downloadBtn.layer addAnimation:keyframeAnimation forKey:@"downloadBtn"];
+        [self.downloadBtn setTitle:@"↓" forState:UIControlStateNormal];
     }
-    if (self.index == operation.index) {
-        [self updateDownloadValue];
+}
+
+/**
+ *  移除下载button的动画
+ */
+- (void)removeDownloadAnimtion {
+    _hasDownloadAnimation = NO;
+    [self.downloadBtn.layer removeAnimationForKey:@"downloadBtn"];
+    [self.downloadBtn setTitle:@"🕘" forState:UIControlStateNormal];
+}
+
+/**
+ *  暂停、下载
+ *
+ *  @param sender UIButton
+ */
+- (IBAction)clickDownload:(UIButton *)sender {
+    if (self.downloadBlock) {
+        self.downloadBlock();
     }
+}
+
+/**
+ *  model setter
+ *
+ *  @param sessionModel sessionModel 
+ */
+- (void)setSessionModel:(ZFSessionModel *)sessionModel
+{
+    _sessionModel = sessionModel;
+    self.fileNameLabel.text = sessionModel.fileName;
+    NSUInteger receivedSize = ZFDownloadLength(sessionModel.url);
+    NSString *writtenSize = [NSString stringWithFormat:@"%.2f %@",
+                                                     [sessionModel calculateFileSizeInUnit:(unsigned long long)receivedSize],
+                                                     [sessionModel calculateUnit:(unsigned long long)receivedSize]];
+    CGFloat progress = 1.0 * receivedSize / sessionModel.totalLength;
+    self.progressLabel.text = [NSString stringWithFormat:@"%@/%@ (%.2f%%)",writtenSize,sessionModel.totalSize,progress*100];
+    self.progress.progress = progress;
+    self.speedLabel.text = @"已暂停";
 }
 
 

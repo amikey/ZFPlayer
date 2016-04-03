@@ -22,27 +22,21 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import "ZFDownloadObject.h"
 #import "ZFPlayer.h"
 
-@protocol ZFOffLineVideoCellDelegate <NSObject>
+typedef void(^ZFDownloadBlock)(void);
 
-- (void)videoDownload:(NSError *)error index:(NSInteger)index strUrl:(NSString *)strUrl;
-- (void)updateDownloadValue:(ZFDownloadObject *)downloadObject index:(NSInteger)index;
-- (void)videoDownloadDidFinished;
-
-@end
-
-@interface ZFDownloadingCell : UITableViewCell <ZFDownloadDelegate>
-
-@property (nonatomic , weak)id<ZFOffLineVideoCellDelegate> delegate;
-@property (nonatomic , assign)NSInteger index;
+@interface ZFDownloadingCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *progress;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *speedLabel;
 @property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
-- (void)displayCell:(ZFDownloadObject *)object index:(NSInteger)index;
+@property (nonatomic, copy) ZFDownloadBlock downloadBlock;
 
+@property (nonatomic, strong) ZFSessionModel *sessionModel;
+
+- (void)addDownloadAnimation;
+- (void)removeDownloadAnimtion;
 @end

@@ -440,6 +440,7 @@
                                                         <constraint firstAttribute="width" constant="40" id="H4K-8G-OdD"/>
                                                         <constraint firstAttribute="height" constant="40" id="SuU-t6-z0G"/>
                                                     </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <state key="normal" title="🕗"/>
                                                     <connections>
                                                         <action selector="clickDownload:" destination="mXf-Nv-kVF" eventType="touchUpInside" id="A9v-Xj-EXI"/>
@@ -583,6 +584,6 @@
         <image name="video_list" width="79" height="71"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8B8-xC-tWR"/>
+        <segue reference="PT2-y1-2eg"/>
     </inferredMetricsTieBreakers>
 </document>

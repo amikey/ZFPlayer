@@ -36,13 +36,6 @@
     // Configure the view for the selected state
 }
 
--(void)setDownloadObject:(ZFDownloadObject *)downloadObject
-{
-    _downloadObject = downloadObject;
-    self.fileNameLabel.text = downloadObject.fileName;
-    self.sizeLabel.text = downloadObject.totalLenghtToString;
-}
-
 -(void)setSessionModel:(ZFSessionModel *)sessionModel
 {
     _sessionModel = sessionModel;

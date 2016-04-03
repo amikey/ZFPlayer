@@ -23,21 +23,6 @@
 
 #import "ZFDownloadManager.h"
 
-// 缓存主目录
-#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFCache"]
-
-// 保存文件名
-#define ZFFileName(url)  [[url componentsSeparatedByString:@"/"] lastObject]
-
-// 文件的存放路径（caches）
-#define ZFFileFullpath(url) [ZFCachesDirectory stringByAppendingPathComponent:ZFFileName(url)]
-
-// 文件的已下载长度
-#define ZFDownloadLength(url) [[[NSFileManager defaultManager] attributesOfItemAtPath:ZFFileFullpath(url) error:nil][NSFileSize] integerValue]
-
-// 存储文件信息的路径（caches）
-#define ZFDownloadDetailPath [ZFCachesDirectory stringByAppendingPathComponent:@"downloadDetail.data"]
-
 @interface ZFDownloadManager()<NSCopying, NSURLSessionDelegate>
 
 /** 保存所有任务(注：用下载地址/后作为key) */
@@ -315,12 +300,15 @@ static ZFDownloadManager *_downloadManager;
         [self.sessionModels removeObjectForKey:@([self getTask:url].taskIdentifier).stringValue];
         // 删除资源总长度
         if ([fileManager fileExistsAtPath:ZFDownloadDetailPath]) {
-            
-            for (ZFSessionModel *model in self.sessionModelsArray) {
-                [self.sessionModelsArray removeObject:model];
+            // 从沙盒中移除该条模型的信息
+            for (ZFSessionModel *model in self.sessionModelsArray.mutableCopy) {
+                if ([model.url isEqualToString:url]) {
+                    [self.sessionModelsArray removeObject:model];
+                }
             }
-            [self save:self.sessionModelsArray];
         }
+        // 保存归档信息
+        [self save:self.sessionModelsArray];
     }
 }
 
@@ -349,11 +337,6 @@ static ZFDownloadManager *_downloadManager;
             self.sessionModelsArray = nil;
         }
     }
-}
-
-- (NSString *)filePath:(NSString *)url
-{
-    return ZFFileFullpath(url);
 }
 
 - (BOOL)isFileDownloadingForUrl:(NSString *)url withProgressBlock:(ZFDownloadProgressBlock)progressBlock
@@ -400,8 +383,6 @@ static ZFDownloadManager *_downloadManager;
                                  [sessionModel calculateFileSizeInUnit:(unsigned long long)totalLength],
                                  [sessionModel calculateUnit:(unsigned long long)totalLength]];
     sessionModel.totalSize = fileSizeInUnits;
-
-    
     // 更新数据(文件总长度)
     [self save:self.sessionModelsArray];
     
@@ -446,9 +427,20 @@ static ZFDownloadManager *_downloadManager;
     NSString *writtenSize = [NSString stringWithFormat:@"%.2f %@",
                                  [sessionModel calculateFileSizeInUnit:(unsigned long long)receivedSize],
                                  [sessionModel calculateUnit:(unsigned long long)receivedSize]];
-
+    
+    //    sessionModel.progress = progress;
+    //    sessionModel.writtenSize = writtenSize;
+    //    // 更新数据(文件写入的长度、进度)
+    //    [self save:self.sessionModelsArray];
+    
+    // 下载中
+    sessionModel.stateBlock(DownloadStateStart);
     if (sessionModel.progressBlock) {
         sessionModel.progressBlock(progress, speedStr, remainingTimeStr,writtenSize, sessionModel.totalSize);
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(downloadResponse:)]) {
+        [self.delegate downloadResponse:sessionModel];
     }
 }
 

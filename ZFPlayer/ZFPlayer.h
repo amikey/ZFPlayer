@@ -41,9 +41,5 @@
 #import "ZFPlayerView.h"
 #import "ZFPlayerControlView.h"
 #import "ZFBrightnessView.h"
-#import "ZFHttpManager.h"
-#import "ZFSessionDownloadManager.h"
-#import "ZFBaseOperation.h"
-#import "ZFDownloadObject.h"
 #import "ZFDownloadManager.h"
 
