@@ -292,8 +292,6 @@ static ZFDownloadManager *_downloadManager;
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:ZFFileFullpath(url)]) {
-        // 先暂停下载
-        [self pause:url];
         // 删除沙盒中的资源
         [fileManager removeItemAtPath:ZFFileFullpath(url) error:nil];
         // 删除任务
@@ -304,6 +302,8 @@ static ZFDownloadManager *_downloadManager;
             // 从沙盒中移除该条模型的信息
             for (ZFSessionModel *model in self.sessionModelsArray.mutableCopy) {
                 if ([model.url isEqualToString:url]) {
+                    // 关闭流
+                    [model.stream close];
                     [self.sessionModelsArray removeObject:model];
                 }
             }
