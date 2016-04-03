@@ -292,7 +292,8 @@ static ZFDownloadManager *_downloadManager;
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:ZFFileFullpath(url)]) {
-        
+        // 先暂停下载
+        [self pause:url];
         // 删除沙盒中的资源
         [fileManager removeItemAtPath:ZFFileFullpath(url) error:nil];
         // 删除任务
@@ -319,6 +320,7 @@ static ZFDownloadManager *_downloadManager;
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:ZFCachesDirectory]) {
+
         // 删除沙盒中所有资源
         [fileManager removeItemAtPath:ZFCachesDirectory error:nil];
         // 删除任务

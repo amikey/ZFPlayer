@@ -412,6 +412,39 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                     error: &setCategoryError];
     
     if (!success) { /* handle the error in setCategoryError */ }
+    
+    // 监听耳机插入和拔掉通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioRouteChangeListenerCallback:) name:AVAudioSessionRouteChangeNotification object:nil];
+}
+
+/**
+ *  耳机插入、拔出事件
+ */
+- (void)audioRouteChangeListenerCallback:(NSNotification*)notification
+{
+    NSDictionary *interuptionDict = notification.userInfo;
+    
+    NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    
+    switch (routeChangeReason) {
+            
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+            NSLog(@"耳机插入");
+            break;
+            
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+        {
+            NSLog(@"耳机拔掉");
+            // 拔掉耳机继续播放
+            [self play];
+        }
+            break;
+            
+        case AVAudioSessionRouteChangeReasonCategoryChange:
+            // called at start - also when other audio wants to play
+            NSLog(@"AVAudioSessionRouteChangeReasonCategoryChange");
+            break;
+    }
 }
 
 #pragma mark - ShowOrHideControlView
@@ -740,8 +773,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  *  屏幕方向发生变化会调用这里
  */
 - (void)onDeviceOrientationChange {
-    
-    self.isFullScreen = !self.isFullScreen;
     if (self.isLocked) {
         self.isFullScreen = YES;
         return;
@@ -764,6 +795,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
         case UIInterfaceOrientationPortrait:{
+            self.isFullScreen = !self.isFullScreen;
             [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-fullscreen")] forState:UIControlStateNormal];
             if (self.isCellVideo) {
                 // 改为只允许竖屏播放
@@ -823,6 +855,18 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
     // 设置显示or不显示锁定屏幕方向按钮
     self.controlView.lockBtn.hidden = !self.isFullScreen;
+    
+    // 在cell上播放视频 && 不允许横屏（此时为竖屏状态,解决自动转屏到横屏，状态栏消失bug）
+    if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
+        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+        [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.leading.mas_equalTo(5);
+        }];
+        self.controlView.lockBtn.hidden = YES;
+        self.isFullScreen = NO;
+        return;
+    }
+
 }
 
 /**
