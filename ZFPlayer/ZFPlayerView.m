@@ -739,6 +739,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         [self unLockTheScreen];
         return;
     }
+    if (self.isCellVideo && sender.selected == YES) {
+        [self interfaceOrientation:UIInterfaceOrientationPortrait];
+        return;
+    }
+   
     UIDeviceOrientation orientation             = [UIDevice currentDevice].orientation;
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     switch (interfaceOrientation) {
@@ -754,13 +759,23 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            ZFPlayerShared.isAllowLandscape = NO;
-            [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            if (self.isBottomVideo || !self.isFullScreen) {
+                ZFPlayerShared.isAllowLandscape = YES;
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            } else {
+                ZFPlayerShared.isAllowLandscape = NO;
+                [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            ZFPlayerShared.isAllowLandscape = NO;
-            [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            if (self.isBottomVideo || !self.isFullScreen) {
+                ZFPlayerShared.isAllowLandscape = YES;
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            } else {
+                ZFPlayerShared.isAllowLandscape = NO;
+                [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            }
         }
             break;
             
@@ -781,7 +796,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     switch (interfaceOrientation) {
         case UIInterfaceOrientationPortraitUpsideDown:{
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
+            self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
             }
@@ -796,7 +811,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             break;
         case UIInterfaceOrientationPortrait:{
             self.isFullScreen = !self.isFullScreen;
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-fullscreen")] forState:UIControlStateNormal];
+            self.controlView.fullScreenBtn.selected = NO;
             if (self.isCellVideo) {
                 // 改为只允许竖屏播放
                 ZFPlayerShared.isAllowLandscape = NO;
@@ -826,7 +841,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
+            self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
             }
@@ -838,7 +853,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            [self.controlView.fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-shrinkscreen")] forState:UIControlStateNormal];
+            self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
             }
@@ -862,6 +877,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.leading.mas_equalTo(5);
         }];
+        self.controlView.fullScreenBtn.selected = NO;
         self.controlView.lockBtn.hidden = YES;
         self.isFullScreen = NO;
         return;
