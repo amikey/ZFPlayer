@@ -1,4 +1,3 @@
-# ZFPlayer
 <p align="center">
 <img src="http://7xqbzq.com1.z0.glb.clouddn.com/log.png" alt="ZFPlayer" title="ZFPlayer" width="557"/>
 </p>
