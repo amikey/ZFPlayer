@@ -113,8 +113,7 @@
         
         //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
         weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
-        // 没有下载功能
-        weakSelf.playerView.hasDownload = NO;
+
     };
 
     return cell;

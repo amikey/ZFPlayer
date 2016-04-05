@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 @property (nonatomic, copy  ) ZFPlayerGoBackBlock  goBackBlock;
 /** 设置playerLayer的填充模式 */
 @property (nonatomic, assign) ZFPlayerLayerGravity playerLayerGravity;
-/** 是否有下载功能 */
+/** 是否有下载功能(默认是关闭) */
 @property (nonatomic, assign) BOOL                 hasDownload;
 
 /**

@@ -91,6 +91,7 @@
         [self.activity stopAnimating];
         self.horizontalLabel.hidden = YES;
         self.repeatBtn.hidden       = YES;
+        self.downLoadBtn.hidden     = YES;
         // 初始化时重置controlView
         [self resetControlView];
     }

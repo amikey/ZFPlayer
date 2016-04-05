@@ -162,9 +162,9 @@
 			children = (
 				CC2CC6301CA24D4B0028BBDD /* ZFPlayer */,
 				CC725C1E1C894C8100C3EAF2 /* NetVideo */,
-				CC725C1D1C894C4A00C3EAF2 /* LocalVideo */,
 				CC6C7AE21C9BDFBA0000AD58 /* PlayerViewController */,
 				CCE1C1321C9AA0D9004C95AC /* TbaleViewVideo */,
+				CC725C1D1C894C4A00C3EAF2 /* LocalVideo */,
 				4947F7901BE996AC003093C8 /* AppDelegate.h */,
 				4947F7911BE996AC003093C8 /* AppDelegate.m */,
 				CC113C0C1C8C4E5D0044FEEB /* MainViewController.h */,

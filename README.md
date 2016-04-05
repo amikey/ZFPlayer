@@ -33,7 +33,7 @@ Then, run the following command:
 $ pod install
 ```
 
-#### 下载运行项目运行错误,请确认安装cocopods环境,pod install,然后打开“Player.xcworkspace”
+#### 下载运行Demo报错的,请确认安装cocopods环境,pod install,然后打开“Player.xcworkspace”
 
 ## 使用 （支持IB和代码）
 ##### 设置状态栏颜色
@@ -79,8 +79,8 @@ self.playerView.goBackBlock = ^{
 ```
 ##### 是否有断点下载功能（可选设置）
 ```objc
- // 默认是断点下载功能，如不需要可以设置
- self.playerView.hasDownload = NO;
+ // 默认是关闭断点下载功能，如需要此功能设置这里
+ self.playerView.hasDownload = YES;
 ```
  
 ### 图片效果演示
