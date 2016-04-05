@@ -278,6 +278,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             make.height.mas_equalTo(width*320/480);
         }];
     }
+    // fix iOS7 crash bug
+    [self layoutIfNeeded];
 }
 
 #pragma mark - 设置视频URL
