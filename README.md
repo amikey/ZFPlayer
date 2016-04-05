@@ -10,13 +10,14 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
-## 基于AVPlayer，实现了各大视频软件的功能
+## 功能
 * 支持横、竖屏切换，在全屏播放模式下还可以锁定屏幕方向
 * 支持本地视频、网络视频播放
 * 支持在TableviewCell播放视频
 * 左侧1/2位置上下滑动调节屏幕亮度（模拟器调不了亮度，请在真机调试）
 * 右侧1/2位置上下滑动调节音量（模拟器调不了音量，请在真机调试）
 * 左右滑动调节播放进度
+* 断点下载功能
 
 ## 安装
 
@@ -75,6 +76,11 @@ self.playerView.goBackBlock = ^{
 ```objc
  // （可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
  self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
+```
+##### 是否有断点下载功能（可选设置）
+```objc
+ // 默认是断点下载功能，如不需要可以设置
+ self.playerView.hasDownload = NO;
 ```
  
 ### 图片效果演示

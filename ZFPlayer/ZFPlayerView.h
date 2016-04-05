@@ -39,6 +39,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 @property (nonatomic, copy  ) ZFPlayerGoBackBlock  goBackBlock;
 /** 设置playerLayer的填充模式 */
 @property (nonatomic, assign) ZFPlayerLayerGravity playerLayerGravity;
+/** 是否有下载功能 */
+@property (nonatomic, assign) BOOL                 hasDownload;
 
 /**
  *  取消延时隐藏controlView的方法,在ViewController的delloc方法中调用
@@ -87,5 +89,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
       withTableView:(UITableView *)tableView
         AtIndexPath:(NSIndexPath *)indexPath
    withImageViewTag:(NSInteger)tag;
+
 
 @end

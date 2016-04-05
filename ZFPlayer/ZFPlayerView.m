@@ -1550,6 +1550,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
+- (void)setHasDownload:(BOOL)hasDownload
+{
+    _hasDownload = hasDownload;
+    self.controlView.downLoadBtn.hidden = !hasDownload;
+}
+
 #pragma mark - Getter
 
 /**
