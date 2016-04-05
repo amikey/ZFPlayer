@@ -779,9 +779,18 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
             
-        default:
+        default: {
+            if (self.isBottomVideo || !self.isFullScreen) {
+                ZFPlayerShared.isAllowLandscape = YES;
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            } else {
+                ZFPlayerShared.isAllowLandscape = NO;
+                [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            }
+        }
             break;
     }
+
 }
 
 /**
