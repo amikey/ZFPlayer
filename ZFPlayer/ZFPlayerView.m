@@ -80,7 +80,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                isLocalVideo;
 /** slider上次的值 */
 @property (nonatomic, assign) CGFloat             sliderLastValue;
-/** 是否点了重播 */
+/** 是否再次设置URL播放视频 */
 @property (nonatomic, assign) BOOL                repeatToPlay;
 /** 播放完了*/
 @property (nonatomic, assign) BOOL                playDidEnd;
@@ -147,7 +147,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.backgroundColor = [UIColor blackColor];
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
-
 }
 
 - (void)dealloc
@@ -195,6 +194,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.tableView     = nil;
         self.indexPath     = nil;
     }
+}
+
+
+/**
+ *  在当前页面，设置新的Player的URL调用此方法
+ */
+- (void)resetToPlayNewURL
+{
+    self.repeatToPlay = YES;
+    [self resetPlayer];
 }
 
 #pragma mark - 观察者、通知
