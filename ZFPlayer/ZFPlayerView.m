@@ -383,7 +383,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)configZFPlayer {
     // 初始化playerItem
     self.playerItem  = [AVPlayerItem playerItemWithURL:self.videoURL];
-    [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
+    // 解决替换PlayerItem阻塞线程问题
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
+    });
     // 初始化playerLayer
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     
