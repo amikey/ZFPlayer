@@ -290,6 +290,11 @@ static ZFDownloadManager *_downloadManager;
  */
 - (void)deleteFile:(NSString *)url
 {
+    NSURLSessionDataTask *task = [self getTask:url];
+    if (task) {
+        // 取消下载
+        [task cancel];
+    }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:ZFFileFullpath(url)]) {
         // 删除沙盒中的资源
@@ -435,15 +440,18 @@ static ZFDownloadManager *_downloadManager;
     //    // 更新数据(文件写入的长度、进度)
     //    [self save:self.sessionModelsArray];
     
-    // 下载中
-    sessionModel.stateBlock(DownloadStateStart);
+    if (sessionModel.stateBlock) {
+        // 下载中
+        sessionModel.stateBlock(DownloadStateStart);
+    }
     if (sessionModel.progressBlock) {
         sessionModel.progressBlock(progress, speedStr, remainingTimeStr,writtenSize, sessionModel.totalSize);
     }
-    
-    if ([self.delegate respondsToSelector:@selector(downloadResponse:)]) {
-        [self.delegate downloadResponse:sessionModel];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.delegate respondsToSelector:@selector(downloadResponse:)]) {
+            [self.delegate downloadResponse:sessionModel];
+        }
+    });
 }
 
 /**
