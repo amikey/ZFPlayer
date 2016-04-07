@@ -128,16 +128,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     self = [super init];
     if (self) {
-        // 亮度调节
-        [ZFBrightnessView sharedBrightnesView];
-        self.backgroundColor = [UIColor blackColor];
-        // 每次播放视频都解锁屏幕锁定
-        [self unLockTheScreen];
-        // 开始监听网络
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            [GLobalRealReachability startNotifier];
-        });
+        [self initializeThePlayer];
     }
     return self;
 }
@@ -147,9 +138,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)awakeFromNib
 {
+    [self initializeThePlayer];
+}
+
+/**
+ *  初始化player
+ */
+- (void)initializeThePlayer
+{
     // 亮度调节
     [ZFBrightnessView sharedBrightnesView];
-    self.backgroundColor = [UIColor blackColor];
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
     // 开始监听网络
@@ -176,6 +174,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 改为为播放完
     self.playDidEnd = NO;
     self.playerItem = nil;
+    // 视频跳转秒数置0
+    self.seekTime = 0;
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // 关闭定时器
@@ -349,6 +349,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if ([[ZFDownloadManager sharedInstance] isCompletion:videoURL.absoluteString]) {
         videoURL = [NSURL fileURLWithPath:ZFFileFullpath(videoURL.absoluteString)];
     }
+    
+    // 播放开始之前（加载中）设置站位图
+    UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"loading_bgView")];
+    self.layer.contents = (id) image.CGImage;
+    
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;
     self.playDidEnd   = NO;
@@ -570,6 +575,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
                 pan.delegate                = self;
                 [self addGestureRecognizer:pan];
+                
+                // 跳到xx秒播放视频
+                if (self.seekTime) {
+                    [self seekToTime:self.seekTime];
+                }
                 
             } else if (self.player.status == AVPlayerStatusFailed){
                 
@@ -1042,132 +1052,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     return result;
 }
 
-#pragma mark - slider事件
-
-/**
- *  slider开始滑动事件
- *
- *  @param slider UISlider
- */
-- (void)progressSliderTouchBegan:(UISlider *)slider
-{
-    [self cancelAutoFadeOutControlBar];
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
-        
-        // 暂停timer
-        [self.timer setFireDate:[NSDate distantFuture]];
-    }
-}
-
-/**
- *  slider滑动中事件
- *
- *  @param slider UISlider
- */
-- (void)progressSliderValueChanged:(UISlider *)slider
-{
-    //拖动改变视频播放进度
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
-        NSString *style = @"";
-        CGFloat value   = slider.value - self.sliderLastValue;
-        if (value > 0) {
-            style = @">>";
-        } else if (value < 0) {
-            style = @"<<";
-        }
-        self.sliderLastValue = slider.value;
-        
-        [self pause];
-        
-        CGFloat total                       = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-
-        //计算出拖动的当前秒数
-        NSInteger dragedSeconds             = floorf(total * slider.value);
-
-        //转换成CMTime才能给player来控制播放进度
-
-        CMTime dragedCMTime                 = CMTimeMake(dragedSeconds, 1);
-        // 拖拽的时长
-        NSInteger proMin                    = (NSInteger)CMTimeGetSeconds(dragedCMTime) / 60;//当前秒
-        NSInteger proSec                    = (NSInteger)CMTimeGetSeconds(dragedCMTime) % 60;//当前分钟
-
-        //duration 总时长
-        NSInteger durMin                    = (NSInteger)total / 60;//总秒
-        NSInteger durSec                    = (NSInteger)total % 60;//总分钟
-
-        NSString *currentTime               = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
-        NSString *totalTime                 = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
-        
-        if (total > 0) {
-            // 当总时长 > 0时候才能拖动slider
-            self.controlView.currentTimeLabel.text  = currentTime;
-            self.controlView.horizontalLabel.hidden = NO;
-            self.controlView.horizontalLabel.text   = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
-        }else {
-            // 此时设置slider值为0
-            slider.value = 0;
-        }
-        
-    }else { // player状态加载失败
-        // 此时设置slider值为0
-        slider.value = 0;
-    }
-}
-
-/**
- *  slider结束滑动事件
- *
- *  @param slider UISlider
- */
-- (void)progressSliderTouchEnded:(UISlider *)slider
-{
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
-        
-        // 继续开启timer
-        [self.timer setFireDate:[NSDate date]];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.controlView.horizontalLabel.hidden = YES;
-        });
-        // 结束滑动时候把开始播放按钮改为播放状态
-        self.controlView.startBtn.selected = YES;
-        self.isPauseByUser                 = NO;
-        
-        // 滑动结束延时隐藏controlView
-        [self autoFadeOutControlBar];
-        // 视频总时间长度
-        CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-        
-        //计算出拖动的当前秒数
-        NSInteger dragedSeconds = floorf(total * slider.value);
-        
-        [self jumpToPlayVideo:dragedSeconds];
-    }
-}
-
-/**
- *  从xx秒开始播放视频跳转
- *
- *  @param dragedSeconds 视频跳转的秒数
- */
-- (void)jumpToPlayVideo:(NSInteger)dragedSeconds
-{
-    // 转换成CMTime才能给player来控制播放进度
-    CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
-    
-    [self.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
-        // 如果点击了暂停按钮
-        if (self.isPauseByUser) {
-            return ;
-        }
-        [self play];
-        if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) {
-            self.state = ZFPlayerStateBuffering;
-            [self.controlView.activity startAnimating];
-        }
-    }];
-
-}
-
 #pragma mark - Action
 
 /**
@@ -1216,6 +1100,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 从"数据网络"切换过来的，playerItem会变为nil，此时configZFPlayer
     if (!self.playerItem) {
         [self configZFPlayer];
+//        [self seekToTime:self.seekTime];
         return;
     }
     [_player play];
@@ -1229,6 +1114,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 实时网络情况
     ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
     if (status == RealStatusViaWWAN) {
+        self.seekTime = (NSInteger)CMTimeGetSeconds([_player currentTime]);
         [_player pause];
         self.playerItem = nil;
     }else {
@@ -1360,6 +1246,134 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
+
+#pragma mark - slider事件
+
+/**
+ *  slider开始滑动事件
+ *
+ *  @param slider UISlider
+ */
+- (void)progressSliderTouchBegan:(UISlider *)slider
+{
+    [self cancelAutoFadeOutControlBar];
+    if (self.player.status == AVPlayerStatusReadyToPlay) {
+        
+        // 暂停timer
+        [self.timer setFireDate:[NSDate distantFuture]];
+    }
+}
+
+/**
+ *  slider滑动中事件
+ *
+ *  @param slider UISlider
+ */
+- (void)progressSliderValueChanged:(UISlider *)slider
+{
+    //拖动改变视频播放进度
+    if (self.player.status == AVPlayerStatusReadyToPlay) {
+        NSString *style = @"";
+        CGFloat value   = slider.value - self.sliderLastValue;
+        if (value > 0) {
+            style = @">>";
+        } else if (value < 0) {
+            style = @"<<";
+        }
+        self.sliderLastValue = slider.value;
+        
+        [self pause];
+        
+        CGFloat total                       = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        
+        //计算出拖动的当前秒数
+        NSInteger dragedSeconds             = floorf(total * slider.value);
+        
+        //转换成CMTime才能给player来控制播放进度
+        
+        CMTime dragedCMTime                 = CMTimeMake(dragedSeconds, 1);
+        // 拖拽的时长
+        NSInteger proMin                    = (NSInteger)CMTimeGetSeconds(dragedCMTime) / 60;//当前秒
+        NSInteger proSec                    = (NSInteger)CMTimeGetSeconds(dragedCMTime) % 60;//当前分钟
+        
+        //duration 总时长
+        NSInteger durMin                    = (NSInteger)total / 60;//总秒
+        NSInteger durSec                    = (NSInteger)total % 60;//总分钟
+        
+        NSString *currentTime               = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
+        NSString *totalTime                 = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
+        
+        if (total > 0) {
+            // 当总时长 > 0时候才能拖动slider
+            self.controlView.currentTimeLabel.text  = currentTime;
+            self.controlView.horizontalLabel.hidden = NO;
+            self.controlView.horizontalLabel.text   = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+        }else {
+            // 此时设置slider值为0
+            slider.value = 0;
+        }
+        
+    }else { // player状态加载失败
+        // 此时设置slider值为0
+        slider.value = 0;
+    }
+}
+
+/**
+ *  slider结束滑动事件
+ *
+ *  @param slider UISlider
+ */
+- (void)progressSliderTouchEnded:(UISlider *)slider
+{
+    if (self.player.status == AVPlayerStatusReadyToPlay) {
+        
+        // 继续开启timer
+        [self.timer setFireDate:[NSDate date]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.controlView.horizontalLabel.hidden = YES;
+        });
+        // 结束滑动时候把开始播放按钮改为播放状态
+        self.controlView.startBtn.selected = YES;
+        self.isPauseByUser                 = NO;
+        
+        // 滑动结束延时隐藏controlView
+        [self autoFadeOutControlBar];
+        // 视频总时间长度
+        CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        
+        //计算出拖动的当前秒数
+        NSInteger dragedSeconds = floorf(total * slider.value);
+        
+        [self seekToTime:dragedSeconds];
+    }
+}
+
+/**
+ *  从xx秒开始播放视频跳转
+ *
+ *  @param dragedSeconds 视频跳转的秒数
+ */
+- (void)seekToTime:(NSInteger)dragedSeconds
+{
+    if (self.player.status == AVPlayerStatusReadyToPlay) {
+        // 转换成CMTime才能给player来控制播放进度
+        CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+        
+        [self.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+            // 如果点击了暂停按钮
+            if (self.isPauseByUser) {
+                return ;
+            }
+            [self play];
+            if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) {
+                self.state = ZFPlayerStateBuffering;
+                [self.controlView.activity startAnimating];
+            }
+        }];
+    }
+}
+
 #pragma mark - UIPanGestureRecognizer手势方法
 
 /**
@@ -1439,11 +1453,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                     self.controlView.startBtn.selected = YES;
                     self.isPauseByUser                 = NO;
 
-//                    // 转换成CMTime才能给player来控制播放进度
-//                    CMTime dragedCMTime                = CMTimeMake(self.sumTime, 1);
-//                    
-//                    [self endSlideTheVideo:dragedCMTime];
-                    [self jumpToPlayVideo:self.sumTime];
+                    [self seekToTime:self.sumTime];
                     // 把sumTime滞空，不然会越加越多
                     self.sumTime = 0;
                     break;
@@ -1569,9 +1579,26 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setState:(ZFPlayerState)state
 {
     _state = state;
+    if (state == ZFPlayerStatePlaying) {
+        // 改为黑色的背景，不然站位图会显示
+        UIImage *image = [self buttonImageFromColor:[UIColor blackColor]];
+        self.layer.contents = (id) image.CGImage;
+    }
     if (state != ZFPlayerStateBuffering) {
         [self.controlView.activity stopAnimating];
     }
+}
+
+//通过颜色来生成一个纯色图片
+- (UIImage *)buttonImageFromColor:(UIColor *)color{
+
+    CGRect rect = self.bounds;
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext(); return img;
 }
 
 /**

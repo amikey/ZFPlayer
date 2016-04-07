@@ -82,6 +82,12 @@ self.playerView.goBackBlock = ^{
  // 默认是关闭断点下载功能，如需要此功能设置这里
  self.playerView.hasDownload = YES;
 ```
+
+##### 从xx秒开始播放视频（可选设置）
+ ```objc
+ // 如果想从xx秒开始播放视频
+ self.playerView.seekTime = 15;
+ ```
  
 ### 图片效果演示
 

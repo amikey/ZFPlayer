@@ -54,7 +54,8 @@
         self.layer.cornerRadius  = 10;
         self.layer.masksToBounds = YES;
 		
-		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"brightness_bg.png")]];
+        UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"brightness_bg.png")];
+        self.layer.contents = (id) image.CGImage;
         
 		self.backImage = ({
             UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];

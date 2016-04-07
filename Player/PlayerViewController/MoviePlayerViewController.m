@@ -82,6 +82,9 @@
     self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
     // 打开断点下载功能（默认没有这个功能）
     self.playerView.hasDownload = YES;
+    
+    // 如果想从xx秒开始播放视频
+    //self.playerView.seekTime = 15;
     __weak typeof(self) weakSelf = self;
     self.playerView.goBackBlock = ^{
         [weakSelf.navigationController popViewControllerAnimated:YES];
