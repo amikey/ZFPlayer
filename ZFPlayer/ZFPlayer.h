@@ -42,4 +42,4 @@
 #import "ZFPlayerControlView.h"
 #import "ZFBrightnessView.h"
 #import "ZFDownloadManager.h"
-
+#import <RealReachability/RealReachability.h>

@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     ZFPlayerStatePause       //暂停播放
 };
 
-@interface ZFPlayerView () <UIGestureRecognizerDelegate>
+@interface ZFPlayerView () <UIGestureRecognizerDelegate,UIAlertViewDelegate>
 
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayer            *player;
@@ -133,6 +133,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.backgroundColor = [UIColor blackColor];
         // 每次播放视频都解锁屏幕锁定
         [self unLockTheScreen];
+        // 开始监听网络
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [GLobalRealReachability startNotifier];
+        });
     }
     return self;
 }
@@ -147,6 +152,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.backgroundColor = [UIColor blackColor];
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
+    // 开始监听网络
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [GLobalRealReachability startNotifier];
+    });
 }
 
 - (void)dealloc
@@ -211,12 +221,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  添加观察者、通知
  */
-- (void)addObserverAndNotification {
+- (void)addNotifications {
     // app退到后台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
     // app进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayGround) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
+    // 网络监听
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(networkChanged:)
+                                                 name:kRealReachabilityChangedNotification
+                                               object:nil];
     // slider开始滑动事件
     [self.controlView.videoSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     // slider滑动中事件
@@ -330,6 +344,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)setVideoURL:(NSURL *)videoURL
 {
+    _videoURL = videoURL;
     // 如果已经下载过这个video了，那么直接播放本地视频
     if ([[ZFDownloadManager sharedInstance] isCompletion:videoURL.absoluteString]) {
         videoURL = [NSURL fileURLWithPath:ZFFileFullpath(videoURL.absoluteString)];
@@ -340,19 +355,37 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 播放状态
     self.state = ZFPlayerStateStopped;
     
+    // 添加通知
+    [self addNotifications];
+    // 根据屏幕的方向设置相关UI
+    [self onDeviceOrientationChange];
+    
+    // 实时网络情况
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    if (status == RealStatusViaWWAN) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"当前为数据网络，是否继续播放?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = 1000;
+        [alert show];
+        return;
+    }
+    // 设置Player相关参数
+    [self configZFPlayer];
+}
+
+/**
+ *  设置Player相关参数
+ */
+- (void)configZFPlayer {
     // 初始化playerItem
-    self.playerItem  = [AVPlayerItem playerItemWithURL:videoURL];
+    self.playerItem  = [AVPlayerItem playerItemWithURL:self.videoURL];
     [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
     // 初始化playerLayer
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-
+    
     // 此处为默认视频填充模式
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     // 添加playerLayer到self.layer
     [self.layer insertSublayer:self.playerLayer atIndex:0];
-    
-    // 添加观察者、通知
-    [self addObserverAndNotification];
     
     // 初始化显示controlView为YES
     self.isMaskShowing = YES;
@@ -362,10 +395,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 计时器
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(playerTimerAction) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-    
-    // 根据屏幕的方向设置相关UI
-    [self onDeviceOrientationChange];
-    
+
     // 添加手势
     [self createGesture];
     
@@ -373,7 +403,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self configureVolume];
     
     // 本地文件不设置ZFPlayerStateBuffering状态
-    if ([videoURL.scheme isEqualToString:@"file"]) {
+    if ([self.videoURL.scheme isEqualToString:@"file"]) {
         self.state = ZFPlayerStatePlaying;
         self.isLocalVideo = YES;
         self.controlView.downLoadBtn.enabled = NO;
@@ -392,8 +422,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     //强制让系统调用layoutSubviews 两个方法必须同时写
     [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
     [self layoutIfNeeded]; //加上此代码立刻刷新
-    
-     _videoURL = videoURL;
 }
 
 //创建手势
@@ -1106,27 +1134,26 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         
         // 滑动结束延时隐藏controlView
         [self autoFadeOutControlBar];
-        
-        //计算出拖动的当前秒数
+        // 视频总时间长度
         CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
         
+        //计算出拖动的当前秒数
         NSInteger dragedSeconds = floorf(total * slider.value);
         
-        //转换成CMTime才能给player来控制播放进度
-        
-        CMTime dragedCMTime     = CMTimeMake(dragedSeconds, 1);
-        
-        [self endSlideTheVideo:dragedCMTime];
+        [self jumpToPlayVideo:dragedSeconds];
     }
 }
 
 /**
- *  滑动结束视频跳转
+ *  从xx秒开始播放视频跳转
  *
- *  @param dragedCMTime 视频跳转的CMTime
+ *  @param dragedSeconds 视频跳转的秒数
  */
-- (void)endSlideTheVideo:(CMTime)dragedCMTime
+- (void)jumpToPlayVideo:(NSInteger)dragedSeconds
 {
+    // 转换成CMTime才能给player来控制播放进度
+    CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+    
     [self.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
         // 如果点击了暂停按钮
         if (self.isPauseByUser) {
@@ -1138,6 +1165,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             [self.controlView.activity startAnimating];
         }
     }];
+
 }
 
 #pragma mark - Action
@@ -1163,7 +1191,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 }
 
 /**
- *  播放、暂停
+ *  播放、暂停按钮事件
  *
  *  @param button UIButton
  */
@@ -1179,11 +1207,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.state = ZFPlayerStatePause;
     }
 }
+
 /**
  *  播放
  */
 - (void)play
 {
+    // 从"数据网络"切换过来的，playerItem会变为nil，此时configZFPlayer
+    if (!self.playerItem) {
+        [self configZFPlayer];
+        return;
+    }
     [_player play];
 }
 
@@ -1192,7 +1226,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)pause
 {
-    [_player pause];
+    // 实时网络情况
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    if (status == RealStatusViaWWAN) {
+        [_player pause];
+        self.playerItem = nil;
+    }else {
+        [_player pause];
+    }
 }
 
 /**
@@ -1300,6 +1341,25 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
+/**
+ *  网络状态发生变化
+ */
+- (void)networkChanged:(NSNotification *)notification
+{
+    RealReachability *reachability = (RealReachability *)notification.object;
+    ReachabilityStatus status = [reachability currentReachabilityStatus];
+    
+    if (status == RealStatusNotReachable) {
+        [[[UIAlertView alloc] initWithTitle:@"提示" message:@"没有网络，请检查网络设置" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil , nil] show];
+        
+    } else if (status == RealStatusViaWWAN) {
+        [self pause];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"当前为数据网络，是否继续播放?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = 1000;
+        [alert show];
+    }
+}
+
 #pragma mark - UIPanGestureRecognizer手势方法
 
 /**
@@ -1375,16 +1435,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                         // 隐藏视图
                         self.controlView.horizontalLabel.hidden = YES;
                     });
-                    //快进、快退时候把开始播放按钮改为播放状态
+                    // 快进、快退时候把开始播放按钮改为播放状态
                     self.controlView.startBtn.selected = YES;
                     self.isPauseByUser                 = NO;
 
-                    // 转换成CMTime才能给player来控制播放进度
-                    CMTime dragedCMTime                = CMTimeMake(self.sumTime, 1);
-                    //[_player pause];
-                    
-                    [self endSlideTheVideo:dragedCMTime];
-
+//                    // 转换成CMTime才能给player来控制播放进度
+//                    CMTime dragedCMTime                = CMTimeMake(self.sumTime, 1);
+//                    
+//                    [self endSlideTheVideo:dragedCMTime];
+                    [self jumpToPlayVideo:self.sumTime];
                     // 把sumTime滞空，不然会越加越多
                     self.sumTime = 0;
                     break;
@@ -1486,6 +1545,20 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     return YES;
 }
 
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1000 ) {
+        if (buttonIndex == 0) {
+            // 点击取消，直接调用返回函数
+            [self backButtonAction];
+        } else if (buttonIndex == 1) {
+            // 点击确定，设置player相关参数
+            [self configZFPlayer];
+        }
+    }
+}
 #pragma mark - Setter 
 
 /**
@@ -1500,6 +1573,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         [self.controlView.activity stopAnimating];
     }
 }
+
 /**
  *  根据playerItem，来添加移除观察者
  *

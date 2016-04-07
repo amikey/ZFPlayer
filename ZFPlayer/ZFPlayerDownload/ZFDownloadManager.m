@@ -294,9 +294,6 @@ static ZFDownloadManager *_downloadManager;
     if ([fileManager fileExistsAtPath:ZFFileFullpath(url)]) {
         // 删除沙盒中的资源
         [fileManager removeItemAtPath:ZFFileFullpath(url) error:nil];
-        // 删除任务
-        [self.tasks removeObjectForKey:ZFFileName(url)];
-        [self.sessionModels removeObjectForKey:@([self getTask:url].taskIdentifier).stringValue];
         // 删除资源总长度
         if ([fileManager fileExistsAtPath:ZFDownloadDetailPath]) {
             // 从沙盒中移除该条模型的信息
@@ -308,6 +305,9 @@ static ZFDownloadManager *_downloadManager;
                 }
             }
         }
+        // 删除任务
+        [self.tasks removeObjectForKey:ZFFileName(url)];
+        [self.sessionModels removeObjectForKey:@([self getTask:url].taskIdentifier).stringValue];
         // 保存归档信息
         [self save:self.sessionModelsArray];
     }
