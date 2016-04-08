@@ -41,7 +41,7 @@
 	static ZFBrightnessView *instance;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		instance = [[ZFBrightnessView alloc]init];
+		instance = [[ZFBrightnessView alloc] init];
 		[[UIApplication sharedApplication].keyWindow addSubview:instance];
 	});
 	return instance;
@@ -204,9 +204,7 @@
 	}
 }
 
-- (void)didMoveToSuperview {
-	//NSLog(@"--- didMoveToSuperview");
-}
+- (void)didMoveToSuperview {}
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
 	[self setNeedsLayout];

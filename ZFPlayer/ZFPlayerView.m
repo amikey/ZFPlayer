@@ -24,7 +24,6 @@
 #import "ZFPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import <Masonry/Masonry.h>
 #import "ZFPlayerControlView.h"
 #import "ZFBrightnessView.h"
 #import "ZFPlayer.h"
@@ -1572,6 +1571,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
     }
 }
+
 #pragma mark - Setter 
 
 /**
@@ -1592,7 +1592,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
-//通过颜色来生成一个纯色图片
+// 通过颜色来生成一个纯色图片
 - (UIImage *)buttonImageFromColor:(UIColor *)color{
 
     CGRect rect = self.bounds;

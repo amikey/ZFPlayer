@@ -40,7 +40,7 @@
 #define ZFDownloadDetailPath [ZFCachesDirectory stringByAppendingPathComponent:@"downloadDetail.data"]
 
 @protocol ZFDownloadDelegate <NSObject>
-
+/** 下载中的回调 */
 - (void)downloadResponse:(ZFSessionModel *)sessionModel;
 
 @end
@@ -49,6 +49,7 @@
 
 /** 保存所有下载相关信息 */
 @property (nonatomic, strong, readonly) NSMutableDictionary *sessionModels;
+/** ZFDownloadDelegate */
 @property (nonatomic, assign) id<ZFDownloadDelegate> delegate;
 
 /**
@@ -57,6 +58,7 @@
  *  @return 返回单例对象
  */
 + (instancetype)sharedInstance;
+
 /**
  * 归档
  */
@@ -131,8 +133,9 @@
  *  暂停下载
  */
 - (void)pause:(NSString *)url;
+
 /**
- *  判断当前url是否在现在
+ *  判断当前url是否正在下载
  *
  *  @param url   视频url
  *  @param block 下载进度
@@ -140,6 +143,7 @@
  *  @return 是否在下载
  */
 - (BOOL)isFileDownloadingForUrl:(NSString *)url withProgressBlock:(ZFDownloadProgressBlock)block;
+
 /**
  *  正在下载的视频URL的数组
  *
