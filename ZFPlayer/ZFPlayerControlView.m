@@ -58,11 +58,6 @@
 
 @implementation ZFPlayerControlView
 
-- (void)dealloc
-{
-    //NSLog(@"%@释放了",self.class);
-}
-
 - (instancetype)init
 {
     self = [super init];

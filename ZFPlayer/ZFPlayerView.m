@@ -24,8 +24,6 @@
 #import "ZFPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "ZFPlayerControlView.h"
-#import "ZFBrightnessView.h"
 #import "ZFPlayer.h"
 
 static const CGFloat ZFPlayerAnimationTimeInterval             = 7.0f;
@@ -145,8 +143,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)initializeThePlayer
 {
-    // 亮度调节
-    [ZFBrightnessView sharedBrightnesView];
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
     // 开始监听网络

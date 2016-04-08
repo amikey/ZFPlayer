@@ -53,9 +53,11 @@
 		
         self.layer.cornerRadius  = 10;
         self.layer.masksToBounds = YES;
-		
-        UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"brightness_bg.png")];
-        self.layer.contents = (id) image.CGImage;
+        
+        // 使用UIToolbar实现毛玻璃效果，简单粗暴，支持iOS7+
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
+        toolbar.alpha = 0.97;
+        [self addSubview:toolbar];
         
 		self.backImage = ({
             UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];
@@ -66,7 +68,7 @@
 		
 		self.title = ({
             UILabel *title      = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.bounds.size.width, 30)];
-            title.font          = [UIFont systemFontOfSize:16];
+            title.font          = [UIFont boldSystemFontOfSize:16];
             title.textColor     = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
             title.textAlignment = NSTextAlignmentCenter;
             title.text          = @"亮度";

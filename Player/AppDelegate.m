@@ -22,7 +22,6 @@
 // THE SOFTWARE.
 
 #import "AppDelegate.h"
-#import "ZFPlayer.h"
 
 @interface AppDelegate ()
 
