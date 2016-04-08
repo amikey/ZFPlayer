@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name         = 'ZFPlayer'
-    s.version      = '1.0.3'
-    s.summary      = 'An easy way to user Player'
+    s.version      = '1.0.5'
+    s.summary      = 'A good Player'
     s.homepage     = 'https://github.com/renzifeng/ZFPlayer'
     s.license      = 'MIT'
     s.authors      = { 'renzifeng' => 'zifeng1300@gmail.com' }
@@ -11,5 +11,6 @@ Pod::Spec.new do |s|
     s.resource     = 'ZFPlayer/ZFPlayer.bundle'
     s.framework    = 'UIKit','MediaPlayer'
     s.dependency 'Masonry'
+    s.dependency 'RealReachability'
     s.requires_arc = true
 end
