@@ -130,7 +130,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
 					  ofObject:(id)object
-						change:(NSDictionary<NSString *,id> *)change
+						change:(NSDictionary *)change
 					   context:(void *)context {
 	
 	CGFloat sound = [change[@"new"] floatValue];

@@ -559,7 +559,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self.playerItem) {
         if ([keyPath isEqualToString:@"status"]) {
