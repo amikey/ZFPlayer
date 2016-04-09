@@ -427,7 +427,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self layoutIfNeeded]; //加上此代码立刻刷新
 }
 
-//创建手势
+/**
+ *  创建手势
+ */
 - (void)createGesture
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
@@ -435,7 +437,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self addGestureRecognizer:tap];
 }
 
-//获取系统音量
+/**
+ *  获取系统音量
+ */
 - (void)configureVolume
 {
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
@@ -1568,6 +1572,26 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
+#pragma mark - Other
+
+/**
+ *  通过颜色来生成一个纯色图片
+ *
+ *  @param color UIColor
+ *
+ *  @return UIImage
+ */
+- (UIImage *)buttonImageFromColor:(UIColor *)color{
+    
+    CGRect rect = self.bounds;
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext(); return img;
+}
+
 #pragma mark - Setter 
 
 /**
@@ -1586,18 +1610,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (state != ZFPlayerStateBuffering) {
         [self.controlView.activity stopAnimating];
     }
-}
-
-// 通过颜色来生成一个纯色图片
-- (UIImage *)buttonImageFromColor:(UIColor *)color{
-
-    CGRect rect = self.bounds;
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext(); return img;
 }
 
 /**
