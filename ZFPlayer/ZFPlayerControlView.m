@@ -70,8 +70,8 @@
         [self.bottomImageView addSubview:self.currentTimeLabel];
         [self.bottomImageView addSubview:self.progressView];
         [self.bottomImageView addSubview:self.videoSlider];
-        [self.bottomImageView addSubview:self.totalTimeLabel];
         [self.bottomImageView addSubview:self.fullScreenBtn];
+        [self.bottomImageView addSubview:self.totalTimeLabel];
         
         [self.topImageView addSubview:self.downLoadBtn];
         [self addSubview:self.lockBtn];
@@ -123,9 +123,9 @@
     }];
     
     [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.startBtn.mas_trailing).offset(2);
+        make.leading.equalTo(self.startBtn.mas_trailing).offset(-3);
         make.centerY.equalTo(self.startBtn.mas_centerY);
-        make.width.mas_equalTo(35);
+        make.width.mas_equalTo(43);
     }];
     
     [self.fullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -135,20 +135,20 @@
     }];
     
     [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(self.fullScreenBtn.mas_leading).offset(-2);
+        make.trailing.equalTo(self.fullScreenBtn.mas_leading).offset(3);
         make.centerY.equalTo(self.startBtn.mas_centerY);
-        make.width.mas_equalTo(35);
+        make.width.mas_equalTo(43);
     }];
     
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(8);
-        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-8);
+        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
+        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
         make.centerY.equalTo(self.startBtn.mas_centerY);
     }];
     
     [self.videoSlider mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(8);
-        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-8);
+        make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
+        make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
         make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-0.25);
     }];
     
