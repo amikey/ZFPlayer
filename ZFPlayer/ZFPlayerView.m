@@ -344,8 +344,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;
     self.playDidEnd   = NO;
-//    // 播放状态
-//    self.state = ZFPlayerStateStopped;
     
     // 添加通知
     [self addNotifications];
@@ -1258,8 +1256,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)progressSliderTouchBegan:(UISlider *)slider
 {
     [self cancelAutoFadeOutControlBar];
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
-        
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         // 暂停timer
         [self.timer setFireDate:[NSDate distantFuture]];
     }
@@ -1273,7 +1270,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)progressSliderValueChanged:(UISlider *)slider
 {
     //拖动改变视频播放进度
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         NSString *style = @"";
         CGFloat value   = slider.value - self.sliderLastValue;
         if (value > 0) {
@@ -1327,7 +1324,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)progressSliderTouchEnded:(UISlider *)slider
 {
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         
         // 继续开启timer
         [self.timer setFireDate:[NSDate date]];
@@ -1357,7 +1354,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)seekToTime:(NSInteger)dragedSeconds
 {
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         // seekTime:completionHandler:不能精确定位
         // 如果需要精确定位，可以使用seekToTime:toleranceBefore:toleranceAfter:completionHandler:
         // 转换成CMTime才能给player来控制播放进度
