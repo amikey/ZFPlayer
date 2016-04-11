@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name         = 'ZFPlayer'
-    s.version      = '1.0.6'
-    s.summary      = 'A good Player made by Renzifeng'
+    s.version      = '1.0.7'
+    s.summary      = 'A good player made by renzifeng'
     s.homepage     = 'https://github.com/renzifeng/ZFPlayer'
     s.license      = 'MIT'
     s.authors      = { 'renzifeng' => 'zifeng1300@gmail.com' }

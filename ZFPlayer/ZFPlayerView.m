@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 //播放器的几种状态
 typedef NS_ENUM(NSInteger, ZFPlayerState) {
+    ZFPlayerStateFailed,     // 播放失败
     ZFPlayerStateBuffering,  //缓冲中
     ZFPlayerStatePlaying,    //播放中
     ZFPlayerStateStopped,    //停止播放
@@ -183,8 +184,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.player replaceCurrentItemWithPlayerItem:nil];
     // 重置控制层View
     [self.controlView resetControlView];
-    // 隐藏重播按钮
-    self.controlView.repeatBtn.hidden = YES;
     // 非重播时，移除当前playerView
     if (!self.repeatToPlay) {
         [self removeFromSuperview];
@@ -200,7 +199,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.indexPath     = nil;
     }
 }
-
 
 /**
  *  在当前页面，设置新的Player的URL调用此方法
@@ -277,12 +275,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
     
-    // 屏幕旋转时候判断palyer的状态，来显示菊花
-    if (self.state == ZFPlayerStateBuffering) {
-        [self.controlView.activity startAnimating];
-    }else {
-        [self.controlView.activity stopAnimating];
-    }
     // 屏幕方向一发生变化就会调用这里
     [UIApplication sharedApplication].statusBarHidden = NO;
     self.isMaskShowing = NO;
@@ -352,8 +344,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;
     self.playDidEnd   = NO;
-    // 播放状态
-    self.state = ZFPlayerStateStopped;
     
     // 添加通知
     [self addNotifications];
@@ -414,13 +404,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.state = ZFPlayerStateBuffering;
         self.isLocalVideo = NO;
     }
-    
     // 开始播放
     [self play];
     self.controlView.startBtn.selected = YES;
     self.isPauseByUser                 = NO;
-    [self.controlView.activity startAnimating];
-    
     
     //强制让系统调用layoutSubviews 两个方法必须同时写
     [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
@@ -565,13 +552,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == self.playerItem) {
+    if (object == self.player.currentItem) {
         if ([keyPath isEqualToString:@"status"]) {
-            
-            if (self.player.status == AVPlayerStatusReadyToPlay) {
+            if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
                 
                 self.state = ZFPlayerStatePlaying;
-                
                 // 加载完成后，再添加平移手势
                 // 添加平移手势，用来控制音量、亮度、快进快退
                 UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
@@ -583,19 +568,24 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                     [self seekToTime:self.seekTime];
                 }
                 
-            } else if (self.player.status == AVPlayerStatusFailed){
+            } else if (self.player.currentItem.status == AVPlayerItemStatusFailed){
                 
-                [self.controlView.activity startAnimating];
+                self.state = ZFPlayerStateFailed;
+                NSError *error = [self.player.currentItem error];
+                NSLog(@"视频加载失败===%@",error.description);
+                self.controlView.horizontalLabel.hidden = NO;
+                self.controlView.horizontalLabel.text = @"视频加载失败";
+                
             }
-            
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
             
-            NSTimeInterval timeInterval = [self availableDuration];// 计算缓冲进度
+            // 计算缓冲进度
+            NSTimeInterval timeInterval = [self availableDuration];
             CMTime duration             = self.playerItem.duration;
             CGFloat totalDuration       = CMTimeGetSeconds(duration);
             [self.controlView.progressView setProgress:timeInterval / totalDuration animated:NO];
             
-        }else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
+        } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
             
             // 当缓冲是空的时候
             if (self.playerItem.playbackBufferEmpty) {
@@ -603,7 +593,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 [self bufferingSomeSecond];
             }
             
-        }else if ([keyPath isEqualToString:@"playbackLikelyToKeepUp"]) {
+        } else if ([keyPath isEqualToString:@"playbackLikelyToKeepUp"]) {
             
             // 当缓冲好的时候
             if (self.playerItem.playbackLikelyToKeepUp){
@@ -990,7 +980,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)bufferingSomeSecond
 {
-    [self.controlView.activity startAnimating];
+    self.state = ZFPlayerStateBuffering;
     // playbackBufferEmpty会反复进入，因此在bufferingOneSecond延时播放执行完之前再调用bufferingSomeSecond都忽略
     __block BOOL isBuffering = NO;
     if (isBuffering) {
@@ -1087,10 +1077,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.isPauseByUser = !button.isSelected;
     if (button.selected) {
         [self play];
-        self.state = ZFPlayerStatePlaying;
+        if (self.state == ZFPlayerStatePause) {
+            self.state = ZFPlayerStatePlaying;
+        }
     } else {
         [self pause];
-        self.state = ZFPlayerStatePause;
+        if (self.state == ZFPlayerStatePlaying) {
+            self.state = ZFPlayerStatePause;
+        }
     }
 }
 
@@ -1102,7 +1096,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 从"数据网络"切换过来的，playerItem会变为nil，此时configZFPlayer
     if (!self.playerItem) {
         [self configZFPlayer];
-//        [self seekToTime:self.seekTime];
         return;
     }
     [_player play];
@@ -1152,19 +1145,23 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
     }
 }
+
 /**
  *  重播点击事件
  *
  *  @param sender sender
  */
 - (void)repeatPlay:(UIButton *)sender {
-    // 隐藏重播按钮
-    self.controlView.repeatBtn.hidden = YES;
-    self.repeatToPlay                 = YES;
-    // 重置Player
-    [self resetPlayer];
-    [self setVideoURL:self.videoURL];
-    
+    // 没有播放完
+    self.playDidEnd                   = NO;
+    // 重播改为NO
+    self.repeatToPlay                 = NO;
+    // 准备显示控制层
+    self.isMaskShowing                = NO;
+    [self animateShow];
+    // 重置控制层View
+    [self.controlView resetControlView];
+    [self seekToTime:0];
 }
 
 - (void)downloadVideo:(UIButton *)sender
@@ -1259,8 +1256,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)progressSliderTouchBegan:(UISlider *)slider
 {
     [self cancelAutoFadeOutControlBar];
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
-        
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         // 暂停timer
         [self.timer setFireDate:[NSDate distantFuture]];
     }
@@ -1274,7 +1270,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)progressSliderValueChanged:(UISlider *)slider
 {
     //拖动改变视频播放进度
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         NSString *style = @"";
         CGFloat value   = slider.value - self.sliderLastValue;
         if (value > 0) {
@@ -1328,7 +1324,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)progressSliderTouchEnded:(UISlider *)slider
 {
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         
         // 继续开启timer
         [self.timer setFireDate:[NSDate date]];
@@ -1358,11 +1354,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)seekToTime:(NSInteger)dragedSeconds
 {
-    if (self.player.status == AVPlayerStatusReadyToPlay) {
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+        // seekTime:completionHandler:不能精确定位
+        // 如果需要精确定位，可以使用seekToTime:toleranceBefore:toleranceAfter:completionHandler:
         // 转换成CMTime才能给player来控制播放进度
         CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
-        
-        [self.player seekToTime:dragedCMTime completionHandler:^(BOOL finish){
+        [self.player seekToTime:dragedCMTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
             // 如果点击了暂停按钮
             if (self.isPauseByUser) {
                 return ;
@@ -1370,8 +1367,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             [self play];
             if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) {
                 self.state = ZFPlayerStateBuffering;
-                [self.controlView.activity startAnimating];
             }
+
         }];
     }
 }
@@ -1606,8 +1603,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         // 改为黑色的背景，不然站位图会显示
         UIImage *image = [self buttonImageFromColor:[UIColor blackColor]];
         self.layer.contents = (id) image.CGImage;
+    }else if (state == ZFPlayerStateFailed) {
+        self.controlView.downLoadBtn.enabled = NO;
     }
-    if (state != ZFPlayerStateBuffering) {
+    // 控制菊花显示、隐藏
+    if (state == ZFPlayerStateBuffering) {
+        [self.controlView.activity startAnimating];
+    }else {
         [self.controlView.activity stopAnimating];
     }
 }
@@ -1682,6 +1684,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
+/**
+ *  是否包含下载功能
+ */
 - (void)setHasDownload:(BOOL)hasDownload
 {
     _hasDownload = hasDownload;
