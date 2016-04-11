@@ -1569,14 +1569,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
-#pragma mark - Other
+#pragma mark - Others
 
 /**
  *  通过颜色来生成一个纯色图片
- *
- *  @param color UIColor
- *
- *  @return UIImage
  */
 - (UIImage *)buttonImageFromColor:(UIColor *)color{
     
