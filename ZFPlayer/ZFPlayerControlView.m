@@ -179,11 +179,13 @@
 /** 重置ControlView */
 - (void)resetControlView
 {
-    self.videoSlider.value     = 0;
-    self.progressView.progress = 0;
-    self.currentTimeLabel.text = @"00:00";
-    self.totalTimeLabel.text   = @"00:00";
-    self.backgroundColor = [UIColor clearColor];
+    self.videoSlider.value      = 0;
+    self.progressView.progress  = 0;
+    self.currentTimeLabel.text  = @"00:00";
+    self.totalTimeLabel.text    = @"00:00";
+    self.horizontalLabel.hidden = YES;
+    self.repeatBtn.hidden       = YES;
+    self.backgroundColor        = [UIColor clearColor];
 }
 
 - (void)showControlView

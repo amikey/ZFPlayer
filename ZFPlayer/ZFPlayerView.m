@@ -184,8 +184,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.player replaceCurrentItemWithPlayerItem:nil];
     // 重置控制层View
     [self.controlView resetControlView];
-    // 隐藏重播按钮
-    self.controlView.repeatBtn.hidden = YES;
     // 非重播时，移除当前playerView
     if (!self.repeatToPlay) {
         [self removeFromSuperview];
@@ -201,7 +199,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.indexPath     = nil;
     }
 }
-
 
 /**
  *  在当前页面，设置新的Player的URL调用此方法
@@ -347,8 +344,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;
     self.playDidEnd   = NO;
-    // 播放状态
-    self.state = ZFPlayerStateStopped;
+//    // 播放状态
+//    self.state = ZFPlayerStateStopped;
     
     // 添加通知
     [self addNotifications];
@@ -1157,8 +1154,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  *  @param sender sender
  */
 - (void)repeatPlay:(UIButton *)sender {
-    // 隐藏重播按钮
-    self.controlView.repeatBtn.hidden = YES;
     // 没有播放完
     self.playDidEnd                   = NO;
     // 重播改为NO
