@@ -125,6 +125,7 @@
     [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.startBtn.mas_trailing).offset(2);
         make.centerY.equalTo(self.startBtn.mas_centerY);
+        make.width.mas_equalTo(35);
     }];
     
     [self.fullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -135,7 +136,8 @@
     
     [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(self.fullScreenBtn.mas_leading).offset(-2);
-        make.centerY.equalTo(self.startBtn.mas_centerY);;
+        make.centerY.equalTo(self.startBtn.mas_centerY);
+        make.width.mas_equalTo(35);
     }];
     
     [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -252,9 +254,10 @@
 - (UILabel *)currentTimeLabel
 {
     if (!_currentTimeLabel) {
-        _currentTimeLabel           = [[UILabel alloc] init];
-        _currentTimeLabel.textColor = [UIColor whiteColor];
-        _currentTimeLabel.font      = [UIFont systemFontOfSize:12.0f];
+        _currentTimeLabel               = [[UILabel alloc] init];
+        _currentTimeLabel.textColor     = [UIColor whiteColor];
+        _currentTimeLabel.font          = [UIFont systemFontOfSize:12.0f];
+        _currentTimeLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _currentTimeLabel;
 }
@@ -285,9 +288,10 @@
 - (UILabel *)totalTimeLabel
 {
     if (!_totalTimeLabel) {
-        _totalTimeLabel           = [[UILabel alloc] init];
-        _totalTimeLabel.textColor = [UIColor whiteColor];
-        _totalTimeLabel.font      = [UIFont systemFontOfSize:12.0f];
+        _totalTimeLabel               = [[UILabel alloc] init];
+        _totalTimeLabel.textColor     = [UIColor whiteColor];
+        _totalTimeLabel.font          = [UIFont systemFontOfSize:12.0f];
+        _totalTimeLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _totalTimeLabel;
 }
