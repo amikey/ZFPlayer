@@ -40,7 +40,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.estimatedRowHeight = 379.0f;
-    
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"videoData" ofType:@"json"];
