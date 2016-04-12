@@ -176,8 +176,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self pause];
     // 移除原来的layer
     [self.playerLayer removeFromSuperlayer];
-    // 替换PlayerItem
+    // 替换PlayerItem为nil
     [self.player replaceCurrentItemWithPlayerItem:nil];
+    // 把player置为nil
+    self.player = nil;
     // 重置控制层View
     [self.controlView resetControlView];
     // 非重播时，移除当前playerView
@@ -194,8 +196,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.tableView     = nil;
         self.indexPath     = nil;
     }
-    // 每次都重新创建player
-    self.player = nil;
 }
 
 /**
@@ -354,10 +354,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)configZFPlayer {
     // 初始化playerItem
     self.playerItem  = [AVPlayerItem playerItemWithURL:self.videoURL];
-    // 解决替换PlayerItem阻塞线程问题
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
-    });
+    
+    // 每次都重新创建Player，替换replaceCurrentItemWithPlayerItem:，该方法阻塞线程
+    self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
+    
     // 初始化playerLayer
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     
@@ -1643,19 +1643,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 }
 
 #pragma mark - Getter
-
-/**
- *  懒加载Player
- *
- *  @return AVPlayer
- */
-- (AVPlayer *)player
-{
-    if (!_player) {
-        _player = [AVPlayer playerWithPlayerItem:self.playerItem];
-    }
-    return _player;
-}
 
 /**
  * 懒加载 控制层View
