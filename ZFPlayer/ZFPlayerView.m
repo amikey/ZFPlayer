@@ -146,20 +146,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
-    // 开始监听网络
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [GLobalRealReachability startNotifier];
-    });
 }
 
 - (void)dealloc
 {
-    //NSLog(@"%@释放了",self.class);
+    // NSLog(@"%@释放了",self.class);
     self.playerItem = nil;
     self.tableView = nil;
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 /**
@@ -167,6 +163,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)resetPlayer
 {
+    // 每次都重新创建player
+    self.player = nil;
     // 改为为播放完
     self.playDidEnd = NO;
     self.playerItem = nil;
@@ -219,11 +217,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
     // app进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayGround) name:UIApplicationDidBecomeActiveNotification object:nil];
-    // 网络监听
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(networkChanged:)
-                                                 name:kRealReachabilityChangedNotification
-                                               object:nil];
+    
     // slider开始滑动事件
     [self.controlView.videoSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     // slider滑动中事件
@@ -349,15 +343,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self addNotifications];
     // 根据屏幕的方向设置相关UI
     [self onDeviceOrientationChange];
-    
-    // 实时网络情况
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    if (status == RealStatusViaWWAN) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"当前为数据网络，是否继续播放?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alert.tag = 1000;
-        [alert show];
-        return;
-    }
+
     // 设置Player相关参数
     [self configZFPlayer];
 }
@@ -575,7 +561,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 NSLog(@"视频加载失败===%@",error.description);
                 self.controlView.horizontalLabel.hidden = NO;
                 self.controlView.horizontalLabel.text = @"视频加载失败";
-                
+
             }
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
             
@@ -1093,11 +1079,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)play
 {
-    // 从"数据网络"切换过来的，playerItem会变为nil，此时configZFPlayer
-    if (!self.playerItem) {
-        [self configZFPlayer];
-        return;
-    }
     [_player play];
 }
 
@@ -1106,15 +1087,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)pause
 {
-    // 实时网络情况
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    if (status == RealStatusViaWWAN) {
-        self.seekTime = (NSInteger)CMTimeGetSeconds([_player currentTime]);
-        [_player pause];
-        self.playerItem = nil;
-    }else {
-        [_player pause];
-    }
+     [_player pause];
 }
 
 /**
@@ -1225,26 +1198,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         [self play];
     }
 }
-
-/**
- *  网络状态发生变化
- */
-- (void)networkChanged:(NSNotification *)notification
-{
-    RealReachability *reachability = (RealReachability *)notification.object;
-    ReachabilityStatus status = [reachability currentReachabilityStatus];
-    
-    if (status == RealStatusNotReachable) {
-        [[[UIAlertView alloc] initWithTitle:@"提示" message:@"没有网络，请检查网络设置" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil , nil] show];
-        
-    } else if (status == RealStatusViaWWAN) {
-        [self pause];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"当前为数据网络，是否继续播放?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alert.tag = 1000;
-        [alert show];
-    }
-}
-
 
 #pragma mark - slider事件
 

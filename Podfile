@@ -5,7 +5,6 @@
 
 target 'Player' do
 pod 'Masonry'
-pod 'RealReachability'
 pod 'SDWebImage'
 end
 
