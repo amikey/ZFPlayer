@@ -163,8 +163,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)resetPlayer
 {
-    // 每次都重新创建player
-    self.player = nil;
     // 改为为播放完
     self.playDidEnd = NO;
     self.playerItem = nil;
@@ -196,6 +194,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.tableView     = nil;
         self.indexPath     = nil;
     }
+    // 每次都重新创建player
+    self.player = nil;
 }
 
 /**
