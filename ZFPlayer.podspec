@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'ZFPlayer'
-    s.version      = '1.0.7'
+    s.version      = '1.0.9'
     s.summary      = 'A good player made by renzifeng'
     s.homepage     = 'https://github.com/renzifeng/ZFPlayer'
     s.license      = 'MIT'
