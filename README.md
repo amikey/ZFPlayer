@@ -101,14 +101,18 @@ self.playerView.goBackBlock = ^{
 ### 参考资料：
 
 - [https://segmentfault.com/a/1190000004054258](https://segmentfault.com/a/1190000004054258)
-
 - [http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/](http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/)
 - [https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8](https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8)
 
-### ps：本人最近swift做的项目，朋友们给点建议吧：
+---
+
+### ps：本人最近swift做的项目，喜欢的朋友们看看吧：
 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
 
 ### 有技术问题也可以加我的iOS技术群，互相讨论，群号为：213376937
+
+---
+
 # 期待
 - 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我,或者微博联系我：[@任子丰](https://weibo.com/zifeng1300)
 - 如果觉得好用请Star!

@@ -59,22 +59,22 @@
     
     //if use Masonry,Please open this annotation
     /*
-     UIView *topView = [[UIView alloc] init];
-     topView.backgroundColor = [UIColor blackColor];
-     [self.view addSubview:topView];
-     [topView mas_updateConstraints:^(MASConstraintMaker *make) {
+    UIView *topView = [[UIView alloc] init];
+    topView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:topView];
+    [topView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.mas_offset(20);
-     }];
-
-     self.playerView = [ZFPlayerView alloc] init];
-     [self.view addSubview:self.playerView];
-     [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+    }];
+    
+    self.playerView = [[ZFPlayerView alloc] init];
+    [self.view addSubview:self.playerView];
+    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(20);
         make.left.right.equalTo(self.view);
         // 注意此处，宽高比16：9优先级比1000低就行，在因为iPhone 4S宽高比不是16：9
         make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
-     }];
+    }];
     */
 
     self.playerView.videoURL = self.videoURL;
