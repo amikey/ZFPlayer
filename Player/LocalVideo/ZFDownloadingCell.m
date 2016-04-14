@@ -34,6 +34,7 @@
     // Initialization code
     self.downloadBtn.clipsToBounds = true;
     [self.downloadBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.downloadBtn setTitle:@"🕘" forState:UIControlStateNormal];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -51,13 +52,13 @@
         //1.创建关键帧动画并设置动画属性
         CAKeyframeAnimation *keyframeAnimation=[CAKeyframeAnimation animationWithKeyPath:@"position"];
         
-        //2.设置关键帧,这里有四个关键帧
+        //2.设置关键帧
         NSValue *key1 = [NSValue valueWithCGPoint:CGPointMake(self.downloadBtn.center.x, self.downloadBtn.frame.origin.y)];//对于关键帧动画初始值不能省略
         NSValue *key2 = [NSValue valueWithCGPoint:CGPointMake(self.downloadBtn.center.x, self.downloadBtn.frame.size.height+self.downloadBtn.frame.origin.y)];
         NSArray *values = @[key1,key2];
         keyframeAnimation.values = values;
         //设置其他属性
-        keyframeAnimation.duration = 1;
+        keyframeAnimation.duration = 1.2;
         keyframeAnimation.repeatCount = MAXFLOAT;
         
         //3.添加动画到图层，添加动画后就会执行动画
@@ -70,7 +71,7 @@
  *  移除下载button的动画
  */
 - (void)removeDownloadAnimtion {
-    _hasDownloadAnimation = NO;
+    self.hasDownloadAnimation = NO;
     [self.downloadBtn.layer removeAnimationForKey:@"downloadBtn"];
     [self.downloadBtn setTitle:@"🕘" forState:UIControlStateNormal];
 }

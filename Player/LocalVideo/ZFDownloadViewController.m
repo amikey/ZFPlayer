@@ -30,7 +30,7 @@
 @interface ZFDownloadViewController ()<ZFDownloadDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic  ) IBOutlet UITableView    *tableView;
-@property (nonatomic, strong) NSMutableArray *downloadObjectArr;
+@property (atomic, strong) NSMutableArray *downloadObjectArr;
 @end
 
 @implementation ZFDownloadViewController
@@ -53,28 +53,21 @@
 
 - (void)initData
 {
-    self.downloadObjectArr = nil;
-    [self.tableView reloadData];
-}
-
-- (NSMutableArray *)downloadObjectArr
-{
-    if (!_downloadObjectArr) {
-        NSMutableArray *downloads = [[ZFDownloadManager sharedInstance] getSessionModels].mutableCopy;
-        NSMutableArray *downladed = @[].mutableCopy;
-        NSMutableArray *downloading = @[].mutableCopy;
-        for (ZFSessionModel *obj in downloads) {
-            if ([[ZFDownloadManager sharedInstance] isCompletion:obj.url]) {
-                [downladed addObject:obj];
-            }else {
-                [downloading addObject:obj];
-            }
+    NSMutableArray *downloads = [[ZFDownloadManager sharedInstance] getSessionModels].mutableCopy;
+    NSMutableArray *downladed = @[].mutableCopy;
+    NSMutableArray *downloading = @[].mutableCopy;
+    for (ZFSessionModel *obj in downloads) {
+        if ([[ZFDownloadManager sharedInstance] isCompletion:obj.url]) {
+            [downladed addObject:obj];
+        }else {
+            [downloading addObject:obj];
         }
-        _downloadObjectArr = @[].mutableCopy;
-        [_downloadObjectArr addObject:downladed];
-        [_downloadObjectArr addObject:downloading];
     }
-    return _downloadObjectArr;
+    _downloadObjectArr = @[].mutableCopy;
+    [_downloadObjectArr addObject:downladed];
+    [_downloadObjectArr addObject:downloading];
+
+    [self.tableView reloadData];
 }
 
 #pragma mark - ZFDownloadDelegate
@@ -89,7 +82,7 @@
                 // 取到当前下载model在数组的位置，来确定cell的具体位置
                 NSInteger index = [downloadings indexOfObject:model];
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:1];
-                __weak ZFDownloadingCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                __block ZFDownloadingCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
                 __weak typeof(self) weakSelf = self;
                 sessionModel.progressBlock = ^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
                     dispatch_async(dispatch_get_main_queue(), ^{
