@@ -89,6 +89,10 @@ self.playerView.goBackBlock = ^{
  self.playerView.seekTime = 15;
  ```
  
+### 已知bug：
+
+1. 下载视频有一定的崩溃率，目前还没有找到原因，大家一块帮忙解决一下呀，谢谢！
+
 ### 图片效果演示
 
 ![图片效果演示](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)
