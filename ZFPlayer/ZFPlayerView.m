@@ -582,7 +582,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         } else if ([keyPath isEqualToString:@"playbackLikelyToKeepUp"]) {
             
             // 当缓冲好的时候
-            if (self.playerItem.playbackLikelyToKeepUp){
+            if (self.playerItem.playbackLikelyToKeepUp && self.state == ZFPlayerStateBuffering){
                 self.state = ZFPlayerStatePlaying;
             }
             
