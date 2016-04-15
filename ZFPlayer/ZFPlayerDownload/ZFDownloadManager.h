@@ -25,7 +25,7 @@
 #import "ZFSessionModel.h"
 
 // 缓存主目录
-#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFCache"]
+#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFCache"]
 
 // 保存文件名
 #define ZFFileName(url)  [[url componentsSeparatedByString:@"/"] lastObject]
