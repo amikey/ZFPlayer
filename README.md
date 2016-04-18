@@ -20,7 +20,7 @@
 * Breakpoint Download 
 
 ## Language
-[中文](https://github.com/renzifeng/ZFPlayer/raw/master/README.zh.md)
+[中文](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
 
 ## Installation
 
