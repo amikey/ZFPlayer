@@ -15,7 +15,7 @@
 * Support local video, network video playback
 * Support in TableviewCell playing video
 * The left 1/2 position on the sliding screen brightness adjustment (simulator can't adjust brightness, please in the real machine debugging)
-* Right 1/2 position on the slide to adjust the volume (simulator can't adjust the volume, please in the real machine debugging)
+* The right 1/2 position on the sliding screen volume adjustment (simulator can't adjust the volume, please in the real machine debugging)
 * Left and right sliding adjustment play schedule
 * Breakpoint Download 
 
@@ -114,10 +114,10 @@ self.playerView.goBackBlock = ^{
 
 ---
 
-### ps：I recently swift to do the project, like friends to see it：
-[知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
+#### ps：I recently swift to do the project, like friends to see it：
+[ZFZhiHuDaily](https://github.com/renzifeng/ZFZhiHuDaily)
 
-### There are technical problems can also add my iOS technology group, mutual discussion, group number is：213376937
+#### There are technical problems can also add my iOS technology group, mutual discussion, group number is：213376937
 
 ---
 

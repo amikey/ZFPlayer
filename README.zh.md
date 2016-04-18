@@ -110,10 +110,10 @@ self.playerView.goBackBlock = ^{
 
 ---
 
-### ps：本人最近swift做的项目，喜欢的朋友们看看吧：
+#### ps：本人最近swift做的项目，喜欢的朋友们看看吧：
 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
 
-### 有技术问题也可以加我的iOS技术群，互相讨论，群号为：213376937
+#### 有技术问题也可以加我的iOS技术群，互相讨论，群号为：213376937
 
 ---
 
