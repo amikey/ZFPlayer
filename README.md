@@ -10,16 +10,19 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
-## 功能
-* 支持横、竖屏切换，在全屏播放模式下还可以锁定屏幕方向
-* 支持本地视频、网络视频播放
-* 支持在TableviewCell播放视频
-* 左侧1/2位置上下滑动调节屏幕亮度（模拟器调不了亮度，请在真机调试）
-* 右侧1/2位置上下滑动调节音量（模拟器调不了音量，请在真机调试）
-* 左右滑动调节播放进度
-* 断点下载功能
+## Features
+* Support for horizontal and vertical screen switch, in full screen playback mode can also lock the screen direction
+* Support local video, network video playback
+* Support in TableviewCell playing video
+* The left 1/2 position on the sliding screen brightness adjustment (simulator can't adjust brightness, please in the real machine debugging)
+* Right 1/2 position on the slide to adjust the volume (simulator can't adjust the volume, please in the real machine debugging)
+* Left and right sliding adjustment play schedule
+* Breakpoint Download 
 
-## 安装
+## Language
+[中文](https://github.com/renzifeng/raw/master/README.zh.md)
+
+## Installation
 
 ### CocoaPods    
 
@@ -33,18 +36,18 @@ Then, run the following command:
 $ pod install
 ```
 
-#### 下载运行Demo报错的,请确认安装cocopods环境,pod install,然后打开“Player.xcworkspace”
+#### Download and run Demo error, please confirm the installation of cocopods environment, install pod, and then open the "Player.xcworkspace"
 
-## 使用 （支持IB和代码）
-##### 设置状态栏颜色
-请在info.plist中增加"View controller-based status bar appearance"字段，并改为NO
+## Usage （Support IB and code）
+##### Set status bar color
+Please add the "View controller-based status bar appearance" field in info.plist and change it to NO
 
-##### IB用法
-直接拖UIView到IB上，宽高比为约束为16：9(优先级改为750，比1000低就行)，代码部分只需要实现
+##### IB usage
+Direct drag IB to UIView, the aspect ratio for the 16:9 constraint (priority to 750, lower than the 1000 line), the code section only needs to achieve
 
 ```objc
 self.playerView.videoURL = self.videoURL;
-// 返回按钮事件
+// Return button event
 __weak typeof(self) weakSelf = self;
 self.playerView.goBackBlock = ^{
 	[weakSelf.navigationController popViewControllerAnimated:YES];
@@ -52,7 +55,7 @@ self.playerView.goBackBlock = ^{
 
 ```
 
-##### 代码实现（Masonry）用法
+##### Code implementation (Masonry) usage
 
 ```objc
 self.playerView = [[ZFPlayerView alloc] init];
@@ -60,49 +63,50 @@ self.playerView = [[ZFPlayerView alloc] init];
 [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
  	make.top.equalTo(self.view).offset(20);
  	make.left.right.equalTo(self.view);
-	// 注意此处，宽高比16：9优先级比1000低就行，在因为iPhone 4S宽高比不是16：9
-	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+	// Note here, the aspect ratio 16:9 priority is lower than 1000 on the line, because the 4S iPhone aspect ratio is not 16:9
+    make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
 }];
 self.playerView.videoURL = self.videoURL;
-// 返回按钮事件
+// Return button event
 __weak typeof(self) weakSelf = self;
 self.playerView.goBackBlock = ^{
 	[weakSelf.navigationController popViewControllerAnimated:YES];
 };
 ```
 
-##### 设置视频的填充模式（可选设置）
+##### Set the fill mode for the video (optional)
 
 ```objc
- // （可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
+ // (optional settings) you can set the fill mode of the video, the default settings (ZFPlayerLayerGravityResizeAspect: wait for a proportional fill, until a dimension reaches the area boundary).
  self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
 ```
-##### 是否有断点下载功能（可选设置）
+##### Is there a breakpoint download function (optional)
 ```objc
- // 默认是关闭断点下载功能，如需要此功能设置这里
+ // Default is to close the breakpoint download function, such as the need for this feature set here
  self.playerView.hasDownload = YES;
 ```
 
-##### 从xx秒开始播放视频（可选设置）
+##### Play video from XX seconds (optional)
+
  ```objc
- // 如果想从xx秒开始播放视频
+ // Play video from XX seconds
  self.playerView.seekTime = 15;
  ```
  
-### 已知bug：
+### Known bug：
 
-1. 下载视频有一定的崩溃率，目前还没有找到原因，大家一块帮忙解决一下呀，谢谢！
+1. Download video has a certain crash rate, there is still no reason to find the reason, we have a help to solve it, thank you!
 
-### 图片效果演示
+### Picture effect demonstration
 
-![图片效果演示](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)
+![Picture effect](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)
 
-![声音调节演示](https://github.com/renzifeng/ZFPlayer/raw/master/volume.png)
+![Sound adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/volume.png)
 
-![亮度调节演示](https://github.com/renzifeng/ZFPlayer/raw/master/brightness.png)
+![Brightness adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/brightness.png)
 
 
-### 参考资料：
+### reference material：
 
 - [https://segmentfault.com/a/1190000004054258](https://segmentfault.com/a/1190000004054258)
 - [http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/](http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/)
@@ -110,13 +114,13 @@ self.playerView.goBackBlock = ^{
 
 ---
 
-### ps：本人最近swift做的项目，喜欢的朋友们看看吧：
+### ps：I recently swift to do the project, like friends to see it：
 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
 
-### 有技术问题也可以加我的iOS技术群，互相讨论，群号为：213376937
+### There are technical problems can also add my iOS technology group, mutual discussion, group number is：213376937
 
 ---
 
-# 期待
-- 如果在使用过程中遇到BUG，或发现功能不够用，希望你能Issues我,或者微博联系我：[@任子丰](https://weibo.com/zifeng1300)
-- 如果觉得好用请Star!
+# Contact me
+- Weibo:[@任子丰](https://weibo.com/zifeng1300)
+- Email:zifeng1300@gmail.com
