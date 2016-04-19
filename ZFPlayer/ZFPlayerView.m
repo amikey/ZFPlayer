@@ -405,9 +405,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)createGesture
 {
+    //单击
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
     
     [self addGestureRecognizer:tap];
+    
+    //双击(播放/暂停)
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapAction:)];
+    [doubleTap setNumberOfTapsRequired:2];
+    [self addGestureRecognizer:doubleTap];
+
+    [tap requireGestureRecognizerToFail:doubleTap];
 }
 
 /**
@@ -1051,6 +1059,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
     }
 }
+
+/**
+ *  双击播放/暂停
+ *
+ *  @param gesture UITapGestureRecognizer
+ */
+- (void)doubleTapAction:(UITapGestureRecognizer *)gesture
+{
+    [self startAction:self.controlView.startBtn];
+}
+
 
 /**
  *  播放、暂停按钮事件
