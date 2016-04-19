@@ -1067,6 +1067,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)doubleTapAction:(UITapGestureRecognizer *)gesture
 {
+    // 显示控制层
+    [self animateShow];
     [self startAction:self.controlView.startBtn];
 }
 
