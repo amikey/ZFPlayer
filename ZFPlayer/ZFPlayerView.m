@@ -269,19 +269,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
     
-    // 屏幕方向一发生变化就会调用这里
     [UIApplication sharedApplication].statusBarHidden = NO;
-    self.isMaskShowing = NO;
-    // 延迟隐藏controlView
-    [self animateShow];
     
-    // 解决4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
-    if (iPhone4s && !self.isCellVideo) {
-        [self mas_updateConstraints:^(MASConstraintMaker *make) {
-            CGFloat width = [UIScreen mainScreen].bounds.size.width;
-            make.height.mas_equalTo(width*320/480);
-        }];
-    }
     // fix iOS7 crash bug
     [self layoutIfNeeded];
 }
@@ -326,6 +315,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setVideoURL:(NSURL *)videoURL
 {
     _videoURL = videoURL;
+    
+//    // 解决4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
+//    if (iPhone4s && !self.isCellVideo) {
+//        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(self.mas_width).multipliedBy(2/3);
+//        }];
+//    }
+    
     // 如果已经下载过这个video了，那么直接播放本地视频
     if ([[ZFDownloadManager sharedInstance] isCompletion:videoURL.absoluteString]) {
         videoURL = [NSURL fileURLWithPath:ZFFileFullpath(videoURL.absoluteString)];
@@ -831,7 +828,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  屏幕方向发生变化会调用这里
  */
-- (void)onDeviceOrientationChange {
+- (void)onDeviceOrientationChange
+{
+    // 解决4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
+    if (iPhone4s && !self.isCellVideo ) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(ScreenWidth*2/3);
+        }];
+    }
     if (self.isLocked) {
         self.isFullScreen = YES;
         return;
@@ -926,7 +930,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.isFullScreen = NO;
         return;
     }
-
+    
+    // 只要屏幕旋转就显示控制层
+    self.isMaskShowing = NO;
+    // 延迟隐藏controlView
+    [self animateShow];
 }
 
 /**
