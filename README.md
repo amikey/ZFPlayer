@@ -19,6 +19,11 @@
 * Left and right sliding adjustment play schedule
 * Breakpoint Download 
 
+## Requirements
+
+- iOS8+
+- Xcode 6.0
+
 ## Language
 [中文](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
 

@@ -155,7 +155,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.tableView = nil;
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
 }
 
 /**
@@ -212,7 +211,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  添加观察者、通知
  */
-- (void)addNotifications {
+- (void)addNotifications
+{
     // app退到后台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
     // app进入前台
@@ -250,16 +250,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  监听设备旋转通知
  */
-- (void)listeningRotating{
-    
+- (void)listeningRotating
+{
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onDeviceOrientationChange)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil
-     ];
-    
+    ];
 }
 
 #pragma mark - layoutSubviews
@@ -271,6 +269,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     [UIApplication sharedApplication].statusBarHidden = NO;
     
+    // 只要屏幕旋转就显示控制层
+    self.isMaskShowing = NO;
+    // 延迟隐藏controlView
+    [self animateShow];
+    
+    // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
+    if (iPhone4s && !self.isCellVideo) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_offset(ScreenWidth*2/3);
+        }];
+    }
     // fix iOS7 crash bug
     [self layoutIfNeeded];
 }
@@ -315,13 +324,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setVideoURL:(NSURL *)videoURL
 {
     _videoURL = videoURL;
-    
-//    // 解决4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
-//    if (iPhone4s && !self.isCellVideo) {
-//        [self mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.height.equalTo(self.mas_width).multipliedBy(2/3);
-//        }];
-//    }
     
     // 如果已经下载过这个video了，那么直接播放本地视频
     if ([[ZFDownloadManager sharedInstance] isCompletion:videoURL.absoluteString]) {
@@ -402,12 +404,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)createGesture
 {
-    //单击
+    // 单击
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
-    
     [self addGestureRecognizer:tap];
     
-    //双击(播放/暂停)
+    // 双击(播放/暂停)
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapAction:)];
     [doubleTap setNumberOfTapsRequired:2];
     [self addGestureRecognizer:doubleTap];
@@ -453,12 +454,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     switch (routeChangeReason) {
             
         case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
-            NSLog(@"耳机插入");
+            // 耳机插入
             break;
             
         case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
         {
-            NSLog(@"耳机拔掉");
+            // 耳机拔掉
             // 拔掉耳机继续播放
             [self play];
         }
@@ -756,7 +757,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
      
      // 直接调用这个方法通不过apple上架审核
      [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
-     
      */
 }
 
@@ -830,12 +830,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)onDeviceOrientationChange
 {
-    // 解决4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
-    if (iPhone4s && !self.isCellVideo ) {
-        [self mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(ScreenWidth*2/3);
-        }];
-    }
     if (self.isLocked) {
         self.isFullScreen = YES;
         return;
@@ -930,11 +924,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.isFullScreen = NO;
         return;
     }
-    
-    // 只要屏幕旋转就显示控制层
-    self.isMaskShowing = NO;
-    // 延迟隐藏controlView
-    [self animateShow];
 }
 
 /**
@@ -1153,7 +1142,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  *
  *  @param sender sender
  */
-- (void)repeatPlay:(UIButton *)sender {
+- (void)repeatPlay:(UIButton *)sender
+{
     // 没有播放完
     self.playDidEnd                   = NO;
     // 重播改为NO
