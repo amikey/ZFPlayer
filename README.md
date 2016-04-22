@@ -18,11 +18,12 @@
 * The right 1/2 position on the sliding screen volume adjustment (simulator can't adjust the volume, please in the real machine debugging)
 * Left and right sliding adjustment play schedule
 * Breakpoint Download 
+* Toggle video resolution
 
 ## Requirements
 
-- iOS8+
-- Xcode 6.0
+- iOS 8+
+- Xcode 6.0+
 
 ## Language
 [中文](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
