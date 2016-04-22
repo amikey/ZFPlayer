@@ -43,8 +43,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 @property (nonatomic, assign) ZFPlayerLayerGravity playerLayerGravity;
 /** 是否有下载功能(默认是关闭) */
 @property (nonatomic, assign) BOOL                 hasDownload;
-/** <#注释#> */
-@property (nonatomic, assign) BOOL                 hasChageResolution;
+/** 切换分辨率传的字典(key:分辨率名称，value：分辨率url) */
+@property (nonatomic, strong) NSDictionary         *resolutionDic;
 /** 从xx秒开始播放视频跳转 */
 @property (nonatomic, assign) NSInteger            seekTime;
 

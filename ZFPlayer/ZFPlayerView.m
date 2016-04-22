@@ -1675,12 +1675,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.controlView.downLoadBtn.hidden = !hasDownload;
 }
 
-- (void)setHasChageResolution:(BOOL)hasChageResolution
+- (void)setResolutionDic:(NSDictionary *)resolutionDic
 {
-    _hasChageResolution  = hasChageResolution;
-    self.controlView.resolutionBtn.hidden = !hasChageResolution;
+    _resolutionDic = resolutionDic;
+    self.controlView.resolutionBtn.hidden = NO;
+    self.videoURLArray = [resolutionDic allValues];
+    self.controlView.resolutionArray = [resolutionDic allKeys];
 }
-
 #pragma mark - Getter
 
 /**

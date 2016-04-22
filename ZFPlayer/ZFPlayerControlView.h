@@ -59,6 +59,8 @@ typedef void(^ChangeResolutionBlock)(UIButton *button);
 @property (nonatomic, strong, readonly) UIButton                *resolutionBtn;
 /** 切换分辨率的block */
 @property (nonatomic, copy) ChangeResolutionBlock               resolutionBlock;
+/** 分辨率的名称 */
+@property (nonatomic, strong) NSArray                           *resolutionArray;
 
 /** 重置ControlView */
 - (void)resetControlView;

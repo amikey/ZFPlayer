@@ -84,12 +84,8 @@
         [self addSubview:self.repeatBtn];
         [self addSubview:self.horizontalLabel];
         
-        [self.topImageView addSubview:self.resolutionBtn];
-        [self addSubview:self.resolutionView];
-        
         // 添加子控件的约束
         [self makeSubViewsConstraints];
-        [self.resolutionBtn addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.activity stopAnimating];
         self.downLoadBtn.hidden     = YES;
         self.resolutionBtn.hidden   = YES;
@@ -117,32 +113,6 @@
         make.trailing.equalTo(self.topImageView.mas_trailing).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
-    
-    [self.resolutionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(40);
-        make.height.mas_equalTo(30);
-        make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
-        make.centerY.equalTo(self.backBtn.mas_centerY);
-    }];
-    
-    [self.resolutionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(40);
-        make.height.mas_equalTo(60);
-        make.leading.equalTo(self.resolutionBtn.mas_leading).offset(0);
-        make.top.equalTo(self.resolutionBtn.mas_bottom).offset(0);
-    }];
-    
-    NSArray *resolutionArray = @[@"高清",@"标清"];
-    for (int i = 0 ; i < 2; i++) {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.tag = 200+i;
-        [self.resolutionView addSubview:btn];
-        btn.titleLabel.font = [UIFont systemFontOfSize:14];
-        btn.frame = CGRectMake(0, 30*i, 40, 30);
-        [btn setTitle:resolutionArray[i] forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(changeResolution:) forControlEvents:UIControlEventTouchUpInside];
-    }
-
     
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.bottom.equalTo(self);
@@ -214,6 +184,7 @@
 - (void)resolutionAction:(UIButton *)sender
 {
     sender.selected = !sender.selected;
+    // 显示隐藏分辨率View
     self.resolutionView.hidden = !sender.isSelected;
 }
 
@@ -222,6 +193,8 @@
  */
 - (void)changeResolution:(UIButton *)sender
 {
+    // 分辨率Btn改为normal状态
+    self.resolutionBtn.selected = NO;
     // topImageView上的按钮的文字
     [self.resolutionBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
     if (self.resolutionBlock) {
@@ -249,7 +222,6 @@
     self.topImageView.alpha    = 1;
     self.bottomImageView.alpha = 1;
     self.lockBtn.alpha         = 1;
-    self.resolutionView.alpha  = 1;
 }
 
 - (void)hideControlView
@@ -257,11 +229,47 @@
     self.topImageView.alpha    = 0;
     self.bottomImageView.alpha = 0;
     self.lockBtn.alpha         = 0;
-    self.resolutionView.alpha  = 0;
+    // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
     [self resolutionAction:self.resolutionBtn];
 }
 
+#pragma mark - setter
+
+- (void)setResolutionArray:(NSArray *)resolutionArray
+{
+    _resolutionArray = resolutionArray;
+    // 添加分辨率按钮和分辨率下拉列表
+    [self.topImageView addSubview:self.resolutionBtn];
+    [self addSubview:self.resolutionView];
+    // 分辨率btn点击
+    [self.resolutionBtn addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
+    // 添加约束
+    [self.resolutionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(30);
+        make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
+        make.centerY.equalTo(self.backBtn.mas_centerY);
+    }];
+    
+    [self.resolutionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(30*resolutionArray.count);
+        make.leading.equalTo(self.resolutionBtn.mas_leading).offset(0);
+        make.top.equalTo(self.resolutionBtn.mas_bottom).offset(0);
+    }];
+    // 分辨率View上边的Btn
+    for (int i = 0 ; i < resolutionArray.count; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.tag = 200+i;
+        [self.resolutionView addSubview:btn];
+        btn.titleLabel.font = [UIFont systemFontOfSize:14];
+        btn.frame = CGRectMake(0, 30*i, 40, 30);
+        [btn setTitle:resolutionArray[i] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(changeResolution:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+}
 #pragma mark - getter
 
 - (UIButton *)backBtn
