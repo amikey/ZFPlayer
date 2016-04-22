@@ -97,6 +97,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                isCellVideo;
 /** 是否缩小视频在底部 */
 @property (nonatomic, assign) BOOL                isBottomVideo;
+/** 是否切换分辨率*/
+@property (nonatomic, assign) BOOL                isChangeResolution;
 
 @end
 
@@ -179,8 +181,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.player replaceCurrentItemWithPlayerItem:nil];
     // 把player置为nil
     self.player = nil;
-    // 重置控制层View
-    [self.controlView resetControlView];
+    if (self.isChangeResolution) {
+        // 切换分辨率
+        [self.controlView resetControlViewForResolution];
+        self.isChangeResolution = NO;
+    }else {
+        // 重置控制层View
+        [self.controlView resetControlView];
+    }
     // 非重播时，移除当前playerView
     if (!self.repeatToPlay) {
         [self removeFromSuperview];
@@ -254,6 +262,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         if ([videoURL isEqual:weakSelf.videoURL]) {
             return ;
         }
+        weakSelf.isChangeResolution = YES;
         // reset player
         [weakSelf resetToPlayNewURL];
         weakSelf.videoURL = videoURL;

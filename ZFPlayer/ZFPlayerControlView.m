@@ -229,6 +229,14 @@
     self.backgroundColor        = [UIColor clearColor];
 }
 
+- (void)resetControlViewForResolution
+{
+    self.horizontalLabel.hidden = YES;
+    self.repeatBtn.hidden       = YES;
+    self.resolutionView.hidden  = YES;
+    self.backgroundColor        = [UIColor clearColor];
+}
+
 - (void)showControlView
 {
     self.topImageView.alpha    = 1;

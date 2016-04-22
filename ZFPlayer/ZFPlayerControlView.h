@@ -64,6 +64,8 @@ typedef void(^ChangeResolutionBlock)(UIButton *button);
 
 /** 重置ControlView */
 - (void)resetControlView;
+/** 切换分辨率时候调用此方法*/
+- (void)resetControlViewForResolution;
 /** 显示top、bottom、lockBtn*/
 - (void)showControlView;
 /** 隐藏top、bottom、lockBtn*/
