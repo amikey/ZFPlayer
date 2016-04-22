@@ -84,8 +84,12 @@
         [self addSubview:self.repeatBtn];
         [self addSubview:self.horizontalLabel];
         
+        [self.topImageView addSubview:self.resolutionBtn];
+        
         // 添加子控件的约束
         [self makeSubViewsConstraints];
+        // 分辨率btn点击
+        [self.resolutionBtn addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.activity stopAnimating];
         self.downLoadBtn.hidden     = YES;
         self.resolutionBtn.hidden   = YES;
@@ -113,7 +117,13 @@
         make.trailing.equalTo(self.topImageView.mas_trailing).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
-    
+
+    [self.resolutionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(30);
+        make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
+        make.centerY.equalTo(self.backBtn.mas_centerY);
+    }];
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.bottom.equalTo(self);
         make.height.mas_equalTo(50);
@@ -193,6 +203,8 @@
  */
 - (void)changeResolution:(UIButton *)sender
 {
+    // 隐藏分辨率View
+    self.resolutionView.hidden  = YES;
     // 分辨率Btn改为normal状态
     self.resolutionBtn.selected = NO;
     // topImageView上的按钮的文字
@@ -240,17 +252,10 @@
 {
     _resolutionArray = resolutionArray;
     // 添加分辨率按钮和分辨率下拉列表
-    [self.topImageView addSubview:self.resolutionBtn];
+    self.resolutionView = [[UIView alloc] init];
+    self.resolutionView.hidden = YES;
+    self.resolutionView.backgroundColor = RGBA(0, 0, 0, 0.7);
     [self addSubview:self.resolutionView];
-    // 分辨率btn点击
-    [self.resolutionBtn addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
-    // 添加约束
-    [self.resolutionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(40);
-        make.height.mas_equalTo(30);
-        make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
-        make.centerY.equalTo(self.backBtn.mas_centerY);
-    }];
     
     [self.resolutionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(40);
@@ -424,15 +429,6 @@
         [_resolutionBtn setTitle:@"高清" forState:UIControlStateNormal];
     }
     return _resolutionBtn;
-}
-
-- (UIView *)resolutionView
-{
-    if (!_resolutionView) {
-        _resolutionView = [[UIView alloc] init];
-        _resolutionView.backgroundColor = RGBA(0, 0, 0, 0.7);
-    }
-    return _resolutionView;
 }
 
 @end

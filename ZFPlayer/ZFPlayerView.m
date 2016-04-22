@@ -249,10 +249,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         // 记录切换分辨率的时刻
         NSInteger currentTime = (NSInteger)CMTimeGetSeconds([weakSelf.player currentTime]);
 
+        NSString *videoStr = weakSelf.videoURLArray[button.tag-200];
+        NSURL *videoURL = [NSURL URLWithString:videoStr];
+        if ([videoURL isEqual:weakSelf.videoURL]) {
+            return ;
+        }
         // reset player
         [weakSelf resetToPlayNewURL];
-        NSString *videoStr = weakSelf.videoURLArray[button.tag-200];
-        weakSelf.videoURL = [NSURL URLWithString:videoStr];
+        weakSelf.videoURL = videoURL;
         // 从xx秒播放
         weakSelf.seekTime = currentTime;
     
