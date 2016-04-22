@@ -243,6 +243,20 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.controlView.repeatBtn addTarget:self action:@selector(repeatPlay:) forControlEvents:UIControlEventTouchUpInside];
     // 下载
     [self.controlView.downLoadBtn addTarget:self action:@selector(downloadVideo:) forControlEvents:UIControlEventTouchUpInside];
+    __weak typeof(self) weakSelf = self;
+    // 切换分辨率
+    self.controlView.resolutionBlock = ^(UIButton *button) {
+        // 记录切换分辨率的时刻
+        NSInteger currentTime = (NSInteger)CMTimeGetSeconds([weakSelf.player currentTime]);
+
+        // reset player
+        [weakSelf resetToPlayNewURL];
+        NSString *videoStr = weakSelf.videoURLArray[button.tag-200];
+        weakSelf.videoURL = [NSURL URLWithString:videoStr];
+        // 从xx秒播放
+        weakSelf.seekTime = currentTime;
+    
+    };
     // 监测设备方向
     [self listeningRotating];
 }
@@ -1659,6 +1673,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     _hasDownload = hasDownload;
     self.controlView.downLoadBtn.hidden = !hasDownload;
+}
+
+- (void)setHasChageResolution:(BOOL)hasChageResolution
+{
+    _hasChageResolution  = hasChageResolution;
+    self.controlView.resolutionBtn.hidden = !hasChageResolution;
 }
 
 #pragma mark - Getter

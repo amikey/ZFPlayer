@@ -23,6 +23,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ChangeResolutionBlock)(UIButton *button);
+
 @interface ZFPlayerControlView : UIView
 
 /** 开始播放按钮 */
@@ -53,6 +55,10 @@
 @property (nonatomic, strong, readonly) UIImageView             *topImageView;
 /** 缓存按钮 */
 @property (nonatomic, strong, readonly) UIButton                *downLoadBtn;
+/** 切换分辨率按钮 */
+@property (nonatomic, strong, readonly) UIButton                *resolutionBtn;
+/** 切换分辨率的block */
+@property (nonatomic, copy) ChangeResolutionBlock               resolutionBlock;
 
 /** 重置ControlView */
 - (void)resetControlView;

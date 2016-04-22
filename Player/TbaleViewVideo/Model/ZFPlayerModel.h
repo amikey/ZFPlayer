@@ -22,18 +22,21 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import "ZFPlyerResolution.h"
 
 @interface ZFPlayerModel : NSObject
 
 /** 标题 */
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy  ) NSString *title;
 /** 描述 */
-@property (nonatomic, copy) NSString *video_description;
+@property (nonatomic, copy  ) NSString *video_description;
 /** 视频地址 */
-@property (nonatomic, copy) NSString *playUrl;
+@property (nonatomic, copy  ) NSString *playUrl;
 /** 封面图 */
-@property (nonatomic, copy) NSString *coverForFeed;
-/** 时间戳 */
-@property (nonatomic, assign) long   date;
+@property (nonatomic, copy  ) NSString *coverForFeed;
+///** 时间戳 */
+//@property (nonatomic, assign) long     date;
+/** 视频分辨率的数组 */
+@property (nonatomic, strong) NSMutableArray<ZFPlyerResolution *>  *playInfo;
 
 @end

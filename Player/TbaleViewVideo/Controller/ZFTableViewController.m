@@ -24,6 +24,7 @@
 #import "ZFTableViewController.h"
 #import "ZFPlayerCell.h"
 #import "ZFPlayerModel.h"
+#import "ZFPlyerResolution.h"
 #import <Masonry/Masonry.h>
 
 @interface ZFTableViewController ()
@@ -103,13 +104,20 @@
     cell.playBlock = ^(UIButton *btn){
         weakSelf.playerView = [ZFPlayerView sharedPlayerView];
         NSURL *videoURL     = [NSURL URLWithString:model.playUrl];
+        
+        NSMutableArray *array = @[].mutableCopy;
+        for (ZFPlyerResolution * resolution in model.playInfo) {
+            [array addObject:resolution.url];
+        }
+        weakSelf.playerView.videoURLArray = array;
         // 设置player相关参数(需要设置imageView的tag值，此处设置的为101)
         [weakSelf.playerView setVideoURL:videoURL
                            withTableView:weakSelf.tableView
                              AtIndexPath:weakIndexPath
                         withImageViewTag:101];
         [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
-        
+        // 分辨率切换
+        weakSelf.playerView.hasChageResolution = YES;
         //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
         weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
 

@@ -53,6 +53,10 @@
 @property (nonatomic, strong) UIImageView             *topImageView;
 /** 缓存按钮 */
 @property (nonatomic, strong) UIButton                *downLoadBtn;
+/** 切换分辨率按钮 */
+@property (nonatomic, strong) UIButton                *resolutionBtn;
+/** 分辨率的View */
+@property (nonatomic, strong) UIView                  *resolutionView;
 
 @end
 
@@ -79,13 +83,16 @@
         [self addSubview:self.activity];
         [self addSubview:self.repeatBtn];
         [self addSubview:self.horizontalLabel];
+        
+        [self.topImageView addSubview:self.resolutionBtn];
+        [self addSubview:self.resolutionView];
+        
         // 添加子控件的约束
         [self makeSubViewsConstraints];
-        
+        [self.resolutionBtn addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.activity stopAnimating];
-        self.horizontalLabel.hidden = YES;
-        self.repeatBtn.hidden       = YES;
         self.downLoadBtn.hidden     = YES;
+        self.resolutionBtn.hidden   = YES;
         // 初始化时重置controlView
         [self resetControlView];
     }
@@ -110,6 +117,32 @@
         make.trailing.equalTo(self.topImageView.mas_trailing).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
+    
+    [self.resolutionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(30);
+        make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
+        make.centerY.equalTo(self.backBtn.mas_centerY);
+    }];
+    
+    [self.resolutionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(60);
+        make.leading.equalTo(self.resolutionBtn.mas_leading).offset(0);
+        make.top.equalTo(self.resolutionBtn.mas_bottom).offset(0);
+    }];
+    
+    NSArray *resolutionArray = @[@"高清",@"标清"];
+    for (int i = 0 ; i < 2; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.tag = 200+i;
+        [self.resolutionView addSubview:btn];
+        btn.titleLabel.font = [UIFont systemFontOfSize:14];
+        btn.frame = CGRectMake(0, 30*i, 40, 30);
+        [btn setTitle:resolutionArray[i] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(changeResolution:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
     
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.bottom.equalTo(self);
@@ -173,6 +206,28 @@
     }];
 }
 
+#pragma mark - Action
+
+/**
+ *  点击topImageView上的按钮
+ */
+- (void)resolutionAction:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    self.resolutionView.hidden = !sender.isSelected;
+}
+
+/**
+ *  点击切换分别率按钮
+ */
+- (void)changeResolution:(UIButton *)sender
+{
+    // topImageView上的按钮的文字
+    [self.resolutionBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
+    if (self.resolutionBlock) {
+        self.resolutionBlock(sender);
+    }
+}
 
 #pragma mark - Public Method
 
@@ -185,6 +240,7 @@
     self.totalTimeLabel.text    = @"00:00";
     self.horizontalLabel.hidden = YES;
     self.repeatBtn.hidden       = YES;
+    self.resolutionView.hidden  = YES;
     self.backgroundColor        = [UIColor clearColor];
 }
 
@@ -193,6 +249,7 @@
     self.topImageView.alpha    = 1;
     self.bottomImageView.alpha = 1;
     self.lockBtn.alpha         = 1;
+    self.resolutionView.alpha  = 1;
 }
 
 - (void)hideControlView
@@ -200,6 +257,9 @@
     self.topImageView.alpha    = 0;
     self.bottomImageView.alpha = 0;
     self.lockBtn.alpha         = 0;
+    self.resolutionView.alpha  = 0;
+    self.resolutionBtn.selected = YES;
+    [self resolutionAction:self.resolutionBtn];
 }
 
 #pragma mark - getter
@@ -345,6 +405,26 @@
         [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"player_not_downLoad")] forState:UIControlStateDisabled];
     }
     return _downLoadBtn;
+}
+
+- (UIButton *)resolutionBtn
+{
+    if (!_resolutionBtn) {
+        _resolutionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _resolutionBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        _resolutionBtn.backgroundColor = RGBA(0, 0, 0, 0.7);
+        [_resolutionBtn setTitle:@"高清" forState:UIControlStateNormal];
+    }
+    return _resolutionBtn;
+}
+
+- (UIView *)resolutionView
+{
+    if (!_resolutionView) {
+        _resolutionView = [[UIView alloc] init];
+        _resolutionView.backgroundColor = RGBA(0, 0, 0, 0.7);
+    }
+    return _resolutionView;
 }
 
 @end
