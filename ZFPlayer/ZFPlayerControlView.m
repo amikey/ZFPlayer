@@ -251,6 +251,7 @@
 - (void)setResolutionArray:(NSArray *)resolutionArray
 {
     _resolutionArray = resolutionArray;
+    [_resolutionBtn setTitle:resolutionArray.firstObject forState:UIControlStateNormal];
     // 添加分辨率按钮和分辨率下拉列表
     self.resolutionView = [[UIView alloc] init];
     self.resolutionView.hidden = YES;
@@ -426,7 +427,6 @@
         _resolutionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _resolutionBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         _resolutionBtn.backgroundColor = RGBA(0, 0, 0, 0.7);
-        [_resolutionBtn setTitle:@"高清" forState:UIControlStateNormal];
     }
     return _resolutionBtn;
 }

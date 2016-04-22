@@ -103,7 +103,13 @@
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
         weakSelf.playerView = [ZFPlayerView sharedPlayerView];
-        NSURL *videoURL     = [NSURL URLWithString:model.playUrl];
+        // 分辨率字典（key:分辨率名称，value：分辨率url)
+        NSMutableDictionary *dic = @{}.mutableCopy;
+        for (ZFPlyerResolution * resolution in model.playInfo) {
+            [dic setValue:resolution.url forKey:resolution.name];
+        }
+        // 取出字典中的第一视频URL
+        NSURL *videoURL = [NSURL URLWithString:dic.allValues.firstObject];
         
         // 设置player相关参数(需要设置imageView的tag值，此处设置的为101)
         [weakSelf.playerView setVideoURL:videoURL
@@ -113,12 +119,8 @@
         [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
         
         // 下载功能
-        weakSelf.playerView.hasDownload = YES;
-        // 分辨率字典（key:分辨率名称，value：分辨率url)
-        NSMutableDictionary *dic = @{}.mutableCopy;
-        for (ZFPlyerResolution * resolution in model.playInfo) {
-            [dic setValue:resolution.url forKey:resolution.name];
-        }
+        weakSelf.playerView.hasDownload   = YES;
+        // 赋值分辨率字典
         weakSelf.playerView.resolutionDic = dic;
         //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
         weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;

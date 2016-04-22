@@ -34,8 +34,6 @@
 @property (nonatomic, copy  ) NSString *playUrl;
 /** 封面图 */
 @property (nonatomic, copy  ) NSString *coverForFeed;
-///** 时间戳 */
-//@property (nonatomic, assign) long     date;
 /** 视频分辨率的数组 */
 @property (nonatomic, strong) NSMutableArray<ZFPlyerResolution *>  *playInfo;
 
