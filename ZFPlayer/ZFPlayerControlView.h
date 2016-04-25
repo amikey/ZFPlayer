@@ -24,6 +24,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^ChangeResolutionBlock)(UIButton *button);
+typedef void(^SliderTapBlock)(CGFloat value);
 
 @interface ZFPlayerControlView : UIView
 
@@ -58,9 +59,11 @@ typedef void(^ChangeResolutionBlock)(UIButton *button);
 /** 切换分辨率按钮 */
 @property (nonatomic, strong, readonly) UIButton                *resolutionBtn;
 /** 切换分辨率的block */
-@property (nonatomic, copy) ChangeResolutionBlock               resolutionBlock;
+@property (nonatomic, copy  ) ChangeResolutionBlock resolutionBlock;
 /** 分辨率的名称 */
-@property (nonatomic, strong) NSArray                           *resolutionArray;
+@property (nonatomic, strong) NSArray               *resolutionArray;
+/** slidertap事件Block */
+@property (nonatomic, copy  ) SliderTapBlock        tapBlock;
 
 /** 重置ControlView */
 - (void)resetControlView;

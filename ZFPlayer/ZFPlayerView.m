@@ -270,6 +270,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         weakSelf.seekTime = currentTime;
     
     };
+    // 点击slider快进
+    self.controlView.tapBlock = ^(CGFloat value) {
+        // 视频总时间长度
+        CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        //计算出拖动的当前秒数
+        NSInteger dragedSeconds = floorf(total * value);
+        [weakSelf seekToTime:dragedSeconds];
+    };
     // 监测设备方向
     [self listeningRotating];
 }

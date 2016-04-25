@@ -90,6 +90,9 @@
         [self makeSubViewsConstraints];
         // 分辨率btn点击
         [self.resolutionBtn addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
+        UITapGestureRecognizer *sliderTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSliderAction:)];
+        [self.videoSlider addGestureRecognizer:sliderTap];
+        
         [self.activity stopAnimating];
         self.downLoadBtn.hidden     = YES;
         self.resolutionBtn.hidden   = YES;
@@ -211,6 +214,21 @@
     [self.resolutionBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
     if (self.resolutionBlock) {
         self.resolutionBlock(sender);
+    }
+}
+
+/**
+ *  UISlider TapAction
+ */
+- (void)tapSliderAction:(UITapGestureRecognizer *)tap
+{
+    if ([tap.view isKindOfClass:[UISlider class]] && self.tapBlock) {
+        UISlider *slider = (UISlider *)tap.view;
+        CGPoint point = [tap locationInView:slider];
+        CGFloat length = slider.frame.size.width;
+        // 视频跳转的value
+        CGFloat tapValue = point.x / length;
+        self.tapBlock(tapValue);
     }
 }
 
