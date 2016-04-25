@@ -58,12 +58,12 @@ typedef void(^SliderTapBlock)(CGFloat value);
 @property (nonatomic, strong, readonly) UIButton                *downLoadBtn;
 /** 切换分辨率按钮 */
 @property (nonatomic, strong, readonly) UIButton                *resolutionBtn;
-/** 切换分辨率的block */
-@property (nonatomic, copy  ) ChangeResolutionBlock resolutionBlock;
 /** 分辨率的名称 */
-@property (nonatomic, strong) NSArray               *resolutionArray;
+@property (nonatomic, strong) NSArray                           *resolutionArray;
+/** 切换分辨率的block */
+@property (nonatomic, copy  ) ChangeResolutionBlock             resolutionBlock;
 /** slidertap事件Block */
-@property (nonatomic, copy  ) SliderTapBlock        tapBlock;
+@property (nonatomic, copy  ) SliderTapBlock                    tapBlock;
 
 /** 重置ControlView */
 - (void)resetControlView;

@@ -273,10 +273,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 点击slider快进
     self.controlView.tapBlock = ^(CGFloat value) {
         // 视频总时间长度
-        CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        CGFloat total           = (CGFloat)weakSelf.playerItem.duration.value / weakSelf.playerItem.duration.timescale;
         //计算出拖动的当前秒数
         NSInteger dragedSeconds = floorf(total * value);
         [weakSelf seekToTime:dragedSeconds];
+        
+        // 只要点击进度条就跳转播放
+        weakSelf.controlView.startBtn.selected = NO;
+        [weakSelf startAction:weakSelf.controlView.startBtn];
     };
     // 监测设备方向
     [self listeningRotating];
@@ -385,7 +389,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  设置Player相关参数
  */
-- (void)configZFPlayer {
+- (void)configZFPlayer
+{
     // 初始化playerItem
     self.playerItem  = [AVPlayerItem playerItemWithURL:self.videoURL];
     
@@ -429,7 +434,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.controlView.startBtn.selected = YES;
     self.isPauseByUser                 = NO;
     
-    //强制让系统调用layoutSubviews 两个方法必须同时写
+    // 强制让系统调用layoutSubviews 两个方法必须同时写
     [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
     [self layoutIfNeeded]; //加上此代码立刻刷新
 }
@@ -611,6 +616,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             CMTime duration             = self.playerItem.duration;
             CGFloat totalDuration       = CMTimeGetSeconds(duration);
             [self.controlView.progressView setProgress:timeInterval / totalDuration animated:NO];
+            
+            // 如果缓冲和当前slider的差值超过0.1,自动播放，解决弱网情况下不会自动播放问题
+            if (!self.isPauseByUser && self.controlView.progressView.progress-self.controlView.videoSlider.value > .1) {[self play];}
             
         } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
             
@@ -1009,9 +1017,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.state = ZFPlayerStateBuffering;
     // playbackBufferEmpty会反复进入，因此在bufferingOneSecond延时播放执行完之前再调用bufferingSomeSecond都忽略
     __block BOOL isBuffering = NO;
-    if (isBuffering) {
-        return;
-    }
+    if (isBuffering) return;
     isBuffering = YES;
     
     // 需要先暂停一小会之后再播放，否则网络状况不好的时候时间在走，声音播放不出来
@@ -1030,6 +1036,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         if (!self.playerItem.isPlaybackLikelyToKeepUp) {
             [self bufferingSomeSecond];
         }
+       
     });
 }
 
@@ -1040,7 +1047,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)playerTimerAction
 {
     if (_playerItem.duration.timescale != 0) {
-        self.controlView.videoSlider.maximumValue = 1;//音乐总共时长
         self.controlView.videoSlider.value        = CMTimeGetSeconds([_playerItem currentTime]) / (_playerItem.duration.value / _playerItem.duration.timescale);//当前进度
 
         //当前时长进度progress
@@ -1053,6 +1059,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
         self.controlView.currentTimeLabel.text    = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
         self.controlView.totalTimeLabel.text      = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
+        
+        
     }
 }
 

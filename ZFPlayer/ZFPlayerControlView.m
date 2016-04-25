@@ -127,6 +127,7 @@
         make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
+    
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.bottom.equalTo(self);
         make.height.mas_equalTo(50);
@@ -165,7 +166,8 @@
     [self.videoSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
         make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
-        make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-0.25);
+        make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-1);
+        make.height.mas_equalTo(30);
     }];
     
     [self.lockBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -380,7 +382,7 @@
         _videoSlider                       = [[UISlider alloc] init];
         // 设置slider
         [_videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"slider")] forState:UIControlStateNormal];
-
+        _videoSlider.maximumValue = 1;
         _videoSlider.minimumTrackTintColor = [UIColor whiteColor];
         _videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.6];
     }
