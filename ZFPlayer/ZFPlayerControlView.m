@@ -214,9 +214,7 @@
     self.resolutionBtn.selected = NO;
     // topImageView上的按钮的文字
     [self.resolutionBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
-    if (self.resolutionBlock) {
-        self.resolutionBlock(sender);
-    }
+    if (self.resolutionBlock) { self.resolutionBlock(sender); }
 }
 
 /**
