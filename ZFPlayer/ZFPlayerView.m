@@ -82,6 +82,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                repeatToPlay;
 /** 播放完了*/
 @property (nonatomic, assign) BOOL                playDidEnd;
+/** 进入后台*/
+@property (nonatomic, assign) BOOL                didEnterBackground;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -164,6 +166,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 改为为播放完
     self.playDidEnd = NO;
     self.playerItem = nil;
+    self.didEnterBackground = NO;
     // 视频跳转秒数置0
     self.seekTime = 0;
     // 移除通知
@@ -404,8 +407,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self autoFadeOutControlBar];
     
     // 计时器
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(playerTimerAction) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    [self createTimer];
 
     // 添加手势
     [self createGesture];
@@ -447,6 +449,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self addGestureRecognizer:doubleTap];
 
     [tap requireGestureRecognizerToFail:doubleTap];
+}
+
+/**
+ *  创建timer
+ */
+- (void)createTimer
+{
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(playerTimerAction) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 
 /**
@@ -522,6 +533,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)cancelAutoFadeOutControlBar
 {
+    [self.timer invalidate];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
@@ -611,7 +623,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             [self.controlView.progressView setProgress:timeInterval / totalDuration animated:NO];
             
             // 如果缓冲和当前slider的差值超过0.1,自动播放，解决弱网情况下不会自动播放问题
-            if (!self.isPauseByUser && self.controlView.progressView.progress-self.controlView.videoSlider.value > 0.05) { [self play]; }
+            if (!self.isPauseByUser && !self.didEnterBackground && (self.controlView.progressView.progress-self.controlView.videoSlider.value > 0.05)) { [self play]; }
             
         } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
             
@@ -1216,6 +1228,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)appDidEnterBackground
 {
+    self.didEnterBackground = YES;
     [self pause];
     self.state = ZFPlayerStatePause;
     [self cancelAutoFadeOutControlBar];
@@ -1226,9 +1239,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)appDidEnterPlayGround
 {
+    self.didEnterBackground = NO;
     self.isMaskShowing = NO;
     // 延迟隐藏controlView
     [self animateShow];
+    [self createTimer];
     if (!self.isPauseByUser) {
         self.state                         = ZFPlayerStatePlaying;
         self.controlView.startBtn.selected = YES;
@@ -1246,7 +1261,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)progressSliderTouchBegan:(UISlider *)slider
 {
-    [self cancelAutoFadeOutControlBar];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         // 暂停timer
         [self.timer setFireDate:[NSDate distantFuture]];
