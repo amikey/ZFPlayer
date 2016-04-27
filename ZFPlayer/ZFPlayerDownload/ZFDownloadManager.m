@@ -29,8 +29,7 @@
 @property (nonatomic, strong) NSMutableDictionary *tasks;
 /** 保存所有下载相关信息 */
 @property (nonatomic, strong) NSMutableDictionary *sessionModels;
-/** 所有本地存储的下载信息数据 */
-@property (nonatomic, strong) NSMutableArray *sessionModelsArray;
+
 @end
 
 @implementation ZFDownloadManager

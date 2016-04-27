@@ -49,6 +49,8 @@
 
 /** 保存所有下载相关信息 */
 @property (nonatomic, strong, readonly) NSMutableDictionary *sessionModels;
+/** 所有本地存储的下载信息数据 */
+@property (nonatomic, strong) NSMutableArray *sessionModelsArray;
 /** ZFDownloadDelegate */
 @property (nonatomic, assign) id<ZFDownloadDelegate> delegate;
 

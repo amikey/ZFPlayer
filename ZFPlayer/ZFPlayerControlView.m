@@ -245,6 +245,7 @@
     self.repeatBtn.hidden       = YES;
     self.resolutionView.hidden  = YES;
     self.backgroundColor        = [UIColor clearColor];
+    self.downLoadBtn.enabled    = YES;
 }
 
 - (void)resetControlViewForResolution
@@ -252,6 +253,7 @@
     self.horizontalLabel.hidden = YES;
     self.repeatBtn.hidden       = YES;
     self.resolutionView.hidden  = YES;
+    self.downLoadBtn.enabled    = YES;
     self.backgroundColor        = [UIColor clearColor];
 }
 

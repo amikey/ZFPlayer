@@ -358,12 +358,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)setVideoURL:(NSURL *)videoURL
 {
-    _videoURL = videoURL;
-    
     // 如果已经下载过这个video了，那么直接播放本地视频
     if ([[ZFDownloadManager sharedInstance] isCompletion:videoURL.absoluteString]) {
         videoURL = [NSURL fileURLWithPath:ZFFileFullpath(videoURL.absoluteString)];
     }
+    _videoURL = videoURL;
     
     // 播放开始之前（加载中）设置站位图
     UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"loading_bgView")];
