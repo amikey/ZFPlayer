@@ -664,17 +664,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
     if ([visableCells containsObject:cell]) {
         //在显示中
-        [self updataPlayerViewToCell];
+        [self updatePlayerViewToCell];
     }else {
         //在底部
-        [self updataPlayerViewToBottom];
+        [self updatePlayerViewToBottom];
     }
 }
 
 /**
  *  缩小到底部，显示小视频
  */
-- (void)updataPlayerViewToBottom
+- (void)updatePlayerViewToBottom
 {
     if (self.isBottomVideo) { return ; }
     self.isBottomVideo = YES;
@@ -710,7 +710,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  回到cell显示
  */
-- (void)updataPlayerViewToCell
+- (void)updatePlayerViewToCell
 {
     if (!self.isBottomVideo) { return; }
     self.isBottomVideo     = NO;
@@ -733,7 +733,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         // 亮度view加到window最上层
-        ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnesView];
+        ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
         [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
@@ -753,7 +753,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSArray *visableCells = self.tableView.visibleCells;
         self.isBottomVideo = NO;
         if (![visableCells containsObject:cell]) {
-            [self updataPlayerViewToBottom];
+            [self updatePlayerViewToBottom];
         }else {
             // 根据tag取到对应的cellImageView
             UIImageView *cellImageView = [cell viewWithTag:self.cellImageViewTag];
