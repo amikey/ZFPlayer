@@ -420,7 +420,6 @@ static ZFDownloadManager *_downloadManager;
                                  [sessionModel calculateFileSizeInUnit:(unsigned long long)receivedSize],
                                  [sessionModel calculateUnit:(unsigned long long)receivedSize]];
     
-    // 下载中
     if (sessionModel.stateBlock) {
         sessionModel.stateBlock(DownloadStateStart);
     }

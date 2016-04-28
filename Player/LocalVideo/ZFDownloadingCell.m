@@ -24,7 +24,7 @@
 #import "ZFDownloadingCell.h"
 
 @interface ZFDownloadingCell ()
-@property (nonatomic, assign) BOOL hasDownloadAnimation;
+
 @end
 
 @implementation ZFDownloadingCell
@@ -35,6 +35,7 @@
     self.downloadBtn.clipsToBounds = true;
     [self.downloadBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.downloadBtn setTitle:@"🕘" forState:UIControlStateNormal];
+    [self.downloadBtn setTitle:@"↓" forState:UIControlStateSelected];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -44,31 +45,14 @@
 }
 
 /**
- *  添加下载图
- */
-- (void)addDownloadAnimation {
-    if(self.downloadBtn && !self.hasDownloadAnimation){
-        self.hasDownloadAnimation = YES;
-        [self.downloadBtn setTitle:@"↓" forState:UIControlStateNormal];
-    }
-}
-
-/**
- *  移除下载图
- */
-- (void)removeDownloadAnimtion {
-    self.hasDownloadAnimation = NO;
-    [self.downloadBtn setTitle:@"🕘" forState:UIControlStateNormal];
-}
-
-/**
  *  暂停、下载
  *
  *  @param sender UIButton
  */
 - (IBAction)clickDownload:(UIButton *)sender {
+    sender.selected = !sender.selected;
     if (self.downloadBlock) {
-        self.downloadBlock();
+        self.downloadBlock(sender);
     }
 }
 

@@ -35,6 +35,6 @@
 /** 封面图 */
 @property (nonatomic, copy  ) NSString *coverForFeed;
 /** 视频分辨率的数组 */
-@property (nonatomic, strong) NSMutableArray<ZFPlyerResolution *>  *playInfo;
+@property (nonatomic, strong) NSMutableArray *playInfo;
 
 @end

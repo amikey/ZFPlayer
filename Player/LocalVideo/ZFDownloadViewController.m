@@ -93,16 +93,10 @@
             
             sessionModel.stateBlock = ^(DownloadState state){
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (state == DownloadStateStart) {
-                        [cell addDownloadAnimation];
-                    }else if (state == DownloadStateCompleted) {
-                        // 更新数据源
-                        [weakSelf initData];
-                        [cell removeDownloadAnimtion];
-                    }else if (state == DownloadStateSuspended) {
-                        [cell removeDownloadAnimtion];
-                        cell.speedLabel.text = @"已暂停";
-                    }
+                    // 更新数据源
+                    if (state == DownloadStateCompleted) { [weakSelf initData]; }
+                    // 暂停
+                    if (state == DownloadStateSuspended) { cell.speedLabel.text = @"已暂停"; }
                 });
             };
         }
@@ -133,7 +127,7 @@
         ZFDownloadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadingCell"];
         cell.sessionModel = downloadObject;
         [ZFDownloadManager sharedInstance].delegate = self;
-        cell.downloadBlock = ^ {
+        cell.downloadBlock = ^(UIButton *sender) {
             [[ZFDownloadManager sharedInstance] download:downloadObject.url progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {} state:^(DownloadState state) {}];
         };
         return cell;
