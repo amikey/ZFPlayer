@@ -53,16 +53,8 @@
 
 - (void)initData
 {
-    NSMutableArray *downloads = [ZFDownloadManager sharedInstance].sessionModelsArray;
-    NSMutableArray *downladed = @[].mutableCopy;
-    NSMutableArray *downloading = @[].mutableCopy;
-    for (ZFSessionModel *obj in downloads) {
-        if ([[ZFDownloadManager sharedInstance] isCompletion:obj.url]) {
-            [downladed addObject:obj];
-        }else {
-            [downloading addObject:obj];
-        }
-    }
+    NSMutableArray *downladed = [ZFDownloadManager sharedInstance].downloadedArray;
+    NSMutableArray *downloading = [ZFDownloadManager sharedInstance].downloadingArray;
     _downloadObjectArr = @[].mutableCopy;
     [_downloadObjectArr addObject:downladed];
     [_downloadObjectArr addObject:downloading];
@@ -85,18 +77,25 @@
             __weak typeof(self) weakSelf = self;
             sessionModel.progressBlock = ^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@ (%.2f%%)",writtenSize,totalSize,progress*100];
-                    cell.speedLabel.text    = speed;
-                    cell.progress.progress  = progress;
+                    cell.progressLabel.text   = [NSString stringWithFormat:@"%@/%@ (%.2f%%)",writtenSize,totalSize,progress*100];
+                    cell.speedLabel.text      = speed;
+                    cell.progress.progress    = progress;
+                    cell.downloadBtn.selected = YES;
                 });
             };
             
             sessionModel.stateBlock = ^(DownloadState state){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // 更新数据源
-                    if (state == DownloadStateCompleted) { [weakSelf initData]; }
+                    if (state == DownloadStateCompleted) {
+                        [weakSelf initData];
+                        cell.downloadBtn.selected = NO;
+                    }
                     // 暂停
-                    if (state == DownloadStateSuspended) { cell.speedLabel.text = @"已暂停"; }
+                    if (state == DownloadStateSuspended) {
+                        cell.speedLabel.text = @"已暂停";
+                        cell.downloadBtn.selected = NO;
+                    }
                 });
             };
         }

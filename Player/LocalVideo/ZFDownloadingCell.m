@@ -50,7 +50,7 @@
  *  @param sender UIButton
  */
 - (IBAction)clickDownload:(UIButton *)sender {
-    sender.selected = !sender.selected;
+//    sender.selected = !sender.selected;
     if (self.downloadBlock) {
         self.downloadBlock(sender);
     }
