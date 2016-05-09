@@ -115,14 +115,20 @@ self.playerView.goBackBlock = ^{
 - [https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8](https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8)
 
 ---
+#### swift版Player
+请移步 [BMPlayer](https://github.com/BrikerMan/BMPlayer)，感谢 BMPlayer 作者的开源。
 
-#### ps：本人最近swift做的项目，喜欢的朋友们看看吧：
-[知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)
+#### swift版知乎日报：
+本人最近编写的 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)。
 
 #### 有技术问题也可以加我的iOS技术群，互相讨论，群号为：213376937
 
 ---
 
 # 联系我
-- 微博:[@任子丰](https://weibo.com/zifeng1300)
-- 邮箱:zifeng1300@gmail.com
+- 微博: [@任子丰](https://weibo.com/zifeng1300)
+- 邮箱: zifeng1300@gmail.com
+
+# License
+
+ZFPlayer is available under the MIT license. See the LICENSE file for more info.
