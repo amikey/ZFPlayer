@@ -24,19 +24,16 @@
 #import <UIKit/UIKit.h>
 #import "ZFPlayer.h"
 
-typedef void(^ZFDownloadBlock)(void);
+typedef void(^ZFDownloadBlock)(UIButton *);
 
 @interface ZFDownloadingCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
-@property (weak, nonatomic) IBOutlet UIProgressView *progress;
-@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
-@property (weak, nonatomic) IBOutlet UILabel *speedLabel;
-@property (weak, nonatomic) IBOutlet UIButton *downloadBtn;
-@property (nonatomic, copy) ZFDownloadBlock downloadBlock;
+@property (weak, nonatomic  ) IBOutlet UILabel         *fileNameLabel;
+@property (weak, nonatomic  ) IBOutlet UIProgressView  *progress;
+@property (weak, nonatomic  ) IBOutlet UILabel         *progressLabel;
+@property (weak, nonatomic  ) IBOutlet UILabel         *speedLabel;
+@property (weak, nonatomic  ) IBOutlet UIButton        *downloadBtn;
+@property (nonatomic, copy  ) ZFDownloadBlock downloadBlock;
+@property (nonatomic, strong) ZFSessionModel  *sessionModel;
 
-@property (nonatomic, strong) ZFSessionModel *sessionModel;
-
-- (void)addDownloadAnimation;
-- (void)removeDownloadAnimtion;
 @end
