@@ -119,19 +119,19 @@ self.playerView.goBackBlock = ^{
 - [https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8](https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8)
 
 ---
-#### swift project Player
+### swift project Player:
 See the [BMPlayer](https://github.com/BrikerMan/BMPlayer) please, thanks the BMPlayer author's open source.
 
-#### swift project ZFZhiHuDaily：
+### swift project ZFZhiHuDaily:
 I recently written [ZFZhiHuDaily](https://github.com/renzifeng/ZFZhiHuDaily).
 
-#### There are technical problems can also add my iOS technology group, mutual discussion, group number is：213376937
+### You can also add my iOS technology group,group number is：213376937
 
 ---
 
 # Contact me
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
-- Email: zifeng1300@gmail.com
+- Email:  zifeng1300@gmail.com
 
 # License
 
