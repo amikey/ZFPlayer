@@ -121,13 +121,12 @@ self.playerView.goBackBlock = ^{
 ### swift版知乎日报：
 本人最近编写的 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)。
 
-### 有技术问题也可以加我的iOS技术群，群号为：213376937
-
 ---
 
 # 联系我
 - 微博: [@任子丰](https://weibo.com/zifeng1300)
 - 邮箱: zifeng1300@gmail.com
+- iOS群组：213376937
 
 # License
 

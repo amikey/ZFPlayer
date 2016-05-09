@@ -125,13 +125,12 @@ See the [BMPlayer](https://github.com/BrikerMan/BMPlayer) please, thanks the BMP
 ### swift project ZFZhiHuDaily:
 I recently written [ZFZhiHuDaily](https://github.com/renzifeng/ZFZhiHuDaily).
 
-### You can also add my iOS technology group,group number is：213376937
-
 ---
 
 # Contact me
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email:  zifeng1300@gmail.com
+- iOS Group: 213376937
 
 # License
 
