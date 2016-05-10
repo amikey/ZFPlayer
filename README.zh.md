@@ -126,7 +126,7 @@ self.playerView.goBackBlock = ^{
 # 联系我
 - 微博: [@任子丰](https://weibo.com/zifeng1300)
 - 邮箱: zifeng1300@gmail.com
-- iOS群组：213376937
+- QQ群：213376937
 
 # License
 
