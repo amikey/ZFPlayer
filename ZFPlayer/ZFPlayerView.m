@@ -888,7 +888,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             // 设置返回按钮的约束
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
-                make.leading.mas_equalTo(15);
+                make.leading.mas_equalTo(7);
+                make.width.height.mas_equalTo(40);
             }];
             self.isFullScreen = YES;
 
@@ -902,7 +903,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 ZFPlayerShared.isAllowLandscape = NO;
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.top.leading.mas_equalTo(5);
+                    make.top.mas_equalTo(10);
+                    make.leading.mas_equalTo(7);
+                    make.width.height.mas_equalTo(20);
                 }];
                 
                 // 点击播放URL时候不会调用次方法
@@ -918,7 +921,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             }else {
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.mas_equalTo(5);
-                    make.leading.mas_equalTo(15);
+                    make.leading.mas_equalTo(7);
+                    make.width.height.mas_equalTo(40);
                 }];
             }
             self.isFullScreen = NO;
@@ -932,7 +936,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
-                make.leading.mas_equalTo(15);
+                make.leading.mas_equalTo(7);
+                make.width.height.mas_equalTo(40);
             }];
             self.isFullScreen = YES;
         }
@@ -944,7 +949,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
-                make.leading.mas_equalTo(15);
+                make.leading.mas_equalTo(7);
+                make.width.height.mas_equalTo(40);
             }];
             self.isFullScreen = YES;
         }
@@ -960,7 +966,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
         [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
         [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.leading.mas_equalTo(5);
+            make.top.mas_equalTo(10);
+            make.leading.mas_equalTo(7);
+            make.width.height.mas_equalTo(20);
         }];
         self.controlView.fullScreenBtn.selected = NO;
         self.controlView.lockBtn.hidden = YES;

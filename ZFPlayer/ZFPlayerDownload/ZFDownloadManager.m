@@ -510,11 +510,6 @@ static ZFDownloadManager *_downloadManager;
     if (![self.downloadedArray containsObject:sessionModel]) {
         [self.downloadedArray addObject:sessionModel];
     }
-    
-    
-    
-    
-    
 }
 
 @end
