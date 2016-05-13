@@ -444,8 +444,8 @@
 {
     if (!_downLoadBtn) {
         _downLoadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"downLoad")] forState:UIControlStateNormal];
-        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"not_downLoad")] forState:UIControlStateDisabled];
+        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"download")] forState:UIControlStateNormal];
+        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"not_download")] forState:UIControlStateDisabled];
     }
     return _downLoadBtn;
 }
