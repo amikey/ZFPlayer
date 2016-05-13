@@ -39,8 +39,6 @@ Then, run the following command:
 $ pod install
 ```
 
-#### 下载运行Demo报错的,请确认安装cocopods环境,pod install,然后打开“Player.xcworkspace”
-
 ## 使用 （支持IB和代码）
 ##### 设置状态栏颜色
 请在info.plist中增加"View controller-based status bar appearance"字段，并改为NO
@@ -94,10 +92,6 @@ self.playerView.goBackBlock = ^{
  // 如果想从xx秒开始播放视频
  self.playerView.seekTime = 15;
  ```
- 
-### 已知bug：
-
-1. 下载视频有一定的崩溃率，目前还没有找到原因，大家一块帮忙解决一下呀，谢谢！
 
 ### 图片效果演示
 

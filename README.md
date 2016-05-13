@@ -26,7 +26,7 @@
 - Xcode 6.0+
 
 ## Language
-[中文](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
+[中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
 
 ## Installation
 
@@ -41,8 +41,6 @@ Then, run the following command:
 ```bash
 $ pod install
 ```
-
-#### Download and run Demo error, please confirm the installation of cocopods environment, install pod, and then open the "Player.xcworkspace"
 
 ## Usage （Support IB and code）
 ##### Set status bar color
@@ -98,10 +96,6 @@ self.playerView.goBackBlock = ^{
  // Play video from XX seconds
  self.playerView.seekTime = 15;
  ```
- 
-### Known bug：
-
-1. Download video has a certain crash rate, there is still no reason to find the reason, we have a help to solve it, thank you!
 
 ### Picture effect demonstration
 
