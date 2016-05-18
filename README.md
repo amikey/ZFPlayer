@@ -25,6 +25,11 @@
 - iOS 8+
 - Xcode 6.0+
 
+## Component
+
+- Breakpoint Download: [ZFDownload](https://github.com/renzifeng/ZFDownload)
+- Layout: Masonry
+
 ## Language
 [中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
 

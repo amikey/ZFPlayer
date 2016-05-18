@@ -25,6 +25,12 @@
 - iOS 8+
 - Xcode 6.0+
 
+## 组件
+
+- 断点下载: [ZFDownload](https://github.com/renzifeng/ZFDownload)
+- 布局: Masonry
+
+
 ## 安装
 
 ### CocoaPods    
