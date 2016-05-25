@@ -1365,6 +1365,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             // 如果点击了暂停按钮
             if (self.isPauseByUser) return ;
             [self play];
+            self.seekTime = 0;
             if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) {
                 self.state = ZFPlayerStateBuffering;
             }
