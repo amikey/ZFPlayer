@@ -31,17 +31,17 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.5f;
 
 // 枚举值，包含水平移动方向和垂直移动方向
 typedef NS_ENUM(NSInteger, PanDirection){
-    PanDirectionHorizontalMoved, //横向移动
-    PanDirectionVerticalMoved    //纵向移动
+    PanDirectionHorizontalMoved, // 横向移动
+    PanDirectionVerticalMoved    // 纵向移动
 };
 
 //播放器的几种状态
 typedef NS_ENUM(NSInteger, ZFPlayerState) {
     ZFPlayerStateFailed,     // 播放失败
-    ZFPlayerStateBuffering,  //缓冲中
-    ZFPlayerStatePlaying,    //播放中
-    ZFPlayerStateStopped,    //停止播放
-    ZFPlayerStatePause       //暂停播放
+    ZFPlayerStateBuffering,  // 缓冲中
+    ZFPlayerStatePlaying,    // 播放中
+    ZFPlayerStateStopped,    // 停止播放
+    ZFPlayerStatePause       // 暂停播放
 };
 
 @interface ZFPlayerView () <UIGestureRecognizerDelegate,UIAlertViewDelegate>
@@ -233,9 +233,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.controlView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
     // cell上播放视频的话，该返回按钮为×
     if (self.isCellVideo) {
-        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_close")] forState:UIControlStateNormal];
     }else {
-        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
     }
     // 返回按钮点击事件
     [self.controlView.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -247,6 +247,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.controlView.repeatBtn addTarget:self action:@selector(repeatPlay:) forControlEvents:UIControlEventTouchUpInside];
     // 下载
     [self.controlView.downLoadBtn addTarget:self action:@selector(downloadVideo:) forControlEvents:UIControlEventTouchUpInside];
+    
     __weak typeof(self) weakSelf = self;
     // 切换分辨率
     self.controlView.resolutionBlock = ^(UIButton *button) {
@@ -365,7 +366,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     _videoURL = videoURL;
     
     // 播放开始之前（加载中）设置站位图
-    UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"loading_bgView")];
+    UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")];
     self.layer.contents = (id) image.CGImage;
     
     // 每次加载视频URL都设置重播为NO
@@ -519,9 +520,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)autoFadeOutControlBar
 {
-    if (!self.isMaskShowing) {
-        return;
-    }
+    if (!self.isMaskShowing) { return; }
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
     [self performSelector:@selector(hideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
 
@@ -541,9 +540,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)hideControlView
 {
-    if (!self.isMaskShowing) {
-        return;
-    }
+    if (!self.isMaskShowing) { return; }
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
         [self.controlView hideControlView];
         if (self.isFullScreen) { //全屏状态
@@ -564,19 +561,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)animateShow
 {
-    if (self.isMaskShowing) {
-        return;
-    }
+    if (self.isMaskShowing) { return; }
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
         self.controlView.backBtn.alpha = 1;
-        // 视频在底部bottom小屏,并且不是全屏状态
-        if (self.isBottomVideo && !self.isFullScreen) {
-            [self.controlView hideControlView];
-        }else if (self.playDidEnd) { // 播放完了
-            [self.controlView hideControlView];
-        }else {
-            [self.controlView showControlView];
-        }
+        if (self.isBottomVideo && !self.isFullScreen) { [self.controlView hideControlView]; } // 视频在底部bottom小屏,并且不是全屏状态
+        else if (self.playDidEnd) { [self.controlView hideControlView]; } // 播放完了
+        else { [self.controlView showControlView]; }
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     } completion:^(BOOL finished) {
         self.isMaskShowing = YES;
@@ -607,8 +597,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             } else if (self.player.currentItem.status == AVPlayerItemStatusFailed){
                 
                 self.state = ZFPlayerStateFailed;
-                NSError *error = [self.player.currentItem error];
-                NSLog(@"视频加载失败===%@",error.description);
+                //NSError *error = [self.player.currentItem error];
+                //NSLog(@"视频加载失败===%@",error.description);
                 self.controlView.horizontalLabel.hidden = NO;
                 self.controlView.horizontalLabel.text = @"视频加载失败";
 
@@ -790,7 +780,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         [self setOrientationPortrait];
         
     }
-    
     /*
      // 非arc下
      if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
@@ -883,7 +872,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationPortraitUpsideDown:{
             self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
             }
             // 设置返回按钮的约束
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -901,7 +890,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             if (self.isCellVideo) {
                 // 改为只允许竖屏播放
                 ZFPlayerShared.isAllowLandscape = NO;
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_close")] forState:UIControlStateNormal];
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.mas_equalTo(10);
                     make.leading.mas_equalTo(7);
@@ -932,7 +921,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationLandscapeLeft:{
             self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
@@ -945,7 +934,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationLandscapeRight:{
             self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"play_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
@@ -964,7 +953,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     // 在cell上播放视频 && 不允许横屏（此时为竖屏状态,解决自动转屏到横屏，状态栏消失bug）
     if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
-        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_close")] forState:UIControlStateNormal];
         [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(10);
             make.leading.mas_equalTo(7);
@@ -1565,8 +1554,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  通过颜色来生成一个纯色图片
  */
-- (UIImage *)buttonImageFromColor:(UIColor *)color{
-    
+- (UIImage *)buttonImageFromColor:(UIColor *)color
+{
     CGRect rect = self.bounds;
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -1636,7 +1625,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     if (_tableView) { [_tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset]; }
     _tableView = tableView;
-    if (tableView) { [tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil];}
+    if (tableView) { [tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil]; }
 }
 
 /**
@@ -1666,7 +1655,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 }
 
 /**
- *  是否包含下载功能
+ *  是否有下载功能
  */
 - (void)setHasDownload:(BOOL)hasDownload
 {
