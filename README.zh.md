@@ -82,11 +82,11 @@ self.playerView.goBackBlock = ^{
 ```
 
 ##### 设置视频的填充模式（可选设置）
-
 ```objc
- // （可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
+ //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
  self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
 ```
+
 ##### 是否有断点下载功能（可选设置）
 ```objc
  // 默认是关闭断点下载功能，如需要此功能设置这里
@@ -98,6 +98,12 @@ self.playerView.goBackBlock = ^{
  // 如果想从xx秒开始播放视频
  self.playerView.seekTime = 15;
  ```
+ 
+##### 是否自动播放，默认不自动播放（可选设置）
+```objc
+// 是否自动播放，默认不自动播放
+[self.playerView autoPlayTheVideo];
+```
 
 ### 图片效果演示
 

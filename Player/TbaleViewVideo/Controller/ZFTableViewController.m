@@ -124,7 +124,8 @@
         weakSelf.playerView.resolutionDic = dic;
         //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
         weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
-
+        // 自动播放
+        [weakSelf.playerView autoPlayTheVideo];
     };
 
     return cell;
