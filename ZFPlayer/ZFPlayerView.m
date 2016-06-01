@@ -1148,6 +1148,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)play
 {
+    self.isPauseByUser = NO;
     [_player play];
 }
 
@@ -1156,7 +1157,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)pause
 {
-     [_player pause];
+    self.isPauseByUser = YES;
+    [_player pause];
 }
 
 /**
