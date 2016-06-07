@@ -261,13 +261,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
         NSString *videoStr = weakSelf.videoURLArray[button.tag-200];
         NSURL *videoURL = [NSURL URLWithString:videoStr];
-        if ([videoURL isEqual:weakSelf.videoURL]) { return ;}
+        if ([videoURL isEqual:weakSelf.videoURL]) { return; }
         weakSelf.isChangeResolution = YES;
         // reset player
         [weakSelf resetToPlayNewURL];
         weakSelf.videoURL = videoURL;
         // 从xx秒播放
         weakSelf.seekTime = currentTime;
+        // 切换完分辨率自动播放
+        [weakSelf autoPlayTheVideo];
     
     };
     // 点击slider快进
