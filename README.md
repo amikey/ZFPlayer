@@ -108,6 +108,12 @@ self.playerView.goBackBlock = ^{
 [self.playerView autoPlayTheVideo];
 ```
 
+##### Set the video placeholderImage (need to set the video URL before)
+```objc
+// Here is the name of the picture
+self.playerView.placeholderImageName = @"...";
+```
+
 ### Picture effect demonstration
 
 ![Picture effect](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)

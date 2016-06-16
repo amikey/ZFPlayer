@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 }
 
 /**
- *  带初始化调用此方法
+ *  代码初始化调用此方法
  */
 - (instancetype)init
 {
@@ -140,6 +140,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self initializeThePlayer];
 }
 
@@ -374,9 +375,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
     _videoURL = videoURL;
     
-    // 播放开始之前（加载中）设置站位图
-    UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")];
-    self.layer.contents = (id) image.CGImage;
+    if (!self.placeholderImageName) {
+        UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")];
+        self.layer.contents = (id) image.CGImage;
+    }
     
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;
@@ -390,8 +392,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.isPauseByUser = YES;
     self.controlView.playeBtn.hidden = NO;
     [self.controlView hideControlView];
-    // 设置Player相关参数
-//    [self configZFPlayer];
 }
 
 /**
@@ -603,6 +603,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (object == self.player.currentItem) {
         if ([keyPath isEqualToString:@"status"]) {
+            
             if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
                 
                 self.state = ZFPlayerStatePlaying;
@@ -1695,6 +1696,23 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.controlView.resolutionBtn.hidden = NO;
     self.videoURLArray = [resolutionDic allValues];
     self.controlView.resolutionArray = [resolutionDic allKeys];
+}
+
+/**
+ *  设置播放视频前的占位图
+ *
+ *  @param placeholderImageName 占位图的图片名称
+ */
+- (void)setPlaceholderImageName:(NSString *)placeholderImageName
+{
+    _placeholderImageName = placeholderImageName;
+    if (placeholderImageName) {
+        UIImage *image = [UIImage imageNamed:self.placeholderImageName];
+        self.layer.contents = (id) image.CGImage;
+    }else {
+        UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")];
+        self.layer.contents = (id) image.CGImage;
+    }
 }
 
 #pragma mark - Getter

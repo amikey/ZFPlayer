@@ -103,6 +103,9 @@
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
         weakSelf.playerView = [ZFPlayerView sharedPlayerView];
+        // 设置播放前的站位图（需要在设置视频URL之前设置）
+        weakSelf.playerView.placeholderImageName = @"loading_bgView1";
+        
         // 分辨率字典（key:分辨率名称，value：分辨率url)
         NSMutableDictionary *dic = @{}.mutableCopy;
         for (ZFPlyerResolution * resolution in model.playInfo) {

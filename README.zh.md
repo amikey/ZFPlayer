@@ -105,6 +105,12 @@ self.playerView.goBackBlock = ^{
 [self.playerView autoPlayTheVideo];
 ```
 
+##### 设置播放前的占位图（需要在设置视频URL之前设置）
+```objc
+// 这里传图片的名称
+self.playerView.placeholderImageName = @"...";
+```
+
 ### 图片效果演示
 
 ![图片效果演示](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)

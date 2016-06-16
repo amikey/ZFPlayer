@@ -76,7 +76,10 @@
         make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
     }];
     */
-
+    
+    // 设置播放前的占位图（需要在设置视频URL之前设置）
+    self.playerView.placeholderImageName = @"loading_bgView1";
+    // 设置视频的URL
     self.playerView.videoURL = self.videoURL;
     //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
     self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
