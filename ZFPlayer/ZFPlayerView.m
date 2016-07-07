@@ -1252,9 +1252,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)appDidEnterBackground
 {
     self.didEnterBackground = YES;
-    [self pause];
+    [_player pause];
     self.state = ZFPlayerStatePause;
     [self cancelAutoFadeOutControlBar];
+    self.controlView.startBtn.selected = NO;
 }
 
 /**
