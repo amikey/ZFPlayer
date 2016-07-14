@@ -1305,6 +1305,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         CGFloat value   = slider.value - self.sliderLastValue;
         if (value > 0) { style = @">>"; }
         if (value < 0) { style = @"<<"; }
+        if (value == 0) { return; }
         
         self.sliderLastValue    = slider.value;
         // 暂停
@@ -1451,6 +1452,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIGestureRecognizerStateChanged:{ // 正在移动
             switch (self.panDirection) {
                 case PanDirectionHorizontalMoved:{
+                    // 移动中一直显示快进label
+                    self.controlView.horizontalLabel.hidden = NO;
                     [self horizontalMoved:veloctyPoint.x]; // 水平移动的方法只要x方向的值
                     break;
                 }
@@ -1525,6 +1528,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     NSString *style = @"";
     if (value < 0) { style = @"<<"; }
     if (value > 0) { style = @">>"; }
+    if (value == 0) { return; }
+    
     // 每次滑动需要叠加时间
     self.sumTime += value / 200;
     
@@ -1532,14 +1537,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     CMTime totalTime           = self.playerItem.duration;
     CGFloat totalMovieDuration = (CGFloat)totalTime.value/totalTime.timescale;
     if (self.sumTime > totalMovieDuration) { self.sumTime = totalMovieDuration;}
-    if (self.sumTime < 0){ self.sumTime = 0; }
+    if (self.sumTime < 0) { self.sumTime = 0; }
     
     // 当前快进的时间
     NSString *nowTime         = [self durationStringWithTime:(int)self.sumTime];
     // 总时间
     NSString *durationTime    = [self durationStringWithTime:(int)totalMovieDuration];
-    // 给label赋值
+    
+    // 更新快进label的时长
     self.controlView.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, nowTime, durationTime];
+    // 更新slider的进度
+    self.controlView.videoSlider.value = self.sumTime/totalMovieDuration;
 }
 
 /**
