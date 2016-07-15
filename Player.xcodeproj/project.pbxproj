@@ -20,7 +20,6 @@
 		CC2CC63D1CA24D4B0028BBDD /* ZFPlayerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2CC6361CA24D4B0028BBDD /* ZFPlayerControlView.m */; };
 		CC2CC63F1CA24D4B0028BBDD /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2CC6391CA24D4B0028BBDD /* ZFPlayerView.m */; };
 		CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC48ECD61C8863DB009CF0D0 /* Main.storyboard */; };
-		CC56AB5D1D387CB70011E907 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC56AB5C1D387CB70011E907 /* SecondViewController.m */; };
 		CC6945AA1CB7F66300452D55 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC6945A91CB7F66300452D55 /* LaunchScreen.xib */; };
 		CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */; };
 		CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */; };
@@ -95,8 +94,6 @@
 		CC2CC6391CA24D4B0028BBDD /* ZFPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerView.m; sourceTree = "<group>"; };
 		CC2CC6541CA38A710028BBDD /* ZFPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayer.h; sourceTree = "<group>"; };
 		CC48ECD61C8863DB009CF0D0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		CC56AB5B1D387CB70011E907 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		CC56AB5C1D387CB70011E907 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		CC6945A91CB7F66300452D55 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		CC6C7AE31C9BDFE90000AD58 /* MoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePlayerViewController.h; sourceTree = "<group>"; };
 		CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
@@ -258,8 +255,6 @@
 			children = (
 				CC6C7AE31C9BDFE90000AD58 /* MoviePlayerViewController.h */,
 				CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */,
-				CC56AB5B1D387CB70011E907 /* SecondViewController.h */,
-				CC56AB5C1D387CB70011E907 /* SecondViewController.m */,
 			);
 			path = PlayerViewController;
 			sourceTree = "<group>";
@@ -522,7 +517,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC56AB5D1D387CB70011E907 /* SecondViewController.m in Sources */,
 				CCEF1C261CAE76D300B0DD78 /* ZFSessionModel.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */,
 				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,

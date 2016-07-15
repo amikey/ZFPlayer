@@ -314,7 +314,27 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yyi-Pf-hND">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="下一页"/>
+                                <color key="backgroundColor" red="0.8980392157" green="0.27450980390000002" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="L9H-Vc-c6D"/>
+                                    <constraint firstAttribute="height" constant="30" id="Ycg-6G-6Bk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="下一页">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="L9H-Vc-c6D"/>
+                                        <exclude reference="Ycg-6G-6Bk"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="L9H-Vc-c6D"/>
+                                        <include reference="Ycg-6G-6Bk"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <segue destination="BAA-Xb-1RE" kind="show" id="TW9-kO-eN5"/>
                                 </connections>
@@ -361,6 +381,9 @@
                         </variation>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="fd_prefersNavigationBarHidden" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="playerView" destination="CJd-vt-Xpq" id="xOQ-Pg-sc2"/>
                     </connections>
@@ -372,7 +395,7 @@
         <!--二级页面-->
         <scene sceneID="Y0Y-rS-5Oj">
             <objects>
-                <viewController id="BAA-Xb-1RE" customClass="SecondViewController" sceneMemberID="viewController">
+                <viewController id="BAA-Xb-1RE" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bvP-Uw-DWw"/>
                         <viewControllerLayoutGuide type="bottom" id="DYX-Ys-5G8"/>
@@ -383,10 +406,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="二级页面" id="W4L-aU-i2b"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DHQ-W9-Ypj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2008.5" y="1314.5"/>
+            <point key="canvasLocation" x="2036.5" y="1314.5"/>
         </scene>
         <!--本地视频-->
         <scene sceneID="Por-U2-cMz">
@@ -618,6 +642,6 @@
         <image name="video_list" width="79" height="71"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PT2-y1-2eg"/>
+        <segue reference="8B8-xC-tWR"/>
     </inferredMetricsTieBreakers>
 </document>
