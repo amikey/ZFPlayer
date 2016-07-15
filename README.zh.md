@@ -25,6 +25,10 @@
 - iOS 8+
 - Xcode 6.0+
 
+## 统计
+
+哪些APP使用ZFPlayer，并上架AppStore，请告诉我，帮助我统计。
+
 ## 组件
 
 - 断点下载: [ZFDownload](https://github.com/renzifeng/ZFDownload)
@@ -143,3 +147,4 @@ self.playerView.placeholderImageName = @"...";
 # License
 
 ZFPlayer is available under the MIT license. See the LICENSE file for more info.
+

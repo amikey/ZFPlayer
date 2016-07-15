@@ -23,7 +23,11 @@
 ## Requirements
 
 - iOS 8+
-- Xcode 6.0+
+- Xcode 7+
+
+## Statistics
+
+What APP using ZFPlayer, and on AppStore, please tell me, help me to statistics.
 
 ## Component
 
@@ -146,3 +150,4 @@ I recently written [ZFZhiHuDaily](https://github.com/renzifeng/ZFZhiHuDaily).
 # License
 
 ZFPlayer is available under the MIT license. See the LICENSE file for more info.
+
