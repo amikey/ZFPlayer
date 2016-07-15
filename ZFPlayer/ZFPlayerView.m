@@ -1047,7 +1047,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     isBuffering = YES;
     
     // 需要先暂停一小会之后再播放，否则网络状况不好的时候时间在走，声音播放不出来
-    [self pause];
+    [self.player pause];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
         // 如果此时用户已经暂停了，则不再需要开启播放了
