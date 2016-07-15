@@ -46,21 +46,18 @@
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     self.navigationController.navigationBarHidden = YES;
-    if (self.playerView) {
-        [self.playerView setNeedsLayout];
-    }
-    NSArray *viewControllers = self.navigationController.viewControllers;
+    // 调用playerView的layoutSubviews方法
+    if (self.playerView) { [self.playerView setNeedsLayout]; }
      // pop回来时候继续自动播放
-    if (viewControllers.count == 2 && self.playerView) { [self.playerView play]; }
+    if (self.navigationController.viewControllers.count == 2 && self.playerView) { [self.playerView play]; }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
-    NSArray *viewControllers = self.navigationController.viewControllers;
     // push出下一级页面时候暂停
-    if (viewControllers.count == 3 && self.playerView) { [self.playerView pause]; }
+    if (self.navigationController.viewControllers.count == 3 && self.playerView) { [self.playerView pause]; }
 }
 
 - (void)viewDidLoad {
