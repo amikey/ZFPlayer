@@ -315,12 +315,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     [UIApplication sharedApplication].statusBarHidden = NO;
     
-    if (!self.isPauseByUser) {
+//    if (!self.isPauseByUser) {
         // 只要屏幕旋转就显示控制层
         self.isMaskShowing = NO;
         // 延迟隐藏controlView
         [self animateShow];
-    }
+//    }
     
     // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
     if (iPhone4s && !self.isCellVideo) {
@@ -1152,6 +1152,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)play
 {
+    self.controlView.startBtn.selected = YES;
     self.isPauseByUser = NO;
     [_player play];
 }
@@ -1161,8 +1162,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)pause
 {
-    self.isPauseByUser = YES;
+    self.controlView.startBtn.selected = NO;
     [_player pause];
+    self.isPauseByUser = YES;
+
 }
 
 /**
