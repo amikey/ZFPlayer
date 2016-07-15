@@ -339,11 +339,11 @@
                                 <exclude reference="Yyi-Pf-hND"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="9Pn-WI-Wii"/>
+                                <exclude reference="bTo-Kl-IjE"/>
                                 <exclude reference="4JE-R9-J8a"/>
                                 <exclude reference="5BJ-6V-hu5"/>
                                 <exclude reference="OjU-Ny-M7e"/>
-                                <exclude reference="9Pn-WI-Wii"/>
-                                <exclude reference="bTo-Kl-IjE"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -352,11 +352,11 @@
                                 <include reference="Yyi-Pf-hND"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="9Pn-WI-Wii"/>
+                                <include reference="bTo-Kl-IjE"/>
                                 <include reference="4JE-R9-J8a"/>
                                 <include reference="5BJ-6V-hu5"/>
                                 <include reference="OjU-Ny-M7e"/>
-                                <include reference="9Pn-WI-Wii"/>
-                                <include reference="bTo-Kl-IjE"/>
                             </mask>
                         </variation>
                     </view>
@@ -386,7 +386,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DHQ-W9-Ypj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2160.75" y="1314.375"/>
+            <point key="canvasLocation" x="2008.5" y="1314.5"/>
         </scene>
         <!--本地视频-->
         <scene sceneID="Por-U2-cMz">
@@ -411,14 +411,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="video_list" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-Qo-0bT">
-                                                    <rect key="frame" x="28" y="18" width="40" height="35"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video_list" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-Qo-0bT">
+                                                    <rect key="frame" x="28" y="17" width="40" height="35"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="0Lt-rm-cy3"/>
                                                         <constraint firstAttribute="width" constant="40" id="skh-Fa-ziR"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="文件名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ja7-0c-7f8">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ja7-0c-7f8">
                                                     <rect key="frame" x="83" y="27" width="52" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

@@ -30,6 +30,8 @@
 @interface MoviePlayerViewController ()
 
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
+/** 离开页面时候是否在播放 */
+@property (nonatomic, assign) BOOL isPlaying;
 
 @end
 
@@ -48,8 +50,11 @@
     self.navigationController.navigationBarHidden = YES;
     // 调用playerView的layoutSubviews方法
     if (self.playerView) { [self.playerView setNeedsLayout]; }
-     // pop回来时候继续自动播放
-    if (self.navigationController.viewControllers.count == 2 && self.playerView) { [self.playerView play]; }
+    // pop回来时候是否自动播放
+    if (self.navigationController.viewControllers.count == 2 && self.playerView && self.isPlaying) {
+        self.isPlaying = NO;
+        [self.playerView play];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -57,7 +62,11 @@
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
     // push出下一级页面时候暂停
-    if (self.navigationController.viewControllers.count == 3 && self.playerView) { [self.playerView pause]; }
+    if (self.navigationController.viewControllers.count == 3 && self.playerView && !self.playerView.isPauseByUser)
+    {
+        self.isPlaying = YES;
+        [self.playerView pause];
+    }
 }
 
 - (void)viewDidLoad {

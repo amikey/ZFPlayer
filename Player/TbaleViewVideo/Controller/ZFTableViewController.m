@@ -43,6 +43,18 @@
     self.tableView.estimatedRowHeight = 379.0f;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
+    [self requestData];
+}
+
+// 页面消失时候
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.playerView resetPlayer];
+}
+
+- (void)requestData
+{
     NSString *path = [[NSBundle mainBundle] pathForResource:@"videoData" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -54,13 +66,7 @@
         [model setValuesForKeysWithDictionary:dataDic];
         [self.dataSource addObject:model];
     }
-}
 
-// 页面消失时候
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.playerView resetPlayer];
 }
 
 - (void)didReceiveMemoryWarning {
