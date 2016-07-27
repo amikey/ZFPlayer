@@ -27,7 +27,7 @@
 #import "ZFPlayer.h"
 
 static const CGFloat ZFPlayerAnimationTimeInterval             = 7.0f;
-static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.5f;
+static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 // 枚举值，包含水平移动方向和垂直移动方向
 typedef NS_ENUM(NSInteger, PanDirection){
@@ -84,6 +84,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                didEnterBackground;
 /** 是否自动播放 */
 @property (nonatomic, assign) BOOL                isAutoPlay;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -452,16 +454,18 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)createGesture
 {
     // 单击
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
-    tap.delegate = self;
-    [self addGestureRecognizer:tap];
+    self.tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+    self.tap.delegate = self;
+    [self addGestureRecognizer:self.tap];
     
     // 双击(播放/暂停)
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapAction:)];
-    [doubleTap setNumberOfTapsRequired:2];
-    [self addGestureRecognizer:doubleTap];
+    self.doubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapAction:)];
+    [self.doubleTap setNumberOfTapsRequired:2];
+    [self addGestureRecognizer:self.doubleTap];
 
-    [tap requireGestureRecognizerToFail:doubleTap];
+    // 解决点击当前view时候响应其他控件事件
+    self.tap.delaysTouchesBegan = YES;
+    [self.tap requireGestureRecognizerToFail:self.doubleTap];
 }
 
 - (void)createTimer
@@ -1551,6 +1555,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         // （屏幕下方slider区域） || （在cell上播放视频 && 不是全屏状态） || (播放完了) =====>  不响应pan手势
         if ((point.y > self.bounds.size.height-40) || (self.isCellVideo && !self.isFullScreen) || self.playDidEnd) { return NO; }
         return YES;
+    }
+    // 在cell上播放视频 && 不是全屏状态
+    if (self.isBottomVideo && !self.isFullScreen) {
+        [self fullScreenAction:self.controlView.fullScreenBtn];
+        return NO;
     }
     return YES;
 }

@@ -139,6 +139,10 @@
 
     return cell;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"didSelectRowAtIndexPath---%zd",indexPath.row);
+}
 
 /*
 #pragma mark - Navigation
