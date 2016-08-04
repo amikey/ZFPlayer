@@ -1,5 +1,5 @@
 //
-//  ZFDownloadViewController.h
+//  FileModel.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "FileModel.h"
 
-@interface ZFDownloadViewController : UIViewController
-- (void)reloadTableView;
+@implementation FileModel
+
 @end

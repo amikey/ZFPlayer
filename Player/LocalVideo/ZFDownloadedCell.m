@@ -36,12 +36,12 @@
     // Configure the view for the selected state
 }
 
--(void)setSessionModel:(ZFSessionModel *)sessionModel
+- (void)setFileInfo:(FileModel *)fileInfo
 {
-    _sessionModel = sessionModel;
-    self.fileNameLabel.text = sessionModel.fileName;
-    self.sizeLabel.text = sessionModel.totalSize;
-
+    _fileInfo = fileInfo;
+    NSString *totalSize = [CommonHelper getFileSizeString:fileInfo.fileSize];
+    self.fileNameLabel.text = fileInfo.fileName;
+    self.sizeLabel.text = totalSize;
 }
 
 @end

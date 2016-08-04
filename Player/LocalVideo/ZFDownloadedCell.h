@@ -27,5 +27,5 @@
 @interface ZFDownloadedCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *sizeLabel;
-@property (nonatomic, strong) ZFSessionModel *sessionModel;
+@property (nonatomic, strong) FileModel *fileInfo;
 @end

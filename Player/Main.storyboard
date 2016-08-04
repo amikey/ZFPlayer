@@ -442,8 +442,8 @@
                                                         <constraint firstAttribute="width" constant="40" id="skh-Fa-ziR"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ja7-0c-7f8">
-                                                    <rect key="frame" x="83" y="27" width="52" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ja7-0c-7f8">
+                                                    <rect key="frame" x="83" y="27" width="282" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -459,6 +459,7 @@
                                                 <constraint firstItem="Ja7-0c-7f8" firstAttribute="centerY" secondItem="Vdw-Qo-0bT" secondAttribute="centerY" id="0qH-Tp-GEH"/>
                                                 <constraint firstItem="Vdw-Qo-0bT" firstAttribute="centerY" secondItem="ofg-qh-H6d" secondAttribute="centerY" id="7v7-0k-2U2"/>
                                                 <constraint firstItem="Vdw-Qo-0bT" firstAttribute="leading" secondItem="ofg-qh-H6d" secondAttribute="leadingMargin" constant="20" id="Gbh-8H-Jmr"/>
+                                                <constraint firstAttribute="trailing" secondItem="Ja7-0c-7f8" secondAttribute="trailing" constant="10" id="NTm-f5-n1M"/>
                                                 <constraint firstAttribute="bottom" secondItem="s0w-b6-GqW" secondAttribute="bottom" constant="8" id="Res-oi-IGe"/>
                                                 <constraint firstAttribute="trailing" secondItem="s0w-b6-GqW" secondAttribute="trailing" constant="15" id="Vbe-cI-nnJ"/>
                                                 <constraint firstItem="Ja7-0c-7f8" firstAttribute="leading" secondItem="Vdw-Qo-0bT" secondAttribute="trailing" constant="15" id="e20-H2-4Mb"/>
@@ -479,6 +480,7 @@
                                             <subviews>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="042-bg-ODB">
                                                     <rect key="frame" x="20" y="34" width="300" height="2"/>
+                                                    <color key="progressTintColor" red="0.87465414858590596" green="0.51037914114832217" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 </progressView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="下载进度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fuA-k6-Xoy">
                                                     <rect key="frame" x="20" y="42" width="52" height="16"/>
@@ -486,8 +488,8 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1V-0N-9UF">
-                                                    <rect key="frame" x="20" y="12" width="52" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1V-0N-9UF">
+                                                    <rect key="frame" x="20" y="12" width="295" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -499,7 +501,8 @@
                                                         <constraint firstAttribute="height" constant="40" id="SuU-t6-z0G"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <state key="normal" title="🕗"/>
+                                                    <state key="normal" image="menu_pause"/>
+                                                    <state key="selected" image="menu_play"/>
                                                     <connections>
                                                         <action selector="clickDownload:" destination="mXf-Nv-kVF" eventType="touchUpInside" id="A9v-Xj-EXI"/>
                                                     </connections>
@@ -514,6 +517,7 @@
                                             <constraints>
                                                 <constraint firstItem="fuA-k6-Xoy" firstAttribute="top" secondItem="042-bg-ODB" secondAttribute="bottom" constant="6" id="2hX-aU-kK7"/>
                                                 <constraint firstItem="042-bg-ODB" firstAttribute="leading" secondItem="meR-9p-AD5" secondAttribute="leading" constant="20" id="9Ve-S7-Cnk"/>
+                                                <constraint firstItem="GhT-aV-aID" firstAttribute="leading" secondItem="q1V-0N-9UF" secondAttribute="trailing" constant="10" id="GmL-dY-cC8"/>
                                                 <constraint firstAttribute="topMargin" secondItem="q1V-0N-9UF" secondAttribute="top" constant="-5" id="JFU-BE-6je"/>
                                                 <constraint firstItem="GhT-aV-aID" firstAttribute="centerY" secondItem="meR-9p-AD5" secondAttribute="centerY" id="M9N-Wd-fgw"/>
                                                 <constraint firstItem="042-bg-ODB" firstAttribute="centerY" secondItem="meR-9p-AD5" secondAttribute="centerY" id="PcY-t5-8CW"/>
@@ -639,9 +643,11 @@
         <image name="mainCellDingClick" width="20" height="20"/>
         <image name="mainCellShare" width="20" height="20"/>
         <image name="mainCellShareClick" width="23" height="23"/>
+        <image name="menu_pause" width="20" height="20"/>
+        <image name="menu_play" width="20" height="20"/>
         <image name="video_list" width="79" height="71"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8B8-xC-tWR"/>
+        <segue reference="PT2-y1-2eg"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -38,5 +38,6 @@
 #import "ZFPlayerView.h"
 #import "ZFPlayerControlView.h"
 #import "ZFBrightnessView.h"
-#import "ZFDownloadManager.h"
+#import "FilesDownManage.h"
+#import "ASIHTTPRequest.h"
 #import <Masonry/Masonry.h>

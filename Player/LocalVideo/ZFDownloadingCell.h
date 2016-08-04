@@ -33,7 +33,7 @@ typedef void(^ZFDownloadBlock)(UIButton *);
 @property (weak, nonatomic  ) IBOutlet UILabel         *progressLabel;
 @property (weak, nonatomic  ) IBOutlet UILabel         *speedLabel;
 @property (weak, nonatomic  ) IBOutlet UIButton        *downloadBtn;
-@property (nonatomic, copy  ) ZFDownloadBlock downloadBlock;
-@property (nonatomic, strong) ZFSessionModel  *sessionModel;
-
+@property (nonatomic, strong) FileModel *fileInfo;
+@property(nonatomic,retain) ZFHttpRequest *request;//该文件发起的请求
+@property(nonatomic,assign) UIViewController *controller;
 @end

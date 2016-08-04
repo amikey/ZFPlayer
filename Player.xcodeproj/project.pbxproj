@@ -24,6 +24,10 @@
 		CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */; };
 		CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* ZFDownloadViewController.m */; };
+		CC7926BB1D52EE2A0085378F /* CommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926B31D52EE2A0085378F /* CommonHelper.m */; };
+		CC7926BC1D52EE2A0085378F /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926B61D52EE2A0085378F /* FileModel.m */; };
+		CC7926BD1D52EE2A0085378F /* FilesDownManage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926B81D52EE2A0085378F /* FilesDownManage.m */; };
+		CC7926BE1D52EE2A0085378F /* ZFHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926BA1D52EE2A0085378F /* ZFHttpRequest.m */; };
 		CC8693471CC9BF5E0037E71B /* ZFPlyerResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8693461CC9BF5E0037E71B /* ZFPlyerResolution.m */; };
 		CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */; };
 		CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13A1C9AA11F004C95AC /* ZFPlayerModel.m */; };
@@ -31,8 +35,6 @@
 		CCE1C1401C9AA131004C95AC /* videoData.json in Resources */ = {isa = PBXBuildFile; fileRef = CCE1C13F1C9AA131004C95AC /* videoData.json */; };
 		CCEF1BF41CAA826900B0DD78 /* ZFDownloadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1BF31CAA826900B0DD78 /* ZFDownloadingCell.m */; };
 		CCEF1BF91CACB28E00B0DD78 /* ZFDownloadedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1BF81CACB28E00B0DD78 /* ZFDownloadedCell.m */; };
-		CCEF1C251CAE76D300B0DD78 /* ZFDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C221CAE76D300B0DD78 /* ZFDownloadManager.m */; };
-		CCEF1C261CAE76D300B0DD78 /* ZFSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF1C241CAE76D300B0DD78 /* ZFSessionModel.m */; };
 		D9B558B36CCC488962F548FA /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0AF4757901EAD2A137190E /* libPods-Player.a */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +103,15 @@
 		CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFVideoListViewController.m; sourceTree = "<group>"; };
 		CC725C2E1C894D2D00C3EAF2 /* ZFDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadViewController.h; sourceTree = "<group>"; };
 		CC725C2F1C894D2D00C3EAF2 /* ZFDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadViewController.m; sourceTree = "<group>"; };
+		CC7926B21D52EE2A0085378F /* CommonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonHelper.h; sourceTree = "<group>"; };
+		CC7926B31D52EE2A0085378F /* CommonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonHelper.m; sourceTree = "<group>"; };
+		CC7926B41D52EE2A0085378F /* DownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadDelegate.h; sourceTree = "<group>"; };
+		CC7926B51D52EE2A0085378F /* FileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileModel.h; sourceTree = "<group>"; };
+		CC7926B61D52EE2A0085378F /* FileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileModel.m; sourceTree = "<group>"; };
+		CC7926B71D52EE2A0085378F /* FilesDownManage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesDownManage.h; sourceTree = "<group>"; };
+		CC7926B81D52EE2A0085378F /* FilesDownManage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesDownManage.m; sourceTree = "<group>"; };
+		CC7926B91D52EE2A0085378F /* ZFHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFHttpRequest.h; sourceTree = "<group>"; };
+		CC7926BA1D52EE2A0085378F /* ZFHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFHttpRequest.m; sourceTree = "<group>"; };
 		CC8693451CC9BF5E0037E71B /* ZFPlyerResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlyerResolution.h; sourceTree = "<group>"; };
 		CC8693461CC9BF5E0037E71B /* ZFPlyerResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlyerResolution.m; sourceTree = "<group>"; };
 		CCE1C1361C9AA115004C95AC /* ZFPlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerCell.h; sourceTree = "<group>"; };
@@ -114,10 +125,6 @@
 		CCEF1BF31CAA826900B0DD78 /* ZFDownloadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadingCell.m; sourceTree = "<group>"; };
 		CCEF1BF71CACB28E00B0DD78 /* ZFDownloadedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadedCell.h; sourceTree = "<group>"; };
 		CCEF1BF81CACB28E00B0DD78 /* ZFDownloadedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadedCell.m; sourceTree = "<group>"; };
-		CCEF1C211CAE76D300B0DD78 /* ZFDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadManager.h; sourceTree = "<group>"; };
-		CCEF1C221CAE76D300B0DD78 /* ZFDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadManager.m; sourceTree = "<group>"; };
-		CCEF1C231CAE76D300B0DD78 /* ZFSessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFSessionModel.h; sourceTree = "<group>"; };
-		CCEF1C241CAE76D300B0DD78 /* ZFSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFSessionModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,7 +244,7 @@
 		CC2CC6301CA24D4B0028BBDD /* ZFPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				CCEF1C201CAE767A00B0DD78 /* ZFPlayerDownload */,
+				CC7926A41D52E0F80085378F /* ZFDownload */,
 				CC2CC6331CA24D4B0028BBDD /* ZFPlayer.bundle */,
 				CC2CC6541CA38A710028BBDD /* ZFPlayer.h */,
 				CC2CC6381CA24D4B0028BBDD /* ZFPlayerView.h */,
@@ -281,6 +288,22 @@
 			path = NetVideo;
 			sourceTree = "<group>";
 		};
+		CC7926A41D52E0F80085378F /* ZFDownload */ = {
+			isa = PBXGroup;
+			children = (
+				CC7926B21D52EE2A0085378F /* CommonHelper.h */,
+				CC7926B31D52EE2A0085378F /* CommonHelper.m */,
+				CC7926B41D52EE2A0085378F /* DownloadDelegate.h */,
+				CC7926B51D52EE2A0085378F /* FileModel.h */,
+				CC7926B61D52EE2A0085378F /* FileModel.m */,
+				CC7926B71D52EE2A0085378F /* FilesDownManage.h */,
+				CC7926B81D52EE2A0085378F /* FilesDownManage.m */,
+				CC7926B91D52EE2A0085378F /* ZFHttpRequest.h */,
+				CC7926BA1D52EE2A0085378F /* ZFHttpRequest.m */,
+			);
+			path = ZFDownload;
+			sourceTree = "<group>";
+		};
 		CCE1C1321C9AA0D9004C95AC /* TbaleViewVideo */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,17 +342,6 @@
 				CC8693461CC9BF5E0037E71B /* ZFPlyerResolution.m */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		CCEF1C201CAE767A00B0DD78 /* ZFPlayerDownload */ = {
-			isa = PBXGroup;
-			children = (
-				CCEF1C211CAE76D300B0DD78 /* ZFDownloadManager.h */,
-				CCEF1C221CAE76D300B0DD78 /* ZFDownloadManager.m */,
-				CCEF1C231CAE76D300B0DD78 /* ZFSessionModel.h */,
-				CCEF1C241CAE76D300B0DD78 /* ZFSessionModel.m */,
-			);
-			path = ZFPlayerDownload;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -517,17 +529,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCEF1C261CAE76D300B0DD78 /* ZFSessionModel.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */,
 				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
+				CC7926BB1D52EE2A0085378F /* CommonHelper.m in Sources */,
 				CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */,
+				CC7926BE1D52EE2A0085378F /* ZFHttpRequest.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */,
+				CC7926BD1D52EE2A0085378F /* FilesDownManage.m in Sources */,
 				CC2CC63F1CA24D4B0028BBDD /* ZFPlayerView.m in Sources */,
-				CCEF1C251CAE76D300B0DD78 /* ZFDownloadManager.m in Sources */,
 				CC2CC63B1CA24D4B0028BBDD /* ZFBrightnessView.m in Sources */,
 				CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */,
 				CC8693471CC9BF5E0037E71B /* ZFPlyerResolution.m in Sources */,
+				CC7926BC1D52EE2A0085378F /* FileModel.m in Sources */,
 				CC2CC63D1CA24D4B0028BBDD /* ZFPlayerControlView.m in Sources */,
 				CCEF1BF91CACB28E00B0DD78 /* ZFDownloadedCell.m in Sources */,
 				CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */,

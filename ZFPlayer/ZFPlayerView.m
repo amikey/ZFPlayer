@@ -360,10 +360,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)setVideoURL:(NSURL *)videoURL
 {
-    // 如果已经下载过这个video了，那么直接播放本地视频
-    if ([[ZFDownloadManager sharedInstance] isCompletion:videoURL.absoluteString]) {
-        videoURL = [NSURL fileURLWithPath:ZFFileFullpath(videoURL.absoluteString)];
-    }
     _videoURL = videoURL;
     
     if (!self.placeholderImageName) {
@@ -630,7 +626,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             } else if (self.player.currentItem.status == AVPlayerItemStatusFailed){
                 
                 self.state = ZFPlayerStateFailed;
-                //NSError *error = [self.player.currentItem error];
+                //NSError *error = [self.playerItem error];
                 //NSLog(@"视频加载失败===%@",error.description);
                 self.controlView.horizontalLabel.hidden = NO;
                 self.controlView.horizontalLabel.text = @"视频加载失败";
@@ -1202,10 +1198,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)downloadVideo:(UIButton *)sender
 {
-    __weak UIButton *btn = sender;
-    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
-        dispatch_async(dispatch_get_main_queue(), ^{ btn.enabled = NO; });
-    } state:^(DownloadState state) {}];
+    NSString *urlStr = self.videoURL.absoluteString;
+    // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
+    NSString *name = [[urlStr componentsSeparatedByString:@"/"] lastObject];
+    [[FilesDownManage sharedFilesDownManage] downFileUrl:urlStr filename:name filetarget:@"CacheList" fileimage:nil];
 }
 
 #pragma mark - NSNotification Action
