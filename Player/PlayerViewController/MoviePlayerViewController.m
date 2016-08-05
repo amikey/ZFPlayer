@@ -103,10 +103,10 @@
     // 下载按钮的回调
     self.playerView.downloadBlock = ^(NSString *urlStr) {
         // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
-        NSString *name = [[urlStr componentsSeparatedByString:@"/"] lastObject];
-        [[ZFDownlodManager sharedDownloadManager] downFileUrl:urlStr filename:name fileimage:nil];
+        NSString *name = [urlStr lastPathComponent];
+        [[ZFDownloadManager sharedDownloadManager] downFileUrl:urlStr filename:name fileimage:nil];
         // 设置最多同时下载个数（默认是3）
-        [ZFDownlodManager sharedDownloadManager].maxCount = 1;
+        [ZFDownloadManager sharedDownloadManager].maxCount = 1;
     };
     
     // 如果想从xx秒开始播放视频

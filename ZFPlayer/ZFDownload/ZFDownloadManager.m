@@ -1,5 +1,5 @@
 
-//  ZFDownlodManager.m
+//  ZFDownloadManager.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,30 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "ZFDownlodManager.h"
+#import "ZFDownloadManager.h"
 
-static ZFDownlodManager *sharedDownloadManager = nil;
+static ZFDownloadManager *sharedDownloadManager = nil;
 
-@interface ZFDownlodManager ()
+@interface ZFDownloadManager ()
 
 /** 本地临时文件夹文件的个数 */
 @property (nonatomic,assign ) NSInteger      count;
 /** 已下载完成的文件列表（文件对象）*/
-@property (nonatomic,strong ) NSMutableArray *finishedlist;
+@property (atomic,strong ) NSMutableArray *finishedlist;
 /** 正在下载的文件列表(ASIHttpRequest对象)*/
-@property (nonatomic,strong ) NSMutableArray *downinglist;
+@property (atomic,strong ) NSMutableArray *downinglist;
 /** 未下载完成的临时文件数组（文件对象)*/
-@property (nonatomic,strong ) NSMutableArray *filelist;
+@property (atomic,strong ) NSMutableArray *filelist;
 /** 下载文件的模型 */
 @property (nonatomic,strong ) ZFFileModel      *fileInfo;
 
 @end
 
-@implementation ZFDownlodManager
+@implementation ZFDownloadManager
 
 #pragma mark - init methods
 
-+ (ZFDownlodManager *)sharedDownloadManager
++ (ZFDownloadManager *)sharedDownloadManager
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -153,13 +153,9 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     for(ZFHttpRequest *tempRequest in self.downinglist)
     {
         /**
-         注意这里判读是否是同一下载的方法，asihttprequest 有三种url：
-         url，originalurl，redirectURL
-         经过实践，应该使用originalurl,就是最先获得到的原下载地址
+         注意这里判读是否是同一下载的方法，asihttprequest
          **/
-        
-        NSLog(@"%@",[tempRequest.url absoluteString]);
-        if([[[tempRequest.originalURL absoluteString]lastPathComponent] isEqualToString:[fileInfo.fileURL lastPathComponent]])
+        if([[[tempRequest.url absoluteString] lastPathComponent] isEqualToString:[fileInfo.fileURL lastPathComponent]])
         {
             if ([tempRequest isExecuting]&&isBeginDown) {
                 return;
@@ -204,7 +200,6 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     
     if (!exit) {
         [self.downinglist addObject:midRequest];
-        NSLog(@"EXIT!!!!-%@",[midRequest.url absoluteString]);
     }
     [self.downloadDelegate updateCellProgress:midRequest];
     
@@ -601,13 +596,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
 // 将正在下载的文件请求ASIHttpRequest从队列里移除，并将其配置文件删除掉,然后向已下载列表里添加该文件对象
 - (void)requestFinished:(ZFHttpRequest *)request
 {
-    ZFFileModel *fileInfo=(ZFFileModel *)[request.userInfo objectForKey:@"File"];
-    for (ZFFileModel *file in _finishedlist) {
-        if ([file.fileName isEqualToString:fileInfo.fileName]) {
-            // 如果本地已经有同名的文件啦，那先把本地文件删除
-            [_finishedlist removeObject:file];
-        }
-    }
+    ZFFileModel *fileInfo = (ZFFileModel *)[request.userInfo objectForKey:@"File"];
     [_finishedlist addObject:fileInfo];
     NSString *configPath = [fileInfo.tempPath stringByAppendingString:@".plist"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -641,9 +630,13 @@ static ZFDownlodManager *sharedDownloadManager = nil;
         NSError *error;
         NSInteger delindex = -1;
         NSString *path = FILE_PATH(_fileInfo.fileName);
-        if([ZFCommonHelper isExistFile:path]) //已经下载过一次该文件
-        {
-            [self deleteFinishFile:_fileInfo];
+        if([ZFCommonHelper isExistFile:path]) { //已经下载过一次该文件
+            for (ZFFileModel *info in _finishedlist) {
+                if ([info.fileName isEqualToString:_fileInfo.fileName]) {
+                    // 删除文件
+                    [self deleteFinishFile:info];
+                }
+            }
         } else { // 如果正在下载中，择重新下载
             for(ZFHttpRequest *request in self.downinglist)
             {
@@ -700,7 +693,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     _maxCount = maxCount;
     [[NSUserDefaults standardUserDefaults] setValue:@(maxCount) forKey:kMaxRequestCount];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [[ZFDownlodManager sharedDownloadManager] startLoad];
+    [[ZFDownloadManager sharedDownloadManager] startLoad];
 }
 
 @end

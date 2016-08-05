@@ -30,8 +30,8 @@
 @interface ZFDownloadViewController ()<UITableViewDataSource,UITableViewDelegate,ZFDownloadDelegate>
 
 @property (weak, nonatomic  ) IBOutlet UITableView    *tableView;
-@property (nonatomic, strong) NSMutableArray *downloadObjectArr;
-@property (nonatomic, strong) ZFDownlodManager *downloadManage;
+@property (atomic, strong) NSMutableArray *downloadObjectArr;
+@property (nonatomic, strong) ZFDownloadManager *downloadManage;
 
 @end
 
@@ -51,28 +51,24 @@
     self.tableView.tableFooterView = [UIView new];
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, -49, 0);
     self.downloadManage.downloadDelegate = self;
-    //NSLog(@"%@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
+    NSLog(@"%@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
 }
 
 - (void)initData
 {
     [self.downloadManage startLoad];
+    NSMutableArray *downladed = self.downloadManage.finishedlist;
+    NSMutableArray *downloading = self.downloadManage.downinglist;
+    self.downloadObjectArr = @[].mutableCopy;
+    [self.downloadObjectArr addObject:downladed];
+    [self.downloadObjectArr addObject:downloading];
     [self.tableView reloadData];
 }
 
-- (NSMutableArray *)downloadObjectArr
-{
-    NSMutableArray *downladed = self.downloadManage.finishedlist;
-    NSMutableArray *downloading = self.downloadManage.downinglist;
-    _downloadObjectArr = @[].mutableCopy;
-    [_downloadObjectArr addObject:downladed];
-    [_downloadObjectArr addObject:downloading];
-    return _downloadObjectArr;
-}
-- (ZFDownlodManager *)downloadManage
+- (ZFDownloadManager *)downloadManage
 {
     if (!_downloadManage) {
-        _downloadManage = [ZFDownlodManager sharedDownloadManager];
+        _downloadManage = [ZFDownloadManager sharedDownloadManager];
     }
     return _downloadManage;
 }
@@ -106,7 +102,7 @@
         __weak typeof(self) weakSelf = self;
         // 下载按钮点击时候的要刷新列表
         cell.btnClickBlock = ^{
-            [weakSelf.tableView reloadData];
+            [weakSelf initData];
         };
         // 下载模型赋值
         cell.fileInfo = fileInfo;
@@ -168,7 +164,7 @@
 // 下载完成
 - (void)finishedDownload:(ZFHttpRequest *)request
 {
-    [self.tableView reloadData];
+    [self initData];
 }
 
 // 更新下载进度

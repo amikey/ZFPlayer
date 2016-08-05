@@ -22,7 +22,6 @@
 // THE SOFTWARE.
 
 #import "ZFDownloadingCell.h"
-#import "ZFDownloadViewController.h"
 
 @interface ZFDownloadingCell ()
 
@@ -50,7 +49,7 @@
     // 执行操作过程中应该禁止该按键的响应 否则会引起异常
     sender.userInteractionEnabled = NO;
     ZFFileModel *downFile = self.fileInfo;
-    ZFDownlodManager *filedownmanage = [ZFDownlodManager sharedDownloadManager];
+    ZFDownloadManager *filedownmanage = [ZFDownloadManager sharedDownloadManager];
     if(downFile.downloadState == ZFDownloading) { //文件正在下载，点击之后暂停下载 有可能进入等待状态
         self.downloadBtn.selected = YES;
         [filedownmanage stopRequest:self.request];

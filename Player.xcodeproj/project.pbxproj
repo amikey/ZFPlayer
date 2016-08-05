@@ -26,7 +26,7 @@
 		CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* ZFDownloadViewController.m */; };
 		CC7926BB1D52EE2A0085378F /* ZFCommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926B31D52EE2A0085378F /* ZFCommonHelper.m */; };
 		CC7926BC1D52EE2A0085378F /* ZFFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926B61D52EE2A0085378F /* ZFFileModel.m */; };
-		CC7926BD1D52EE2A0085378F /* ZFDownlodManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926B81D52EE2A0085378F /* ZFDownlodManager.m */; };
+		CC7926BD1D52EE2A0085378F /* ZFDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926B81D52EE2A0085378F /* ZFDownloadManager.m */; };
 		CC7926BE1D52EE2A0085378F /* ZFHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7926BA1D52EE2A0085378F /* ZFHttpRequest.m */; };
 		CC8693471CC9BF5E0037E71B /* ZFPlyerResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8693461CC9BF5E0037E71B /* ZFPlyerResolution.m */; };
 		CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */; };
@@ -108,8 +108,8 @@
 		CC7926B41D52EE2A0085378F /* ZFDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadDelegate.h; sourceTree = "<group>"; };
 		CC7926B51D52EE2A0085378F /* ZFFileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFFileModel.h; sourceTree = "<group>"; };
 		CC7926B61D52EE2A0085378F /* ZFFileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFFileModel.m; sourceTree = "<group>"; };
-		CC7926B71D52EE2A0085378F /* ZFDownlodManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownlodManager.h; sourceTree = "<group>"; };
-		CC7926B81D52EE2A0085378F /* ZFDownlodManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownlodManager.m; sourceTree = "<group>"; };
+		CC7926B71D52EE2A0085378F /* ZFDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadManager.h; sourceTree = "<group>"; };
+		CC7926B81D52EE2A0085378F /* ZFDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadManager.m; sourceTree = "<group>"; };
 		CC7926B91D52EE2A0085378F /* ZFHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFHttpRequest.h; sourceTree = "<group>"; };
 		CC7926BA1D52EE2A0085378F /* ZFHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFHttpRequest.m; sourceTree = "<group>"; };
 		CC8693451CC9BF5E0037E71B /* ZFPlyerResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlyerResolution.h; sourceTree = "<group>"; };
@@ -296,8 +296,8 @@
 				CC7926B41D52EE2A0085378F /* ZFDownloadDelegate.h */,
 				CC7926B51D52EE2A0085378F /* ZFFileModel.h */,
 				CC7926B61D52EE2A0085378F /* ZFFileModel.m */,
-				CC7926B71D52EE2A0085378F /* ZFDownlodManager.h */,
-				CC7926B81D52EE2A0085378F /* ZFDownlodManager.m */,
+				CC7926B71D52EE2A0085378F /* ZFDownloadManager.h */,
+				CC7926B81D52EE2A0085378F /* ZFDownloadManager.m */,
 				CC7926B91D52EE2A0085378F /* ZFHttpRequest.h */,
 				CC7926BA1D52EE2A0085378F /* ZFHttpRequest.m */,
 			);
@@ -536,7 +536,7 @@
 				CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */,
 				CC7926BE1D52EE2A0085378F /* ZFHttpRequest.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */,
-				CC7926BD1D52EE2A0085378F /* ZFDownlodManager.m in Sources */,
+				CC7926BD1D52EE2A0085378F /* ZFDownloadManager.m in Sources */,
 				CC2CC63F1CA24D4B0028BBDD /* ZFPlayerView.m in Sources */,
 				CC2CC63B1CA24D4B0028BBDD /* ZFBrightnessView.m in Sources */,
 				CC113C0E1C8C4E5D0044FEEB /* MainViewController.m in Sources */,

@@ -435,15 +435,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video_list" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-Qo-0bT">
-                                                    <rect key="frame" x="28" y="17" width="40" height="35"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="file" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-Qo-0bT">
+                                                    <rect key="frame" x="28" y="17" width="31" height="35"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="0Lt-rm-cy3"/>
-                                                        <constraint firstAttribute="width" constant="40" id="skh-Fa-ziR"/>
+                                                        <constraint firstAttribute="width" constant="31" id="skh-Fa-ziR"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ja7-0c-7f8">
-                                                    <rect key="frame" x="83" y="27" width="282" height="16"/>
+                                                    <rect key="frame" x="74" y="27" width="291" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -634,6 +634,7 @@
     <resources>
         <image name="cell-button-line" width="1" height="29"/>
         <image name="defaultUserIcon" width="50" height="50"/>
+        <image name="file" width="63" height="71"/>
         <image name="loading_bgView" width="1136" height="640"/>
         <image name="mainCellCai" width="20" height="20"/>
         <image name="mainCellCaiClick" width="20" height="20"/>
@@ -645,7 +646,6 @@
         <image name="mainCellShareClick" width="23" height="23"/>
         <image name="menu_pause" width="20" height="20"/>
         <image name="menu_play" width="20" height="20"/>
-        <image name="video_list" width="79" height="71"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="PT2-y1-2eg"/>
