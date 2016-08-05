@@ -134,7 +134,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     if(self.VCdelegate != nil && [self.VCdelegate respondsToSelector:@selector(allowNextRequest)]) {
         [self.VCdelegate allowNextRequest];
     } else {
-        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件成功添加到下载队列" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件成功添加到下载队列" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert show];
         });
@@ -175,15 +175,14 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     
     [self saveDownloadFile:fileInfo];
     
-    
-    //按照获取的文件名获取临时文件的大小，即已下载的大小
+    // 按照获取的文件名获取临时文件的大小，即已下载的大小
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSData *fileData = [fileManager contentsAtPath:fileInfo.tempPath];
-    NSInteger receivedDataLength=[fileData length];
-    fileInfo.fileReceivedSize=[NSString stringWithFormat:@"%zd", receivedDataLength];
+    NSInteger receivedDataLength = [fileData length];
+    fileInfo.fileReceivedSize = [NSString stringWithFormat:@"%zd", receivedDataLength];
     
     NSLog(@"start down:已经下载：%@",fileInfo.fileReceivedSize);
-    ZFHttpRequest* midRequest = [[ZFHttpRequest alloc]initWithURL: [NSURL URLWithString:fileInfo.fileURL]];
+    ZFHttpRequest *midRequest = [[ZFHttpRequest alloc]initWithURL: [NSURL URLWithString:fileInfo.fileURL]];
     midRequest.downloadDestinationPath = FILE_PATH(fileInfo.fileName);
     midRequest.temporaryFileDownloadPath = fileInfo.tempPath;
     midRequest.delegate = self;
@@ -195,7 +194,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     // 如果文件重复下载或暂停、继续，则把队列中的请求删除，重新添加
     BOOL exit = NO;
     for (ZFHttpRequest *tempRequest in self.downinglist) {
-        if([[[tempRequest.url absoluteString]lastPathComponent] isEqualToString:[fileInfo.fileURL lastPathComponent]])
+        if([[[tempRequest.url absoluteString] lastPathComponent] isEqualToString:[fileInfo.fileURL lastPathComponent]])
         {
             [self.downinglist replaceObjectAtIndex:[_downinglist indexOfObject:tempRequest] withObject:midRequest];
             exit = YES;
@@ -205,7 +204,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     
     if (!exit) {
         [self.downinglist addObject:midRequest];
-        NSLog(@"EXIT!!!!---::%@",[midRequest.url absoluteString]);
+        NSLog(@"EXIT!!!!-%@",[midRequest.url absoluteString]);
     }
     [self.downloadDelegate updateCellProgress:midRequest];
     
@@ -421,7 +420,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     [self startLoad];
 }
 
-#pragma mark- --从这里获取上次未完成下载的信息--
+#pragma mark - 从这里获取上次未完成下载的信息
 /*
  将本地的未下载完成的临时文件加载到正在下载列表里,但是不接着开始下载
  
@@ -571,7 +570,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
 {
     NSLog(@"收到回复了！");
  
-    ZFFileModel *fileInfo=[request.userInfo objectForKey:@"File"];
+    ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
 	fileInfo.isFirstReceived = YES;
 
     NSString *len = [responseHeaders objectForKey:@"Content-Length"];
@@ -584,20 +583,16 @@ static ZFDownlodManager *sharedDownloadManager = nil;
 
 - (void)request:(ZFHttpRequest *)request didReceiveBytes:(long long)bytes
 {
-    ZFFileModel *fileInfo=[request.userInfo objectForKey:@"File"];
+    ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
     NSLog(@"%@,%lld",fileInfo.fileReceivedSize,bytes);
     if (fileInfo.isFirstReceived) {
-        fileInfo.isFirstReceived=NO;
-        fileInfo.fileReceivedSize =[NSString stringWithFormat:@"%lld",bytes];
-    }
-    else if(!fileInfo.isFirstReceived)
-    {
-
-        fileInfo.fileReceivedSize=[NSString stringWithFormat:@"%lld",[fileInfo.fileReceivedSize longLongValue]+bytes];
+        fileInfo.isFirstReceived = NO;
+        fileInfo.fileReceivedSize = [NSString stringWithFormat:@"%lld",bytes];
+    } else if(!fileInfo.isFirstReceived) {
+        fileInfo.fileReceivedSize = [NSString stringWithFormat:@"%lld",[fileInfo.fileReceivedSize longLongValue]+bytes];
     }
     
-    if([self.downloadDelegate respondsToSelector:@selector(updateCellProgress:)])
-    {
+    if([self.downloadDelegate respondsToSelector:@selector(updateCellProgress:)]) {
         [self.downloadDelegate updateCellProgress:request];
     }
    

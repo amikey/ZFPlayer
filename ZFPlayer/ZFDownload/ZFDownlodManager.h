@@ -33,9 +33,9 @@
 @interface ZFDownlodManager : NSObject<ZFHttpRequestDelegate>
 
 /** 获得下载事件的vc，用在比如多选图片后批量下载的情况，这时需配合 allowNextRequest 协议方法使用 */
-@property (nonatomic, weak  ) id<ZFDownloadDelegate> VCdelegate;
+@property (nonatomic, assign  ) id<ZFDownloadDelegate> VCdelegate;
 /** 下载列表delegate */
-@property (nonatomic, weak  ) id<ZFDownloadDelegate> downloadDelegate;
+@property (nonatomic, assign  ) id<ZFDownloadDelegate> downloadDelegate;
 /** 设置最大的并发下载个数 */
 @property (nonatomic, assign) NSInteger              maxCount;
 /** 已下载完成的文件列表（文件对象） */
