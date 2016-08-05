@@ -23,7 +23,6 @@
 
 #import "ZFDownlodManager.h"
 
-//static NSString *kFinishedPlist = @"FinishedPlist.plist";
 static ZFDownlodManager *sharedDownloadManager = nil;
 
 @interface ZFDownlodManager ()
@@ -107,8 +106,6 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     _fileInfo.time = [ZFCommonHelper dateToString:myDate];
     _fileInfo.fileType = [name pathExtension];
     
-//    NSString *path = [ZFCommonHelper getTargetPathWithName:name];
-
     _fileInfo.fileimage = image;
     _fileInfo.downloadState = ZFDownloading;
     _fileInfo.error = NO;
@@ -130,7 +127,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
         return;
     }
     
-    //若不存在文件和临时文件，则是新的下载
+    // 若不存在文件和临时文件，则是新的下载
     [self.filelist addObject:_fileInfo];
     
     [self startLoad];
@@ -178,15 +175,14 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     
     [self saveDownloadFile:fileInfo];
     
-    //NSLog(@"targetPath %@",fileInfo.targetPath);
-    //按照获取的文件名获取临时文件的大小，即已下载的大小
     
+    //按照获取的文件名获取临时文件的大小，即已下载的大小
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSData *fileData = [fileManager contentsAtPath:fileInfo.tempPath];
     NSInteger receivedDataLength=[fileData length];
     fileInfo.fileReceivedSize=[NSString stringWithFormat:@"%zd", receivedDataLength];
     
-    NSLog(@"start down::已经下载：%@",fileInfo.fileReceivedSize);
+    NSLog(@"start down:已经下载：%@",fileInfo.fileReceivedSize);
     ZFHttpRequest* midRequest = [[ZFHttpRequest alloc]initWithURL: [NSURL URLWithString:fileInfo.fileURL]];
     midRequest.downloadDestinationPath = FILE_PATH(fileInfo.fileName);
     midRequest.temporaryFileDownloadPath = fileInfo.tempPath;
@@ -347,7 +343,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     [self startLoad];
 }
 
-#pragma mark - --删除下载--
+#pragma mark - 删除下载
 
 - (void)deleteRequest:(ZFHttpRequest *)request
 {

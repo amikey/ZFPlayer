@@ -122,11 +122,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return @"删除";
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return YES;
 }
 
@@ -150,20 +152,20 @@
 #pragma mark - ZFDownloadDelegate
 
 // 开始下载
-- (void)startDownload:(ZFHttpRequest *)request;
+- (void)startDownload:(ZFHttpRequest *)request
 {
     NSLog(@"开始下载!");
 }
 
 // 下载中
-- (void)updateCellProgress:(ZFHttpRequest *)request;
+- (void)updateCellProgress:(ZFHttpRequest *)request
 {
     ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
     [self performSelectorOnMainThread:@selector(updateCellOnMainThread:) withObject:fileInfo waitUntilDone:YES];
 }
 
 // 下载完成
-- (void)finishedDownload:(ZFHttpRequest *)request;
+- (void)finishedDownload:(ZFHttpRequest *)request
 {
     [self.tableView reloadData];
 }
@@ -172,13 +174,10 @@
 - (void)updateCellOnMainThread:(ZFFileModel *)fileInfo
 {
     NSArray *cellArr = [self.tableView visibleCells];
-    for(id obj in cellArr)
-    {
-        if([obj isKindOfClass:[ZFDownloadingCell class]])
-        {
+    for (id obj in cellArr) {
+        if([obj isKindOfClass:[ZFDownloadingCell class]]) {
             ZFDownloadingCell *cell = (ZFDownloadingCell *)obj;
-            if([cell.fileInfo.fileURL isEqualToString:fileInfo.fileURL])
-            {
+            if([cell.fileInfo.fileURL isEqualToString:fileInfo.fileURL]) {
                 cell.fileInfo = fileInfo;
             }
         }
