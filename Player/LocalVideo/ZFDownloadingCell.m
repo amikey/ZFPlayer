@@ -47,10 +47,10 @@
  */
 - (IBAction)clickDownload:(UIButton *)sender
 {
-    //执行操作过程中应该禁止该按键的响应 否则会引起异常
+    // 执行操作过程中应该禁止该按键的响应 否则会引起异常
     sender.userInteractionEnabled = NO;
-    FileModel *downFile = self.fileInfo;
-    FilesDownManage *filedownmanage = [FilesDownManage sharedFilesDownManage];
+    ZFFileModel *downFile = self.fileInfo;
+    ZFDownlodManager *filedownmanage = [ZFDownlodManager sharedDownloadManager];
     if(downFile.downloadState == ZFDownloading) { //文件正在下载，点击之后暂停下载 有可能进入等待状态
         self.downloadBtn.selected = YES;
         [filedownmanage stopRequest:self.request];
@@ -67,7 +67,7 @@
     sender.userInteractionEnabled = YES;
 }
 
-- (void)setFileInfo:(FileModel *)fileInfo
+- (void)setFileInfo:(ZFFileModel *)fileInfo
 {
     _fileInfo = fileInfo;
     self.fileNameLabel.text = fileInfo.fileName;
@@ -77,16 +77,16 @@
         self.speedLabel.text = @"0B/S";
         return;
     }
-    NSString *currentSize = [CommonHelper getFileSizeString:fileInfo.fileReceivedSize];
-    NSString *totalSize = [CommonHelper getFileSizeString:fileInfo.fileSize];
+    NSString *currentSize = [ZFCommonHelper getFileSizeString:fileInfo.fileReceivedSize];
+    NSString *totalSize = [ZFCommonHelper getFileSizeString:fileInfo.fileSize];
+    // 下载进度
+    float progress = (float)[fileInfo.fileReceivedSize longLongValue] / [fileInfo.fileSize longLongValue];
     
-    CGFloat progress = [CommonHelper getProgress:[fileInfo.fileSize longLongValue] currentSize:[fileInfo.fileReceivedSize longLongValue]];
-
     self.progressLabel.text = [NSString stringWithFormat:@"%@ / %@ (%.2f%%)",currentSize, totalSize, progress*100];
     
     self.progress.progress = progress;
     
-    NSString *spped = [NSString stringWithFormat:@"%@/S",[CommonHelper getFileSizeString:[NSString stringWithFormat:@"%lu",[ASIHTTPRequest averageBandwidthUsedPerSecond]]]];
+    NSString *spped = [NSString stringWithFormat:@"%@/S",[ZFCommonHelper getFileSizeString:[NSString stringWithFormat:@"%lu",[ASIHTTPRequest averageBandwidthUsedPerSecond]]]];
     self.speedLabel.text = spped;
     
     if (fileInfo.downloadState == ZFDownloading) {//文件正在下载

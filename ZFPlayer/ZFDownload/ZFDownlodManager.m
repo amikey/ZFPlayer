@@ -1,5 +1,5 @@
 
-//  FilesDownManage.m
+//  ZFDownlodManager.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,65 +21,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "FilesDownManage.h"
+#import "ZFDownlodManager.h"
 
-#define TEMPPATH [CommonHelper getTempFolderPathWithBasepath:_basepath]
-static NSString *kFinishedPlist = @"FinishedPlist.plist";
-static FilesDownManage *sharedFilesDownManage = nil;
+//static NSString *kFinishedPlist = @"FinishedPlist.plist";
+static ZFDownlodManager *sharedDownloadManager = nil;
 
-@implementation FilesDownManage
+@interface ZFDownlodManager ()
+
+/** 本地临时文件夹文件的个数 */
+@property (nonatomic,assign ) NSInteger      count;
+/** 已下载完成的文件列表（文件对象）*/
+@property (nonatomic,strong ) NSMutableArray *finishedlist;
+/** 正在下载的文件列表(ASIHttpRequest对象)*/
+@property (nonatomic,strong ) NSMutableArray *downinglist;
+/** 未下载完成的临时文件数组（文件对象)*/
+@property (nonatomic,strong ) NSMutableArray *filelist;
+/** 下载文件的模型 */
+@property (nonatomic,strong ) ZFFileModel      *fileInfo;
+
+@end
+
+@implementation ZFDownlodManager
 
 #pragma mark - init methods
 
-+ (FilesDownManage *)sharedFilesDownManage
++ (ZFDownlodManager *)sharedDownloadManager
 {
-    @synchronized(self){
-        if (sharedFilesDownManage == nil) {
-            sharedFilesDownManage = [[self alloc] init];
-        }
-    }
-    return sharedFilesDownManage;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedDownloadManager = [[self alloc] init];
+    });
+    return sharedDownloadManager;
 }
 
-+ (FilesDownManage *)sharedFilesDownManageWithBasepath:(NSString *)basepath
-                                         TargetPathArr:(NSArray *)targetpaths
-{
-    @synchronized(self){
-        if (sharedFilesDownManage == nil) {
-            sharedFilesDownManage = [[self alloc] initWithBasepath:basepath TargetPathArr:targetpaths];
-        }
-    }
-    if (![sharedFilesDownManage.basepath isEqualToString:basepath]) {
-        //如果你更换了下载缓存目录，之前的缓存目录下载信息的plist文件将被删除，无法使用
-        [sharedFilesDownManage cleanLastInfo];
-        sharedFilesDownManage.basepath = basepath;
-        [sharedFilesDownManage loadTempfiles];
-        [sharedFilesDownManage loadFinishedfiles];
-    }
-    sharedFilesDownManage.basepath = basepath;
-    sharedFilesDownManage.targetPathArray = [NSMutableArray arrayWithArray:targetpaths];
-    return  sharedFilesDownManage;
-}
-- (id)init
+- (instancetype)init
 {
     self = [super init];
-    if (self != nil) {
-        self.count = 0;
-        if (self.basepath!=nil) {
-            [self loadFinishedfiles];
-            [self loadTempfiles];
-        }
-        
-    }
-    return self;
-}
-
-- (id)initWithBasepath:(NSString *)basepath
-        TargetPathArr:(NSArray *)targetpaths{
-    self = [super init];
-    if (self != nil) {
-        self.basepath = basepath;
-        _targetPathArray = [[NSMutableArray alloc]initWithArray:targetpaths];
+    if (self) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString * max = [userDefaults valueForKey:kMaxRequestCount];
         if (max == nil) {
@@ -91,14 +69,9 @@ static FilesDownManage *sharedFilesDownManage = nil;
         _filelist = [[NSMutableArray alloc]init];
         _downinglist = [[NSMutableArray alloc] init];
         _finishedlist = [[NSMutableArray alloc] init];
-        self.isFistLoadSound = YES;
-        self.count = 0;
-        if (self.basepath != nil) {
-            [self loadFinishedfiles];
-            [self loadTempfiles];
-            
-        }
-        
+        _count = 0;
+        [self loadFinishedfiles];
+        [self loadTempfiles];
     }
     return self;
 }
@@ -117,16 +90,13 @@ static FilesDownManage *sharedFilesDownManage = nil;
 
 #pragma mark - 创建一个下载任务
 
-- (void)downFileUrl:(NSString*)url
-          filename:(NSString*)name
-        filetarget:(NSString *)path
+- (void)downFileUrl:(NSString *)url
+          filename:(NSString *)name
          fileimage:(UIImage *)image
 {
+    // 因为是重新下载，则说明肯定该文件已经被下载完，或者有临时文件正在留着，所以检查一下这两个地方，存在则删除掉 
     
-    //因为是重新下载，则说明肯定该文件已经被下载完，或者有临时文件正在留着，所以检查一下这两个地方，存在则删除掉
-    self.TargetSubPath = path;
-    
-    _fileInfo = [[FileModel alloc]init];
+    _fileInfo = [[ZFFileModel alloc]init];
     if (!name) {
         name = [url lastPathComponent];
     }
@@ -134,19 +104,16 @@ static FilesDownManage *sharedFilesDownManage = nil;
     _fileInfo.fileURL = url;
     
     NSDate *myDate = [NSDate date];
-    _fileInfo.time = [CommonHelper dateToString:myDate];
-    // NSInteger index=[name rangeOfString:@"."].location;
-    _fileInfo.fileType=[name pathExtension];
-    path= [CommonHelper getTargetPathWithBasepath:_basepath subpath:path];
-    path = [path stringByAppendingPathComponent:name];
-    _fileInfo.targetPath = path ;
+    _fileInfo.time = [ZFCommonHelper dateToString:myDate];
+    _fileInfo.fileType = [name pathExtension];
+    
+//    NSString *path = [ZFCommonHelper getTargetPathWithName:name];
+
     _fileInfo.fileimage = image;
     _fileInfo.downloadState = ZFDownloading;
     _fileInfo.error = NO;
-     NSString *tempfilePath = [TEMPPATH stringByAppendingPathComponent:_fileInfo.fileName]  ;
-    _fileInfo.tempPath = tempfilePath;
-    if ([CommonHelper isExistFile: _fileInfo.targetPath])//已经下载过一次
-    {
+    _fileInfo.tempPath = TEMP_PATH(name);
+    if ([ZFCommonHelper isExistFile:FILE_PATH(name)]) { // 已经下载过一次
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件已下载，是否重新下载？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert show];
@@ -154,10 +121,9 @@ static FilesDownManage *sharedFilesDownManage = nil;
         return;
     }
     // 存在于临时文件夹里
-    tempfilePath =[tempfilePath stringByAppendingString:@".plist"];
-    if([CommonHelper isExistFile:tempfilePath])
-    {
-        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件已经在下载列表中了，是否重新下载？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    NSString *tempfilePath = [TEMP_PATH(name) stringByAppendingString:@".plist"];
+    if ([ZFCommonHelper isExistFile:tempfilePath]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件已经在下载列表中了，是否重新下载？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert show];
         });
@@ -168,10 +134,9 @@ static FilesDownManage *sharedFilesDownManage = nil;
     [self.filelist addObject:_fileInfo];
     
     [self startLoad];
-    if(self.VCdelegate!=nil && [self.VCdelegate respondsToSelector:@selector(allowNextRequest)])
-    {
+    if(self.VCdelegate != nil && [self.VCdelegate respondsToSelector:@selector(allowNextRequest)]) {
         [self.VCdelegate allowNextRequest];
-    }else{
+    } else {
         UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"该文件成功添加到下载队列" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             [alert show];
@@ -186,7 +151,7 @@ static FilesDownManage *sharedFilesDownManage = nil;
 
 #pragma mark - 下载开始
 
-- (void)beginRequest:(FileModel *)fileInfo isBeginDown:(BOOL)isBeginDown
+- (void)beginRequest:(ZFFileModel *)fileInfo isBeginDown:(BOOL)isBeginDown
 {
     for(ZFHttpRequest *tempRequest in self.downinglist)
     {
@@ -216,14 +181,14 @@ static FilesDownManage *sharedFilesDownManage = nil;
     //NSLog(@"targetPath %@",fileInfo.targetPath);
     //按照获取的文件名获取临时文件的大小，即已下载的大小
     
-    NSFileManager *fileManager=[NSFileManager defaultManager];
-    NSData *fileData=[fileManager contentsAtPath:fileInfo.tempPath];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSData *fileData = [fileManager contentsAtPath:fileInfo.tempPath];
     NSInteger receivedDataLength=[fileData length];
     fileInfo.fileReceivedSize=[NSString stringWithFormat:@"%zd", receivedDataLength];
     
     NSLog(@"start down::已经下载：%@",fileInfo.fileReceivedSize);
     ZFHttpRequest* midRequest = [[ZFHttpRequest alloc]initWithURL: [NSURL URLWithString:fileInfo.fileURL]];
-    midRequest.downloadDestinationPath = fileInfo.targetPath;
+    midRequest.downloadDestinationPath = FILE_PATH(fileInfo.fileName);
     midRequest.temporaryFileDownloadPath = fileInfo.tempPath;
     midRequest.delegate = self;
     [midRequest setUserInfo:[NSDictionary dictionaryWithObject:fileInfo forKey:@"File"]];//设置上下文的文件基本信息
@@ -233,20 +198,16 @@ static FilesDownManage *sharedFilesDownManage = nil;
     
     // 如果文件重复下载或暂停、继续，则把队列中的请求删除，重新添加
     BOOL exit = NO;
-    for(ZFHttpRequest *tempRequest in self.downinglist)
-    {
-        //  NSLog(@"!!!!---::%@",[tempRequest.url absoluteString]);
-        if([[[tempRequest.url absoluteString]lastPathComponent] isEqualToString:[fileInfo.fileURL lastPathComponent] ])
+    for (ZFHttpRequest *tempRequest in self.downinglist) {
+        if([[[tempRequest.url absoluteString]lastPathComponent] isEqualToString:[fileInfo.fileURL lastPathComponent]])
         {
-            [self.downinglist replaceObjectAtIndex:[_downinglist indexOfObject:tempRequest] withObject:midRequest ];
-            
+            [self.downinglist replaceObjectAtIndex:[_downinglist indexOfObject:tempRequest] withObject:midRequest];
             exit = YES;
             break;
         }
     }
     
     if (!exit) {
-        
         [self.downinglist addObject:midRequest];
         NSLog(@"EXIT!!!!---::%@",[midRequest.url absoluteString]);
     }
@@ -255,14 +216,12 @@ static FilesDownManage *sharedFilesDownManage = nil;
 }
 #pragma mark - 存储下载信息到一个plist文件
 
-- (void)saveDownloadFile:(FileModel*)fileinfo
+- (void)saveDownloadFile:(ZFFileModel*)fileinfo
 {
     NSData *imagedata = UIImagePNGRepresentation(fileinfo.fileimage);
     NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:fileinfo.fileName,@"filename",
                                                                        fileinfo.fileURL,@"fileurl",
                                                                        fileinfo.time,@"time",
-                                                                       _basepath,@"basepath",
-                                                                       _TargetSubPath,@"tarpath" ,
                                                                        fileinfo.fileSize,@"filesize",
                                                                        fileinfo.fileReceivedSize,@"filerecievesize",
                                                                        imagedata,@"fileimage",nil];
@@ -286,7 +245,7 @@ static FilesDownManage *sharedFilesDownManage = nil;
 {
     NSInteger num = 0;
     NSInteger max = _maxCount;
-    for (FileModel *file in _filelist) {
+    for (ZFFileModel *file in _filelist) {
         if (!file.error) {
             if (file.downloadState == ZFDownloading) {
                 
@@ -298,8 +257,8 @@ static FilesDownManage *sharedFilesDownManage = nil;
             }
         }
     }
-    if (num<max) {
-        for (FileModel *file in _filelist) {
+    if (num < max) {
+        for (ZFFileModel *file in _filelist) {
             if (!file.error) {
                 if (file.downloadState == ZFWillDownload) {
                     num++;
@@ -312,7 +271,7 @@ static FilesDownManage *sharedFilesDownManage = nil;
         }
         
     }
-    for (FileModel *file in _filelist) {
+    for (ZFFileModel *file in _filelist) {
         if (!file.error) {
             if (file.downloadState == ZFDownloading) {
                 [self beginRequest:file isBeginDown:YES];
@@ -329,25 +288,25 @@ static FilesDownManage *sharedFilesDownManage = nil;
 - (void)resumeRequest:(ZFHttpRequest *)request
 {
     NSInteger max = _maxCount;
-    FileModel *fileInfo =  [request.userInfo objectForKey:@"File"];
-    NSInteger downingcount =0;
-    NSInteger indexmax =-1;
-    for (FileModel *file in _filelist) {
+    ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
+    NSInteger downingcount = 0;
+    NSInteger indexmax = -1;
+    for (ZFFileModel *file in _filelist) {
         if (file.downloadState == ZFDownloading) {
             downingcount++;
             if (downingcount==max) {
                 indexmax = [_filelist indexOfObject:file];
             }
         }
-    }//此时下载中数目是否是最大，并获得最大时的位置Index
-    if (downingcount==max) {
-        FileModel *file  = [_filelist objectAtIndex:indexmax];
+    } //此时下载中数目是否是最大，并获得最大时的位置Index
+    if (downingcount == max) {
+        ZFFileModel *file  = [_filelist objectAtIndex:indexmax];
             if (file.downloadState == ZFDownloading) {
                 file.downloadState = ZFWillDownload;
             }
     }//中止一个进程使其进入等待
 
-    for (FileModel *file in _filelist) {
+    for (ZFFileModel *file in _filelist) {
         if ([file.fileName isEqualToString:fileInfo.fileName]) {
 			file.downloadState = ZFDownloading;
             file.error = NO;
@@ -358,29 +317,26 @@ static FilesDownManage *sharedFilesDownManage = nil;
 
 #pragma mark - 暂停下载
 
--(void)stopRequest:(ZFHttpRequest *)request{
+- (void)stopRequest:(ZFHttpRequest *)request
+{
     NSInteger max = self.maxCount;
-    if([request isExecuting])
-    {
-        [request cancel];
-    }
-    FileModel *fileInfo =  [request.userInfo objectForKey:@"File"];
-    for (FileModel *file in _filelist) {
+    if([request isExecuting]) { [request cancel]; }
+    ZFFileModel *fileInfo =  [request.userInfo objectForKey:@"File"];
+    for (ZFFileModel *file in _filelist) {
         if ([file.fileName isEqualToString:fileInfo.fileName]) {
-
 			file.downloadState = ZFStopDownload;
             break;
         }
     }
-    NSInteger downingcount =0;
+    NSInteger downingcount = 0;
 
-    for (FileModel *file in _filelist) {
+    for (ZFFileModel *file in _filelist) {
         if (file.downloadState == ZFDownloading) {
             downingcount++;
         }
     }
     if (downingcount<max) {
-        for (FileModel *file in _filelist) {
+        for (ZFFileModel *file in _filelist) {
             if (file.downloadState == ZFWillDownload){
 				file.downloadState = ZFDownloading;
                 break;
@@ -395,40 +351,35 @@ static FilesDownManage *sharedFilesDownManage = nil;
 
 - (void)deleteRequest:(ZFHttpRequest *)request
 {
-    bool isexecuting = NO;
-    if([request isExecuting])
-    {
+    BOOL isexecuting = NO;
+    if([request isExecuting]) {
         [request cancel];
         isexecuting = YES;
     }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-    FileModel *fileInfo = (FileModel*)[request.userInfo objectForKey:@"File"];
-    NSString *path=fileInfo.tempPath;
+    ZFFileModel *fileInfo = (ZFFileModel*)[request.userInfo objectForKey:@"File"];
+    NSString *path = fileInfo.tempPath;
 
     NSString *configPath = [NSString stringWithFormat:@"%@.plist",path];
     [fileManager removeItemAtPath:path error:&error];
     [fileManager removeItemAtPath:configPath error:&error];
     
-    if(!error)
-    {
-        NSLog(@"%@",[error description]);
-    }
+    if(!error){ NSLog(@"%@",[error description]);}
 
-    NSInteger delindex =-1;
-    for (FileModel *file in _filelist) {
+    NSInteger delindex = -1;
+    for (ZFFileModel *file in _filelist) {
         if ([file.fileName isEqualToString:fileInfo.fileName]) {
             delindex = [_filelist indexOfObject:file];
             break;
         }
     }
-    if (delindex!=NSNotFound) 
+    if (delindex != NSNotFound)
     [_filelist removeObjectAtIndex:delindex];
   
     [_downinglist removeObject:request];
     
     if (isexecuting) {
-       // [self startWaitingRequest];
         [self startLoad];
     }
     self.count = [_filelist count];
@@ -441,15 +392,16 @@ static FilesDownManage *sharedFilesDownManage = nil;
     [_finishedlist removeAllObjects];
 }
 
-- (void)clearAllRquests{
-    NSFileManager *fileManager=[NSFileManager defaultManager];
+- (void)clearAllRquests
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     for (ZFHttpRequest *request in _downinglist) {
         if([request isExecuting])
             [request cancel];
-        FileModel *fileInfo=(FileModel*)[request.userInfo objectForKey:@"File"];
-        NSString *path=fileInfo.tempPath;;
-        NSString *configPath=[NSString stringWithFormat:@"%@.plist",path];
+        ZFFileModel *fileInfo = (ZFFileModel*)[request.userInfo objectForKey:@"File"];
+        NSString *path = fileInfo.tempPath;;
+        NSString *configPath = [NSString stringWithFormat:@"%@.plist",path];
         [fileManager removeItemAtPath:path error:&error];
         [fileManager removeItemAtPath:configPath error:&error];
         if(!error)
@@ -462,7 +414,8 @@ static FilesDownManage *sharedFilesDownManage = nil;
     [_filelist removeAllObjects];
 }
 
-- (void)restartAllRquests{
+- (void)restartAllRquests
+{
     
     for (ZFHttpRequest *request in _downinglist) {
         if([request isExecuting])
@@ -479,20 +432,18 @@ static FilesDownManage *sharedFilesDownManage = nil;
  */
 - (void)loadTempfiles
 {
-    
-    NSFileManager *fileManager=[NSFileManager defaultManager];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-    NSArray *filelist=[fileManager contentsOfDirectoryAtPath:TEMPPATH error:&error];
+    NSArray *filelist = [fileManager contentsOfDirectoryAtPath:TEMP_FOLDER error:&error];
     if(!error)
     {
         NSLog(@"%@",[error description]);
     }
     NSMutableArray *filearr = [[NSMutableArray alloc]init];
-    for(NSString *file in filelist)
-    {
+    for(NSString *file in filelist) {
         NSString *filetype = [file  pathExtension];
         if([filetype isEqualToString:@"plist"])
-            [filearr addObject:[self getTempfile:[TEMPPATH stringByAppendingPathComponent:file]]];
+            [filearr addObject:[self getTempfile:TEMP_PATH(file)]];
     }
     
     NSArray* arr =  [self sortbyTime:(NSArray *)filearr];
@@ -501,39 +452,35 @@ static FilesDownManage *sharedFilesDownManage = nil;
     [self startLoad];
 }
 
-- (FileModel *)getTempfile:(NSString *)path
+- (ZFFileModel *)getTempfile:(NSString *)path
 {
     NSDictionary *dic = [NSDictionary dictionaryWithContentsOfFile:path];
-    FileModel *file = [[FileModel alloc]init];
+    ZFFileModel *file = [[ZFFileModel alloc]init];
     file.fileName = [dic objectForKey:@"filename"];
     file.fileType = [file.fileName pathExtension ];
     file.fileURL = [dic objectForKey:@"fileurl"];
     file.fileSize = [dic objectForKey:@"filesize"];
-    file.fileReceivedSize= [dic objectForKey:@"filerecievesize"];
-    self.basepath = [dic objectForKey:@"basepath"];
-    self.TargetSubPath = [dic objectForKey:@"tarpath"];
-    NSString*  path1= [CommonHelper getTargetPathWithBasepath:_basepath subpath:_TargetSubPath];
-    path1 = [path1 stringByAppendingPathComponent:file.fileName];
-    file.targetPath = path1;
-    NSString *tempfilePath= [TEMPPATH stringByAppendingPathComponent: file.fileName];
-    file.tempPath = tempfilePath;
+    file.fileReceivedSize = [dic objectForKey:@"filerecievesize"];
+
+    file.tempPath = TEMP_PATH(file.fileName);
     file.time = [dic objectForKey:@"time"];
     file.fileimage = [UIImage imageWithData:[dic objectForKey:@"fileimage"]];
-    file.downloadState =ZFStopDownload;
-     file.error = NO;
+    file.downloadState = ZFStopDownload;
+    file.error = NO;
     
-    NSData *fileData=[[NSFileManager defaultManager ] contentsAtPath:file.tempPath];
-    NSInteger receivedDataLength=[fileData length];
-    file.fileReceivedSize=[NSString stringWithFormat:@"%zd",receivedDataLength];
+    NSData *fileData = [[NSFileManager defaultManager ] contentsAtPath:file.tempPath];
+    NSInteger receivedDataLength = [fileData length];
+    file.fileReceivedSize = [NSString stringWithFormat:@"%zd",receivedDataLength];
     return file;
 }
 
-- (NSArray *)sortbyTime:(NSArray *)array{
+- (NSArray *)sortbyTime:(NSArray *)array
+{
     NSArray *sorteArray1 = [array sortedArrayUsingComparator:^(id obj1, id obj2){
-        FileModel *file1 = (FileModel *)obj1;
-        FileModel *file2 = (FileModel *)obj2;
-        NSDate *date1 = [CommonHelper makeDate:file1.time];
-        NSDate *date2 = [CommonHelper makeDate:file2.time];
+        ZFFileModel *file1 = (ZFFileModel *)obj1;
+        ZFFileModel *file2 = (ZFFileModel *)obj2;
+        NSDate *date1 = [ZFCommonHelper makeDate:file1.time];
+        NSDate *date2 = [ZFCommonHelper makeDate:file2.time];
         if ([[date1 earlierDate:date2]isEqualToDate:date2]) {
             return (NSComparisonResult)NSOrderedDescending;
         }
@@ -546,22 +493,20 @@ static FilesDownManage *sharedFilesDownManage = nil;
     }];
     return sorteArray1;
 }
-#pragma mark- --已完成的下载任务在这里处理--
+
+#pragma mark - 已完成的下载任务在这里处理
 /*
 	将本地已经下载完成的文件加载到已下载列表里
  */
 -(void)loadFinishedfiles
 {
-    NSString *document = [CommonHelper getCachePath];
-    NSString *plistPath = [[document stringByAppendingPathComponent:self.basepath] stringByAppendingPathComponent:kFinishedPlist];
-    if ([[NSFileManager defaultManager]fileExistsAtPath:plistPath]) {
-        NSMutableArray *finishArr = [[NSMutableArray alloc]initWithContentsOfFile:plistPath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:PLIST_PATH]) {
+        NSMutableArray *finishArr = [[NSMutableArray alloc] initWithContentsOfFile:PLIST_PATH];
         for (NSDictionary *dic in finishArr) {
-            FileModel *file = [[FileModel alloc]init];
+            ZFFileModel *file = [[ZFFileModel alloc]init];
             file.fileName = [dic objectForKey:@"filename"];
-            file.fileType = [file.fileName pathExtension ];
+            file.fileType = [file.fileName pathExtension];
             file.fileSize = [dic objectForKey:@"filesize"];
-            file.targetPath = [dic objectForKey:@"filepath"];
             file.time = [dic objectForKey:@"time"];
             file.fileimage = [UIImage imageWithData:[dic objectForKey:@"fileimage"]];
             [_finishedlist addObject:file];
@@ -570,25 +515,30 @@ static FilesDownManage *sharedFilesDownManage = nil;
     
 }
 
--(void)saveFinishedFile{
+-(void)saveFinishedFile
+{
     if (_finishedlist == nil) { return; }
     NSMutableArray *finishedinfo = [[NSMutableArray alloc]init];
-    for (FileModel *fileinfo in _finishedlist) {
+    for (ZFFileModel *fileinfo in _finishedlist) {
         NSData *imagedata =UIImagePNGRepresentation(fileinfo.fileimage);
-        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys:fileinfo.fileName,@"filename",fileinfo.time,@"time",fileinfo.fileSize,@"filesize",fileinfo.targetPath,@"filepath",imagedata,@"fileimage", nil];
+        NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys: fileinfo.fileName,@"filename",
+                                                                            fileinfo.time,@"time",
+                                                                            fileinfo.fileSize,@"filesize",
+                                                                            imagedata,@"fileimage", nil];
         [finishedinfo addObject:filedic];
     }
-    NSString *document = [CommonHelper getCachePath];
-    NSString *plistPath = [[document stringByAppendingPathComponent:self.basepath] stringByAppendingPathComponent:kFinishedPlist];
-    if (![finishedinfo writeToFile:plistPath atomically:YES]) {
+
+    if (![finishedinfo writeToFile:PLIST_PATH atomically:YES]) {
         NSLog(@"write plist fail");
     }
 }
-- (void)deleteFinishFile:(FileModel *)selectFile{
+- (void)deleteFinishFile:(ZFFileModel *)selectFile
+{
     [_finishedlist removeObject:selectFile];
-    NSFileManager* fm = [NSFileManager defaultManager];
-    if ([fm fileExistsAtPath:selectFile.targetPath]) {
-        [fm removeItemAtPath:selectFile.targetPath error:nil];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *path = FILE_PATH(selectFile.fileName);
+    if ([fm fileExistsAtPath:path]) {
+        [fm removeItemAtPath:path error:nil];
     }
     [self saveFinishedFile];
 }
@@ -602,10 +552,10 @@ static FilesDownManage *sharedFilesDownManage = nil;
     NSLog(@"ASIHttpRequest出错了!%@",error);
     if (error.code==4) { return; }
     if ([request isExecuting]) { [request cancel]; }
-    FileModel *fileInfo =  [request.userInfo objectForKey:@"File"];
+    ZFFileModel *fileInfo =  [request.userInfo objectForKey:@"File"];
     fileInfo.downloadState = ZFStopDownload;
     fileInfo.error = YES;
-    for (FileModel *file in _filelist) {
+    for (ZFFileModel *file in _filelist) {
         if ([file.fileName isEqualToString:fileInfo.fileName]) {
 			file.downloadState = ZFStopDownload;
             file.error = YES;
@@ -623,25 +573,20 @@ static FilesDownManage *sharedFilesDownManage = nil;
 {
     NSLog(@"收到回复了！");
  
-    FileModel *fileInfo=[request.userInfo objectForKey:@"File"];
+    ZFFileModel *fileInfo=[request.userInfo objectForKey:@"File"];
 	fileInfo.isFirstReceived = YES;
 
-    NSString *len = [responseHeaders objectForKey:@"Content-Length"];//
+    NSString *len = [responseHeaders objectForKey:@"Content-Length"];
     // 这个信息头，首次收到的为总大小，那么后来续传时收到的大小为肯定小于或等于首次的值，则忽略
-    if ([fileInfo.fileSize longLongValue]> [len longLongValue])
-    {
-        return;
-    }
+    if ([fileInfo.fileSize longLongValue] > [len longLongValue]){ return; }
    
-    fileInfo.fileSize = [NSString stringWithFormat:@"%lld",  [len longLongValue]];
+    fileInfo.fileSize = [NSString stringWithFormat:@"%lld", [len longLongValue]];
     [self saveDownloadFile:fileInfo];
-    
 }
-
 
 - (void)request:(ZFHttpRequest *)request didReceiveBytes:(long long)bytes
 {
-    FileModel *fileInfo=[request.userInfo objectForKey:@"File"];
+    ZFFileModel *fileInfo=[request.userInfo objectForKey:@"File"];
     NSLog(@"%@,%lld",fileInfo.fileReceivedSize,bytes);
     if (fileInfo.isFirstReceived) {
         fileInfo.isFirstReceived=NO;
@@ -663,13 +608,13 @@ static FilesDownManage *sharedFilesDownManage = nil;
 // 将正在下载的文件请求ASIHttpRequest从队列里移除，并将其配置文件删除掉,然后向已下载列表里添加该文件对象
 - (void)requestFinished:(ZFHttpRequest *)request
 {
-    FileModel *fileInfo=(FileModel *)[request.userInfo objectForKey:@"File"];
+    ZFFileModel *fileInfo=(ZFFileModel *)[request.userInfo objectForKey:@"File"];
     
     [_finishedlist addObject:fileInfo];
-    NSString *configPath=[fileInfo.tempPath stringByAppendingString:@".plist"];
-    NSFileManager *fileManager=[NSFileManager defaultManager];
+    NSString *configPath = [fileInfo.tempPath stringByAppendingString:@".plist"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-    if([fileManager fileExistsAtPath:configPath])//如果存在临时文件的配置文件
+    if([fileManager fileExistsAtPath:configPath]) //如果存在临时文件的配置文件
     {
         [fileManager removeItemAtPath:configPath error:&error];
         if(!error)
@@ -678,37 +623,36 @@ static FilesDownManage *sharedFilesDownManage = nil;
         }
     }
     
-
     [_filelist removeObject:fileInfo];
     [_downinglist removeObject:request];
     [self saveFinishedFile];
     [self startLoad];
   
-    if([self.downloadDelegate respondsToSelector:@selector(finishedDownload:)])
-    {
+    if([self.downloadDelegate respondsToSelector:@selector(finishedDownload:)]) {
         [self.downloadDelegate finishedDownload:request];
     }
 }
 
-#pragma mark - --UIAlertViewDelegate--
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // 确定按钮
     if( buttonIndex == 1 ) {
-        NSFileManager *fileManager=[NSFileManager defaultManager];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error;
-        NSInteger delindex =-1;
-        if([CommonHelper isExistFile:_fileInfo.targetPath]) //已经下载过一次该文件
+        NSInteger delindex = -1;
+        NSString *path = FILE_PATH(_fileInfo.fileName);
+        if([ZFCommonHelper isExistFile:path]) //已经下载过一次该文件
         {
-            if (![fileManager removeItemAtPath:_fileInfo.targetPath error:&error]) {
+            if (![fileManager removeItemAtPath:path error:&error]) {
                 NSLog(@"删除文件出错:%@",[error localizedDescription]);
             }
         } else { // 如果正在下载中，择重新下载
             for(ZFHttpRequest *request in self.downinglist)
             {
-                FileModel *fileModel = [request.userInfo objectForKey:@"File"];
-                if([fileModel.fileName isEqualToString:_fileInfo.fileName])
+                ZFFileModel *ZFFileModel = [request.userInfo objectForKey:@"File"];
+                if([ZFFileModel.fileName isEqualToString:_fileInfo.fileName])
                 {
                     if ([request isExecuting]) {
                         [request cancel];
@@ -719,7 +663,7 @@ static FilesDownManage *sharedFilesDownManage = nil;
             }
             [_downinglist removeObjectAtIndex:delindex];
             
-            for (FileModel *file in _filelist) {
+            for (ZFFileModel *file in _filelist) {
                 if ([file.fileName isEqualToString:_fileInfo.fileName]) {
                     delindex = [_filelist indexOfObject:file];
                     break;
@@ -727,15 +671,15 @@ static FilesDownManage *sharedFilesDownManage = nil;
             }
             [_filelist removeObjectAtIndex:delindex];
             // 存在于临时文件夹里
-            NSString * tempfilePath =[_fileInfo.tempPath stringByAppendingString:@".plist"];
-            if([CommonHelper isExistFile:tempfilePath])
+            NSString * tempfilePath = [_fileInfo.tempPath stringByAppendingString:@".plist"];
+            if([ZFCommonHelper isExistFile:tempfilePath])
             {
                 if (![fileManager removeItemAtPath:tempfilePath error:&error]) {
                     NSLog(@"删除临时文件出错:%@",[error localizedDescription]);
                 }
                 
             }
-            if([CommonHelper isExistFile:_fileInfo.tempPath])
+            if([ZFCommonHelper isExistFile:_fileInfo.tempPath])
             {
                 if (![fileManager removeItemAtPath:_fileInfo.tempPath error:&error]) {
                     NSLog(@"删除临时文件出错:%@",[error localizedDescription]);
@@ -744,12 +688,11 @@ static FilesDownManage *sharedFilesDownManage = nil;
             
         }
         
-        self.fileInfo.fileReceivedSize=[CommonHelper getFileSizeString:@"0"];
+        self.fileInfo.fileReceivedSize=[ZFCommonHelper getFileSizeString:@"0"];
         [_filelist addObject:_fileInfo];
         [self startLoad];
     }
-    if(self.VCdelegate!=nil && [self.VCdelegate respondsToSelector:@selector(allowNextRequest)])
-    {
+    if (self.VCdelegate!=nil && [self.VCdelegate respondsToSelector:@selector(allowNextRequest)]) {
         [self.VCdelegate allowNextRequest];
     }
 }
@@ -761,7 +704,7 @@ static FilesDownManage *sharedFilesDownManage = nil;
     _maxCount = maxCount;
     [[NSUserDefaults standardUserDefaults] setValue:@(maxCount) forKey:kMaxRequestCount];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [[FilesDownManage sharedFilesDownManage] startLoad];
+    [[ZFDownlodManager sharedDownloadManager] startLoad];
 }
 
 @end

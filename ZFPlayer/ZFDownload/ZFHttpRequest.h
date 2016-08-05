@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import "ASIHTTPRequest.h"
 
 @class ZFHttpRequest;
 

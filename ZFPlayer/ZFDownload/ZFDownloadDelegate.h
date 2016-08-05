@@ -1,5 +1,5 @@
 //
-//  DownloadDelegate.h
+//  ZFDownloadDelegate.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //

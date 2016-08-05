@@ -22,7 +22,6 @@
 // THE SOFTWARE.
 
 #import "ZFHttpRequest.h"
-#import "ASIHTTPRequest.h"
 
 @interface ZFHttpRequest()<ASIHTTPRequestDelegate,ASIProgressDelegate>
 {

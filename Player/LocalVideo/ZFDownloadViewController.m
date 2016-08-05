@@ -31,7 +31,7 @@
 
 @property (weak, nonatomic  ) IBOutlet UITableView    *tableView;
 @property (nonatomic, strong) NSMutableArray *downloadObjectArr;
-@property (nonatomic, strong) FilesDownManage *downloadManage;
+@property (nonatomic, strong) ZFDownlodManager *downloadManage;
 
 @end
 
@@ -75,10 +75,10 @@
     [_downloadObjectArr addObject:downloading];
     return _downloadObjectArr;
 }
-- (FilesDownManage *)downloadManage
+- (ZFDownlodManager *)downloadManage
 {
     if (!_downloadManage) {
-        _downloadManage = [FilesDownManage sharedFilesDownManageWithBasepath:@"ZFDownLoad" TargetPathArr:[NSArray arrayWithObject:@"ZFDownLoad/CacheList"]];
+        _downloadManage = [ZFDownlodManager sharedDownloadManager];
     }
     return _downloadManage;
 }
@@ -100,13 +100,13 @@
 {
     if (indexPath.section == 0) {
         ZFDownloadedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadedCell"];
-        FileModel *fileInfo = self.downloadObjectArr[indexPath.section][indexPath.row];
+        ZFFileModel *fileInfo = self.downloadObjectArr[indexPath.section][indexPath.row];
         cell.fileInfo = fileInfo;
         return cell;
     } else if (indexPath.section == 1) {
         ZFDownloadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadingCell"];
         ZFHttpRequest *request = self.downloadObjectArr[indexPath.section][indexPath.row];
-        FileModel *fileInfo = [request.userInfo objectForKey:@"File"];
+        ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
         if (request == nil) { return nil; }
         cell.controller = self;
         cell.fileInfo = fileInfo;
@@ -133,7 +133,7 @@
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        FileModel *fileInfo = self.downloadObjectArr[indexPath.section][indexPath.row];
+        ZFFileModel *fileInfo = self.downloadObjectArr[indexPath.section][indexPath.row];
         [self.downloadManage deleteFinishFile:fileInfo];
     }else if (indexPath.section == 1) {
         ZFHttpRequest *request = self.downloadObjectArr[indexPath.section][indexPath.row];
@@ -158,7 +158,7 @@
 // 下载中
 - (void)updateCellProgress:(ZFHttpRequest *)request;
 {
-    FileModel *fileInfo = [request.userInfo objectForKey:@"File"];
+    ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
     [self performSelectorOnMainThread:@selector(updateCellOnMainThread:) withObject:fileInfo waitUntilDone:YES];
 }
 
@@ -169,7 +169,7 @@
 }
 
 // 更新下载进度
-- (void)updateCellOnMainThread:(FileModel *)fileInfo
+- (void)updateCellOnMainThread:(ZFFileModel *)fileInfo
 {
     NSArray *cellArr = [self.tableView visibleCells];
     for(id obj in cellArr)
@@ -192,8 +192,10 @@
     
     UITableViewCell *cell            = (UITableViewCell *)sender;
     NSIndexPath *indexPath           = [self.tableView indexPathForCell:cell];
-    FileModel *model                 = self.downloadObjectArr[indexPath.section][indexPath.row];
-    NSURL *videoURL                  = [NSURL fileURLWithPath:model.targetPath];
+    ZFFileModel *model                 = self.downloadObjectArr[indexPath.section][indexPath.row];
+    // 文件存放路径
+    NSString *path                   = FILE_PATH(model.fileName);
+    NSURL *videoURL                  = [NSURL fileURLWithPath:path];
 
     MoviePlayerViewController *movie = (MoviePlayerViewController *)segue.destinationViewController;
     movie.videoURL                   = videoURL;

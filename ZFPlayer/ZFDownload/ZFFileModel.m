@@ -1,5 +1,5 @@
 //
-//  FileModel.m
+//  ZFFileModel.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "FileModel.h"
+#import "ZFFileModel.h"
 
-@implementation FileModel
+@implementation ZFFileModel
 
 @end

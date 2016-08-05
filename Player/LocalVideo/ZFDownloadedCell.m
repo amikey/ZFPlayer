@@ -36,10 +36,10 @@
     // Configure the view for the selected state
 }
 
-- (void)setFileInfo:(FileModel *)fileInfo
+- (void)setFileInfo:(ZFFileModel *)fileInfo
 {
     _fileInfo = fileInfo;
-    NSString *totalSize = [CommonHelper getFileSizeString:fileInfo.fileSize];
+    NSString *totalSize = [ZFCommonHelper getFileSizeString:fileInfo.fileSize];
     self.fileNameLabel.text = fileInfo.fileName;
     self.sizeLabel.text = totalSize;
 }
