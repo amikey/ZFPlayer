@@ -56,13 +56,12 @@
         [filedownmanage stopRequest:self.request];
     } else {
          self.downloadBtn.selected = NO;
-        
         [filedownmanage resumeRequest:self.request];
     }
     
     // 暂停意味着这个Cell里的ASIHttprequest已被释放，要及时更新table的数据，使最新的ASIHttpreqst控制Cell
-    if ([self.controller respondsToSelector:@selector(reloadTableView)]) {
-        [(ZFDownloadViewController *)self.controller reloadTableView];
+    if (self.btnClickBlock) {
+        self.btnClickBlock();
     }
     sender.userInteractionEnabled = YES;
 }
@@ -89,7 +88,7 @@
     NSString *spped = [NSString stringWithFormat:@"%@/S",[ZFCommonHelper getFileSizeString:[NSString stringWithFormat:@"%lu",[ASIHTTPRequest averageBandwidthUsedPerSecond]]]];
     self.speedLabel.text = spped;
     
-    if (fileInfo.downloadState == ZFDownloading) {//文件正在下载
+    if (fileInfo.downloadState == ZFDownloading) { //文件正在下载
         self.downloadBtn.selected = NO;
     } else if (fileInfo.downloadState == ZFStopDownload&&!fileInfo.error) {
         self.downloadBtn.selected = YES;

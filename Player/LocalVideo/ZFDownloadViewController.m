@@ -46,11 +46,6 @@
     [self initData];
 }
 
-- (void)reloadTableView
-{
-    [self.tableView reloadData];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableFooterView = [UIView new];
@@ -69,7 +64,6 @@
 {
     NSMutableArray *downladed = self.downloadManage.finishedlist;
     NSMutableArray *downloading = self.downloadManage.downinglist;
-
     _downloadObjectArr = @[].mutableCopy;
     [_downloadObjectArr addObject:downladed];
     [_downloadObjectArr addObject:downloading];
@@ -106,10 +100,17 @@
     } else if (indexPath.section == 1) {
         ZFDownloadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadingCell"];
         ZFHttpRequest *request = self.downloadObjectArr[indexPath.section][indexPath.row];
-        ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
         if (request == nil) { return nil; }
-        cell.controller = self;
+        ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
+
+        __weak typeof(self) weakSelf = self;
+        // 下载按钮点击时候的要刷新列表
+        cell.btnClickBlock = ^{
+            [weakSelf.tableView reloadData];
+        };
+        // 下载模型赋值
         cell.fileInfo = fileInfo;
+        // 下载的request
         cell.request = request;
         return cell;
     }

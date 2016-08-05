@@ -494,7 +494,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
 /*
 	将本地已经下载完成的文件加载到已下载列表里
  */
--(void)loadFinishedfiles
+- (void)loadFinishedfiles
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:PLIST_PATH]) {
         NSMutableArray *finishArr = [[NSMutableArray alloc] initWithContentsOfFile:PLIST_PATH];
@@ -511,12 +511,13 @@ static ZFDownlodManager *sharedDownloadManager = nil;
     
 }
 
--(void)saveFinishedFile
+- (void)saveFinishedFile
 {
     if (_finishedlist == nil) { return; }
-    NSMutableArray *finishedinfo = [[NSMutableArray alloc]init];
+    NSMutableArray *finishedinfo = [[NSMutableArray alloc] init];
+  
     for (ZFFileModel *fileinfo in _finishedlist) {
-        NSData *imagedata =UIImagePNGRepresentation(fileinfo.fileimage);
+        NSData *imagedata = UIImagePNGRepresentation(fileinfo.fileimage);
         NSDictionary *filedic = [NSDictionary dictionaryWithObjectsAndKeys: fileinfo.fileName,@"filename",
                                                                             fileinfo.time,@"time",
                                                                             fileinfo.fileSize,@"filesize",
@@ -528,6 +529,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
         NSLog(@"write plist fail");
     }
 }
+
 - (void)deleteFinishFile:(ZFFileModel *)selectFile
 {
     [_finishedlist removeObject:selectFile];
@@ -605,7 +607,12 @@ static ZFDownlodManager *sharedDownloadManager = nil;
 - (void)requestFinished:(ZFHttpRequest *)request
 {
     ZFFileModel *fileInfo=(ZFFileModel *)[request.userInfo objectForKey:@"File"];
-    
+    for (ZFFileModel *file in _finishedlist) {
+        if ([file.fileName isEqualToString:fileInfo.fileName]) {
+            // 如果本地已经有同名的文件啦，那先把本地文件删除
+            [_finishedlist removeObject:file];
+        }
+    }
     [_finishedlist addObject:fileInfo];
     NSString *configPath = [fileInfo.tempPath stringByAppendingString:@".plist"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -641,9 +648,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
         NSString *path = FILE_PATH(_fileInfo.fileName);
         if([ZFCommonHelper isExistFile:path]) //已经下载过一次该文件
         {
-            if (![fileManager removeItemAtPath:path error:&error]) {
-                NSLog(@"删除文件出错:%@",[error localizedDescription]);
-            }
+            [self deleteFinishFile:_fileInfo];
         } else { // 如果正在下载中，择重新下载
             for(ZFHttpRequest *request in self.downinglist)
             {
@@ -684,7 +689,7 @@ static ZFDownlodManager *sharedDownloadManager = nil;
             
         }
         
-        self.fileInfo.fileReceivedSize=[ZFCommonHelper getFileSizeString:@"0"];
+        self.fileInfo.fileReceivedSize = [ZFCommonHelper getFileSizeString:@"0"];
         [_filelist addObject:_fileInfo];
         [self startLoad];
     }

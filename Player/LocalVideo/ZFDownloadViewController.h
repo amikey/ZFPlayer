@@ -24,5 +24,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ZFDownloadViewController : UIViewController
-- (void)reloadTableView;
+
 @end
