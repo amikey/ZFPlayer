@@ -1552,9 +1552,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         if ((point.y > self.bounds.size.height-40) || (self.isCellVideo && !self.isFullScreen) || self.playDidEnd) { return NO; }
         return YES;
     }
-    // 在cell上播放视频 && 不是全屏状态
-    if (self.isBottomVideo && !self.isFullScreen) {
+    // 在cell上播放视频 && 不是全屏状态 && 点在控制层上
+    if (self.isBottomVideo && !self.isFullScreen && touch.view == self.controlView) {
         [self fullScreenAction:self.controlView.fullScreenBtn];
+        return NO;
+    }
+    if (self.isBottomVideo && !self.isFullScreen && touch.view == self.controlView.backBtn) {
+        // 关闭player
+        [self resetPlayer];
+        [self removeFromSuperview];
         return NO;
     }
     return YES;
