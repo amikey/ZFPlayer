@@ -70,9 +70,10 @@
     _fileInfo = fileInfo;
     self.fileNameLabel.text = fileInfo.fileName;
     // 服务器可能响应的慢，拿不到视频总长度
-    if (!fileInfo.fileSize) {
+    if ([fileInfo.fileSize longLongValue] == 0) {
         self.progressLabel.text = @"正在获取";
-        self.speedLabel.text = @"0B/S";
+        self.speedLabel.text = @"0.00B/S";
+        self.progress.progress = 0.0;
         return;
     }
     NSString *currentSize = [ZFCommonHelper getFileSizeString:fileInfo.fileReceivedSize];
