@@ -25,6 +25,8 @@
 #import "ZFPlayer.h"
 
 @interface ZFPlayerControlView ()
+/** 标题 */
+@property (nonatomic, strong) UILabel                 *titleLabel;
 /** 开始播放按钮 */
 @property (nonatomic, strong) UIButton                *startBtn;
 /** 当前播放时长label */
@@ -88,6 +90,7 @@
         [self addSubview:self.playeBtn];
         
         [self.topImageView addSubview:self.resolutionBtn];
+        [self.topImageView addSubview:self.titleLabel];
         
         // 添加子控件的约束
         [self makeSubViewsConstraints];
@@ -130,6 +133,12 @@
         make.height.mas_equalTo(30);
         make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
+    }];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.backBtn.mas_trailing).offset(10);
+        make.centerY.equalTo(self.backBtn.mas_centerY);
+        make.trailing.equalTo(self.resolutionBtn.mas_leading).offset(-10);
     }];
     
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -315,6 +324,16 @@
 
 }
 #pragma mark - getter
+
+- (UILabel *)titleLabel
+{
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.textColor = [UIColor whiteColor];
+        _titleLabel.font = [UIFont systemFontOfSize:15.0];
+    }
+    return _titleLabel;
+}
 
 - (UIButton *)backBtn
 {

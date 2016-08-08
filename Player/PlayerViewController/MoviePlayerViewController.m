@@ -95,6 +95,8 @@
     self.playerView.placeholderImageName = @"loading_bgView1";
     // 设置视频的URL
     self.playerView.videoURL = self.videoURL;
+    // 设置标题
+    self.playerView.title = @"可以设置视频的标题";
     //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
     self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
     

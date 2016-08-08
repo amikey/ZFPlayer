@@ -1268,10 +1268,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)progressSliderTouchBegan:(UISlider *)slider
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-        // 暂停timer
-//        [self.timer setFireDate:[NSDate distantFuture]];
-    }
 }
 
 /**
@@ -1713,6 +1709,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")];
         self.layer.contents = (id) image.CGImage;
     }
+}
+
+- (void)setTitle:(NSString *)title
+{
+    _title = title;
+    self.controlView.titleLabel.text = title;
 }
 
 #pragma mark - Getter

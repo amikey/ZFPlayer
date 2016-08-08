@@ -126,7 +126,8 @@
                              AtIndexPath:weakIndexPath
                         withImageViewTag:101];
         [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
-        
+        weakSelf.playerView.title = @"可以设置视频的标题";
+
         // 下载功能
         weakSelf.playerView.hasDownload   = YES;
         // 下载按钮的回调

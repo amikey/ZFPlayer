@@ -39,6 +39,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 
 /** 视频URL */
 @property (nonatomic, strong) NSURL                *videoURL;
+/** 视频标题 */
+@property (nonatomic, strong) NSString             *title;
 /** 视频URL的数组 */
 @property (nonatomic, strong) NSArray              *videoURLArray;
 /** 返回按钮Block */
@@ -101,6 +103,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
   * 暂停 
  */
 - (void)pause;
+
+/** 设置URL的setter方法 */
+- (void)setVideoURL:(NSURL *)videoURL;
 
 /**
  *  用于cell上播放player
