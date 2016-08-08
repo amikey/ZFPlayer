@@ -26,6 +26,7 @@
 #import "ZFPlayer.h"
 #import "ZFDownloadingCell.h"
 #import "ZFDownloadedCell.h"
+#import <ZFDownload/ZFDownloadManager.h>
 
 @interface ZFDownloadViewController ()<UITableViewDataSource,UITableViewDelegate,ZFDownloadDelegate>
 

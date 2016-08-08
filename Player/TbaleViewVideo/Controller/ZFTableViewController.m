@@ -26,6 +26,7 @@
 #import "ZFPlayerModel.h"
 #import "ZFPlyerResolution.h"
 #import <Masonry/Masonry.h>
+#import <ZFDownload/ZFDownloadManager.h>
 
 @interface ZFTableViewController ()
 

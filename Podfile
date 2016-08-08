@@ -7,6 +7,6 @@ target 'Player' do
 pod 'Masonry'
 pod 'SDWebImage'
 pod 'FDFullscreenPopGesture'
-pod 'ASIHTTPRequest'
+pod 'ZFDownload'
 end
 

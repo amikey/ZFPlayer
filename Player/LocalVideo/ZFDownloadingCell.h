@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import "ZFPlayer.h"
+#import <ZFDownload/ZFDownloadManager.h>
 
 typedef void(^ZFBtnClickBlock)(void);
 

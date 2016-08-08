@@ -25,6 +25,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <Masonry/Masonry.h>
+#import <ZFDownload/ZFDownloadManager.h>
 #import "ZFPlayer.h"
 
 @interface MoviePlayerViewController ()
