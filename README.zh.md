@@ -17,13 +17,14 @@
 * 左侧1/2位置上下滑动调节屏幕亮度（模拟器调不了亮度，请在真机调试）
 * 右侧1/2位置上下滑动调节音量（模拟器调不了音量，请在真机调试）
 * 左右滑动调节播放进度
+* 全屏状态下拖动slider控制进度，显示视频的预览图
 * 断点下载功能
 * 切换视频分辨率
 
 ## 要求
 
 - iOS 8+
-- Xcode 6.0+
+- Xcode 7.0+
 
 ## 统计
 
@@ -123,6 +124,7 @@ self.playerView.placeholderImageName = @"...";
 
 ![亮度调节演示](https://github.com/renzifeng/ZFPlayer/raw/master/brightness.png)
 
+![进度调节预览图](https://github.com/renzifeng/ZFPlayer/raw/master/progress.png)
 
 ### 参考资料：
 

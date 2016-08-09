@@ -17,6 +17,7 @@
 * The left 1/2 position on the sliding screen brightness adjustment (simulator can't adjust brightness, please in the real machine debugging)
 * The right 1/2 position on the sliding screen volume adjustment (simulator can't adjust the volume, please in the real machine debugging)
 * Left and right sliding adjustment play schedule
+* Full screen mode to drag the slider control progress, display video preview
 * Breakpoint Download 
 * Toggle video resolution
 
@@ -125,6 +126,8 @@ self.playerView.placeholderImageName = @"...";
 ![Sound adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/volume.png)
 
 ![Brightness adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/brightness.png)
+
+![Progress adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/progress.png)
 
 
 ### reference material：
