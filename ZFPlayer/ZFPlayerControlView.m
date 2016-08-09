@@ -36,7 +36,7 @@
 /** 缓冲进度条 */
 @property (nonatomic, strong) UIProgressView          *progressView;
 /** 滑杆 */
-@property (nonatomic, strong) UISlider                *videoSlider;
+@property (nonatomic, strong) ASValueTrackingSlider   *videoSlider;
 /** 全屏按钮 */
 @property (nonatomic, strong) UIButton                *fullScreenBtn;
 /** 锁定屏幕方向按钮 */
@@ -408,7 +408,11 @@
 - (UISlider *)videoSlider
 {
     if (!_videoSlider) {
-        _videoSlider                       = [[UISlider alloc] init];
+        _videoSlider                       = [[ASValueTrackingSlider alloc] init];
+        _videoSlider.popUpViewCornerRadius = 0.0;
+        _videoSlider.popUpViewColor = RGBA(19, 19, 9, 1);
+        _videoSlider.popUpViewWidthPaddingFactor = 1.7;
+        _videoSlider.popUpViewArrowLength = 8;
         // 设置slider
         [_videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_slider")] forState:UIControlStateNormal];
         _videoSlider.maximumValue          = 1;

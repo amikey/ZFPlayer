@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, strong) AVPlayer            *player;
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayerItem        *playerItem;
+@property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
 /** playerLayer */
 @property (nonatomic, strong) AVPlayerLayer       *playerLayer;
 /** 滑杆 */
@@ -179,6 +180,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self pause];
     // 移除原来的layer
     [self.playerLayer removeFromSuperlayer];
+    self.imageGenerator = nil;
     // 替换PlayerItem为nil
     [self.player replaceCurrentItemWithPlayerItem:nil];
     // 把player置为nil
@@ -223,7 +225,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
     // app进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayGround) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
     // slider开始滑动事件
     [self.controlView.videoSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     // slider滑动中事件
@@ -1265,7 +1266,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  *
  *  @param slider UISlider
  */
-- (void)progressSliderTouchBegan:(UISlider *)slider
+- (void)progressSliderTouchBegan:(ASValueTrackingSlider *)slider
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
@@ -1275,7 +1276,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  *
  *  @param slider UISlider
  */
-- (void)progressSliderValueChanged:(UISlider *)slider
+- (void)progressSliderValueChanged:(ASValueTrackingSlider *)slider
 {
     //拖动改变视频播放进度
     if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
@@ -1308,11 +1309,21 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSString *currentTime   = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
         NSString *totalTime     = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
         
-        if (total > 0) {
-            // 当总时长 > 0时候才能拖动slider
+        if (total > 0) { // 当总时长 > 0时候才能拖动slider
+            self.controlView.videoSlider.popUpView.hidden = !self.isFullScreen;
             self.controlView.currentTimeLabel.text  = currentTime;
-            self.controlView.horizontalLabel.hidden = NO;
-            self.controlView.horizontalLabel.text   = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+            if (self.isFullScreen) {
+                [self.controlView.videoSlider setText:currentTime];
+                NSError *error;
+                CMTime actualTime;
+                CGImageRef cgImage = [self.imageGenerator copyCGImageAtTime:dragedCMTime actualTime:&actualTime error:&error];
+                CMTimeShow(actualTime);
+                UIImage *image = [UIImage imageWithCGImage:cgImage];
+                [self.controlView.videoSlider setImage:image ? image : [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")]];
+            } else {
+                self.controlView.horizontalLabel.hidden = NO;
+                self.controlView.horizontalLabel.text   = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
+            }
         }else {
             // 此时设置slider值为0
             slider.value = 0;
@@ -1329,7 +1340,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  *
  *  @param slider UISlider
  */
-- (void)progressSliderTouchEnded:(UISlider *)slider
+- (void)progressSliderTouchEnded:(ASValueTrackingSlider *)slider
 {
     if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         
@@ -1734,6 +1745,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }];
     }
     return _controlView;
+}
+
+- (AVAssetImageGenerator *)imageGenerator
+{
+    if (!_imageGenerator) {
+        AVURLAsset *urlAsset = [AVURLAsset assetWithURL:self.videoURL];
+        _imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+    }
+    return _imageGenerator;
 }
 
 @end

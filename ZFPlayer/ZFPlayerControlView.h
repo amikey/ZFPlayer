@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "ASValueTrackingSlider.h"
 
 typedef void(^ChangeResolutionBlock)(UIButton *button);
 typedef void(^SliderTapBlock)(CGFloat value);
@@ -38,7 +39,7 @@ typedef void(^SliderTapBlock)(CGFloat value);
 /** 缓冲进度条 */
 @property (nonatomic, strong, readonly) UIProgressView          *progressView;
 /** 滑杆 */
-@property (nonatomic, strong, readonly) UISlider                *videoSlider;
+@property (nonatomic, strong, readonly) ASValueTrackingSlider   *videoSlider;
 /** 全屏按钮 */
 @property (nonatomic, strong, readonly) UIButton                *fullScreenBtn;
 /** 锁定屏幕方向按钮 */
