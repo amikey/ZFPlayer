@@ -382,6 +382,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.controlView hideControlView];
 }
 
+
 /**
  *  设置Player相关参数
  */

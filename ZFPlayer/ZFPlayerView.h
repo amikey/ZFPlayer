@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 /** 从xx秒开始播放视频跳转 */
 @property (nonatomic, assign) NSInteger            seekTime;
 /** 播放前占位图片的名称，不设置就显示默认占位图（需要在设置视频URL之前设置） */
-@property (nonatomic, copy) NSString               *placeholderImageName;
+@property (nonatomic, copy  ) NSString             *placeholderImageName;
 /** 是否被用户暂停 */
 @property (nonatomic, assign, readonly) BOOL       isPauseByUser;
 

@@ -26,6 +26,10 @@
 - iOS 8+
 - Xcode 7.0+
 
+## 配套博客
+[博客地址](http://www.jianshu.com/p/5566077bb25f)
+
+
 ## 统计
 
 哪些APP使用ZFPlayer，并上架AppStore，请告诉我，帮助我统计。

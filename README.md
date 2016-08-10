@@ -26,6 +26,10 @@
 - iOS 8+
 - Xcode 7+
 
+## Blog
+[博客地址](http://www.jianshu.com/p/5566077bb25f)
+
+
 ## Statistics
 
 What APP using ZFPlayer, and on AppStore, please tell me, help me to statistics.
