@@ -405,13 +405,12 @@
     return _progressView;
 }
 
-- (UISlider *)videoSlider
+- (ASValueTrackingSlider *)videoSlider
 {
     if (!_videoSlider) {
         _videoSlider                       = [[ASValueTrackingSlider alloc] init];
         _videoSlider.popUpViewCornerRadius = 0.0;
         _videoSlider.popUpViewColor = RGBA(19, 19, 9, 1);
-        _videoSlider.popUpViewWidthPaddingFactor = 1.7;
         _videoSlider.popUpViewArrowLength = 8;
         // 设置slider
         [_videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_slider")] forState:UIControlStateNormal];

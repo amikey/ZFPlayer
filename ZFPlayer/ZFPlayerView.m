@@ -471,17 +471,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, 1) queue:nil usingBlock:^(CMTime time){
         AVPlayerItem *currentItem = weakSelf.playerItem;
         NSArray *loadedRanges = currentItem.seekableTimeRanges;
-        if (loadedRanges.count > 0 && currentItem.duration.timescale != 0)
-        {
+        if (loadedRanges.count > 0 && currentItem.duration.timescale != 0) {
+            NSInteger currentTime                      = (NSInteger)CMTimeGetSeconds([currentItem currentTime]);
             // 当前时长进度progress
-            NSInteger proMin                       = (NSInteger)CMTimeGetSeconds([currentItem currentTime]) / 60;//当前秒
-            NSInteger proSec                       = (NSInteger)CMTimeGetSeconds([currentItem currentTime]) % 60;//当前分钟
-            
+            NSInteger proMin                           = currentTime / 60;//当前秒
+            NSInteger proSec                           = currentTime % 60;//当前分钟
+            CGFloat totalTime                          = (CGFloat)currentItem.duration.value / currentItem.duration.timescale;
             // duration 总时长
-            NSInteger durMin                       = (NSInteger)currentItem.duration.value / currentItem.duration.timescale / 60;//总秒
-            NSInteger durSec                       = (NSInteger)currentItem.duration.value / currentItem.duration.timescale % 60;//总分钟
+            NSInteger durMin                           = (NSInteger)totalTime / 60;//总秒
+            NSInteger durSec                           = (NSInteger)totalTime % 60;//总分钟
             // 更新slider
-            weakSelf.controlView.videoSlider.value     = CMTimeGetSeconds([currentItem currentTime]) / (currentItem.duration.value / currentItem.duration.timescale);
+            weakSelf.controlView.videoSlider.value     = CMTimeGetSeconds([currentItem currentTime]) / totalTime;
             // 更新当前播放时间
             weakSelf.controlView.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
             // 更新总时间
