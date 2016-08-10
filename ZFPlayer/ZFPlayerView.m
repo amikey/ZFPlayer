@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, strong) AVPlayer            *player;
 /** 播放属性 */
 @property (nonatomic, strong) AVPlayerItem        *playerItem;
+@property (nonatomic, strong) AVURLAsset          *urlAsset;
 @property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
 /** playerLayer */
 @property (nonatomic, strong) AVPlayerLayer       *playerLayer;
@@ -387,9 +388,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)configZFPlayer
 {
+    self.urlAsset = [AVURLAsset assetWithURL:self.videoURL];
     // 初始化playerItem
-    self.playerItem  = [AVPlayerItem playerItemWithURL:self.videoURL];
-    
+    self.playerItem = [AVPlayerItem playerItemWithAsset:self.urlAsset];
     // 每次都重新创建Player，替换replaceCurrentItemWithPlayerItem:，该方法阻塞线程
     self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
     
@@ -1314,12 +1315,19 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             self.controlView.currentTimeLabel.text  = currentTime;
             if (self.isFullScreen) {
                 [self.controlView.videoSlider setText:currentTime];
-                NSError *error;
-                CMTime actualTime;
-                CGImageRef cgImage = [self.imageGenerator copyCGImageAtTime:dragedCMTime actualTime:&actualTime error:&error];
-                CMTimeShow(actualTime);
-                UIImage *image = [UIImage imageWithCGImage:cgImage];
-                [self.controlView.videoSlider setImage:image ? image : [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")]];
+                dispatch_queue_t queue = dispatch_queue_create("com.playerPic.queue", DISPATCH_QUEUE_CONCURRENT);
+                dispatch_async(queue, ^{
+                    NSError *error;
+                    CMTime actualTime;
+                    CGImageRef cgImage = [self.imageGenerator copyCGImageAtTime:dragedCMTime actualTime:&actualTime error:&error];
+                    CMTimeShow(actualTime);
+                    UIImage *image = [UIImage imageWithCGImage:cgImage];
+                    CGImageRelease(cgImage);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.controlView.videoSlider setImage:image ? image : [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")]];
+                    });
+                });
+            
             } else {
                 self.controlView.horizontalLabel.hidden = NO;
                 self.controlView.horizontalLabel.text   = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTime, totalTime];
@@ -1750,8 +1758,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (AVAssetImageGenerator *)imageGenerator
 {
     if (!_imageGenerator) {
-        AVURLAsset *urlAsset = [AVURLAsset assetWithURL:self.videoURL];
-        _imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+        _imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.urlAsset];
     }
     return _imageGenerator;
 }
