@@ -47,64 +47,63 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @interface ZFPlayerView () <UIGestureRecognizerDelegate,UIAlertViewDelegate>
 
 /** 播放属性 */
-@property (nonatomic, strong) AVPlayer            *player;
-/** 播放属性 */
-@property (nonatomic, strong) AVPlayerItem        *playerItem;
-@property (nonatomic, strong) AVURLAsset          *urlAsset;
-@property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
+@property (nonatomic, strong) AVPlayer               *player;
+@property (nonatomic, strong) AVPlayerItem           *playerItem;
+@property (nonatomic, strong) AVURLAsset             *urlAsset;
+@property (nonatomic, strong) AVAssetImageGenerator  *imageGenerator;
 /** playerLayer */
-@property (nonatomic, strong) AVPlayerLayer       *playerLayer;
+@property (nonatomic, strong) AVPlayerLayer          *playerLayer;
 /** 滑杆 */
-@property (nonatomic, strong) UISlider            *volumeViewSlider;
+@property (nonatomic, strong) UISlider               *volumeViewSlider;
 /** 控制层View */
-@property (nonatomic, strong) ZFPlayerControlView *controlView;
+@property (nonatomic, strong) ZFPlayerControlView    *controlView;
 /** 用来保存快进的总时长 */
-@property (nonatomic, assign) CGFloat             sumTime;
+@property (nonatomic, assign) CGFloat                sumTime;
 /** 定义一个实例变量，保存枚举值 */
-@property (nonatomic, assign) PanDirection        panDirection;
+@property (nonatomic, assign) PanDirection           panDirection;
 /** 播发器的几种状态 */
-@property (nonatomic, assign) ZFPlayerState       state;
+@property (nonatomic, assign) ZFPlayerState          state;
 /** 是否为全屏 */
-@property (nonatomic, assign) BOOL                isFullScreen;
+@property (nonatomic, assign) BOOL                   isFullScreen;
 /** 是否锁定屏幕方向 */
-@property (nonatomic, assign) BOOL                isLocked;
+@property (nonatomic, assign) BOOL                   isLocked;
 /** 是否在调节音量*/
-@property (nonatomic, assign) BOOL                isVolume;
+@property (nonatomic, assign) BOOL                   isVolume;
 /** 是否显示controlView*/
-@property (nonatomic, assign) BOOL                isMaskShowing;
+@property (nonatomic, assign) BOOL                   isMaskShowing;
 /** 是否被用户暂停 */
-@property (nonatomic, assign) BOOL                isPauseByUser;
+@property (nonatomic, assign) BOOL                   isPauseByUser;
 /** 是否播放本地文件 */
-@property (nonatomic, assign) BOOL                isLocalVideo;
+@property (nonatomic, assign) BOOL                   isLocalVideo;
 /** slider上次的值 */
-@property (nonatomic, assign) CGFloat             sliderLastValue;
+@property (nonatomic, assign) CGFloat                sliderLastValue;
 /** 是否再次设置URL播放视频 */
-@property (nonatomic, assign) BOOL                repeatToPlay;
+@property (nonatomic, assign) BOOL                   repeatToPlay;
 /** 播放完了*/
-@property (nonatomic, assign) BOOL                playDidEnd;
+@property (nonatomic, assign) BOOL                   playDidEnd;
 /** 进入后台*/
-@property (nonatomic, assign) BOOL                didEnterBackground;
+@property (nonatomic, assign) BOOL                   didEnterBackground;
 /** 是否自动播放 */
-@property (nonatomic, assign) BOOL                isAutoPlay;
+@property (nonatomic, assign) BOOL                   isAutoPlay;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
 
 #pragma mark - UITableViewCell PlayerView
 
 /** palyer加到tableView */
-@property (nonatomic, strong) UITableView         *tableView;
+@property (nonatomic, strong) UITableView            *tableView;
 /** player所在cell的indexPath */
-@property (nonatomic, strong) NSIndexPath         *indexPath;
+@property (nonatomic, strong) NSIndexPath            *indexPath;
 /** cell上imageView的tag */
-@property (nonatomic, assign) NSInteger           cellImageViewTag;
+@property (nonatomic, assign) NSInteger              cellImageViewTag;
 /** ViewController中页面是否消失 */
-@property (nonatomic, assign) BOOL                viewDisappear;
+@property (nonatomic, assign) BOOL                   viewDisappear;
 /** 是否在cell上播放video */
-@property (nonatomic, assign) BOOL                isCellVideo;
+@property (nonatomic, assign) BOOL                   isCellVideo;
 /** 是否缩小视频在底部 */
-@property (nonatomic, assign) BOOL                isBottomVideo;
+@property (nonatomic, assign) BOOL                   isBottomVideo;
 /** 是否切换分辨率*/
-@property (nonatomic, assign) BOOL                isChangeResolution;
+@property (nonatomic, assign) BOOL                   isChangeResolution;
 
 @end
 
