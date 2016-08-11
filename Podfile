@@ -6,7 +6,7 @@
 target 'Player' do
 pod 'Masonry'
 pod 'SDWebImage'
-pod 'FDFullscreenPopGesture'
-pod 'ZFDownload'
+pod 'FDFullscreenPopGesture', '~> 1.1'
+pod 'ZFDownload', '~> 1.0.0'
 end
 

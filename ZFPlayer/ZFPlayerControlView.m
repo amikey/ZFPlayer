@@ -339,7 +339,7 @@
 {
     if (!_backBtn) {
         _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
+        [_backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
     }
     return _backBtn;
 }
@@ -349,7 +349,7 @@
     if (!_topImageView) {
         _topImageView                        = [[UIImageView alloc] init];
         _topImageView.userInteractionEnabled = YES;
-        _topImageView.image                  = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_top_shadow")];
+        _topImageView.image                  = ZFPlayerImage(@"ZFPlayer_top_shadow");
     }
     return _topImageView;
 }
@@ -359,7 +359,7 @@
     if (!_bottomImageView) {
         _bottomImageView                        = [[UIImageView alloc] init];
         _bottomImageView.userInteractionEnabled = YES;
-        _bottomImageView.image                  = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_bottom_shadow")];
+        _bottomImageView.image                  = ZFPlayerImage(@"ZFPlayer_bottom_shadow");
     }
     return _bottomImageView;
 }
@@ -368,8 +368,8 @@
 {
     if (!_lockBtn) {
         _lockBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_lockBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_unlock-nor")] forState:UIControlStateNormal];
-        [_lockBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_lock-nor")] forState:UIControlStateSelected];
+        [_lockBtn setImage:ZFPlayerImage(@"ZFPlayer_unlock-nor") forState:UIControlStateNormal];
+        [_lockBtn setImage:ZFPlayerImage(@"ZFPlayer_lock-nor") forState:UIControlStateSelected];
     }
     return _lockBtn;
 }
@@ -378,8 +378,8 @@
 {
     if (!_startBtn) {
         _startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_startBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_play")] forState:UIControlStateNormal];
-        [_startBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_pause")] forState:UIControlStateSelected];
+        [_startBtn setImage:ZFPlayerImage(@"ZFPlayer_play") forState:UIControlStateNormal];
+        [_startBtn setImage:ZFPlayerImage(@"ZFPlayer_pause") forState:UIControlStateSelected];
     }
     return _startBtn;
 }
@@ -413,7 +413,7 @@
         _videoSlider.popUpViewColor = RGBA(19, 19, 9, 1);
         _videoSlider.popUpViewArrowLength = 8;
         // 设置slider
-        [_videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_slider")] forState:UIControlStateNormal];
+        [_videoSlider setThumbImage:ZFPlayerImage(@"ZFPlayer_slider") forState:UIControlStateNormal];
         _videoSlider.maximumValue          = 1;
         _videoSlider.minimumTrackTintColor = [UIColor whiteColor];
         _videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
@@ -436,8 +436,8 @@
 {
     if (!_fullScreenBtn) {
         _fullScreenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_fullscreen")] forState:UIControlStateNormal];
-        [_fullScreenBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_shrinkscreen")] forState:UIControlStateSelected];
+        [_fullScreenBtn setImage:ZFPlayerImage(@"ZFPlayer_fullscreen") forState:UIControlStateNormal];
+        [_fullScreenBtn setImage:ZFPlayerImage(@"ZFPlayer_shrinkscreen") forState:UIControlStateSelected];
     }
     return _fullScreenBtn;
 }
@@ -449,7 +449,7 @@
         _horizontalLabel.textColor       = [UIColor whiteColor];
         _horizontalLabel.textAlignment   = NSTextAlignmentCenter;
         _horizontalLabel.font            = [UIFont systemFontOfSize:15.0];
-        _horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_management_mask")]];
+        _horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:ZFPlayerImage(@"ZFPlayer_management_mask")];
     }
     return _horizontalLabel;
 }
@@ -466,7 +466,7 @@
 {
     if (!_repeatBtn) {
         _repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_repeatBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_repeat_video")] forState:UIControlStateNormal];
+        [_repeatBtn setImage:ZFPlayerImage(@"ZFPlayer_repeat_video") forState:UIControlStateNormal];
     }
     return _repeatBtn;
 }
@@ -475,8 +475,8 @@
 {
     if (!_downLoadBtn) {
         _downLoadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_download")] forState:UIControlStateNormal];
-        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_not_download")] forState:UIControlStateDisabled];
+        [_downLoadBtn setImage:ZFPlayerImage(@"ZFPlayer_download") forState:UIControlStateNormal];
+        [_downLoadBtn setImage:ZFPlayerImage(@"ZFPlayer_not_download") forState:UIControlStateDisabled];
     }
     return _downLoadBtn;
 }
@@ -495,7 +495,7 @@
 {
     if (!_playeBtn) {
         _playeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playeBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_play_btn")] forState:UIControlStateNormal];
+        [_playeBtn setImage:ZFPlayerImage(@"ZFPlayer_play_btn") forState:UIControlStateNormal];
     }
     return _playeBtn;
 }

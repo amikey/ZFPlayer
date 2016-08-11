@@ -236,9 +236,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.controlView.startBtn addTarget:self action:@selector(startAction:) forControlEvents:UIControlEventTouchUpInside];
     // cell上播放视频的话，该返回按钮为×
     if (self.isCellVideo) {
-        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_close")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
     }else {
-        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
     }
     // 返回按钮点击事件
     [self.controlView.backBtn addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -364,7 +364,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     _videoURL = videoURL;
     
     if (!self.placeholderImageName) {
-        UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")];
+        UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
         self.layer.contents = (id) image.CGImage;
     }
     
@@ -903,7 +903,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationPortraitUpsideDown:{
             self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
             }
             // 设置返回按钮的约束
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -921,7 +921,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             if (self.isCellVideo) {
                 // 改为只允许竖屏播放
                 ZFPlayerShared.isAllowLandscape = NO;
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_close")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.mas_equalTo(10);
                     make.leading.mas_equalTo(7);
@@ -952,7 +952,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationLandscapeLeft:{
             self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
@@ -965,7 +965,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         case UIInterfaceOrientationLandscapeRight:{
             self.controlView.fullScreenBtn.selected = YES;
             if (self.isCellVideo) {
-                [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_back_full")] forState:UIControlStateNormal];
+                [self.controlView.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
@@ -984,7 +984,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     // 在cell上播放视频 && 不允许横屏（此时为竖屏状态,解决自动转屏到横屏，状态栏消失bug）
     if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
-        [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_close")] forState:UIControlStateNormal];
+        [self.controlView.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
         [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(10);
             make.leading.mas_equalTo(7);
@@ -1324,7 +1324,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                     UIImage *image = [UIImage imageWithCGImage:cgImage];
                     CGImageRelease(cgImage);
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.controlView.videoSlider setImage:image ? image : [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")]];
+                        [self.controlView.videoSlider setImage:image ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
                     });
                 });
             
@@ -1725,7 +1725,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         UIImage *image = [UIImage imageNamed:self.placeholderImageName];
         self.layer.contents = (id) image.CGImage;
     }else {
-        UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"ZFPlayer_loading_bgView")];
+        UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
         self.layer.contents = (id) image.CGImage;
     }
 }
