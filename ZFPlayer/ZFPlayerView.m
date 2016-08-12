@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, strong) AVAssetImageGenerator  *imageGenerator;
 /** playerLayer */
 @property (nonatomic, strong) AVPlayerLayer          *playerLayer;
+@property (nonatomic, strong) id                     timeObserve;
 /** 滑杆 */
 @property (nonatomic, strong) UISlider               *volumeViewSlider;
 /** 控制层View */
@@ -160,6 +161,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.tableView = nil;
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // 移除time观察者
+    if (self.timeObserve) {
+        [self.player removeTimeObserver:self.timeObserve];
+        self.timeObserve = nil;
+    }
 }
 
 /**
@@ -174,6 +180,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 视频跳转秒数置0
     self.seekTime           = 0;
     self.isAutoPlay         = NO;
+    if (self.timeObserve) {
+        [self.player removeTimeObserver:self.timeObserve];
+        self.timeObserve = nil;
+    }
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // 暂停
@@ -469,7 +479,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)createTimer
 {
     __weak typeof(self) weakSelf = self;
-    [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, 1) queue:nil usingBlock:^(CMTime time){
+    self.timeObserve = [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, 1) queue:nil usingBlock:^(CMTime time){
         AVPlayerItem *currentItem = weakSelf.playerItem;
         NSArray *loadedRanges = currentItem.seekableTimeRanges;
         if (loadedRanges.count > 0 && currentItem.duration.timescale != 0) {
