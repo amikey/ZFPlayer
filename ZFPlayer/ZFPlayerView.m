@@ -1029,7 +1029,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     ZFPlayerShared.isLockScreen       = NO;
     self.controlView.lockBtn.selected = NO;
     self.isLocked = NO;
-    [self interfaceOrientation:UIInterfaceOrientationPortrait];
+//    [self interfaceOrientation:UIInterfaceOrientationPortrait];
 }
 
 /**

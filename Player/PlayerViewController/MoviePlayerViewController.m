@@ -124,23 +124,46 @@
     
 }
 
+#pragma mark - 转屏相关
+
+// 哪些页面支持自动转屏
+- (BOOL)shouldAutorotate
+{
+    // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
+    return !ZFPlayerShared.isLockScreen;
+
+}
+
+// viewController支持哪些转屏方向
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+// 页面展示的时候默认屏幕方向（当前ViewController必须是通过模态ViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         self.view.backgroundColor = [UIColor whiteColor];
         //if use Masonry,Please open this annotation
         /*
-        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).offset(20);
-        }];
+         [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+         make.top.equalTo(self.view).offset(20);
+         }];
          */
     }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         self.view.backgroundColor = [UIColor blackColor];
         //if use Masonry,Please open this annotation
         /*
-        [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).offset(0);
-        }];
+         [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
+         make.top.equalTo(self.view).offset(0);
+         }];
          */
     }
 }

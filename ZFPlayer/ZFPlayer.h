@@ -42,4 +42,7 @@
 #import "ZFPlayerView.h"
 #import "ZFPlayerControlView.h"
 #import "ZFBrightnessView.h"
+#import "UITabBarController+ZFPlayerRotation.h"
+#import "UIViewController+ZFPlayerRotation.h"
+#import "UINavigationController+ZFPlayerRotation.h"
 #import <Masonry/Masonry.h>
