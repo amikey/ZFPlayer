@@ -321,8 +321,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     // 只要屏幕旋转就显示控制层
     self.isMaskShowing = NO;
-    // 延迟隐藏controlView
-    [self animateShow];
+    if (self.isAutoPlay) {
+        // 延迟隐藏controlView
+        [self animateShow];
+    }
 
     // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
     if (iPhone4s && !self.isCellVideo) {
@@ -414,6 +416,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     // 初始化显示controlView为YES
     self.isMaskShowing = YES;
+    // 自动播放
+    self.isAutoPlay    = YES;
     // 延迟隐藏controlView
     [self autoFadeOutControlBar];
 
@@ -451,7 +455,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)autoPlayTheVideo
 {
-    self.isAutoPlay = YES;
     // 设置Player相关参数
     [self configZFPlayer];
 }
@@ -564,7 +567,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (!self.isMaskShowing) { return; }
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
     [self performSelector:@selector(hideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
-
 }
 
 /**
@@ -1029,7 +1031,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     ZFPlayerShared.isLockScreen       = NO;
     self.controlView.lockBtn.selected = NO;
     self.isLocked = NO;
-//    [self interfaceOrientation:UIInterfaceOrientationPortrait];
+    [self interfaceOrientation:UIInterfaceOrientationPortrait];
 }
 
 /**
@@ -1138,6 +1140,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     } else {
         [self pause];
         if (self.state == ZFPlayerStatePlaying) { self.state = ZFPlayerStatePause;}
+    }
+    
+    if (!self.isAutoPlay) {
+        self.isAutoPlay = YES;
+        [self configZFPlayer];
     }
 }
 
