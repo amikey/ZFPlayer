@@ -126,7 +126,7 @@
 
 #pragma mark - 转屏相关
 
-// 哪些页面支持自动转屏
+// 是否支持自动转屏
 - (BOOL)shouldAutorotate
 {
     // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
@@ -134,13 +134,13 @@
 
 }
 
-// viewController支持哪些转屏方向
+// 支持哪些转屏方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
-// 页面展示的时候默认屏幕方向（当前ViewController必须是通过模态ViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
