@@ -10,6 +10,8 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
+A simple video player for iOS, based on AVPlayer.
+
 [中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
 
 ## Features
