@@ -10,33 +10,32 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
-A simple video player for iOS, based on AVPlayer.
+A simple video player for iOS, based on AVPlayer. Support the vertical, horizontal screen(lock screen direction). Support adjust volume, brigtness and video progress.
 
 [中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
 
+[博客地址](http://www.jianshu.com/p/5566077bb25f)
+
 ## Features
-* Support for horizontal and vertical screen switch, in full screen playback mode can also lock the screen direction
-* Support local video, network video playback
-* Support in TableviewCell playing video
-* The left 1/2 position on the sliding screen brightness adjustment (simulator can't adjust brightness, please in the real machine debugging)
-* The right 1/2 position on the sliding screen volume adjustment (simulator can't adjust the volume, please in the real machine debugging)
-* Left and right sliding adjustment play schedule
-* Full screen mode to drag the slider control progress, display video preview
-* Breakpoint Download 
-* Toggle video resolution
+- [x] Support for horizontal and vertical screen switch, in full screen playback mode can also lock the screen direction
+- [x] Support local video, network video playback
+- [x] Support in TableviewCell playing video
+- [x] The left 1/2 position on the sliding screen brightness adjustment (simulator can't adjust brightness, please in the real machine debugging)
+- [x] The right 1/2 position on the sliding screen volume adjustment (simulator can't adjust the volume, please in the real machine debugging)
+- [x] Left and right sliding adjustment play schedule
+- [x] Full screen mode to drag the slider control progress, display video preview
+- [x] Breakpoint Download 
+- [x] Toggle video resolution
 
 ## Requirements
 
 - iOS 8+
-- Xcode 7+
-
-## Blog
-[博客地址](http://www.jianshu.com/p/5566077bb25f)
+- Xcode 8+
 
 
 ## Statistics
 
-What APP using ZFPlayer, and on AppStore, please tell me, help me to statistics.
+What App using ZFPlayer, and on AppStore, please tell me, help me to statistics.
 
 ## Component
 
@@ -93,26 +92,26 @@ self.playerView.goBackBlock = ^{
 };
 ```
 
-##### Set the fill mode for the video (optional)
+##### Set the fill mode for the video
 
 ```objc
- // (optional settings) you can set the fill mode of the video, the default settings (ZFPlayerLayerGravityResizeAspect: wait for a proportional fill, until a dimension reaches the area boundary).
+ // you can set the fill mode of the video, the default settings (ZFPlayerLayerGravityResizeAspect: wait for a proportional fill, until a dimension reaches the area boundary).
  self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
 ```
-##### Is there a breakpoint download function (optional)
+##### Is there a breakpoint download function
 ```objc
  // Default is to close the breakpoint download function, such as the need for this feature set here
  self.playerView.hasDownload = YES;
 ```
 
-##### Play video from XX seconds (optional)
+##### Play video from XX seconds
 
  ```objc
  // Play video from XX seconds
  self.playerView.seekTime = 15;
  ```
 
-##### Automatically play the video，not automatically play by default(optional)
+##### Automatically play the video，not automatically play by default
 ```objc
 // Automatically play the video
 [self.playerView autoPlayTheVideo];
@@ -124,7 +123,7 @@ self.playerView.goBackBlock = ^{
 self.playerView.placeholderImageName = @"...";
 ```
 
-### Picture effect demonstration
+### Picture demonstration
 
 ![Picture effect](https://github.com/renzifeng/ZFPlayer/raw/master/screen.gif)
 
@@ -135,17 +134,17 @@ self.playerView.placeholderImageName = @"...";
 ![Progress adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/progress.png)
 
 
-### reference material：
+### Reference link：
 
 - [https://segmentfault.com/a/1190000004054258](https://segmentfault.com/a/1190000004054258)
 - [http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/](http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/)
 - [https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8](https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8)
 
 ---
-### swift project Player:
+### Swift Player:
 See the [BMPlayer](https://github.com/BrikerMan/BMPlayer) please, thanks the BMPlayer author's open source.
 
-### swift project ZFZhiHuDaily:
+### Swift project ZFZhiHuDaily:
 I recently written [ZFZhiHuDaily](https://github.com/renzifeng/ZFZhiHuDaily).
 
 ---
