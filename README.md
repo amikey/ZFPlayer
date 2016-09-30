@@ -10,6 +10,8 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
+[中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
+
 ## Features
 * Support for horizontal and vertical screen switch, in full screen playback mode can also lock the screen direction
 * Support local video, network video playback
@@ -38,9 +40,6 @@ What APP using ZFPlayer, and on AppStore, please tell me, help me to statistics.
 
 - Breakpoint Download: [ZFDownload](https://github.com/renzifeng/ZFDownload)
 - Layout: Masonry
-
-## Language
-[中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
 
 ## Installation
 
