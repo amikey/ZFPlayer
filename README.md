@@ -12,19 +12,18 @@
 
 A simple video player for iOS, based on AVPlayer. Support the vertical, horizontal screen(lock screen direction). Support adjust volume, brigtness and video progress.
 
-[中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)
-
-[博客地址](http://www.jianshu.com/p/5566077bb25f)
+[中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md) 
+[ZFPlayer剖析](http://www.jianshu.com/p/5566077bb25f)
 
 ## Features
-- [x] Support for horizontal and vertical screen switch, in full screen playback mode can also lock the screen direction
-- [x] Support local video, network video playback
+- [x] Support for horizontal and vertical play mode, in horizontal mode can also lock the screen direction
+- [x] Support play with online URL and local file
 - [x] Support in TableviewCell playing video
-- [x] The left 1/2 position on the sliding screen brightness adjustment (simulator can't adjust brightness, please in the real machine debugging)
-- [x] The right 1/2 position on the sliding screen volume adjustment (simulator can't adjust the volume, please in the real machine debugging)
-- [x] Left and right sliding adjustment play schedule
+- [x] Adjust brightness by slide vertical at left side of screen
+- [x] Adjust volume by slide vertical at right side of screen
+- [x] Slide horizontal to fast forward and rewind
 - [x] Full screen mode to drag the slider control progress, display video preview
-- [x] Breakpoint Download 
+- [x] Download 
 - [x] Toggle video resolution
 
 ## Requirements

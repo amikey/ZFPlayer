@@ -10,8 +10,12 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
+基于AVPlayer，支持竖屏、横屏（横屏可锁定屏幕方向），上下滑动调节音量、屏幕亮度，左右滑动调节播放进度
+
+[ZFPlayer剖析](http://www.jianshu.com/p/5566077bb25f)
+
 ## 特性
-* 支持横、竖屏切换，在全屏播放模式下还可以锁定屏幕方向
+* 支持横、竖屏切换，在横屏模式下可以锁定屏幕方向
 * 支持本地视频、网络视频播放
 * 支持在TableviewCell播放视频
 * 左侧1/2位置上下滑动调节屏幕亮度（模拟器调不了亮度，请在真机调试）
@@ -24,10 +28,7 @@
 ## 要求
 
 - iOS 8+
-- Xcode 7.0+
-
-## 配套博客
-[博客地址](http://www.jianshu.com/p/5566077bb25f)
+- Xcode 8+
 
 
 ## 统计
@@ -90,25 +91,25 @@ self.playerView.goBackBlock = ^{
 };
 ```
 
-##### 设置视频的填充模式（可选设置）
+##### 设置视频的填充模式
 ```objc
- //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
+ //可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
  self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
 ```
 
-##### 是否有断点下载功能（可选设置）
+##### 是否有断点下载功能
 ```objc
  // 默认是关闭断点下载功能，如需要此功能设置这里
  self.playerView.hasDownload = YES;
 ```
 
-##### 从xx秒开始播放视频（可选设置）
+##### 从xx秒开始播放视频
  ```objc
  // 如果想从xx秒开始播放视频
  self.playerView.seekTime = 15;
  ```
  
-##### 是否自动播放，默认不自动播放（可选设置）
+##### 是否自动播放，默认不自动播放
 ```objc
 // 是否自动播放，默认不自动播放
 [self.playerView autoPlayTheVideo];
@@ -130,17 +131,17 @@ self.playerView.placeholderImageName = @"...";
 
 ![进度调节预览图](https://github.com/renzifeng/ZFPlayer/raw/master/progress.png)
 
-### 参考资料：
+### 参考链接：
 
 - [https://segmentfault.com/a/1190000004054258](https://segmentfault.com/a/1190000004054258)
 - [http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/](http://sky-weihao.github.io/2015/10/06/Video-streaming-and-caching-in-iOS/)
 - [https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8](https://developer.apple.com/library/prerelease/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html#//apple_ref/doc/uid/TP40010188-CH3-SW8)
 
 ---
-### swift版Player：
+### Swift版Player：
 请移步 [BMPlayer](https://github.com/BrikerMan/BMPlayer)，感谢 BMPlayer 作者的开源。
 
-### swift版知乎日报：
+### Swift版知乎日报：
 本人最近编写的 [知乎日报Swift](https://github.com/renzifeng/ZFZhiHuDaily)。
 
 ---
