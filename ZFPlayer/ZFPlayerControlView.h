@@ -23,11 +23,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ASValueTrackingSlider.h"
+#import "ZFPlayer.h"
 
 typedef void(^ChangeResolutionBlock)(UIButton *button);
 typedef void(^SliderTapBlock)(CGFloat value);
 
-@interface ZFPlayerControlView : UIView
+@interface ZFPlayerControlView : UIView 
 /** 标题 */
 @property (nonatomic, strong, readonly) UILabel                 *titleLabel;
 /** 开始播放按钮 */
@@ -68,14 +69,5 @@ typedef void(^SliderTapBlock)(CGFloat value);
 @property (nonatomic, copy  ) ChangeResolutionBlock             resolutionBlock;
 /** slidertap事件Block */
 @property (nonatomic, copy  ) SliderTapBlock                    tapBlock;
-
-/** 重置ControlView */
-- (void)resetControlView;
-/** 切换分辨率时候调用此方法*/
-- (void)resetControlViewForResolution;
-/** 显示top、bottom、lockBtn*/
-- (void)showControlView;
-/** 隐藏top、bottom、lockBtn*/
-- (void)hideControlView;
 
 @end

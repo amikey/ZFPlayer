@@ -27,6 +27,7 @@
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
 #import "ZFPlayer.h"
+#import "UINavigationController+FDFullscreenPopGesture.h"
 
 @interface MoviePlayerViewController ()
 
@@ -41,7 +42,7 @@
 - (void)dealloc
 {
     NSLog(@"%@释放了",self.class);
-    [self.playerView cancelAutoFadeOutControlBar];
+//    [self.playerView zf_playerCancelAutoFadeOutControlView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -91,6 +92,8 @@
         make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
     }];
     */
+    ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+    self.playerView.controlView = controlView;
     
     // 设置播放前的占位图（需要在设置视频URL之前设置）
     self.playerView.placeholderImageName = @"loading_bgView1";
@@ -111,7 +114,7 @@
         // 设置最多同时下载个数（默认是3）
         [ZFDownloadManager sharedDownloadManager].maxCount = 1;
     };
-    
+  
     // 如果想从xx秒开始播放视频
     // self.playerView.seekTime = 15;
     
@@ -151,6 +154,7 @@
 {
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         self.view.backgroundColor = [UIColor whiteColor];
+        self.fd_interactivePopDisabled = NO;
         //if use Masonry,Please open this annotation
         /*
          [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -159,6 +163,7 @@
          */
     }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         self.view.backgroundColor = [UIColor blackColor];
+        self.fd_interactivePopDisabled = YES;
         //if use Masonry,Please open this annotation
         /*
          [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {

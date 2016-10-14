@@ -131,6 +131,9 @@
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
         weakSelf.playerView = [ZFPlayerView sharedPlayerView];
+        ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+        weakSelf.playerView.controlView = controlView;
+
         // 设置播放前的站位图（需要在设置视频URL之前设置）
         weakSelf.playerView.placeholderImageName = @"loading_bgView1";
         
@@ -148,7 +151,7 @@
                              AtIndexPath:weakIndexPath
                         withImageViewTag:101];
         [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
-        weakSelf.playerView.title = @"可以设置视频的标题";
+        weakSelf.playerView.title = model.title;
 
         // 下载功能
         weakSelf.playerView.hasDownload   = YES;

@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "ZFPlayer.h"
 
 // 返回按钮的block
 typedef void(^ZFPlayerBackCallBack)(void);
@@ -35,7 +36,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
      ZFPlayerLayerGravityResizeAspectFill  // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
 };
 
-@interface ZFPlayerView : UIView
+@interface ZFPlayerView : UIView <ZFPlayerControlViewDelagate>
 
 /** 视频URL */
 @property (nonatomic, strong) NSURL                *videoURL;
@@ -58,17 +59,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 @property (nonatomic, copy  ) NSString             *placeholderImageName;
 /** 是否被用户暂停 */
 @property (nonatomic, assign, readonly) BOOL       isPauseByUser;
+/** 控制层View */
+@property (nonatomic, strong) UIView    *controlView;
 
 /**
  *  自动播放，默认不自动播放
  */
-- (void)autoPlayTheVideo;
-
-/**
- *  取消延时隐藏controlView的方法,在ViewController的delloc方法中调用
- *  用于解决：刚打开视频播放器，就关闭该页面，maskView的延时隐藏还未执行。
- */
-- (void)cancelAutoFadeOutControlBar;
+- (void)autoPlayTheVideo; 
 
 /**
  *  单例，用于列表cell上多个视频
