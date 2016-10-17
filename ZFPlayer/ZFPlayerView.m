@@ -1493,7 +1493,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
         //转换成CMTime才能给player来控制播放进度
         CMTime dragedCMTime     = CMTimeMake(dragedSeconds, 1);
-        [controlView zf_playerDraggedTime:dragedSeconds totalTime:totalTime isForward:style hasPreview:self.hasPreviewView];
+   
+        [controlView zf_playerDraggedTime:dragedSeconds totalTime:totalTime isForward:style hasPreview:self.isFullScreen ? self.hasPreviewView : NO];
         
         if (totalTime > 0) { // 当总时长 > 0时候才能拖动slider
             if (self.isFullScreen && self.hasPreviewView) {

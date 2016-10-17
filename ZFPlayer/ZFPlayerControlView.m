@@ -847,6 +847,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     NSString *currentTimeStr = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     NSString *totalTimeStr   = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
     
+   
     // 显示、隐藏预览窗
     self.videoSlider.popUpView.hidden = !preview;
     // 更新slider的值

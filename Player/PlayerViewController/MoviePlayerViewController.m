@@ -71,7 +71,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.fd_interactivePopDisabled = YES;
 
     //if use Masonry,Please open this annotation
     /*
