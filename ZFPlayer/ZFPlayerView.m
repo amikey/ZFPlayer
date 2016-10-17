@@ -24,6 +24,7 @@
 #import "ZFPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "UIView+CustomControlView.h"
 #import "ZFPlayer.h"
 
 // 枚举值，包含水平移动方向和垂直移动方向
@@ -308,7 +309,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     _videoURL = videoURL;
     
-    if (!self.placeholderImageName) {
+    if (!self.placeholderImage) {
         UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
         self.layer.contents = (id) image.CGImage;
     }
@@ -362,10 +363,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if ([self.videoURL.scheme isEqualToString:@"file"]) {
         self.state = ZFPlayerStatePlaying;
         self.isLocalVideo = YES;
-//        self.controlView.downLoadBtn.enabled = NO;
+        [self.controlView zf_playerDownloadBtnState:NO];
     } else {
         self.state = ZFPlayerStateBuffering;
         self.isLocalVideo = NO;
+        [self.controlView zf_playerDownloadBtnState:YES];
     }
     // 开始播放
     [self play];
@@ -392,16 +394,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     // 单击
     self.singleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTapAction:)];
-    self.singleTap.delegate = self;
+    self.singleTap.delegate                = self;
     self.singleTap.numberOfTouchesRequired = 1; //手指数
-    self.singleTap.numberOfTapsRequired = 1;
+    self.singleTap.numberOfTapsRequired    = 1;
     [self addGestureRecognizer:self.singleTap];
     
     // 双击(播放/暂停)
     self.doubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapAction:)];
-    self.doubleTap.delegate = self;
+    self.doubleTap.delegate                = self;
     self.doubleTap.numberOfTouchesRequired = 1; //手指数
-    self.doubleTap.numberOfTapsRequired = 2;
+    self.doubleTap.numberOfTapsRequired    = 2;
 
     [self addGestureRecognizer:self.doubleTap];
 
@@ -531,7 +533,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             CMTime duration             = self.playerItem.duration;
             CGFloat totalDuration       = CMTimeGetSeconds(duration);
             
-            [self.controlView zf_plyerSetProgress:timeInterval / totalDuration];
+            [self.controlView zf_playerSetProgress:timeInterval / totalDuration];
             
         } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
             
@@ -815,13 +817,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)singleTapAction:(UIGestureRecognizer *)gesture
 {
     if ([gesture isKindOfClass:[NSNumber class]] &&![(id)gesture boolValue]) {
-         [self fullScreenAction];
+         [self _fullScreenAction];
          return;
     }
-
     if (gesture.state == UIGestureRecognizerStateRecognized) {
         if (self.isBottomVideo && !self.isFullScreen) {
-            [self fullScreenAction];
+            [self _fullScreenAction];
         } else {
             [self.controlView zf_playerShowControlView];
         }
@@ -1075,7 +1076,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (value < 0) { style = NO; }
     if (value == 0) { return; }
     
-    [self.controlView zf_playerDraggedTime:self.sumTime totalTime:totalMovieDuration isForward:style];
+    [self.controlView zf_playerDraggedTime:self.sumTime totalTime:totalMovieDuration isForward:style hasPreview:NO];
 }
 
 /**
@@ -1103,7 +1104,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             return NO;
         }
     }
-    
     if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
         if (self.isBottomVideo && !self.isFullScreen) {
             return NO;
@@ -1146,9 +1146,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         // 改为黑色的背景，不然站位图会显示
         UIImage *image = [self buttonImageFromColor:[UIColor blackColor]];
         self.layer.contents = (id) image.CGImage;
-    } else if (state == ZFPlayerStateFailed) {
-//        self.controlView.downLoadBtn.enabled = NO;
-    }
+    } 
     // 控制菊花显示、隐藏
     [self.controlView zf_playerActivity:state == ZFPlayerStateBuffering];
 }
@@ -1233,9 +1231,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setResolutionDic:(NSDictionary *)resolutionDic
 {
     _resolutionDic = resolutionDic;
-//    self.controlView.resolutionBtn.hidden = NO;
+    [self.controlView zf_playerResolutionArray:[resolutionDic allKeys]];
     self.videoURLArray = [resolutionDic allValues];
-//    self.controlView.resolutionArray = [resolutionDic allKeys];
 }
 
 /**
@@ -1250,6 +1247,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         UIImage *image = [UIImage imageNamed:self.placeholderImageName];
         self.layer.contents = (id) image.CGImage;
     }else {
+        UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
+        self.layer.contents = (id) image.CGImage;
+    }
+}
+
+- (void)setPlaceholderImage:(UIImage *)placeholderImage
+{
+    _placeholderImage = placeholderImage;
+    if (placeholderImage) {
+        self.layer.contents = (id) self.placeholderImage.CGImage;
+    } else {
         UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
         self.layer.contents = (id) image.CGImage;
     }
@@ -1328,6 +1336,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         if (!self.isFullScreen) {
             // player加到控制器上，只有一个player时候
             [self pause];
+            if ([self.delegate respondsToSelector:@selector(zf_playerBackAction)]) {
+                [self.delegate zf_playerBackAction];
+            }
             if (self.goBackBlock) {
                 self.goBackBlock();
             }
@@ -1343,7 +1354,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self removeFromSuperview];
 }
 
-- (void)fullScreenAction
+- (void)_fullScreenAction
 {
     if (ZFPlayerShared.isLockScreen) {
         [self unLockTheScreen];
@@ -1369,23 +1380,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-//            if (self.isBottomVideo || !self.isFullScreen) {
-//                ZFPlayerShared.isAllowLandscape = YES;
-//                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-//            } else {
-                ZFPlayerShared.isAllowLandscape = NO;
-                [self interfaceOrientation:UIInterfaceOrientationPortrait];
-//            }
+            ZFPlayerShared.isAllowLandscape = NO;
+            [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-//            if (self.isBottomVideo || !self.isFullScreen) {
-//                ZFPlayerShared.isAllowLandscape = YES;
-//                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-//            } else {
                 ZFPlayerShared.isAllowLandscape = NO;
                 [self interfaceOrientation:UIInterfaceOrientationPortrait];
-//            }
         }
             break;
             
@@ -1405,7 +1406,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)zf_controlView:(UIView *)controlView fullScreenAction:(UIButton *)sender
 {
-    [self fullScreenAction];
+    [self _fullScreenAction];
 }
 
 - (void)zf_controlView:(UIView *)controlView lockScreenAction:(UIButton *)sender
@@ -1449,27 +1450,25 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)zf_controlView:(UIView *)controlView downloadVideoAction:(UIButton *)sender
 {
     NSString *urlStr = self.videoURL.absoluteString;
+    if ([self.delegate respondsToSelector:@selector(zf_playerDownload:)]) {
+        [self.delegate zf_playerDownload:urlStr];
+    }
     if (self.downloadBlock) {
         self.downloadBlock(urlStr);
     }
 }
 
-- (void)zf_controlView:(UIView *)controlView progressSliderTouch:(CGFloat)value
+- (void)zf_controlView:(UIView *)controlView progressSliderTap:(CGFloat)value
 {
     [self pause];
     // 视频总时间长度
-    CGFloat total           = (CGFloat)self.playerItem.duration.value / self.playerItem.duration.timescale;
+    CGFloat total = (CGFloat)self.playerItem.duration.value / self.playerItem.duration.timescale;
     //计算出拖动的当前秒数
     NSInteger dragedSeconds = floorf(total * value);
     
     [self.controlView zf_playerPlayBtnState:YES];
     [self seekToTime:dragedSeconds completionHandler:^(BOOL finished) {}];
 
-}
-
-- (void)zf_controlView:(UIView *)controlView progressSliderTouchBegan:(UISlider *)slider
-{
-    
 }
 
 - (void)zf_controlView:(UIView *)controlView progressSliderValueChanged:(UISlider *)slider
@@ -1494,10 +1493,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
         //转换成CMTime才能给player来控制播放进度
         CMTime dragedCMTime     = CMTimeMake(dragedSeconds, 1);
-        [controlView zf_playerDraggedTime:dragedSeconds totalTime:totalTime isForward:style];
+        [controlView zf_playerDraggedTime:dragedSeconds totalTime:totalTime isForward:style hasPreview:self.hasPreviewView];
         
         if (totalTime > 0) { // 当总时长 > 0时候才能拖动slider
-            if (self.isFullScreen) {
+            if (self.isFullScreen && self.hasPreviewView) {
                 dispatch_queue_t queue = dispatch_queue_create("com.playerPic.queue", DISPATCH_QUEUE_CONCURRENT);
                 dispatch_async(queue, ^{
                     NSError *error;
@@ -1507,12 +1506,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                     UIImage *image = [UIImage imageWithCGImage:cgImage];
                     CGImageRelease(cgImage);
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [controlView zf_playerSetSliderImage:image ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
+                        [controlView zf_playerDraggedTime:dragedSeconds sliderImage:image ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
                     });
                 });
                 
             }
-        }else {
+        } else {
             // 此时设置slider值为0
             slider.value = 0;
         }
@@ -1537,6 +1536,5 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 
 }
-
 
 @end

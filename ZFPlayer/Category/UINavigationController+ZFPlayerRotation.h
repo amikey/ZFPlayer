@@ -23,6 +23,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UINavigationController (ZFPlayerRotation)
+@interface UINavigationController (ZFPlayerRotation)<UIGestureRecognizerDelegate>
 
 @end

@@ -224,8 +224,8 @@
                                         <mask key="constraints">
                                             <exclude reference="DPE-eF-clB"/>
                                             <exclude reference="blK-oc-ESv"/>
-                                            <exclude reference="E7s-Tt-Y9s"/>
                                             <exclude reference="scj-AH-svU"/>
+                                            <exclude reference="E7s-Tt-Y9s"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -344,11 +344,11 @@
                                 <exclude reference="Yyi-Pf-hND"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="9Pn-WI-Wii"/>
-                                <exclude reference="bTo-Kl-IjE"/>
                                 <exclude reference="4JE-R9-J8a"/>
                                 <exclude reference="5BJ-6V-hu5"/>
                                 <exclude reference="OjU-Ny-M7e"/>
+                                <exclude reference="9Pn-WI-Wii"/>
+                                <exclude reference="bTo-Kl-IjE"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -357,11 +357,11 @@
                                 <include reference="Yyi-Pf-hND"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="9Pn-WI-Wii"/>
-                                <include reference="bTo-Kl-IjE"/>
                                 <include reference="4JE-R9-J8a"/>
                                 <include reference="5BJ-6V-hu5"/>
                                 <include reference="OjU-Ny-M7e"/>
+                                <include reference="9Pn-WI-Wii"/>
+                                <include reference="bTo-Kl-IjE"/>
                             </mask>
                         </variation>
                     </view>
@@ -508,8 +508,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="JFU-BE-6je"/>
                                                     <exclude reference="vBZ-2h-xrt"/>
+                                                    <exclude reference="JFU-BE-6je"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -546,10 +546,10 @@
             </objects>
             <point key="canvasLocation" x="839.5" y="2175.5"/>
         </scene>
-        <!--Main View Controller-->
+        <!--Tab Bar Controller-->
         <scene sceneID="B5I-ua-aVA">
             <objects>
-                <tabBarController id="tUM-Ta-yQP" customClass="MainViewController" sceneMemberID="viewController">
+                <tabBarController id="tUM-Ta-yQP" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="f9b-Np-HgK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -27,8 +27,9 @@
 #import "ZFPlyerResolution.h"
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
+#import "SDWebImageManager.h"
 
-@interface ZFTableViewController ()
+@interface ZFTableViewController () <ZFPlayerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) ZFPlayerView   *playerView;
@@ -130,12 +131,9 @@
     __weak typeof(self) weakSelf       = self;
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
-        weakSelf.playerView = [ZFPlayerView sharedPlayerView];
-        ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
-        weakSelf.playerView.controlView = controlView;
-
+        
         // 设置播放前的站位图（需要在设置视频URL之前设置）
-        weakSelf.playerView.placeholderImageName = @"loading_bgView1";
+        weakSelf.playerView.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
         
         // 分辨率字典（key:分辨率名称，value：分辨率url)
         NSMutableDictionary *dic = @{}.mutableCopy;
@@ -153,17 +151,6 @@
         [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
         weakSelf.playerView.title = model.title;
 
-        // 下载功能
-        weakSelf.playerView.hasDownload   = YES;
-        // 下载按钮的回调
-        weakSelf.playerView.downloadBlock = ^(NSString *urlStr) {
-            // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
-            NSString *name = [urlStr lastPathComponent];
-            [[ZFDownloadManager sharedDownloadManager] downFileUrl:urlStr filename:name fileimage:nil];
-            // 设置最多同时下载个数（默认是3）
-            [ZFDownloadManager sharedDownloadManager].maxCount = 1;
-        };
-        
         // 赋值分辨率字典
         weakSelf.playerView.resolutionDic = dic;
         //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
@@ -178,6 +165,40 @@
 {
     NSLog(@"didSelectRowAtIndexPath---%zd",indexPath.row);
 }
+
+- (UIImage *)getPreviewImage:(NSString *)url
+{
+    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:url];
+    if (!image) {
+        image = [UIImage imageNamed:@"loading_bgView1"];
+    }
+    return image;
+}
+
+- (ZFPlayerView *)playerView
+{
+    if (!_playerView) {
+        _playerView = [ZFPlayerView sharedPlayerView];
+        _playerView.delegate = self;
+        ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+        _playerView.controlView = controlView;
+        // 下载功能
+        _playerView.hasDownload = YES;
+    }
+    return _playerView;
+}
+
+#pragma mark - ZFPlayerDelegate
+
+- (void)zf_playerDownload:(NSString *)url
+{
+    // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
+    NSString *name = [url lastPathComponent];
+    [[ZFDownloadManager sharedDownloadManager] downFileUrl:url filename:name fileimage:nil];
+    // 设置最多同时下载个数（默认是3）
+    [ZFDownloadManager sharedDownloadManager].maxCount = 1;
+}
+
 
 /*
 #pragma mark - Navigation

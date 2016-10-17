@@ -29,7 +29,7 @@
 #import "ZFPlayer.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
 
-@interface MoviePlayerViewController ()
+@interface MoviePlayerViewController () <ZFPlayerDelegate>
 
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
 /** 离开页面时候是否在播放 */
@@ -42,7 +42,6 @@
 - (void)dealloc
 {
     NSLog(@"%@释放了",self.class);
-//    [self.playerView zf_playerCancelAutoFadeOutControlView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,7 +71,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.fd_interactivePopDisabled = YES;
+
     //if use Masonry,Please open this annotation
     /*
     UIView *topView = [[UIView alloc] init];
@@ -92,39 +92,50 @@
         make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
     }];
     */
+    
+    // 指定控制层
     ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
     self.playerView.controlView = controlView;
     
     // 设置播放前的占位图（需要在设置视频URL之前设置）
-    self.playerView.placeholderImageName = @"loading_bgView1";
+    self.playerView.placeholderImage = [UIImage imageNamed: @"loading_bgView1"];
     // 设置视频的URL
     self.playerView.videoURL = self.videoURL;
+    
+    // 设置代理
+    self.playerView.delegate = self;
     // 设置标题
-    self.playerView.title = @"可以设置视频的标题";
+    self.playerView.title    = @"这里设置视频标题";
     //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
-    self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
+    // self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
     
     // 打开下载功能（默认没有这个功能）
-    self.playerView.hasDownload = YES;
-    // 下载按钮的回调
-    self.playerView.downloadBlock = ^(NSString *urlStr) {
-        // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
-        NSString *name = [urlStr lastPathComponent];
-        [[ZFDownloadManager sharedDownloadManager] downFileUrl:urlStr filename:name fileimage:nil];
-        // 设置最多同时下载个数（默认是3）
-        [ZFDownloadManager sharedDownloadManager].maxCount = 1;
-    };
-  
+    self.playerView.hasDownload    = YES;
+    // 打开预览图
+    self.playerView.hasPreviewView = YES;
+    
     // 如果想从xx秒开始播放视频
     // self.playerView.seekTime = 15;
     
     // 是否自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];
-    __weak typeof(self) weakSelf = self;
-    self.playerView.goBackBlock = ^{
-        [weakSelf.navigationController popViewControllerAnimated:YES];
-    };
-    
+
+}
+
+#pragma mark - ZFPlayerDelegate
+
+- (void)zf_playerBackAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)zf_playerDownload:(NSString *)url
+{
+    // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
+    NSString *name = [url lastPathComponent];
+    [[ZFDownloadManager sharedDownloadManager] downFileUrl:url filename:name fileimage:nil];
+    // 设置最多同时下载个数（默认是3）
+    [ZFDownloadManager sharedDownloadManager].maxCount = 1;
+
 }
 
 #pragma mark - 转屏相关
@@ -134,7 +145,6 @@
 {
     // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
     return !ZFPlayerShared.isLockScreen;
-
 }
 
 // 支持哪些转屏方向

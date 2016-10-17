@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import "UINavigationController+ZFPlayerRotation.h"
+#import <objc/runtime.h>
 
 @implementation UINavigationController (ZFPlayerRotation)
 

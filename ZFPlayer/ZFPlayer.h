@@ -40,6 +40,7 @@
 #define ZFPlayerImage(file)                 [UIImage imageNamed:ZFPlayerSrcName(file)] ? :[UIImage imageNamed:ZFPlayerFrameworkSrcName(file)]
 
 #define ZFPlayerOrientationIsLandscape      UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)
+
 #define ZFPlayerOrientationIsPortrait       UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)
 
 @protocol ZFPlayerControlViewDelagate <NSObject>
@@ -54,14 +55,12 @@
 - (void)zf_controlView:(UIView *)controlView cneterPlayAction:(UIButton *)sender;
 - (void)zf_controlView:(UIView *)controlView downloadVideoAction:(UIButton *)sender;
 - (void)zf_controlView:(UIView *)controlView resolutionAction:(UIButton *)sender;
-- (void)zf_controlView:(UIView *)controlView progressSliderTouch:(CGFloat)value;
+- (void)zf_controlView:(UIView *)controlView progressSliderTap:(CGFloat)value;
 - (void)zf_controlView:(UIView *)controlView progressSliderTouchBegan:(UISlider *)slider;
 - (void)zf_controlView:(UIView *)controlView progressSliderValueChanged:(UISlider *)slider;
 - (void)zf_controlView:(UIView *)controlView progressSliderTouchEnded:(UISlider *)slider;
 
-
 @end
-
 
 #import "ZFPlayerView.h"
 #import "ZFPlayerControlView.h"
@@ -69,5 +68,4 @@
 #import "UITabBarController+ZFPlayerRotation.h"
 #import "UIViewController+ZFPlayerRotation.h"
 #import "UINavigationController+ZFPlayerRotation.h"
-#import "UIView+CustomControlView.h"
 #import <Masonry/Masonry.h>

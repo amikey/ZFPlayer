@@ -29,45 +29,12 @@ typedef void(^ChangeResolutionBlock)(UIButton *button);
 typedef void(^SliderTapBlock)(CGFloat value);
 
 @interface ZFPlayerControlView : UIView 
-/** 标题 */
-@property (nonatomic, strong, readonly) UILabel                 *titleLabel;
-/** 开始播放按钮 */
-@property (nonatomic, strong, readonly) UIButton                *startBtn;
-/** 当前播放时长label */
-@property (nonatomic, strong, readonly) UILabel                 *currentTimeLabel;
-/** 视频总时长label */
-@property (nonatomic, strong, readonly) UILabel                 *totalTimeLabel;
-/** 缓冲进度条 */
-@property (nonatomic, strong, readonly) UIProgressView          *progressView;
-/** 滑杆 */
-@property (nonatomic, strong, readonly) ASValueTrackingSlider   *videoSlider;
-/** 全屏按钮 */
-@property (nonatomic, strong, readonly) UIButton                *fullScreenBtn;
-/** 锁定屏幕方向按钮 */
-@property (nonatomic, strong, readonly) UIButton                *lockBtn;
-/** 快进快退label */
-@property (nonatomic, strong, readonly) UILabel                 *horizontalLabel;
-/** 系统菊花 */
-@property (nonatomic, strong, readonly) UIActivityIndicatorView *activity;
-/** 返回按钮*/
-@property (nonatomic, strong, readonly) UIButton                *backBtn;
-/** 重播按钮 */
-@property (nonatomic, strong, readonly) UIButton                *repeatBtn;
-/** bottomView*/
-@property (nonatomic, strong, readonly) UIImageView             *bottomImageView;
-/** topView */
-@property (nonatomic, strong, readonly) UIImageView             *topImageView;
-/** 缓存按钮 */
-@property (nonatomic, strong, readonly) UIButton                *downLoadBtn;
-/** 切换分辨率按钮 */
-@property (nonatomic, strong, readonly) UIButton                *resolutionBtn;
-/** 播放按钮 */
-@property (nonatomic, strong, readonly) UIButton                *playeBtn;
+
 /** 分辨率的名称 */
-@property (nonatomic, strong) NSArray                           *resolutionArray;
+@property (nonatomic, strong) NSArray                           *resolutionArray  __deprecated_msg("Please implement 'zf_playerResolutionArray:' instead");
 /** 切换分辨率的block */
-@property (nonatomic, copy  ) ChangeResolutionBlock             resolutionBlock;
+@property (nonatomic, copy  ) ChangeResolutionBlock             resolutionBlock __deprecated_msg("Please use ZFPlayerControlViewDelegate 'zf_controlView:resolutionAction:' instead");
 /** slidertap事件Block */
-@property (nonatomic, copy  ) SliderTapBlock                    tapBlock;
+@property (nonatomic, copy  ) SliderTapBlock                    tapBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_controlView:progressSliderTap:' instead");
 
 @end

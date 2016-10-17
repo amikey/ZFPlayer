@@ -18,7 +18,6 @@
 		CC2877CC1D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877C71D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.m */; };
 		CC2877CD1D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877C91D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m */; };
 		CC2877CE1D9B60760097CEDA /* UIViewController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877CB1D9B60760097CEDA /* UIViewController+ZFPlayerRotation.m */; };
-		CC2877D11D9B66610097CEDA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877D01D9B66610097CEDA /* MainViewController.m */; };
 		CC2CC63B1CA24D4B0028BBDD /* ZFBrightnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2CC6321CA24D4B0028BBDD /* ZFBrightnessView.m */; };
 		CC2CC63C1CA24D4B0028BBDD /* ZFPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC2CC6331CA24D4B0028BBDD /* ZFPlayer.bundle */; };
 		CC2CC63D1CA24D4B0028BBDD /* ZFPlayerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2CC6361CA24D4B0028BBDD /* ZFPlayerControlView.m */; };
@@ -26,12 +25,12 @@
 		CC48ECD71C8863DB009CF0D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC48ECD61C8863DB009CF0D0 /* Main.storyboard */; };
 		CC6945AA1CB7F66300452D55 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC6945A91CB7F66300452D55 /* LaunchScreen.xib */; };
 		CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */; };
+		CC6FF3681DB4A32E00222AAC /* UIView+CustomControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6FF3671DB4A32E00222AAC /* UIView+CustomControlView.m */; };
 		CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* ZFDownloadViewController.m */; };
 		CC7D5E951D59AAAC000AC18A /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7D5E921D59AAAC000AC18A /* ASValueTrackingSlider.m */; };
 		CC7D5E961D59AAAC000AC18A /* ASValuePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7D5E941D59AAAC000AC18A /* ASValuePopUpView.m */; };
 		CC8693471CC9BF5E0037E71B /* ZFPlyerResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8693461CC9BF5E0037E71B /* ZFPlyerResolution.m */; };
-		CC9F99291DADD14E002C5D54 /* UIView+CustomControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9F99281DADD14D002C5D54 /* UIView+CustomControlView.m */; };
 		CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */; };
 		CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13A1C9AA11F004C95AC /* ZFPlayerModel.m */; };
 		CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13D1C9AA128004C95AC /* ZFTableViewController.m */; };
@@ -92,8 +91,6 @@
 		CC2877C91D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
 		CC2877CA1D9B60760097CEDA /* UIViewController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
 		CC2877CB1D9B60760097CEDA /* UIViewController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
-		CC2877CF1D9B66610097CEDA /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		CC2877D01D9B66610097CEDA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		CC2CC6311CA24D4B0028BBDD /* ZFBrightnessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFBrightnessView.h; sourceTree = "<group>"; };
 		CC2CC6321CA24D4B0028BBDD /* ZFBrightnessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFBrightnessView.m; sourceTree = "<group>"; };
 		CC2CC6331CA24D4B0028BBDD /* ZFPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZFPlayer.bundle; sourceTree = "<group>"; };
@@ -106,6 +103,8 @@
 		CC6945A91CB7F66300452D55 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		CC6C7AE31C9BDFE90000AD58 /* MoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviePlayerViewController.h; sourceTree = "<group>"; };
 		CC6C7AE41C9BDFE90000AD58 /* MoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviePlayerViewController.m; sourceTree = "<group>"; };
+		CC6FF3661DB4A32E00222AAC /* UIView+CustomControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomControlView.h"; sourceTree = "<group>"; };
+		CC6FF3671DB4A32E00222AAC /* UIView+CustomControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomControlView.m"; sourceTree = "<group>"; };
 		CC725C2A1C894D2500C3EAF2 /* ZFVideoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFVideoListViewController.h; sourceTree = "<group>"; };
 		CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFVideoListViewController.m; sourceTree = "<group>"; };
 		CC725C2E1C894D2D00C3EAF2 /* ZFDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadViewController.h; sourceTree = "<group>"; };
@@ -116,8 +115,6 @@
 		CC7D5E941D59AAAC000AC18A /* ASValuePopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValuePopUpView.m; sourceTree = "<group>"; };
 		CC8693451CC9BF5E0037E71B /* ZFPlyerResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlyerResolution.h; sourceTree = "<group>"; };
 		CC8693461CC9BF5E0037E71B /* ZFPlyerResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlyerResolution.m; sourceTree = "<group>"; };
-		CC9F99271DADD14D002C5D54 /* UIView+CustomControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomControlView.h"; sourceTree = "<group>"; };
-		CC9F99281DADD14D002C5D54 /* UIView+CustomControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomControlView.m"; sourceTree = "<group>"; };
 		CCE1C1361C9AA115004C95AC /* ZFPlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerCell.h; sourceTree = "<group>"; };
 		CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerCell.m; sourceTree = "<group>"; };
 		CCE1C1391C9AA11F004C95AC /* ZFPlayerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerModel.h; sourceTree = "<group>"; };
@@ -200,8 +197,6 @@
 				CC725C1D1C894C4A00C3EAF2 /* LocalVideo */,
 				4947F7901BE996AC003093C8 /* AppDelegate.h */,
 				4947F7911BE996AC003093C8 /* AppDelegate.m */,
-				CC2877CF1D9B66610097CEDA /* MainViewController.h */,
-				CC2877D01D9B66610097CEDA /* MainViewController.m */,
 				CC6945A91CB7F66300452D55 /* LaunchScreen.xib */,
 				CC48ECD61C8863DB009CF0D0 /* Main.storyboard */,
 				4947F7991BE996AC003093C8 /* Assets.xcassets */,
@@ -246,6 +241,8 @@
 				CC2877C91D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m */,
 				CC2877CA1D9B60760097CEDA /* UIViewController+ZFPlayerRotation.h */,
 				CC2877CB1D9B60760097CEDA /* UIViewController+ZFPlayerRotation.m */,
+				CC6FF3661DB4A32E00222AAC /* UIView+CustomControlView.h */,
+				CC6FF3671DB4A32E00222AAC /* UIView+CustomControlView.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -260,8 +257,6 @@
 				CC2CC6391CA24D4B0028BBDD /* ZFPlayerView.m */,
 				CC2CC6351CA24D4B0028BBDD /* ZFPlayerControlView.h */,
 				CC2CC6361CA24D4B0028BBDD /* ZFPlayerControlView.m */,
-				CC9F99271DADD14D002C5D54 /* UIView+CustomControlView.h */,
-				CC9F99281DADD14D002C5D54 /* UIView+CustomControlView.m */,
 				CC7D5E911D59AAAC000AC18A /* ASValueTrackingSlider.h */,
 				CC7D5E921D59AAAC000AC18A /* ASValueTrackingSlider.m */,
 				CC7D5E931D59AAAC000AC18A /* ASValuePopUpView.h */,
@@ -556,18 +551,17 @@
 				CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */,
 				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
-				CC2877D11D9B66610097CEDA /* MainViewController.m in Sources */,
 				CCE1C13B1C9AA11F004C95AC /* ZFPlayerModel.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */,
 				CC2CC63F1CA24D4B0028BBDD /* ZFPlayerView.m in Sources */,
 				CC2CC63B1CA24D4B0028BBDD /* ZFBrightnessView.m in Sources */,
-				CC9F99291DADD14E002C5D54 /* UIView+CustomControlView.m in Sources */,
 				CC8693471CC9BF5E0037E71B /* ZFPlyerResolution.m in Sources */,
 				CC7D5E951D59AAAC000AC18A /* ASValueTrackingSlider.m in Sources */,
 				CC2CC63D1CA24D4B0028BBDD /* ZFPlayerControlView.m in Sources */,
 				CCEF1BF91CACB28E00B0DD78 /* ZFDownloadedCell.m in Sources */,
 				CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */,
 				CC2877CD1D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m in Sources */,
+				CC6FF3681DB4A32E00222AAC /* UIView+CustomControlView.m in Sources */,
 				CCEF1BF41CAA826900B0DD78 /* ZFDownloadingCell.m in Sources */,
 				CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */,
 				CC7D5E961D59AAAC000AC18A /* ASValuePopUpView.m in Sources */,

@@ -22,8 +22,35 @@
 // THE SOFTWARE.
 
 #import "UITabBarController+ZFPlayerRotation.h"
+#import <objc/runtime.h>
 
 @implementation UITabBarController (ZFPlayerRotation)
+
++ (void)load
+{
+    SEL selectors[] = {
+        @selector(selectedIndex)
+    };
+    
+    for (NSUInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
+        SEL originalSelector = selectors[index];
+        SEL swizzledSelector = NSSelectorFromString([@"zf_" stringByAppendingString:NSStringFromSelector(originalSelector)]);
+        Method originalMethod = class_getInstanceMethod(self, originalSelector);
+        Method swizzledMethod = class_getInstanceMethod(self, swizzledSelector);
+        if (class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))) {
+            class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
+        } else {
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+    }
+}
+
+- (NSInteger)zf_selectedIndex
+{
+    NSInteger index = [self zf_selectedIndex];
+    if (index > self.viewControllers.count) { return 0; }
+    return index;
+}
 
 /**
  * 如果window的根视图是UITabBarController，则会先调用这个Category，然后调用UIViewController+ZFPlayerRotation
