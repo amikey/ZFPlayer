@@ -816,7 +816,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)singleTapAction:(UIGestureRecognizer *)gesture
 {
-    if ([gesture isKindOfClass:[NSNumber class]] &&![(id)gesture boolValue]) {
+    if ([gesture isKindOfClass:[NSNumber class]] && ![(id)gesture boolValue]) {
          [self _fullScreenAction];
          return;
     }

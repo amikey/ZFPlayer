@@ -95,7 +95,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         
         [self.topImageView addSubview:self.downLoadBtn];
         [self addSubview:self.lockBtn];
-        [self addSubview:self.backBtn];
+        [self.topImageView addSubview:self.backBtn];
         [self addSubview:self.activity];
         [self addSubview:self.repeatBtn];
         [self addSubview:self.horizontalLabel];
@@ -140,17 +140,17 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         make.width.height.mas_equalTo(20);
     }];
     
-    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.mas_leading).offset(7);
-        make.top.equalTo(self.mas_top).offset(5);
-        make.width.height.mas_equalTo(40);
-    }];
-    
     [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.top.equalTo(self);
         make.height.mas_equalTo(80);
     }];
     
+    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.topImageView.mas_leading).offset(7);
+        make.top.equalTo(self.topImageView.mas_top).offset(5);
+        make.width.height.mas_equalTo(40);
+    }];
+
     [self.downLoadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(49);
@@ -326,16 +326,18 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.bottomImageView.alpha = 1;
     self.lockBtn.alpha         = 1;
     self.shrink                = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)hideControlView
 {
-    self.topImageView.alpha    = 0;
-    self.bottomImageView.alpha = 0;
-    self.lockBtn.alpha         = 0;
+    self.topImageView.alpha     = 0;
+    self.bottomImageView.alpha  = 0;
+    self.lockBtn.alpha          = 0;
     // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
     [self resolutionBtnClick:self.resolutionBtn];
+    if (ZFPlayerOrientationIsLandscape) { [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade]; }
 }
 
 #pragma mark - setter
@@ -599,9 +601,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)autoFadeOutControlView
 {
-    if (!self.isShowing) { return; }
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
-    [self performSelector:@selector(hideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(zf_playerHideControlView) object:nil];
+    [self performSelector:@selector(zf_playerHideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
 }
 
 /**
@@ -624,9 +625,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
     [self zf_playerCancelAutoFadeOutControlView];
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
-        self.backBtn.alpha = 1;
         [self showControlView];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     } completion:^(BOOL finished) {
         self.showing = YES;
         [self autoFadeOutControlView];
@@ -643,8 +642,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [self zf_playerCancelAutoFadeOutControlView];
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
         [self hideControlView];
-        self.backBtn.alpha = 0;
-        if (ZFPlayerOrientationIsLandscape) { [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade]; }
     }completion:^(BOOL finished) {
         self.showing = NO;
     }];
@@ -658,7 +655,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }];
     [self layoutIfNeeded];
     [self hideControlView];
-    self.backBtn.alpha = 0;
     self.shrink = YES;
 }
 
