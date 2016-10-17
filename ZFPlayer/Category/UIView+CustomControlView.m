@@ -70,6 +70,10 @@
  */
 - (void)zf_playerHasDownloadFunction:(BOOL)sender{}
 
+/**
+ 下载按钮状态
+ */
+- (void)zf_playerDownloadBtnState:(BOOL)state{}
 
 /**
  是否有切换分辨率功能
