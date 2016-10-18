@@ -48,8 +48,6 @@
 {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-    // 调用playerView的layoutSubviews方法
-    if (self.playerView) { [self.playerView setNeedsLayout]; }
     // pop回来时候是否自动播放
     if (self.navigationController.viewControllers.count == 2 && self.playerView && self.isPlaying) {
         self.isPlaying = NO;
@@ -115,11 +113,11 @@
     // 打开预览图
     self.playerView.hasPreviewView = YES;
     
-    // 如果想从xx秒开始播放视频
+    // 从xx秒开始播放视频
     // self.playerView.seekTime = 15;
     
     // 是否自动播放，默认不自动播放
-    // [self.playerView autoPlayTheVideo];
+    [self.playerView autoPlayTheVideo];
 
 }
 

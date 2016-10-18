@@ -52,9 +52,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 @property (nonatomic, strong) NSURL                *videoURL;
 /** 视频标题 */
 @property (nonatomic, strong) NSString             *title;
-/** 视频URL的数组 */
-@property (nonatomic, strong) NSArray              *videoURLArray;
-
 /** 设置playerLayer的填充模式 */
 @property (nonatomic, assign) ZFPlayerLayerGravity playerLayerGravity;
 /** 是否有下载功能(默认是关闭) */
@@ -72,10 +69,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 @property (nonatomic, strong) UIView               *controlView;
 /** 设置代理 */
 @property (nonatomic, weak) id<ZFPlayerDelegate>   delegate;
+@property (nonatomic, assign) NSInteger            seekTime;
 @property (nonatomic, copy  ) ZFPlayerBackCallBack goBackBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerBackAction' instead");
 @property (nonatomic, copy  ) ZFDownloadCallBack   downloadBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerDownload:' instead");
-@property (nonatomic, assign) NSInteger            seekTime;
-/** 播放前占位图片的名称，不设置就显示默认占位图（需要在设置视频URL之前设置） */
 @property (nonatomic, copy  ) NSString             *placeholderImageName __deprecated_msg("Please use 'placeholderImage' instead");
 
 /**

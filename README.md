@@ -64,12 +64,17 @@ Direct drag IB to UIView, the aspect ratio for the 16:9 constraint (priority to 
 
 ```objc
 self.playerView.videoURL = self.videoURL;
-// Back button event
-__weak typeof(self) weakSelf = self;
-self.playerView.goBackBlock = ^{
-	[weakSelf.navigationController popViewControllerAnimated:YES];
-};
+// delegate
+self.playerView.delegate = self;
+```
 
+`ZFPlayerDelegate`
+
+```
+/** backBtn event */
+- (void)zf_playerBackAction;
+/** downloadBtn event */
+- (void)zf_playerDownload:(NSString *)url;
 ```
 
 ##### Code implementation (Masonry) usage
@@ -83,18 +88,19 @@ self.playerView = [[ZFPlayerView alloc] init];
 	// Note here, the aspect ratio 16:9 priority is lower than 1000 on the line, because the 4S iPhone aspect ratio is not 16:9
     make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
 }];
+// Control layer（you can custom）
+ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+self.playerView.controlView = controlView;
+// Set URL
 self.playerView.videoURL = self.videoURL;
-// Back button event
-__weak typeof(self) weakSelf = self;
-self.playerView.goBackBlock = ^{
-	[weakSelf.navigationController popViewControllerAnimated:YES];
-};
+// Set delegate
+self.playerView.delegate = self;
 ```
 
 ##### Set the fill mode for the video
 
 ```objc
- // you can set the fill mode of the video, the default settings (ZFPlayerLayerGravityResizeAspect: wait for a proportional fill, until a dimension reaches the area boundary).
+ // Set the fill mode of the video, the default settings (ZFPlayerLayerGravityResizeAspect: wait for a proportional fill, until a dimension reaches the area boundary).
  self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
 ```
 ##### Is there a breakpoint download function
@@ -119,7 +125,127 @@ self.playerView.goBackBlock = ^{
 ##### Set the video placeholderImage (need to set the video URL before)
 ```objc
 // Here is the name of the picture
-self.playerView.placeholderImageName = @"...";
+self.playerView.placeholderImage = [UIImage imageNamed: @"..."];
+```
+
+##### Custom control layer
+`self.playerView.controlView = your customView;`
+
+custom view you need to implement the following method in `.m`, you can reference`ZFPlayerControlView.m`
+
+```
+/** 
+ Show controlView
+ */
+- (void)zf_playerShowControlView;
+/** 
+ Hide controlView
+*/
+- (void)zf_playerHideControlView;
+
+/** 
+ Reset controlView 
+ */
+- (void)zf_playerResetControlView;
+
+/** 
+ Reset controlView for resolution
+ */
+- (void)zf_playerResetControlViewForResolution;
+
+/** 
+ Cancel auto fadeOut controlView 
+ */
+- (void)zf_playerCancelAutoFadeOutControlView;
+
+/** 
+ Play end 
+ */
+- (void)zf_playerPlayEnd;
+
+/** 
+ Has download function
+ */
+- (void)zf_playerHasDownloadFunction:(BOOL)sender;
+
+/**
+ Resolution function
+ */
+- (void)zf_playerResolutionArray:(NSArray *)resolutionArray;
+
+/** 
+ PlayBtn state (play or pause)
+ */
+- (void)zf_playerPlayBtnState:(BOOL)state;
+
+/** 
+ LockBtn state 
+ */
+- (void)zf_playerLockBtnState:(BOOL)state;
+
+/**
+ DownloadBtn state
+ */
+- (void)zf_playerDownloadBtnState:(BOOL)state;
+
+/** 
+ Set video title 
+ */
+- (void)zf_playerSetTitle:(NSString *)title;
+
+/** 
+ Player activity
+ */
+- (void)zf_playerActivity:(BOOL)animated;
+
+/**
+ Set preview View
+ */
+- (void)zf_playerDraggedTime:(NSInteger)draggedTime sliderImage:(UIImage *)image;
+
+/**
+ Dragged to control video progress
+
+ @param draggedTime Dragged time for video
+ @param totalTime   Total time for video
+ @param forawrd     Whether fast forward
+ @param preview     Is there a preview
+ */
+- (void)zf_playerDraggedTime:(NSInteger)draggedTime totalTime:(NSInteger)totalTime isForward:(BOOL)forawrd hasPreview:(BOOL)preview;
+
+/** 
+ Dragged end
+ */
+- (void)zf_playerDraggedEnd;
+
+/**
+ Normal play
+
+ @param currentTime Current time for video
+ @param totalTime   Total Time for video
+ @param value       Slider value(0.0~1.0)
+ */
+- (void)zf_playerCurrentTime:(NSInteger)currentTime totalTime:(NSInteger)totalTime sliderValue:(CGFloat)value;
+
+/** 
+ Progress display buffer
+ */
+- (void)zf_playerSetProgress:(CGFloat)progress;
+
+/** 
+ Video load failure 
+ */
+- (void)zf_playerItemStatusFailed:(NSError *)error;
+
+/**
+ Bottom shrink play
+ */
+- (void)zf_playerBottomShrinkPlay;
+
+/**
+ play on cell
+ */
+- (void)zf_playerCellPlay;
 ```
 
 ### Picture demonstration

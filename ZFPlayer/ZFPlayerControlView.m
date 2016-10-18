@@ -122,8 +122,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
         [self listeningRotating];
         [self onDeviceOrientationChange];
-        
-       
     }
     return self;
 }
@@ -131,6 +129,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
 
 - (void)makeSubViewsConstraints
@@ -251,7 +250,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 #pragma mark - Action
 
-
 /**
  *  点击切换分别率按钮
  */
@@ -263,7 +261,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.resolutionBtn.selected = NO;
     // topImageView上的按钮的文字
     [self.resolutionBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
-    
     if (self.resolutionBlock) { self.resolutionBlock(sender); }
     if ([self.delegate respondsToSelector:@selector(zf_controlView:resolutionAction:)]) {
         [self.delegate zf_controlView:self resolutionAction:sender];
@@ -290,7 +287,162 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 // 不做处理，只是为了滑动slider其他地方不响应其他手势
 - (void)panRecognizer:(UIPanGestureRecognizer *)sender {}
 
-#pragma mark - Public Method
+- (void)backBtnClick:(UIButton *)sender
+{
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:backAction:)]) {
+        [self.delegate zf_controlView:self backAction:sender];
+    }
+}
+
+- (void)lockScrrenBtnClick:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:lockScreenAction:)]) {
+        [self.delegate zf_controlView:self lockScreenAction:sender];
+    }
+}
+
+- (void)playBtnClick:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:playAction:)]) {
+        [self.delegate zf_controlView:self playAction:sender];
+    }
+}
+
+- (void)closeBtnClick:(UIButton *)sender
+{
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:closeAction:)]) {
+        [self.delegate zf_controlView:self closeAction:sender];
+    }
+}
+
+- (void)fullScreenBtnClick:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:fullScreenAction:)]) {
+        [self.delegate zf_controlView:self fullScreenAction:sender];
+    }
+}
+
+- (void)repeatBtnClick:(UIButton *)sender
+{
+    // 重置控制层View
+    [self zf_playerResetControlView];
+    [self zf_playerShowControlView];
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:repeatPlayAction:)]) {
+        [self.delegate zf_controlView:self repeatPlayAction:sender];
+    }
+}
+
+- (void)downloadBtnClick:(UIButton *)sender
+{
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:downloadVideoAction:)]) {
+        [self.delegate zf_controlView:self downloadVideoAction:sender];
+    }
+}
+
+- (void)resolutionBtnClick:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    // 显示隐藏分辨率View
+    self.resolutionView.hidden = !sender.isSelected;
+}
+
+- (void)centerPlayBtnClick:(UIButton *)sender
+{
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:cneterPlayAction:)]) {
+        [self.delegate zf_controlView:self cneterPlayAction:sender];
+    }
+}
+
+- (void)progressSliderTouchBegan:(ASValueTrackingSlider *)sender
+{
+    [self zf_playerCancelAutoFadeOutControlView];
+    self.videoSlider.popUpView.hidden = YES;
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchBegan:)]) {
+        [self.delegate zf_controlView:self progressSliderTouchBegan:sender];
+    }
+}
+
+- (void)progressSliderValueChanged:(ASValueTrackingSlider *)sender
+{
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderValueChanged:)]) {
+        [self.delegate zf_controlView:self progressSliderValueChanged:sender];
+    }
+}
+
+- (void)progressSliderTouchEnded:(ASValueTrackingSlider *)sender
+{
+    [self zf_playerDraggedEnd];
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchEnded:)]) {
+        [self.delegate zf_controlView:self progressSliderTouchEnded:sender];
+    }
+}
+
+/**
+ *  应用退到后台
+ */
+- (void)appDidEnterBackground
+{
+    [self zf_playerCancelAutoFadeOutControlView];
+    self.startBtn.selected = NO;
+}
+
+/**
+ *  应用进入前台
+ */
+- (void)appDidEnterPlayground
+{
+    [self zf_playerShowControlView];
+    self.startBtn.selected = YES;
+}
+
+- (void)playerPlayDidEnd
+{
+    self.backgroundColor  = RGBA(0, 0, 0, .6);
+    self.repeatBtn.hidden = NO;
+    // 初始化显示controlView为YES
+    self.showing = NO;
+    // 延迟隐藏controlView
+    [self zf_playerShowControlView];
+}
+
+/**
+ *  屏幕方向发生变化会调用这里
+ */
+- (void)onDeviceOrientationChange
+{
+    if (!ZFPlayerShared.isAllowLandscape) { return; }
+    self.lockBtn.hidden = !ZFPlayerOrientationIsLandscape;
+    if (ZFPlayerOrientationIsLandscape) {
+        [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(20);
+            make.leading.mas_equalTo(7);
+            make.width.mas_equalTo(40);
+        }];
+        self.shrink = NO;
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    } else {
+        [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(0);
+            make.leading.mas_equalTo(7);
+            if (self.isCellVideo) {
+                make.width.mas_equalTo(0);
+            } else {
+                make.width.mas_equalTo(40);
+            }
+        }];
+        if (self.isCellVideo) {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    }
+    [self layoutIfNeeded];
+}
+
+#pragma mark - Private Method
 
 /** 重置ControlView */
 - (void)zf_playerResetControlView
@@ -371,6 +523,13 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
 
 }
+
+- (void)setShrink:(BOOL)shrink
+{
+    _shrink = shrink;
+    self.closeBtn.hidden = !shrink;
+}
+
 #pragma mark - getter
 
 - (UILabel *)titleLabel
@@ -595,16 +754,39 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
                                              selector:@selector(onDeviceOrientationChange)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil
-     ];
+    ];
 }
 
-#pragma mark - ShowOrHideControlView
 
 - (void)autoFadeOutControlView
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(zf_playerHideControlView) object:nil];
     [self performSelector:@selector(zf_playerHideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
 }
+
+/** 
+ slider滑块的bounds 
+ */
+- (CGRect)thumbRect
+{
+    return [self.videoSlider thumbRectForBounds:self.videoSlider.bounds
+                                      trackRect:[self.videoSlider trackRectForBounds:self.videoSlider.bounds]
+                                          value:self.videoSlider.value];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    CGRect rect = [self thumbRect];
+    CGPoint point = [touch locationInView:self.videoSlider];
+    if ([touch.view isKindOfClass:[UISlider class]]) { // 如果在滑块上点击就不响应pan手势
+        if (point.x <= rect.origin.x + rect.size.width && point.x >= rect.origin.x) { return NO; }
+    }
+    return YES;
+}
+
+#pragma mark - Public method
 
 /**
  *  取消延时隐藏controlView的方法
@@ -669,150 +851,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }];
     [self layoutIfNeeded];
     [self zf_playerShowControlView];
-}
-
-// slider滑块的bounds
-- (CGRect)thumbRect
-{
-    return [self.videoSlider thumbRectForBounds:self.videoSlider.bounds
-                          trackRect:[self.videoSlider trackRectForBounds:self.videoSlider.bounds]
-                              value:self.videoSlider.value];
-}
-
-#pragma mark - UIGestureRecognizerDelegate
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    CGRect rect = [self thumbRect];
-    CGPoint point = [touch locationInView:self.videoSlider];
-    if ([touch.view isKindOfClass:[UISlider class]]) { // 如果在滑块上点击就不响应pan手势
-        if (point.x <= rect.origin.x + rect.size.width && point.x >= rect.origin.x) { return NO; }
-    }
-    return YES;
-}
-
-#pragma mark - Action
-
-- (void)backBtnClick:(UIButton *)sender
-{
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:backAction:)]) {
-        [self.delegate zf_controlView:self backAction:sender];
-    }
-}
-
-- (void)lockScrrenBtnClick:(UIButton *)sender
-{
-    sender.selected = !sender.selected;
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:lockScreenAction:)]) {
-        [self.delegate zf_controlView:self lockScreenAction:sender];
-    }
-}
-
-- (void)playBtnClick:(UIButton *)sender
-{
-    sender.selected = !sender.selected;
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:playAction:)]) {
-        [self.delegate zf_controlView:self playAction:sender];
-    }
-}
-
-- (void)closeBtnClick:(UIButton *)sender
-{
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:closeAction:)]) {
-        [self.delegate zf_controlView:self closeAction:sender];
-    }
-}
-
-- (void)fullScreenBtnClick:(UIButton *)sender
-{
-    sender.selected = !sender.selected;
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:fullScreenAction:)]) {
-        [self.delegate zf_controlView:self fullScreenAction:sender];
-    }
-}
-
-- (void)repeatBtnClick:(UIButton *)sender
-{
-    // 重置控制层View
-    [self zf_playerResetControlView];
-    [self zf_playerShowControlView];
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:repeatPlayAction:)]) {
-        [self.delegate zf_controlView:self repeatPlayAction:sender];
-    }
-}
-
-- (void)downloadBtnClick:(UIButton *)sender
-{
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:downloadVideoAction:)]) {
-        [self.delegate zf_controlView:self downloadVideoAction:sender];
-    }
-}
-
-- (void)resolutionBtnClick:(UIButton *)sender
-{
-    sender.selected = !sender.selected;
-    // 显示隐藏分辨率View
-    self.resolutionView.hidden = !sender.isSelected;
-}
-
-- (void)centerPlayBtnClick:(UIButton *)sender
-{
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:cneterPlayAction:)]) {
-        [self.delegate zf_controlView:self cneterPlayAction:sender];
-    }
-}
-
-
-/**
- *  应用退到后台
- */
-- (void)appDidEnterBackground
-{
-    [self zf_playerCancelAutoFadeOutControlView];
-    self.startBtn.selected = NO;
-}
-
-/**
- *  应用进入前台
- */
-- (void)appDidEnterPlayground
-{
-    [self zf_playerShowControlView];
-    self.startBtn.selected = YES;
-}
-
-- (void)playerPlayDidEnd
-{
-    self.backgroundColor  = RGBA(0, 0, 0, .6);
-    self.repeatBtn.hidden = NO;
-    // 初始化显示controlView为YES
-    self.showing = NO;
-    // 延迟隐藏controlView
-    [self zf_playerShowControlView];
-}
-
-- (void)progressSliderTouchBegan:(ASValueTrackingSlider *)sender
-{
-    [self zf_playerCancelAutoFadeOutControlView];
-    self.videoSlider.popUpView.hidden = YES;
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchBegan:)]) {
-        [self.delegate zf_controlView:self progressSliderTouchBegan:sender];
-    }
-}
-
-- (void)progressSliderValueChanged:(ASValueTrackingSlider *)sender
-{
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderValueChanged:)]) {
-        [self.delegate zf_controlView:self progressSliderValueChanged:sender];
-    }
-}
-
-- (void)progressSliderTouchEnded:(ASValueTrackingSlider *)sender
-{
-    [self zf_playerDraggedEnd];
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchEnded:)]) {
-        [self.delegate zf_controlView:self progressSliderTouchEnded:sender];
-    }
 }
 
 - (void)zf_playerCurrentTime:(NSInteger)currentTime totalTime:(NSInteger)totalTime sliderValue:(CGFloat)value
@@ -978,40 +1016,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)zf_playerDownloadBtnState:(BOOL)state
 {
     self.downLoadBtn.enabled = state;
-}
-
-- (void)setShrink:(BOOL)shrink
-{
-    _shrink = shrink;
-    self.closeBtn.hidden = !shrink;
-}
-
-/**
- *  屏幕方向发生变化会调用这里
- */
-- (void)onDeviceOrientationChange
-{
-    if (!ZFPlayerShared.isAllowLandscape) { return; }
-    self.lockBtn.hidden = !ZFPlayerOrientationIsLandscape;
-    if (ZFPlayerOrientationIsLandscape) {
-        [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(20);
-            make.leading.mas_equalTo(7);
-            make.width.mas_equalTo(40);
-        }];
-        self.shrink = NO;
-    } else {
-        [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(0);
-            make.leading.mas_equalTo(7);
-            if (self.isCellVideo) {
-                make.width.mas_equalTo(0);
-            } else {
-                make.width.mas_equalTo(40);
-            }
-        }];
-    }
-    [self layoutIfNeeded];
 }
 
 @end

@@ -28,12 +28,11 @@
 @property (nonatomic, weak) id<ZFPlayerControlViewDelagate> delegate;
 
 /** 
- 显示top、bottom、lockBtn
+ 显示控制层
  */
 - (void)zf_playerShowControlView;
 /** 
- 隐藏top、bottom、lockBt
- n*/
+ 隐藏控制层*/
 - (void)zf_playerHideControlView;
 
 /** 
@@ -42,7 +41,7 @@
 - (void)zf_playerResetControlView;
 
 /** 
- 切换分辨率时候调用此方法
+ 切换分辨率时重置ControlView
  */
 - (void)zf_playerResetControlViewForResolution;
 

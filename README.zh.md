@@ -64,12 +64,17 @@ $ pod install
 
 ```objc
 self.playerView.videoURL = self.videoURL;
-// 返回按钮事件
-__weak typeof(self) weakSelf = self;
-self.playerView.goBackBlock = ^{
-	[weakSelf.navigationController popViewControllerAnimated:YES];
-};
+// 设置代理
+self.playerView.delegate = self;
+```
 
+`ZFPlayerDelegate`
+
+```
+/** 返回按钮事件 */
+- (void)zf_playerBackAction;
+/** 下载视频 */
+- (void)zf_playerDownload:(NSString *)url;
 ```
 
 ##### 代码实现（Masonry）用法
@@ -83,29 +88,31 @@ self.playerView = [[ZFPlayerView alloc] init];
 	// 注意此处，宽高比16：9优先级比1000低就行，在因为iPhone 4S宽高比不是16：9
 	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
 }];
+
+// 指定控制层（可自定义）
+ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+self.playerView.controlView = controlView;
+// 设置视频的URL
 self.playerView.videoURL = self.videoURL;
-// 返回按钮事件
-__weak typeof(self) weakSelf = self;
-self.playerView.goBackBlock = ^{
-	[weakSelf.navigationController popViewControllerAnimated:YES];
-};
+// 设置代理
+self.playerView.delegate = self;
 ```
 
 ##### 设置视频的填充模式
 ```objc
- //可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
+ // 设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
  self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
 ```
 
 ##### 是否有断点下载功能
 ```objc
- // 默认是关闭断点下载功能，如需要此功能设置这里
+ // 下载功能，如需要此功能设置这里
  self.playerView.hasDownload = YES;
 ```
 
 ##### 从xx秒开始播放视频
  ```objc
- // 如果想从xx秒开始播放视频
+ // 从xx秒开始播放视频
  self.playerView.seekTime = 15;
  ```
  
@@ -117,8 +124,132 @@ self.playerView.goBackBlock = ^{
 
 ##### 设置播放前的占位图（需要在设置视频URL之前设置）
 ```objc
-// 这里传图片的名称
-self.playerView.placeholderImageName = @"...";
+// 设置播放前的占位图
+self.playerView.placeholderImage = [UIImage imageNamed: @"..."];
+```
+
+##### 自定义控制层
+`self.playerView.controlView = 自定义的View;`
+
+自定义view你需要实现以下方法，直接在`.m`中实现即可，可参考`ZFPlayerControlView.m`
+
+```
+/** 
+ 显示控制层
+ */
+- (void)zf_playerShowControlView;
+/** 
+ 隐藏控制层
+*/
+- (void)zf_playerHideControlView;
+
+/** 
+ 重置ControlView 
+ */
+- (void)zf_playerResetControlView;
+
+/** 
+ 切换分辨率时重置ControlView 
+ */
+- (void)zf_playerResetControlViewForResolution;
+
+/** 
+ 取消自动隐藏控制层view 
+ */
+- (void)zf_playerCancelAutoFadeOutControlView;
+
+/** 
+ 播放完了 
+ */
+- (void)zf_playerPlayEnd;
+
+/** 
+ 是否有下载功能 
+ */
+- (void)zf_playerHasDownloadFunction:(BOOL)sender;
+
+/**
+ 是否有切换分辨率功能
+ @param resolutionArray 分辨率名称的数组
+ */
+- (void)zf_playerResolutionArray:(NSArray *)resolutionArray;
+
+/** 
+ 播放按钮状态 (播放、暂停状态)
+ */
+- (void)zf_playerPlayBtnState:(BOOL)state;
+
+/** 
+ 锁定屏幕方向按钮状态 
+ */
+- (void)zf_playerLockBtnState:(BOOL)state;
+
+/**
+ 下载按钮状态
+ */
+- (void)zf_playerDownloadBtnState:(BOOL)state;
+
+/** 
+ 设置标题 
+ */
+- (void)zf_playerSetTitle:(NSString *)title;
+
+/** 
+ 加载的菊花
+ */
+- (void)zf_playerActivity:(BOOL)animated;
+
+/**
+ 设置预览图
+
+ @param draggedTime 拖拽的时长
+ @param image       预览图
+ */
+- (void)zf_playerDraggedTime:(NSInteger)draggedTime sliderImage:(UIImage *)image;
+
+/**
+ 拖拽快进 快退
+
+ @param draggedTime 拖拽的时长
+ @param totalTime   视频总时长
+ @param forawrd     是否是快进
+ @param preview     是否有预览图
+ */
+- (void)zf_playerDraggedTime:(NSInteger)draggedTime totalTime:(NSInteger)totalTime isForward:(BOOL)forawrd hasPreview:(BOOL)preview;
+
+/** 
+ 滑动调整进度结束结束 
+ */
+- (void)zf_playerDraggedEnd;
+
+/**
+ 正常播放
+
+ @param currentTime 当前播放时长
+ @param totalTime   视频总时长
+ @param value       slider的value(0.0~1.0)
+ */
+- (void)zf_playerCurrentTime:(NSInteger)currentTime totalTime:(NSInteger)totalTime sliderValue:(CGFloat)value;
+
+/** 
+ progress显示缓冲进度 
+ */
+- (void)zf_playerSetProgress:(CGFloat)progress;
+
+/** 
+ 视频加载失败 
+ */
+- (void)zf_playerItemStatusFailed:(NSError *)error;
+
+/**
+ 小屏播放
+ */
+- (void)zf_playerBottomShrinkPlay;
+
+/**
+ 在cell播放
+ */
+- (void)zf_playerCellPlay;
 ```
 
 ### 图片效果演示

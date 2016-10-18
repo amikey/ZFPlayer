@@ -84,6 +84,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                   isAutoPlay;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
+/** 视频URL的数组 */
+@property (nonatomic, strong) NSArray                *videoURLArray;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -158,6 +160,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.controlView zf_playerCancelAutoFadeOutControlView];
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     // 移除time观察者
     if (self.timeObserve) {
         [self.player removeTimeObserver:self.timeObserve];
@@ -232,15 +235,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
     // app进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayground) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
     // 监测设备方向
-    [self listeningRotating];
-}
-
-/**
- *  监听设备旋转通知
- */
-- (void)listeningRotating
-{
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onDeviceOrientationChange)
@@ -264,7 +260,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             make.height.mas_offset(ScreenWidth*2/3);
         }];
     }
-    // fix iOS7 crash bug
     [self layoutIfNeeded];
 }
 
@@ -351,14 +346,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.isMaskShowing = YES;
     // 自动播放
     self.isAutoPlay    = YES;
-
-//    // 添加手势
-//    [self createGesture];
     
     // 添加播放进度计时器
     [self createTimer];
-    
-//    [self.controlView zf_playerHideControlView];
     
     // 获取系统音量
     [self configureVolume];
@@ -375,7 +365,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
     // 开始播放
     [self play];
-    self.isPauseByUser                 = NO;
+    self.isPauseByUser = NO;
     
     // 强制让系统调用layoutSubviews 两个方法必须同时写
     [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
@@ -630,7 +620,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)updatePlayerViewToCell
 {
     if (!self.isBottomVideo) { return; }
-    self.isBottomVideo     = NO;
+    self.isBottomVideo = NO;
     [self setOrientationPortraitConstraint];
     [self.controlView zf_playerCellPlay];
 }
@@ -641,11 +631,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setOrientationLandscapeConstraint
 {
     if (self.isCellVideo) {
-        
         // 横屏时候移除tableView的观察者
         [self.tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
-        
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         // 亮度view加到window最上层
         ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
         [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
@@ -661,14 +648,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setOrientationPortraitConstraint
 {
     if (self.isCellVideo) {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         [self removeFromSuperview];
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
         NSArray *visableCells = self.tableView.visibleCells;
         self.isBottomVideo = NO;
         if (![visableCells containsObject:cell]) {
             [self updatePlayerViewToBottom];
-        }else {
+        } else {
             // 根据tag取到对应的cellImageView
             UIImageView *cellImageView = [cell viewWithTag:self.cellImageViewTag];
             [self addPlayerToCellImageView:cellImageView];
@@ -700,7 +686,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         // 设置横屏
         [self setOrientationLandscapeConstraint];
         
-    }else if (orientation == UIInterfaceOrientationPortrait) {
+    } else if (orientation == UIInterfaceOrientationPortrait) {
         // 设置竖屏
         [self setOrientationPortraitConstraint];
         
@@ -722,11 +708,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)onDeviceOrientationChange
 {
-    if (ZFPlayerShared.isAllowLandscape && ZFPlayerOrientationIsLandscape) {
-        self.isFullScreen = YES;
-    } else {
-        self.isFullScreen = NO;
-    }
+    if (ZFPlayerShared.isAllowLandscape && ZFPlayerOrientationIsLandscape) { self.isFullScreen = YES; }
+    else { self.isFullScreen = NO; }
     if (ZFPlayerShared.isLockScreen) { return; }
 }
 
@@ -749,7 +732,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)unLockTheScreen
 {
     // 调用AppDelegate单例记录播放状态是否锁屏
-    ZFPlayerShared.isLockScreen       = NO;
+    ZFPlayerShared.isLockScreen = NO;
     [self.controlView zf_playerLockBtnState:NO];
     self.isLocked = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
@@ -847,12 +830,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 显示控制层
     [self.controlView zf_playerCancelAutoFadeOutControlView];
     [self.controlView zf_playerShowControlView];
-    if (self.isPauseByUser) {
-        [self play];
-    } else {
-        [self pause];
-    }
-    
+    if (self.isPauseByUser) { [self play]; }
+    else { [self pause]; }
     if (!self.isAutoPlay) {
         self.isAutoPlay = YES;
         [self configZFPlayer];
@@ -868,6 +847,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (self.state == ZFPlayerStatePause) { self.state = ZFPlayerStatePlaying; }
     self.isPauseByUser = NO;
     [_player play];
+    // 显示控制层
+    [self.controlView zf_playerCancelAutoFadeOutControlView];
+    [self.controlView zf_playerShowControlView];
 }
 
 /**
@@ -939,8 +921,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     self.didEnterBackground = NO;
     [self.controlView zf_playerShowControlView];
     if (!self.isPauseByUser) {
-        self.state                         = ZFPlayerStatePlaying;
-        self.isPauseByUser                 = NO;
+        self.state          = ZFPlayerStatePlaying;
+        self.isPauseByUser  = NO;
         [self play];
     }
 }
@@ -1558,7 +1540,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         
         [self seekToTime:dragedSeconds completionHandler:nil];
     }
-
 }
 
 @end
