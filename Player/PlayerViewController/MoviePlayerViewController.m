@@ -98,11 +98,13 @@
     
     // 设置播放前的占位图（需要在设置视频URL之前设置）
     self.playerView.placeholderImage = [UIImage imageNamed: @"loading_bgView1"];
+    
     // 设置视频的URL
     self.playerView.videoURL = self.videoURL;
     
     // 设置代理
     self.playerView.delegate = self;
+    
     // 设置标题
     self.playerView.title    = @"这里设置视频标题";
     //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
@@ -117,7 +119,7 @@
     // self.playerView.seekTime = 15;
     
     // 是否自动播放，默认不自动播放
-    [self.playerView autoPlayTheVideo];
+    // [self.playerView autoPlayTheVideo];
 
 }
 

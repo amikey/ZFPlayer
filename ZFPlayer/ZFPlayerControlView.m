@@ -111,6 +111,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self.activity stopAnimating];
         self.downLoadBtn.hidden     = YES;
         self.resolutionBtn.hidden   = YES;
+        self.lockBtn.hidden         = YES;
         // 初始化时重置controlView
         [self zf_playerResetControlView];
         
@@ -337,7 +338,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
     [self resolutionBtnClick:self.resolutionBtn];
-    if (ZFPlayerOrientationIsLandscape) { [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade]; }
+    if (ZFPlayerOrientationIsLandscape && ZFPlayerShared.isAllowLandscape) { [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade]; }
 }
 
 #pragma mark - setter
@@ -990,6 +991,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
  */
 - (void)onDeviceOrientationChange
 {
+    if (!ZFPlayerShared.isAllowLandscape) { return; }
     self.lockBtn.hidden = !ZFPlayerOrientationIsLandscape;
     if (ZFPlayerOrientationIsLandscape) {
         [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {

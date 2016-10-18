@@ -322,7 +322,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 根据屏幕的方向设置相关UI
     [self onDeviceOrientationChange];
     self.isPauseByUser = YES;
-    [self.controlView zf_playerHideControlView];
+
+    // 添加手势
+    [self createGesture];
 }
 
 
@@ -350,11 +352,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 自动播放
     self.isAutoPlay    = YES;
 
-    // 添加手势
-    [self createGesture];
+//    // 添加手势
+//    [self createGesture];
     
     // 添加播放进度计时器
     [self createTimer];
+    
+//    [self.controlView zf_playerHideControlView];
     
     // 获取系统音量
     [self configureVolume];
@@ -409,17 +413,21 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
     // 解决点击当前view时候响应其他控件事件
     [self.singleTap setDelaysTouchesBegan:YES];
+    [self.doubleTap setDelaysTouchesBegan:YES];
+    // 双击失败响应单击事件
     [self.singleTap requireGestureRecognizerToFail:self.doubleTap];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch = [touches anyObject];
-    if(touch.tapCount == 1) {
-        [self performSelector:@selector(singleTapAction:) withObject:@(NO)];
-    } else if (touch.tapCount == 2) {
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(singleTapAction:) object:nil];
-        [self doubleTapAction:touch.gestureRecognizers.lastObject];
+    if (self.isAutoPlay) {
+        UITouch *touch = [touches anyObject];
+        if(touch.tapCount == 1) {
+            [self performSelector:@selector(singleTapAction:) withObject:@(NO) ];
+        } else if (touch.tapCount == 2) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(singleTapAction:) object:nil];
+            [self doubleTapAction:touch.gestureRecognizers.lastObject];
+        }
     }
 }
 
@@ -837,11 +845,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)doubleTapAction:(UIGestureRecognizer *)gesture
 {
     // 显示控制层
+    [self.controlView zf_playerCancelAutoFadeOutControlView];
     [self.controlView zf_playerShowControlView];
     if (self.isPauseByUser) {
         [self play];
     } else {
         [self pause];
+    }
+    
+    if (!self.isAutoPlay) {
+        self.isAutoPlay = YES;
+        [self configZFPlayer];
     }
 }
 
@@ -1311,7 +1325,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)zf_controlView:(UIView *)controlView playAction:(UIButton *)sender
 {
-    NSLog(@"kaissss");
     self.isPauseByUser = !self.isPauseByUser;
     if (self.isPauseByUser) {
         [self pause];
@@ -1325,7 +1338,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.isAutoPlay = YES;
         [self configZFPlayer];
     }
-
 }
 
 - (void)zf_controlView:(UIView *)controlView backAction:(UIButton *)sender
@@ -1336,13 +1348,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         if (!self.isFullScreen) {
             // player加到控制器上，只有一个player时候
             [self pause];
-            if ([self.delegate respondsToSelector:@selector(zf_playerBackAction)]) {
-                [self.delegate zf_playerBackAction];
-            }
-            if (self.goBackBlock) {
-                self.goBackBlock();
-            }
-        }else {
+            if ([self.delegate respondsToSelector:@selector(zf_playerBackAction)]) { [self.delegate zf_playerBackAction]; }
+            if (self.goBackBlock) { self.goBackBlock(); }
+        } else {
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
     }
@@ -1370,8 +1378,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     switch (interfaceOrientation) {
             
         case UIInterfaceOrientationPortraitUpsideDown:{
-            ZFPlayerShared.isAllowLandscape = NO;
-            [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            if (ZFPlayerOrientationIsPortrait && !ZFPlayerShared.isAllowLandscape) {
+                ZFPlayerShared.isAllowLandscape = YES;
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            } else {
+                ZFPlayerShared.isAllowLandscape = NO;
+                [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            }
         }
             break;
         case UIInterfaceOrientationPortrait:{
@@ -1380,13 +1393,23 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
-            ZFPlayerShared.isAllowLandscape = NO;
-            [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            if (ZFPlayerOrientationIsLandscape && !ZFPlayerShared.isAllowLandscape) {
+                ZFPlayerShared.isAllowLandscape = YES;
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeLeft];
+            } else {
+                ZFPlayerShared.isAllowLandscape = NO;
+                [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
+            if (ZFPlayerOrientationIsLandscape && !ZFPlayerShared.isAllowLandscape) {
+                ZFPlayerShared.isAllowLandscape = YES;
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            } else {
                 ZFPlayerShared.isAllowLandscape = NO;
                 [self interfaceOrientation:UIInterfaceOrientationPortrait];
+            }
         }
             break;
             
