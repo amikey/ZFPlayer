@@ -25,6 +25,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "UIView+CustomControlView.h"
+#import "MMMaterialDesignSpinner.h"
 
 static const CGFloat ZFPlayerAnimationTimeInterval             = 7.0f;
 static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
@@ -49,7 +50,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /** 快进快退label */
 @property (nonatomic, strong) UILabel                 *horizontalLabel;
 /** 系统菊花 */
-@property (nonatomic, strong) UIActivityIndicatorView *activity;
+@property (nonatomic, strong) MMMaterialDesignSpinner *activity;
 /** 返回按钮*/
 @property (nonatomic, strong) UIButton                *backBtn;
 /** 关闭按钮*/
@@ -227,6 +228,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     
     [self.activity mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self);
+        make.width.with.height.mas_equalTo(22);
     }];
     
     [self.repeatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -694,10 +696,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _horizontalLabel;
 }
 
-- (UIActivityIndicatorView *)activity
+- (MMMaterialDesignSpinner *)activity
 {
     if (!_activity) {
-        _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _activity = [[MMMaterialDesignSpinner alloc] init];
+        _activity.tintColor = [UIColor whiteColor];
     }
     return _activity;
 }
@@ -938,6 +941,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     if (animated) {
         [self.activity startAnimating];
+        self.horizontalLabel.hidden = YES;
     } else {
         [self.activity stopAnimating];
     }
