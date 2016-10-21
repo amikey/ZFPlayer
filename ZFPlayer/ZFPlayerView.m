@@ -1517,6 +1517,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 });
                 
             }
+            // 播放
+            [self play];
         } else {
             // 此时设置slider值为0
             slider.value = 0;

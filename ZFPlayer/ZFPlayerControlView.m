@@ -75,6 +75,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 @property (nonatomic, assign, getter=isShrink ) BOOL  shrink;
 /** 在cell上播放 */
 @property (nonatomic, assign, getter=isCellVideo)BOOL cellVideo;
+/** 是否拖拽slider控制播放进度 */
+@property (nonatomic, assign, getter=isDraggedSlider)BOOL draggedSlider;
 @end
 
 @implementation ZFPlayerControlView
@@ -362,6 +364,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     [self zf_playerCancelAutoFadeOutControlView];
     self.videoSlider.popUpView.hidden = YES;
+    self.draggedSlider = YES;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchBegan:)]) {
         [self.delegate zf_controlView:self progressSliderTouchBegan:sender];
     }
@@ -377,6 +380,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)progressSliderTouchEnded:(ASValueTrackingSlider *)sender
 {
     [self zf_playerDraggedEnd];
+    self.draggedSlider = NO;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchEnded:)]) {
         [self.delegate zf_controlView:self progressSliderTouchEnded:sender];
     }
@@ -864,8 +868,10 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     // duration 总时长
     NSInteger durMin           = totalTime / 60;//总秒
     NSInteger durSec           = totalTime % 60;//总分钟
-    // 更新slider
-    self.videoSlider.value     = value;
+    if (!self.isDraggedSlider) {
+        // 更新slider
+        self.videoSlider.value     = value;
+    }
     // 更新当前播放时间
     self.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     // 更新总时间
