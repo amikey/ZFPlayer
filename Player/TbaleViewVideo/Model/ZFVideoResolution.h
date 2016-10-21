@@ -1,5 +1,5 @@
 //
-//  ZFPlyerResolution.m
+//  ZFVideoResolution.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,8 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "ZFPlyerResolution.h"
+#import <Foundation/Foundation.h>
 
-@implementation ZFPlyerResolution
-
+@interface ZFVideoResolution : NSObject
+@property (nonatomic, assign) NSInteger height;
+@property (nonatomic, assign) NSInteger width;
+@property (nonatomic, copy  ) NSString  *name;
+@property (nonatomic, copy  ) NSString  *type;
+@property (nonatomic, copy  ) NSString  *url;
 @end

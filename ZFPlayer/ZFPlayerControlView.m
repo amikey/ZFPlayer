@@ -69,6 +69,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 @property (nonatomic, strong) UIView                  *resolutionView;
 /** 播放按钮 */
 @property (nonatomic, strong) UIButton                *playeBtn;
+/** 加载失败按钮 */
+@property (nonatomic, strong) UIButton                *failBtn;
 /** 显示控制层 */
 @property (nonatomic, assign, getter=isShowing) BOOL  showing;
 /** 小屏播放 */
@@ -76,7 +78,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /** 在cell上播放 */
 @property (nonatomic, assign, getter=isCellVideo)BOOL cellVideo;
 /** 是否拖拽slider控制播放进度 */
-@property (nonatomic, assign, getter=isDraggedSlider)BOOL draggedSlider;
+@property (nonatomic, assign, getter=isDragged) BOOL  dragged;
 @end
 
 @implementation ZFPlayerControlView
@@ -103,6 +105,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self addSubview:self.repeatBtn];
         [self addSubview:self.horizontalLabel];
         [self addSubview:self.playeBtn];
+        [self addSubview:self.failBtn];
         
         [self.topImageView addSubview:self.resolutionBtn];
         [self.topImageView addSubview:self.titleLabel];
@@ -115,6 +118,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         self.downLoadBtn.hidden     = YES;
         self.resolutionBtn.hidden   = YES;
         self.lockBtn.hidden         = YES;
+        self.failBtn.hidden         = YES;
         // 初始化时重置controlView
         [self zf_playerResetControlView];
         
@@ -240,6 +244,12 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [self.playeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self);
     }];
+    
+    [self.failBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self);
+        make.width.mas_equalTo(130);
+        make.height.mas_equalTo(33);
+    }];
 }
 
 - (void)layoutSubviews
@@ -360,11 +370,18 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
 }
 
+- (void)failBtnClick:(UIButton *)sender
+{
+    self.failBtn.hidden = YES;
+    if ([self.delegate respondsToSelector:@selector(zf_controlView:failAction:)]) {
+        [self.delegate zf_controlView:self failAction:sender];
+    }
+}
+
 - (void)progressSliderTouchBegan:(ASValueTrackingSlider *)sender
 {
     [self zf_playerCancelAutoFadeOutControlView];
     self.videoSlider.popUpView.hidden = YES;
-    self.draggedSlider = YES;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchBegan:)]) {
         [self.delegate zf_controlView:self progressSliderTouchBegan:sender];
     }
@@ -379,8 +396,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)progressSliderTouchEnded:(ASValueTrackingSlider *)sender
 {
-    [self zf_playerDraggedEnd];
-    self.draggedSlider = NO;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchEnded:)]) {
         [self.delegate zf_controlView:self progressSliderTouchEnded:sender];
     }
@@ -751,6 +766,19 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _playeBtn;
 }
 
+- (UIButton *)failBtn
+{
+    if (!_failBtn) {
+        _failBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_failBtn setTitle:@"加载失败,点击重试" forState:UIControlStateNormal];
+        [_failBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _failBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+        _failBtn.backgroundColor = RGBA(0, 0, 0, 0.7);
+        [_failBtn addTarget:self action:@selector(failBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _failBtn;
+}
+
 /**
  *  监听设备旋转通知
  */
@@ -868,9 +896,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     // duration 总时长
     NSInteger durMin           = totalTime / 60;//总秒
     NSInteger durSec           = totalTime % 60;//总分钟
-    if (!self.isDraggedSlider) {
+    if (!self.isDragged) {
         // 更新slider
-        self.videoSlider.value     = value;
+        self.videoSlider.value = value;
     }
     // 更新当前播放时间
     self.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
@@ -898,6 +926,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.videoSlider.value = (CGFloat)draggedTime/(CGFloat)totalTime;
     // 更新当前时间
     self.currentTimeLabel.text  = currentTimeStr;
+    // 正在拖动控制播放进度
+    self.dragged = YES;
     
     NSString *style;
     if (forawrd) { style = @">>"; }
@@ -912,6 +942,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.horizontalLabel.hidden = YES;
     });
+    self.dragged = NO;
     // 结束滑动时候把开始播放按钮改为播放状态
     self.startBtn.selected = YES;
     // 滑动结束延时隐藏controlView
@@ -936,10 +967,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 /** 视频加载失败 */
-- (void)zf_playeritemStatusFailed:(NSError *)error
+- (void)zf_playerItemStatusFailed:(NSError *)error
 {
-    self.horizontalLabel.hidden = NO;
-    self.horizontalLabel.text = @"视频加载失败";
+    self.failBtn.hidden = NO;
 }
 
 /** 加载的菊花 */

@@ -517,12 +517,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                     [self seekToTime:self.seekTime completionHandler:nil];
                 }
                 
-            } else if (self.player.currentItem.status == AVPlayerItemStatusFailed){
-                
+            } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
                 self.state = ZFPlayerStateFailed;
-                NSError *error = [self.playerItem error];
-                [self.controlView zf_playerItemStatusFailed:error];
-
             }
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
             
@@ -938,13 +934,18 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         // seekTime:completionHandler:不能精确定位
         // 如果需要精确定位，可以使用seekToTime:toleranceBefore:toleranceAfter:completionHandler:
         // 转换成CMTime才能给player来控制播放进度
-        CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
-        [self.player seekToTime:dragedCMTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+        [self.controlView zf_playerActivity:YES];
+        [self.player pause];
+        CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1); //kCMTimeZero
+        __weak typeof(self) weakSelf = self;
+        [self.player seekToTime:dragedCMTime toleranceBefore:CMTimeMake(1,1) toleranceAfter:CMTimeMake(1,1) completionHandler:^(BOOL finished) {
+            [weakSelf.controlView zf_playerActivity:NO];
             // 视频跳转回调
             if (completionHandler) { completionHandler(finished); }
-
-            [self play];
+            [self.player play];
             self.seekTime = 0;
+            // 结束滑动
+            [self.controlView zf_playerDraggedEnd];
             if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) { self.state = ZFPlayerStateBuffering; }
             
         }];
@@ -979,9 +980,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 // 给sumTime初值
                 CMTime time       = self.player.currentTime;
                 self.sumTime      = time.value/time.timescale;
-                
-                // 暂停视频播放
-                [self pause];
             }
             else if (x < y){ // 垂直移动
                 self.panDirection = PanDirectionVerticalMoved;
@@ -1014,16 +1012,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             // 比如水平移动结束时，要快进到指定位置，如果这里没有判断，当我们调节音量完之后，会出现屏幕跳动的bug
             switch (self.panDirection) {
                 case PanDirectionHorizontalMoved:{
-                    
-                    // 继续播放
-                    [self play];
-                    
                     self.isPauseByUser = NO;
-
                     [self seekToTime:self.sumTime completionHandler:nil];
                     // 把sumTime滞空，不然会越加越多
                     self.sumTime = 0;
-                    [self.controlView zf_playerDraggedEnd];
                     break;
                 }
                 case PanDirectionVerticalMoved:{
@@ -1138,13 +1130,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setState:(ZFPlayerState)state
 {
     _state = state;
+    // 控制菊花显示、隐藏
+    [self.controlView zf_playerActivity:state == ZFPlayerStateBuffering];
     if (state == ZFPlayerStatePlaying) {
         // 改为黑色的背景，不然站位图会显示
         UIImage *image = [self buttonImageFromColor:[UIColor blackColor]];
         self.layer.contents = (id) image.CGImage;
-    } 
-    // 控制菊花显示、隐藏
-    [self.controlView zf_playerActivity:state == ZFPlayerStateBuffering];
+    } else if (state == ZFPlayerStateFailed) {
+        NSError *error = [self.playerItem error];
+        [self.controlView zf_playerItemStatusFailed:error];
+    }
 }
 
 /**
@@ -1293,6 +1288,19 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }
 }
 
+- (void)setPlayerModel:(ZFPlayerModel *)playerModel
+{
+    if (playerModel.placeholderImage) self.placeholderImage = playerModel.placeholderImage;
+    else self.placeholderImage = ZFPlayerImage(@"ZFPlayer_loading_bgView");
+    if (playerModel.title) self.title = playerModel.title;
+    
+    if (playerModel.tableView && playerModel.indexPath && playerModel.videoUrl && playerModel.cellImageViewTag) {
+        [self setVideoURL:[NSURL URLWithString:playerModel.videoUrl] withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath withImageViewTag:playerModel.cellImageViewTag];
+        return;
+    }
+    self.videoURL = [NSURL URLWithString:playerModel.videoUrl];
+}
+
 #pragma mark - Getter
 
 - (AVAssetImageGenerator *)imageGenerator
@@ -1435,6 +1443,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self seekToTime:0 completionHandler:nil];
 }
 
+/** 加载失败按钮事件 */
+- (void)zf_controlView:(UIView *)controlView failAction:(UIButton *)sender
+{
+     [self configZFPlayer];
+}
+
 - (void)zf_controlView:(UIView *)controlView resolutionAction:(UIButton *)sender
 {
     // 记录切换分辨率的时刻
@@ -1458,14 +1472,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if ([self.delegate respondsToSelector:@selector(zf_playerDownload:)]) {
         [self.delegate zf_playerDownload:urlStr];
     }
-    if (self.downloadBlock) {
-        self.downloadBlock(urlStr);
-    }
+    if (self.downloadBlock) { self.downloadBlock(urlStr); }
 }
 
 - (void)zf_controlView:(UIView *)controlView progressSliderTap:(CGFloat)value
 {
-    [self pause];
     // 视频总时间长度
     CGFloat total = (CGFloat)self.playerItem.duration.value / self.playerItem.duration.timescale;
     //计算出拖动的当前秒数
@@ -1487,17 +1498,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         if (value < 0) { style = NO; }
         if (value == 0) { return; }
         
-        self.sliderLastValue    = slider.value;
-        // 暂停
-        [self pause];
+        self.sliderLastValue  = slider.value;
         
-        CGFloat totalTime           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
+        CGFloat totalTime     = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
         
         //计算出拖动的当前秒数
         CGFloat dragedSeconds = floorf(totalTime * slider.value);
 
         //转换成CMTime才能给player来控制播放进度
-        CMTime dragedCMTime     = CMTimeMake(dragedSeconds, 1);
+        CMTime dragedCMTime   = CMTimeMake(dragedSeconds, 1);
    
         [controlView zf_playerDraggedTime:dragedSeconds totalTime:totalTime isForward:style hasPreview:self.isFullScreen ? self.hasPreviewView : NO];
         
@@ -1517,8 +1526,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 });
                 
             }
-            // 播放
-            [self play];
         } else {
             // 此时设置slider值为0
             slider.value = 0;
@@ -1539,7 +1546,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
         //计算出拖动的当前秒数
         NSInteger dragedSeconds = floorf(total * slider.value);
-        
         [self seekToTime:dragedSeconds completionHandler:nil];
     }
 }

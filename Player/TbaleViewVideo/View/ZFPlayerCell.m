@@ -68,7 +68,7 @@
     // Configure the view for the selected state
 }
 
--(void)setModel:(ZFPlayerModel *)model
+-(void)setModel:(ZFVideoModel *)model
 {
     [self.picView sd_setImageWithURL:[NSURL URLWithString:model.coverForFeed] placeholderImage:[UIImage imageNamed:@"loading_bgView"]];
     self.titleLabel.text = model.title;

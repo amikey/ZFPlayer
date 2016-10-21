@@ -1,5 +1,5 @@
 //
-//  ZFPlayerModel.m
+//  ZFVideoModel.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -21,39 +21,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "ZFPlayerModel.h"
+#import <Foundation/Foundation.h>
+#import "ZFVideoResolution.h"
 
-@implementation ZFPlayerModel
+@interface ZFVideoModel : NSObject
 
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key
-{
-    // 转换系统关键字description
-    if ([key isEqualToString:@"description"]) {
-        self.video_description = [NSString stringWithFormat:@"%@",value];
-    }
-
-}
-
-- (void)setValue:(id)value forKey:(NSString *)key
-{
-    if ([key isEqualToString:@"playInfo"]) {
-        self.playInfo = @[].mutableCopy;
-        NSMutableArray *array = @[].mutableCopy;
-        for (NSDictionary *dataDic in value) {
-            ZFPlyerResolution *resolution = [[ZFPlyerResolution alloc] init];
-            [resolution setValuesForKeysWithDictionary:dataDic];
-            [array addObject:resolution];
-        }
-        [self.playInfo removeAllObjects];
-        [self.playInfo addObjectsFromArray:array];
-    } else if ([key isEqualToString:@"title"]) {
-        self.title = value;
-    } else if ([key isEqualToString:@"playUrl"]) {
-        self.playUrl = value;
-    } else if ([key isEqualToString:@"coverForFeed"]) {
-        self.coverForFeed = value;
-    }
-    
- }
+/** 标题 */
+@property (nonatomic, copy  ) NSString *title;
+/** 描述 */
+@property (nonatomic, copy  ) NSString *video_description;
+/** 视频地址 */
+@property (nonatomic, copy  ) NSString *playUrl;
+/** 封面图 */
+@property (nonatomic, copy  ) NSString *coverForFeed;
+/** 视频分辨率的数组 */
+@property (nonatomic, strong) NSMutableArray *playInfo;
 
 @end

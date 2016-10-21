@@ -34,7 +34,7 @@
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
 /** 离开页面时候是否在播放 */
 @property (nonatomic, assign) BOOL isPlaying;
-
+@property (nonatomic, strong) ZFPlayerModel *playerModel;
 @end
 
 @implementation MoviePlayerViewController
@@ -94,17 +94,11 @@
     ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
     self.playerView.controlView = controlView;
     
-    // 设置播放前的占位图（需要在设置视频URL之前设置）
-    self.playerView.placeholderImage = [UIImage imageNamed: @"loading_bgView1"];
-    
-    // 设置视频的URL
-    self.playerView.videoURL = self.videoURL;
+    self.playerView.playerModel = self.playerModel;
     
     // 设置代理
     self.playerView.delegate = self;
     
-    // 设置标题
-    self.playerView.title    = @"这里设置视频标题";
     //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
     // self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
     
@@ -114,7 +108,7 @@
     self.playerView.hasPreviewView = YES;
     
     // 从xx秒开始播放视频
-    // self.playerView.seekTime = 15;
+     self.playerView.seekTime = 15;
     
     // 是否自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];
@@ -180,6 +174,17 @@
          }];
          */
     }
+}
+
+- (ZFPlayerModel *)playerModel
+{
+    if (!_playerModel) {
+        _playerModel = [[ZFPlayerModel alloc] init];
+        _playerModel.title = @"这里设置视频标题";
+        _playerModel.videoUrl = self.videoURL.absoluteString;
+        _playerModel.placeholderImage = [UIImage imageNamed:@"loading_bgView1"];
+    }
+    return _playerModel;
 }
 
 - (void)didReceiveMemoryWarning {

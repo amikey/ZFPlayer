@@ -23,16 +23,18 @@
 
 #import "ZFTableViewController.h"
 #import "ZFPlayerCell.h"
-#import "ZFPlayerModel.h"
-#import "ZFPlyerResolution.h"
+#import "ZFVideoModel.h"
+#import "ZFVideoResolution.h"
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
 #import "SDWebImageManager.h"
+#import "ZFPlayer.h"
 
 @interface ZFTableViewController () <ZFPlayerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) ZFPlayerView   *playerView;
+@property (nonatomic, strong) ZFPlayerModel  *playerModel;
 
 @end
 
@@ -64,7 +66,7 @@
     self.dataSource = @[].mutableCopy;
     NSArray *videoList = [rootDict objectForKey:@"videoList"];
     for (NSDictionary *dataDic in videoList) {
-        ZFPlayerModel *model = [[ZFPlayerModel alloc] init];
+        ZFVideoModel *model = [[ZFVideoModel alloc] init];
         [model setValuesForKeysWithDictionary:dataDic];
         [self.dataSource addObject:model];
     }
@@ -122,7 +124,7 @@
     static NSString *identifier        = @"playerCell";
     ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     // 取到对应cell的model
-    __block ZFPlayerModel *model       = self.dataSource[indexPath.row];
+    __block ZFVideoModel *model        = self.dataSource[indexPath.row];
     // 赋值model
     cell.model                         = model;
     
@@ -137,24 +139,30 @@
         
         // 分辨率字典（key:分辨率名称，value：分辨率url)
         NSMutableDictionary *dic = @{}.mutableCopy;
-        for (ZFPlyerResolution * resolution in model.playInfo) {
+        for (ZFVideoResolution * resolution in model.playInfo) {
             [dic setValue:resolution.url forKey:resolution.name];
         }
         // 取出字典中的第一视频URL
         NSURL *videoURL = [NSURL URLWithString:dic.allValues.firstObject];
         
-        // 设置player相关参数(需要设置imageView的tag值，此处设置的为101)
-        [weakSelf.playerView setVideoURL:videoURL
-                           withTableView:weakSelf.tableView
-                             AtIndexPath:weakIndexPath
-                        withImageViewTag:101];
-        [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
-        weakSelf.playerView.title = model.title;
-
+        self.playerModel = [[ZFPlayerModel alloc] init];
+        self.playerModel.title            = @"这里设置视频标题";
+        self.playerModel.videoUrl         = videoURL.absoluteString;
+        self.playerModel.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
+        self.playerModel.tableView        = weakSelf.tableView;
+        self.playerModel.indexPath        = weakIndexPath;
         // 赋值分辨率字典
-        weakSelf.playerView.resolutionDic = dic;
+        self.playerModel.resolutionDic = dic;
+        // (需要设置imageView的tag值，此处设置的为101)
+        self.playerModel.cellImageViewTag = weakCell.picView.tag;
+        
+        // 设置播放model
+        weakSelf.playerView.playerModel = weakSelf.playerModel;
+        
+        [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
+
         //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
-        weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
+        // weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
         // 自动播放
         [weakSelf.playerView autoPlayTheVideo];
     };
@@ -198,7 +206,6 @@
     // 设置最多同时下载个数（默认是3）
     [ZFDownloadManager sharedDownloadManager].maxCount = 1;
 }
-
 
 /*
 #pragma mark - Navigation
