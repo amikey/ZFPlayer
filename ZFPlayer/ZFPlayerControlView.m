@@ -71,6 +71,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 @property (nonatomic, strong) UIButton                *playeBtn;
 /** 加载失败按钮 */
 @property (nonatomic, strong) UIButton                *failBtn;
+
+/** 当前选中的分辨率btn按钮 */
+@property (nonatomic, weak ) UIButton                 *resoultionCurrentBtn;
 /** 显示控制层 */
 @property (nonatomic, assign, getter=isShowing) BOOL  showing;
 /** 小屏播放 */
@@ -170,7 +173,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
     [self.resolutionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(40);
-        make.height.mas_equalTo(30);
+        make.height.mas_equalTo(25);
         make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
@@ -272,6 +275,15 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
  */
 - (void)changeResolution:(UIButton *)sender
 {
+    sender.selected = YES;
+    if (sender.isSelected) {
+        sender.backgroundColor = RGBA(86, 143, 232, 1);
+    } else {
+        sender.backgroundColor = [UIColor clearColor];
+    }
+    self.resoultionCurrentBtn.selected = NO;
+    self.resoultionCurrentBtn.backgroundColor = [UIColor clearColor];
+    self.resoultionCurrentBtn = sender;
     // 隐藏分辨率View
     self.resolutionView.hidden  = YES;
     // 分辨率Btn改为normal状态
@@ -530,35 +542,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 #pragma mark - setter
 
-- (void)setResolutionArray:(NSArray *)resolutionArray
-{
-    _resolutionArray = resolutionArray;
-    [_resolutionBtn setTitle:resolutionArray.firstObject forState:UIControlStateNormal];
-    // 添加分辨率按钮和分辨率下拉列表
-    self.resolutionView = [[UIView alloc] init];
-    self.resolutionView.hidden = YES;
-    self.resolutionView.backgroundColor = RGBA(0, 0, 0, 0.7);
-    [self addSubview:self.resolutionView];
-    
-    [self.resolutionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(40);
-        make.height.mas_equalTo(30*resolutionArray.count);
-        make.leading.equalTo(self.resolutionBtn.mas_leading).offset(0);
-        make.top.equalTo(self.resolutionBtn.mas_bottom).offset(0);
-    }];
-    // 分辨率View上边的Btn
-    for (NSInteger i = 0 ; i < resolutionArray.count; i++) {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.tag = 200+i;
-        [self.resolutionView addSubview:btn];
-        btn.titleLabel.font = [UIFont systemFontOfSize:14];
-        btn.frame = CGRectMake(0, 30*i, 40, 30);
-        [btn setTitle:resolutionArray[i] forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(changeResolution:) forControlEvents:UIControlEventTouchUpInside];
-    }
-
-}
-
 - (void)setShrink:(BOOL)shrink
 {
     _shrink = shrink;
@@ -763,7 +746,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     if (!_resolutionBtn) {
         _resolutionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _resolutionBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        _resolutionBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         _resolutionBtn.backgroundColor = RGBA(0, 0, 0, 0.7);
         [_resolutionBtn addTarget:self action:@selector(resolutionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -833,6 +816,22 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         if (point.x <= rect.origin.x + rect.size.width && point.x >= rect.origin.x) { return NO; }
     }
     return YES;
+}
+
+#pragma mark - Others
+
+/**
+ *  通过颜色来生成一个纯色图片
+ */
+- (UIImage *)buttonImageFromColor:(UIColor *)color
+{
+    CGRect rect = self.bounds;
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext(); return img;
 }
 
 #pragma mark - Public method
@@ -1035,21 +1034,28 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     
     [self.resolutionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(40);
-        make.height.mas_equalTo(30*resolutionArray.count);
+        make.height.mas_equalTo(25*resolutionArray.count);
         make.leading.equalTo(self.resolutionBtn.mas_leading).offset(0);
         make.top.equalTo(self.resolutionBtn.mas_bottom).offset(0);
     }];
+    
     // 分辨率View上边的Btn
     for (NSInteger i = 0 ; i < resolutionArray.count; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.layer.borderColor = [UIColor whiteColor].CGColor;
+        btn.layer.borderWidth = 0.5;
         btn.tag = 200+i;
-        [self.resolutionView addSubview:btn];
-        btn.titleLabel.font = [UIFont systemFontOfSize:14];
-        btn.frame = CGRectMake(0, 30*i, 40, 30);
+        btn.frame = CGRectMake(0, 25*i, 40, 25);
+        btn.titleLabel.font = [UIFont systemFontOfSize:12];
         [btn setTitle:resolutionArray[i] forState:UIControlStateNormal];
+        if (i == 0) {
+            self.resoultionCurrentBtn = btn;
+            btn.selected = YES;
+            btn.backgroundColor = RGBA(86, 143, 232, 1);
+        }
+        [self.resolutionView addSubview:btn];
         [btn addTarget:self action:@selector(changeResolution:) forControlEvents:UIControlEventTouchUpInside];
     }
-
 }
 
 /** 播放按钮状态 */
