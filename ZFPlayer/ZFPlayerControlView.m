@@ -176,7 +176,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.backBtn.mas_trailing).offset(10);
+        make.leading.equalTo(self.backBtn.mas_trailing).offset(5);
         make.centerY.equalTo(self.backBtn.mas_centerY);
         make.trailing.equalTo(self.resolutionBtn.mas_leading).offset(-10);
     }];
@@ -306,8 +306,15 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)backBtnClick:(UIButton *)sender
 {
-    if ([self.delegate respondsToSelector:@selector(zf_controlView:backAction:)]) {
-        [self.delegate zf_controlView:self backAction:sender];
+    // 在cell上并且是竖屏时候响应关闭事件
+    if (!ZFPlayerShared.isAllowLandscape && self.isCellVideo) {
+        if ([self.delegate respondsToSelector:@selector(zf_controlView:closeAction:)]) {
+            [self.delegate zf_controlView:self closeAction:sender];
+        }
+    } else {
+        if ([self.delegate respondsToSelector:@selector(zf_controlView:backAction:)]) {
+            [self.delegate zf_controlView:self backAction:sender];
+        }
     }
 }
 
@@ -440,24 +447,26 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     if (!ZFPlayerShared.isAllowLandscape) { return; }
     self.lockBtn.hidden = !ZFPlayerOrientationIsLandscape;
     if (ZFPlayerOrientationIsLandscape) {
+        [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
         [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(20);
+            make.top.equalTo(self.topImageView.mas_top).offset(20);
+            make.width.height.mas_equalTo(40);
             make.leading.mas_equalTo(7);
-            make.width.mas_equalTo(40);
         }];
         self.shrink = NO;
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     } else {
         [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(0);
-            make.leading.mas_equalTo(7);
             if (self.isCellVideo) {
-                make.width.mas_equalTo(0);
+                make.top.equalTo(self.topImageView.mas_top).offset(15);
+                make.width.height.mas_equalTo(20);
             } else {
-                make.width.mas_equalTo(40);
+                make.top.equalTo(self.topImageView.mas_top).offset(5);
+                make.width.height.mas_equalTo(40);
             }
         }];
         if (self.isCellVideo) {
+            [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         } else {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
@@ -873,9 +882,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /** 小屏播放 */
 - (void)zf_playerBottomShrinkPlay
 {
-    [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(0);
-    }];
     [self layoutIfNeeded];
     [self hideControlView];
     self.shrink = YES;
@@ -886,8 +892,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     self.cellVideo = YES;
     self.shrink    = YES;
+    
+    [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
     [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(0);
+        make.top.equalTo(self.topImageView.mas_top).offset(15);
+        make.width.height.mas_equalTo(20);
     }];
     [self layoutIfNeeded];
     [self zf_playerShowControlView];
