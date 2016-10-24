@@ -201,7 +201,7 @@
     NSString *name = [url lastPathComponent];
     [[ZFDownloadManager sharedDownloadManager] downFileUrl:url filename:name fileimage:nil];
     // 设置最多同时下载个数（默认是3）
-    [ZFDownloadManager sharedDownloadManager].maxCount = 1;
+    [ZFDownloadManager sharedDownloadManager].maxCount = 3;
 }
 
 /*

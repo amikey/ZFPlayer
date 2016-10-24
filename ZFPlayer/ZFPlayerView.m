@@ -157,6 +157,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     self.playerItem = nil;
     self.tableView = nil;
+    ZFPlayerShared.isAllowLandscape = NO;
     [self.controlView zf_playerCancelAutoFadeOutControlView];
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];

@@ -36,6 +36,7 @@
     [super awakeFromNib];
     // Initialization code
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    [self layoutIfNeeded];
     [self cutRoundView:self.avatarImageView];
     
     // 设置imageView的tag，在PlayerView中取（建议设置100以上）

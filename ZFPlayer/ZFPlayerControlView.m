@@ -457,6 +457,15 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)onDeviceOrientationChange
 {
     if (!ZFPlayerShared.isAllowLandscape) { return; }
+    if (ZFPlayerShared.isLockScreen) {
+        [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
+        [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.topImageView.mas_top).offset(20);
+            make.width.height.mas_equalTo(40);
+            make.leading.mas_equalTo(7);
+        }];
+        return;
+    }
     self.lockBtn.hidden = !ZFPlayerOrientationIsLandscape;
     if (ZFPlayerOrientationIsLandscape) {
         [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
@@ -475,6 +484,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
             } else {
                 make.top.equalTo(self.topImageView.mas_top).offset(5);
                 make.width.height.mas_equalTo(40);
+            }
+            if ([UIDevice currentDevice].orientation == UIDeviceOrientationPortraitUpsideDown) {
+                make.top.equalTo(self.topImageView.mas_top).offset(15);
+                make.width.height.mas_equalTo(40);
+                self.lockBtn.hidden = NO;
             }
         }];
         if (self.isCellVideo) {
@@ -818,22 +832,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return YES;
 }
 
-#pragma mark - Others
-
-/**
- *  通过颜色来生成一个纯色图片
- */
-- (UIImage *)buttonImageFromColor:(UIColor *)color
-{
-    CGRect rect = self.bounds;
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext(); return img;
-}
-
 #pragma mark - Public method
 
 /**
@@ -1005,8 +1003,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.showing          = NO;
     // 延迟隐藏controlView
     [self hideControlView];
-//    self.topImageView.alpha = 1;
-//    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 /** 
