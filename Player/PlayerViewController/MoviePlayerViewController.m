@@ -108,7 +108,7 @@
     self.playerView.hasPreviewView = YES;
     
     // 从xx秒开始播放视频
-     self.playerView.seekTime = 15;
+    // self.playerView.seekTime = 15;
     
     // 是否自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];

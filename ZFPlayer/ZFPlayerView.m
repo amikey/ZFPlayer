@@ -808,10 +808,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
          return;
     }
     if (gesture.state == UIGestureRecognizerStateRecognized) {
-        if (self.isBottomVideo && !self.isFullScreen) {
-            [self _fullScreenAction];
-        } else {
-            [self.controlView zf_playerShowControlView];
+        if (self.isBottomVideo && !self.isFullScreen) { [self _fullScreenAction]; }
+        else {
+            if (self.playDidEnd) { return; }
+            else { [self.controlView zf_playerShowControlView]; }
         }
     }
 }
@@ -823,6 +823,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)doubleTapAction:(UIGestureRecognizer *)gesture
 {
+    if (self.playDidEnd) { return;  }
     // 显示控制层
     [self.controlView zf_playerCancelAutoFadeOutControlView];
     [self.controlView zf_playerShowControlView];
@@ -1088,7 +1089,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        if (self.isCellVideo && !self.isFullScreen) {
+        if ((self.isCellVideo && !self.isFullScreen) || self.playDidEnd){
             return NO;
         }
     }
@@ -1299,6 +1300,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         return;
     }
     self.videoURL = [NSURL URLWithString:playerModel.videoUrl];
+    ZFPlayerShared.isAllowLandscape = YES;
 }
 
 #pragma mark - Getter

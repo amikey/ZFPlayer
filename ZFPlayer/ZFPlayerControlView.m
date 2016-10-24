@@ -79,6 +79,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 @property (nonatomic, assign, getter=isCellVideo)BOOL cellVideo;
 /** 是否拖拽slider控制播放进度 */
 @property (nonatomic, assign, getter=isDragged) BOOL  dragged;
+/** 是否播放结束 */
+@property (nonatomic, assign, getter=isPlayEnd) BOOL  playeEnd;
+
 @end
 
 @implementation ZFPlayerControlView
@@ -256,7 +259,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     [super layoutSubviews];
     [self zf_playerCancelAutoFadeOutControlView];
-    if (!self.isShrink) {
+    if (!self.isShrink && !self.isPlayEnd) {
         // 只要屏幕旋转就显示控制层
         [self zf_playerShowControlView];
     }
@@ -478,8 +481,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.resolutionView.hidden  = YES;
     self.backgroundColor        = [UIColor clearColor];
     self.downLoadBtn.enabled    = YES;
-    self.shrink = NO;
-    self.showing = NO;
+    self.shrink                 = NO;
+    self.showing                = NO;
+    self.playeEnd               = NO;
 }
 
 - (void)zf_playerResetControlViewForResolution
@@ -490,8 +494,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.playeBtn.hidden        = YES;
     self.downLoadBtn.enabled    = YES;
     self.backgroundColor        = [UIColor clearColor];
-    self.shrink = NO;
-    self.showing = NO;
+    self.shrink                 = NO;
+    self.showing                = NO;
+    self.playeEnd               = NO;
 }
 
 - (void)showControlView
@@ -505,13 +510,13 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)hideControlView
 {
-    self.topImageView.alpha     = 0;
+    self.topImageView.alpha     = self.playeEnd;
     self.bottomImageView.alpha  = 0;
     self.lockBtn.alpha          = 0;
     // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
     [self resolutionBtnClick:self.resolutionBtn];
-    if (ZFPlayerOrientationIsLandscape && ZFPlayerShared.isAllowLandscape) { [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade]; }
+    if (ZFPlayerOrientationIsLandscape && ZFPlayerShared.isAllowLandscape && !self.playeEnd) { [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade]; }
 }
 
 #pragma mark - setter
@@ -988,8 +993,12 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     self.backgroundColor  = RGBA(0, 0, 0, .6);
     self.repeatBtn.hidden = NO;
+    self.playeEnd         = YES;
+    self.showing          = NO;
     // 延迟隐藏controlView
     [self hideControlView];
+//    self.topImageView.alpha = 1;
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 /** 
