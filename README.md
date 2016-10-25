@@ -13,7 +13,7 @@
 A simple video player for iOS, based on AVPlayer. Support the vertical, horizontal screen(lock screen direction). Support adjust volume, brigtness and video progress.
 
 
-[中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)&emsp;&emsp;[ZFPlayer剖析](http://www.jianshu.com/p/5566077bb25f)
+[中文说明](https://github.com/renzifeng/ZFPlayer/blob/master/README.zh.md)&emsp;&emsp;[ZFPlayer剖析](http://www.jianshu.com/p/5566077bb25f)&emsp;&emsp;[哪些app使用ZFPlayer](http://www.jianshu.com/p/5fa55a05f87b)
 
 ## Features
 - [x] Support for horizontal and vertical play mode, in horizontal mode can also lock the screen direction
@@ -91,8 +91,12 @@ self.playerView = [[ZFPlayerView alloc] init];
 // Control layer（you can custom）
 ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
 self.playerView.controlView = controlView;
-// Set URL
-self.playerView.videoURL = self.videoURL;
+
+ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
+playerModel.videoUrl = @"...";
+// Set ZFPlayerModel
+self.playerView.playerModel = playerModel;
+
 // Set delegate
 self.playerView.delegate = self;
 ```
@@ -122,10 +126,13 @@ self.playerView.delegate = self;
 [self.playerView autoPlayTheVideo];
 ```
 
-##### Set the video placeholderImage (need to set the video URL before)
+##### Set the video placeholderImage 
+
 ```objc
 // Here is the name of the picture
-self.playerView.placeholderImage = [UIImage imageNamed: @"..."];
+ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
+playerModel.placeholderImage = [UIImage imageNamed: @"..."];
+self.playerView.playerModel = playerModel;
 ```
 
 ##### Custom control layer

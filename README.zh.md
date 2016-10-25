@@ -12,7 +12,7 @@
 
 基于AVPlayer，支持竖屏、横屏（横屏可锁定屏幕方向），上下滑动调节音量、屏幕亮度，左右滑动调节播放进度
 
-[ZFPlayer剖析](http://www.jianshu.com/p/5566077bb25f)
+[ZFPlayer剖析](http://www.jianshu.com/p/5566077bb25f)&emsp;&emsp;[哪些app使用ZFPlayer](http://www.jianshu.com/p/5fa55a05f87b)
 
 ## 特性
 - [x] 支持横、竖屏切换，在横屏模式下可以锁定屏幕方向
@@ -92,8 +92,11 @@ self.playerView = [[ZFPlayerView alloc] init];
 // 指定控制层（可自定义）
 ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
 self.playerView.controlView = controlView;
-// 设置视频的URL
-self.playerView.videoURL = self.videoURL;
+
+ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
+playerModel.videoUrl = @"...";
+// 设置视频model
+self.playerView.playerModel = playerModel;
 // 设置代理
 self.playerView.delegate = self;
 ```
@@ -122,10 +125,14 @@ self.playerView.delegate = self;
 [self.playerView autoPlayTheVideo];
 ```
 
-##### 设置播放前的占位图（需要在设置视频URL之前设置）
+##### 设置播放前的占位图
+
 ```objc
 // 设置播放前的占位图
-self.playerView.placeholderImage = [UIImage imageNamed: @"..."];
+ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
+playerModel.placeholderImage = [UIImage imageNamed: @"..."];
+self.playerView.playerModel = playerModel;
+
 ```
 
 ##### 自定义控制层
