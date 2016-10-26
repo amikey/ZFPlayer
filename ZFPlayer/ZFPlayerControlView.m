@@ -910,9 +910,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     if (!self.isDragged) {
         // 更新slider
         self.videoSlider.value = value;
+        // 更新当前播放时间
+        self.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     }
-    // 更新当前播放时间
-    self.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     // 更新总时间
     self.totalTimeLabel.text   = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
 }
@@ -930,13 +930,12 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     NSString *currentTimeStr = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     NSString *totalTimeStr   = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
     
-   
     // 显示、隐藏预览窗
     self.videoSlider.popUpView.hidden = !preview;
     // 更新slider的值
     self.videoSlider.value = (CGFloat)draggedTime/(CGFloat)totalTime;
     // 更新当前时间
-    self.currentTimeLabel.text  = currentTimeStr;
+    self.currentTimeLabel.text = currentTimeStr;
     // 正在拖动控制播放进度
     self.dragged = YES;
     

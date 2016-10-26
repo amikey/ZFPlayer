@@ -1266,7 +1266,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // AVLayerVideoGravityResizeAspectFill  // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
     switch (playerLayerGravity) {
         case ZFPlayerLayerGravityResize:
-            self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+            self.playerLayer.videoGravity = AVLayerVideoGravityResize;
             break;
         case ZFPlayerLayerGravityResizeAspect:
             self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
@@ -1517,19 +1517,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         
         if (totalTime > 0) { // 当总时长 > 0时候才能拖动slider
             if (self.isFullScreen && self.hasPreviewView) {
-                dispatch_queue_t queue = dispatch_queue_create("com.playerPic.queue", DISPATCH_QUEUE_CONCURRENT);
-                dispatch_async(queue, ^{
-                    NSError *error;
-                    CMTime actualTime;
-                    CGImageRef cgImage = [self.imageGenerator copyCGImageAtTime:dragedCMTime actualTime:&actualTime error:&error];
-                    CMTimeShow(actualTime);
-                    UIImage *image = [UIImage imageWithCGImage:cgImage];
-                    CGImageRelease(cgImage);
+                [self.imageGenerator cancelAllCGImageGeneration];
+                self.imageGenerator.appliesPreferredTrackTransform = YES;
+                self.imageGenerator.maximumSize = CGSizeMake(100, 56);
+                AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef im, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error){
+                    UIImage *thumbImg = [UIImage imageWithCGImage:im];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [controlView zf_playerDraggedTime:dragedSeconds sliderImage:image ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
+                        [controlView zf_playerDraggedTime:dragedSeconds sliderImage:thumbImg ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
                     });
-                });
-                
+                };
+                [self.imageGenerator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:[NSValue valueWithCMTime:dragedCMTime]] completionHandler:handler];
             }
         } else {
             // 此时设置slider值为0
@@ -1545,6 +1542,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)zf_controlView:(UIView *)controlView progressSliderTouchEnded:(UISlider *)slider
 {
+    [self.imageGenerator cancelAllCGImageGeneration];
     if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         self.isPauseByUser = NO;
         // 视频总时间长度
