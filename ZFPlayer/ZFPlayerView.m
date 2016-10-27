@@ -86,6 +86,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
 /** 视频URL的数组 */
 @property (nonatomic, strong) NSArray                *videoURLArray;
+/** slider预览图 */
+@property (nonatomic, strong) UIImage                *thumbImg;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -944,7 +946,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
             break;
     }
-    
 }
 
 #pragma mark - NSNotification Action
@@ -1517,14 +1518,22 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         
         if (totalTime > 0) { // 当总时长 > 0时候才能拖动slider
             if (self.isFullScreen && self.hasPreviewView) {
+                
                 [self.imageGenerator cancelAllCGImageGeneration];
                 self.imageGenerator.appliesPreferredTrackTransform = YES;
                 self.imageGenerator.maximumSize = CGSizeMake(100, 56);
                 AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef im, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error){
-                    UIImage *thumbImg = [UIImage imageWithCGImage:im];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [controlView zf_playerDraggedTime:dragedSeconds sliderImage:thumbImg ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
-                    });
+                    NSLog(@"%zd",result);
+                    if (result != AVAssetImageGeneratorSucceeded) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [controlView zf_playerDraggedTime:dragedSeconds sliderImage:self.thumbImg ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
+                        });
+                    } else {
+                        self.thumbImg = [UIImage imageWithCGImage:im];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [controlView zf_playerDraggedTime:dragedSeconds sliderImage:self.thumbImg ? : ZFPlayerImage(@"ZFPlayer_loading_bgView")];
+                        });
+                    }
                 };
                 [self.imageGenerator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:[NSValue valueWithCMTime:dragedCMTime]] completionHandler:handler];
             }
@@ -1542,7 +1551,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)zf_controlView:(UIView *)controlView progressSliderTouchEnded:(UISlider *)slider
 {
-    [self.imageGenerator cancelAllCGImageGeneration];
     if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         self.isPauseByUser = NO;
         // 视频总时间长度

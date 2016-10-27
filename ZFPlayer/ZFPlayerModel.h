@@ -36,6 +36,6 @@
 // cell播放视频，以下属性必须设置值
 @property (nonatomic, strong) UITableView  *tableView;
 @property (nonatomic, strong) NSIndexPath  *indexPath;
-@property (nonatomic, assign) NSUInteger   cellImageViewTag;
+@property (nonatomic, assign) NSInteger    cellImageViewTag;
 
 @end
