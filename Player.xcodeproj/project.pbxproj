@@ -429,6 +429,8 @@
 				TargetAttributes = {
 					4947F7891BE996AC003093C8 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = S23J948BYW;
+						ProvisioningStyle = Manual;
 					};
 					4947F7A21BE996AC003093C8 = {
 						CreatedOnToolsVersion = 7.0;
@@ -702,13 +704,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = S23J948BYW;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Player/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0f3b40e2-b6a8-4783-8524-129d2f5c1077";
+				PROVISIONING_PROFILE_SPECIFIER = "IF wildcard profile";
 			};
 			name = Debug;
 		};
@@ -719,6 +723,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = "";
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Player/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

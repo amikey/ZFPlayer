@@ -708,6 +708,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)onDeviceOrientationChange
 {
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationPortraitUpsideDown) { return; }
+
     if (ZFPlayerShared.isAllowLandscape && ZFPlayerOrientationIsLandscape) { self.isFullScreen = YES; }
     else { self.isFullScreen = NO; }
     if (ZFPlayerShared.isLockScreen) { return; }
@@ -848,9 +851,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (self.state == ZFPlayerStatePause) { self.state = ZFPlayerStatePlaying; }
     self.isPauseByUser = NO;
     [_player play];
-    // 显示控制层
-    [self.controlView zf_playerCancelAutoFadeOutControlView];
-    [self.controlView zf_playerShowControlView];
+    if (!self.isBottomVideo) {
+        // 显示控制层
+        [self.controlView zf_playerCancelAutoFadeOutControlView];
+        [self.controlView zf_playerShowControlView];
+    }
 }
 
 /**
@@ -965,7 +970,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     } else {
         self.playDidEnd                   = YES;
         [self.controlView zf_playerPlayEnd];
-
     }
 }
 
@@ -985,7 +989,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)appDidEnterPlayground
 {
     self.didEnterBackground = NO;
-    [self.controlView zf_playerShowControlView];
     if (!self.isPauseByUser) {
         self.state          = ZFPlayerStatePlaying;
         self.isPauseByUser  = NO;
@@ -1248,8 +1251,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setTableView:(UITableView *)tableView
 {
     if (_tableView == tableView) { return; }
-    
-    if (_tableView) { [_tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset]; }
+    if (_tableView) {
+        @try {
+            [_tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
+        } @catch (NSException *exception) {
+            
+        } @finally {
+            
+        }
+    }
     _tableView = tableView;
     if (tableView) { [tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil]; }
 }

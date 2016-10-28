@@ -437,7 +437,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
  */
 - (void)appDidEnterPlayground
 {
-    [self zf_playerShowControlView];
+    if (!self.isShrink) { [self zf_playerShowControlView]; }
     self.startBtn.selected = YES;
 }
 
@@ -456,6 +456,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
  */
 - (void)onDeviceOrientationChange
 {
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationPortraitUpsideDown) { return; }
+    
     if (!ZFPlayerShared.isAllowLandscape) { return; }
     if (ZFPlayerShared.isLockScreen) {
         [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
@@ -466,7 +469,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         }];
         return;
     }
+    
     self.lockBtn.hidden = !ZFPlayerOrientationIsLandscape;
+    self.fullScreenBtn.selected = ZFPlayerOrientationIsLandscape;
     if (ZFPlayerOrientationIsLandscape) {
         [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
         [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
