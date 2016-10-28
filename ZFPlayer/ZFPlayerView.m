@@ -893,60 +893,53 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (ZFPlayerShared.isLockScreen) {
         [self unLockTheScreen];
-        return;
-    }
-    if (self.isCellVideo && self.isFullScreen) {
-        [self interfaceOrientation:UIInterfaceOrientationPortrait];
+        ZFPlayerShared.isAllowLandscape = !self.isCellVideo;
         return;
     }
     
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
-    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
-    switch (interfaceOrientation) {
-            
-        case UIInterfaceOrientationPortraitUpsideDown:{
-            if (ZFPlayerOrientationIsPortrait && !ZFPlayerShared.isAllowLandscape) {
-                ZFPlayerShared.isAllowLandscape = YES;
-                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-            } else {
-                ZFPlayerShared.isAllowLandscape = !self.isCellVideo;
-                [self interfaceOrientation:UIInterfaceOrientationPortrait];
-            }
-        }
-            break;
-        case UIInterfaceOrientationPortrait:{
-            ZFPlayerShared.isAllowLandscape = YES;
+    switch (orientation) {
+        case UIDeviceOrientationPortrait: {
+            if (self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
             [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
             break;
-        case UIInterfaceOrientationLandscapeLeft:{
-            if (ZFPlayerOrientationIsLandscape && !ZFPlayerShared.isAllowLandscape) {
+        case UIDeviceOrientationPortraitUpsideDown: {
+            if (self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
+            [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+        }
+            break;
+        case UIDeviceOrientationLandscapeLeft: {
+            if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
+                ZFPlayerShared.isAllowLandscape = YES;
+                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+            } else {
+                [self interfaceOrientation:UIInterfaceOrientationPortrait];
+                if (self.isCellVideo) { ZFPlayerShared.isAllowLandscape = NO; }
+            }
+        }
+            break;
+        case UIDeviceOrientationLandscapeRight: {
+            if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
                 ZFPlayerShared.isAllowLandscape = YES;
                 [self interfaceOrientation:UIInterfaceOrientationLandscapeLeft];
             } else {
-                ZFPlayerShared.isAllowLandscape = !self.isCellVideo;
                 [self interfaceOrientation:UIInterfaceOrientationPortrait];
+                if (self.isCellVideo) { ZFPlayerShared.isAllowLandscape = NO; }
             }
         }
             break;
-        case UIInterfaceOrientationLandscapeRight:{
-            if (ZFPlayerOrientationIsLandscape && !ZFPlayerShared.isAllowLandscape) {
-                ZFPlayerShared.isAllowLandscape = YES;
-                [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-            } else {
-                ZFPlayerShared.isAllowLandscape = !self.isCellVideo;
-                [self interfaceOrientation:UIInterfaceOrientationPortrait];
-            }
-        }
-            break;
-            
         default: {
-            if (ZFPlayerOrientationIsLandscape && !ZFPlayerShared.isAllowLandscape) {
+            if (ZFPlayerShared.isAllowLandscape) {
+                if (self.isFullScreen) {
+                    [self interfaceOrientation:UIInterfaceOrientationPortrait];
+                    if (self.isCellVideo) { ZFPlayerShared.isAllowLandscape = NO; }
+                } else {
+                    [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+                }
+            } else {
                 ZFPlayerShared.isAllowLandscape = YES;
                 [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-            } else {
-                ZFPlayerShared.isAllowLandscape = !self.isCellVideo;
-                [self interfaceOrientation:UIInterfaceOrientationPortrait];
             }
         }
             break;
@@ -1252,13 +1245,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (_tableView == tableView) { return; }
     if (_tableView) {
-        @try {
-            [_tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
-        } @catch (NSException *exception) {
-            
-        } @finally {
-            
-        }
+        [_tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
     }
     _tableView = tableView;
     if (tableView) { [tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil]; }
@@ -1353,9 +1340,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)setIsFullScreen:(BOOL)isFullScreen
 {
-    if (_isFullScreen == isFullScreen)   { return; }
     _isFullScreen = isFullScreen;
     if (ZFPlayerShared.isLockScreen) { return; }
+    if (ZFPlayerShared.isAllowLandscape == NO) { return; }
     if (!_isFullScreen && self.isCellVideo && ZFPlayerOrientationIsPortrait) {
         // 改为只允许竖屏播放
         ZFPlayerShared.isAllowLandscape = NO;
