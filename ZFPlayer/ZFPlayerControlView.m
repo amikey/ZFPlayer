@@ -71,6 +71,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 @property (nonatomic, strong) UIButton                *playeBtn;
 /** 加载失败按钮 */
 @property (nonatomic, strong) UIButton                *failBtn;
+
+@property (nonatomic, strong) UIView                  *fastView;
+@property (nonatomic, strong) UIProgressView          *fastProgressView;
+@property (nonatomic, strong) UILabel                 *fastTimeLabel;
+@property (nonatomic, strong) UIImageView             *fastImageView;
 /** 当前选中的分辨率btn按钮 */
 @property (nonatomic, weak ) UIButton                 *resoultionCurrentBtn;
 /** 显示控制层 */
@@ -114,6 +119,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self addSubview:self.playeBtn];
         [self addSubview:self.failBtn];
         
+        [self addSubview:self.fastView];
+        [self.fastView addSubview:self.fastImageView];
+        [self.fastView addSubview:self.fastTimeLabel];
+        [self.fastView addSubview:self.fastProgressView];
+        
         [self.topImageView addSubview:self.resolutionBtn];
         [self.topImageView addSubview:self.titleLabel];
         [self addSubview:self.closeBtn];
@@ -128,7 +138,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         self.failBtn.hidden         = YES;
         // 初始化时重置controlView
         [self zf_playerResetControlView];
-        
         // app退到后台
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
         // app进入前台
@@ -256,6 +265,30 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         make.center.equalTo(self);
         make.width.mas_equalTo(130);
         make.height.mas_equalTo(33);
+    }];
+    
+    [self.fastView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(125);
+        make.height.mas_equalTo(80);
+        make.center.equalTo(self);
+    }];
+    
+    [self.fastImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_offset(32);
+        make.height.mas_offset(32);
+        make.top.mas_equalTo(5);
+        make.centerX.mas_equalTo(self.fastView.mas_centerX);
+    }];
+    
+    [self.fastTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.with.trailing.mas_equalTo(0);
+        make.top.mas_equalTo(self.fastImageView.mas_bottom).offset(2);
+    }];
+    
+    [self.fastProgressView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.mas_equalTo(10);
+        make.trailing.mas_equalTo(-10);
+        make.top.mas_equalTo(self.fastTimeLabel.mas_bottom).offset(10);
     }];
 }
 
@@ -505,6 +538,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.currentTimeLabel.text  = @"00:00";
     self.totalTimeLabel.text    = @"00:00";
     self.horizontalLabel.hidden = YES;
+    self.fastView.hidden = YES;
     self.repeatBtn.hidden       = YES;
     self.playeBtn.hidden        = YES;
     self.resolutionView.hidden  = YES;
@@ -518,7 +552,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)zf_playerResetControlViewForResolution
 {
-    self.horizontalLabel.hidden = YES;
+    self.fastView.hidden        = YES;
     self.repeatBtn.hidden       = YES;
     self.resolutionView.hidden  = YES;
     self.playeBtn.hidden        = YES;
@@ -786,6 +820,46 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _failBtn;
 }
 
+- (UIView *)fastView
+{
+    if (!_fastView) {
+        _fastView = [[UIView alloc] init];
+        _fastView.backgroundColor = RGBA(0, 0, 0, 0.8);
+        _fastView.layer.cornerRadius = 3;
+        _fastView.layer.masksToBounds = YES;
+    }
+    return _fastView;
+}
+
+- (UIImageView *)fastImageView
+{
+    if (!_fastImageView) {
+        _fastImageView = [[UIImageView alloc] init];
+    }
+    return _fastImageView;
+}
+
+- (UILabel *)fastTimeLabel
+{
+    if (!_fastTimeLabel) {
+        _fastTimeLabel = [[UILabel alloc] init];
+        _fastTimeLabel.textColor = [UIColor whiteColor];
+        _fastTimeLabel.textAlignment = NSTextAlignmentCenter;
+        _fastTimeLabel.font = [UIFont systemFontOfSize:14.0];
+    }
+    return _fastTimeLabel;
+}
+
+- (UIProgressView *)fastProgressView
+{
+    if (!_fastProgressView) {
+        _fastProgressView                   = [[UIProgressView alloc] init];
+        _fastProgressView.progressTintColor = [UIColor whiteColor];
+        _fastProgressView.trackTintColor    = [[UIColor lightGrayColor] colorWithAlphaComponent:0.4];
+    }
+    return _fastProgressView;
+}
+
 /**
  *  监听设备旋转通知
  */
@@ -898,11 +972,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)zf_playerCurrentTime:(NSInteger)currentTime totalTime:(NSInteger)totalTime sliderValue:(CGFloat)value
 {
     // 当前时长进度progress
-    NSInteger proMin           = currentTime / 60;//当前秒
-    NSInteger proSec           = currentTime % 60;//当前分钟
+    NSInteger proMin = currentTime / 60;//当前秒
+    NSInteger proSec = currentTime % 60;//当前分钟
     // duration 总时长
-    NSInteger durMin           = totalTime / 60;//总秒
-    NSInteger durSec           = totalTime % 60;//总分钟
+    NSInteger durMin = totalTime / 60;//总秒
+    NSInteger durSec = totalTime % 60;//总分钟
     if (!self.isDragged) {
         // 更新slider
         self.videoSlider.value = value;
@@ -915,6 +989,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)zf_playerDraggedTime:(NSInteger)draggedTime totalTime:(NSInteger)totalTime isForward:(BOOL)forawrd hasPreview:(BOOL)preview
 {
+    // 快进快退时候停止菊花
+    [self.activity stopAnimating];
     // 拖拽的时长
     NSInteger proMin = draggedTime / 60;//当前秒
     NSInteger proSec = draggedTime % 60;//当前分钟
@@ -925,28 +1001,33 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     
     NSString *currentTimeStr = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     NSString *totalTimeStr   = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
+    CGFloat  draggedValue    = (CGFloat)draggedTime/(CGFloat)totalTime;
+    NSString *timeStr        = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, totalTimeStr];
     
     // 显示、隐藏预览窗
     self.videoSlider.popUpView.hidden = !preview;
     // 更新slider的值
-    self.videoSlider.value = (CGFloat)draggedTime/(CGFloat)totalTime;
+    self.videoSlider.value = draggedValue;
     // 更新当前时间
     self.currentTimeLabel.text = currentTimeStr;
     // 正在拖动控制播放进度
     self.dragged = YES;
     
-    NSString *style;
-    if (forawrd) { style = @">>"; }
-    else { style = @"<<"; }
-    
-    self.horizontalLabel.hidden = preview;
-    self.horizontalLabel.text = [NSString stringWithFormat:@"%@ %@ / %@",style, currentTimeStr, totalTimeStr];
+    if (forawrd) {
+        self.fastImageView.image = ZFPlayerImage(@"ZFPlayer_fast_forward");
+    } else {
+        self.fastImageView.image = ZFPlayerImage(@"ZFPlayer_fast_backward");
+    }
+    self.fastView.hidden = preview;
+    self.fastTimeLabel.text = timeStr;
+    self.fastProgressView.progress = draggedValue;
+
 }
 
 - (void)zf_playerDraggedEnd
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.horizontalLabel.hidden = YES;
+        self.fastView.hidden = YES;
     });
     self.dragged = NO;
     // 结束滑动时候把开始播放按钮改为播放状态
@@ -963,7 +1044,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     NSString *currentTimeStr = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     [self.videoSlider setImage:image];
     [self.videoSlider setText:currentTimeStr];
-    self.horizontalLabel.hidden = YES;
+    self.fastView.hidden = YES;
 }
 
 /** progress显示缓冲进度 */
@@ -983,7 +1064,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     if (animated) {
         [self.activity startAnimating];
-        self.horizontalLabel.hidden = YES;
+        self.fastView.hidden = YES;
     } else {
         [self.activity stopAnimating];
     }
