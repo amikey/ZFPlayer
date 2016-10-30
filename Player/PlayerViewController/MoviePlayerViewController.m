@@ -181,7 +181,7 @@
     if (!_playerModel) {
         _playerModel = [[ZFPlayerModel alloc] init];
         _playerModel.title = @"这里设置视频标题";
-        _playerModel.videoUrl = self.videoURL.absoluteString;
+        _playerModel.videoURL = self.videoURL;
         _playerModel.placeholderImage = [UIImage imageNamed:@"loading_bgView1"];
     }
     return _playerModel;

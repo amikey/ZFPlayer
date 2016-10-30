@@ -927,7 +927,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.playDidEnd   = NO;
         [self resetPlayer];
     } else {
-        self.playDidEnd                   = YES;
+        self.playDidEnd = YES;
         [self.controlView zf_playerPlayEnd];
     }
 }
@@ -1327,12 +1327,18 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     else self.placeholderImage = ZFPlayerImage(@"ZFPlayer_loading_bgView");
     if (playerModel.title) self.title = playerModel.title;
     
-    if (playerModel.tableView && playerModel.indexPath && playerModel.videoUrl && playerModel.cellImageViewTag) {
-        [self setVideoURL:[NSURL URLWithString:playerModel.videoUrl] withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath withImageViewTag:playerModel.cellImageViewTag];
+    NSURL *videoURL;
+    if (!playerModel.videoUrlStr) {
+        videoURL = playerModel.videoURL;
+    } else {
+        videoURL = [NSURL URLWithString:playerModel.videoUrlStr];
+    }
+    if (playerModel.tableView && playerModel.indexPath && (playerModel.videoUrlStr || playerModel.videoURL)&& playerModel.cellImageViewTag) {
+        [self setVideoURL:videoURL withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath withImageViewTag:playerModel.cellImageViewTag];
         self.resolutionDic = playerModel.resolutionDic;
         return;
     }
-    self.videoURL = [NSURL URLWithString:playerModel.videoUrl];
+    self.videoURL = videoURL;
 }
 
 #pragma mark - Getter

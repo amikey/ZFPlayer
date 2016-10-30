@@ -143,8 +143,8 @@
         NSURL *videoURL = [NSURL URLWithString:dic.allValues.firstObject];
         
         self.playerModel = [[ZFPlayerModel alloc] init];
-        self.playerModel.title            = @"这里设置视频标题";
-        self.playerModel.videoUrl         = videoURL.absoluteString;
+        self.playerModel.title            = model.title;
+        self.playerModel.videoURL         = videoURL;
         self.playerModel.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
         self.playerModel.tableView        = weakSelf.tableView;
         self.playerModel.indexPath        = weakIndexPath;
