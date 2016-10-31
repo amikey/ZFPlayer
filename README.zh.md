@@ -116,7 +116,7 @@ self.playerView.delegate = self;
 ##### 从xx秒开始播放视频
  ```objc
  // 从xx秒开始播放视频
- self.playerView.seekTime = 15;
+ playerModel.seekTime = 15;
  ```
  
 ##### 是否自动播放，默认不自动播放
@@ -266,6 +266,8 @@ self.playerView.playerModel = playerModel;
 ![声音调节演示](https://github.com/renzifeng/ZFPlayer/raw/master/volume.png)
 
 ![亮度调节演示](https://github.com/renzifeng/ZFPlayer/raw/master/brightness.png)
+
+![快进快退演示](https://github.com/renzifeng/ZFPlayer/raw/master/fast.png)
 
 ![进度调节预览图](https://github.com/renzifeng/ZFPlayer/raw/master/progress.png)
 

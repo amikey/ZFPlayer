@@ -117,7 +117,7 @@ self.playerView.delegate = self;
 
  ```objc
  // Play video from XX seconds
- self.playerView.seekTime = 15;
+ playerModel.seekTime = 15;
  ```
 
 ##### Automatically play the video，not automatically play by default
@@ -262,6 +262,8 @@ custom view you need to implement the following method in `.m`, you can referenc
 ![Sound adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/volume.png)
 
 ![Brightness adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/brightness.png)
+
+![Fast adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/fast.png)
 
 ![Progress adjustment demonstration](https://github.com/renzifeng/ZFPlayer/raw/master/progress.png)
 
