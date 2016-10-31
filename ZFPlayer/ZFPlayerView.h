@@ -106,7 +106,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 /**
  *  在当前页面，设置新的Player的URL调用此方法
  */
-- (void)resetToPlayNewURL;
+- (void)resetToPlayNewURL __deprecated_msg("Please use 'resetToPlayNewVideo:' instead");
+
+/**
+ *  在当前页面，设置新的视频时候调用此方法
+ */
+- (void)resetToPlayNewVideo:(ZFPlayerModel *)playerModel;
 
 /** 
  *  播放

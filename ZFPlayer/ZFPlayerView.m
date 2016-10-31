@@ -228,6 +228,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self resetPlayer];
 }
 
+/**
+ *  在当前页面，设置新的视频时候调用此方法
+ */
+- (void)resetToPlayNewVideo:(ZFPlayerModel *)playerModel
+{
+    self.repeatToPlay = YES;
+    [self resetPlayer];
+    self.playerModel = playerModel;
+    [self configZFPlayer];
+}
+
 #pragma mark - 观察者、通知
 
 /**
@@ -1323,22 +1334,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)setPlayerModel:(ZFPlayerModel *)playerModel
 {
+    _playerModel = playerModel;
     if (playerModel.placeholderImage) self.placeholderImage = playerModel.placeholderImage;
     else self.placeholderImage = ZFPlayerImage(@"ZFPlayer_loading_bgView");
     if (playerModel.title) self.title = playerModel.title;
-    
-    NSURL *videoURL;
-    if (!playerModel.videoUrlStr) {
-        videoURL = playerModel.videoURL;
-    } else {
-        videoURL = [NSURL URLWithString:playerModel.videoUrlStr];
-    }
-    if (playerModel.tableView && playerModel.indexPath && (playerModel.videoUrlStr || playerModel.videoURL)&& playerModel.cellImageViewTag) {
-        [self setVideoURL:videoURL withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath withImageViewTag:playerModel.cellImageViewTag];
+
+    if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL && playerModel.cellImageViewTag) {
+        [self setVideoURL:playerModel.videoURL withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath withImageViewTag:playerModel.cellImageViewTag];
         self.resolutionDic = playerModel.resolutionDic;
         return;
     }
-    self.videoURL = videoURL;
+    self.videoURL = playerModel.videoURL;
 }
 
 #pragma mark - Getter

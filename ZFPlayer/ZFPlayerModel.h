@@ -26,9 +26,7 @@
 @interface ZFPlayerModel : NSObject
 /** 视频标题 */
 @property (nonatomic, copy  ) NSString     *title;
-/** 视频播放地址str(指定URL或者UrlStr) */
-@property (nonatomic, copy  ) NSString     *videoUrlStr;
-/** 视频URL(指定URL或者UrlStr)*/
+/** 视频URL */
 @property (nonatomic, strong) NSURL        *videoURL;
 /** 视频封面本地图片 */
 @property (nonatomic, copy  ) UIImage      *placeholderImage;

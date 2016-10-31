@@ -324,12 +324,19 @@
                                     <segue destination="BAA-Xb-1RE" kind="show" id="TW9-kO-eN5"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="轻点屏幕播放新的视频" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7SC-99-VIG">
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="JCd-dg-hvU" firstAttribute="leading" secondItem="Fed-wT-5xN" secondAttribute="leading" id="4JE-R9-J8a"/>
+                            <constraint firstItem="7SC-99-VIG" firstAttribute="centerX" secondItem="Fed-wT-5xN" secondAttribute="centerX" id="4wX-jS-Aca"/>
                             <constraint firstAttribute="trailing" secondItem="JCd-dg-hvU" secondAttribute="trailing" id="5BJ-6V-hu5"/>
                             <constraint firstAttribute="bottom" secondItem="Yyi-Pf-hND" secondAttribute="bottom" constant="20" id="9Pn-WI-Wii"/>
+                            <constraint firstItem="7SC-99-VIG" firstAttribute="centerY" secondItem="Yyi-Pf-hND" secondAttribute="centerY" id="Hxn-Oo-iWw"/>
                             <constraint firstAttribute="trailing" secondItem="CJd-vt-Xpq" secondAttribute="trailing" id="KYu-uX-7oq"/>
                             <constraint firstItem="JCd-dg-hvU" firstAttribute="top" secondItem="Fed-wT-5xN" secondAttribute="top" id="OjU-Ny-M7e"/>
                             <constraint firstAttribute="trailing" secondItem="Yyi-Pf-hND" secondAttribute="trailing" constant="20" id="bTo-Kl-IjE"/>
@@ -349,6 +356,16 @@
                                 <exclude reference="OjU-Ny-M7e"/>
                                 <exclude reference="9Pn-WI-Wii"/>
                                 <exclude reference="bTo-Kl-IjE"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=compact">
+                            <mask key="subviews">
+                                <exclude reference="7SC-99-VIG"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=regular">
+                            <mask key="subviews">
+                                <exclude reference="7SC-99-VIG"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
