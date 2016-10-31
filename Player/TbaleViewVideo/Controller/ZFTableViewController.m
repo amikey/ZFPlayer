@@ -142,16 +142,16 @@
         // 取出字典中的第一视频URL
         NSURL *videoURL = [NSURL URLWithString:dic.allValues.firstObject];
         
-        self.playerModel = [[ZFPlayerModel alloc] init];
-        self.playerModel.title            = model.title;
-        self.playerModel.videoURL         = videoURL;
-        self.playerModel.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
-        self.playerModel.tableView        = weakSelf.tableView;
-        self.playerModel.indexPath        = weakIndexPath;
+        weakSelf.playerModel = [[ZFPlayerModel alloc] init];
+        weakSelf.playerModel.title            = model.title;
+        weakSelf.playerModel.videoURL         = videoURL;
+        weakSelf.playerModel.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
+        weakSelf.playerModel.tableView        = weakSelf.tableView;
+        weakSelf.playerModel.indexPath        = weakIndexPath;
         // 赋值分辨率字典
-        self.playerModel.resolutionDic = dic;
+        weakSelf.playerModel.resolutionDic   = dic;
         // (需要设置imageView的tag值，此处设置的为101)
-        self.playerModel.cellImageViewTag = weakCell.picView.tag;
+        weakSelf.playerModel.cellImageViewTag = weakCell.picView.tag;
         
         // 设置播放model
         weakSelf.playerView.playerModel = weakSelf.playerModel;

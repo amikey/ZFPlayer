@@ -27,10 +27,17 @@
 @interface UIView (CustomControlView)
 @property (nonatomic, weak) id<ZFPlayerControlViewDelagate> delegate;
 
+/** 设置播放模型 */
+- (void)zf_playerModel:(ZFPlayerModel *)playerModel;
+
+/** 正在播放（隐藏placeholderImageView） */
+- (void)zf_playerItemPlaying;
+
 /** 
  显示控制层
  */
 - (void)zf_playerShowControlView;
+
 /** 
  隐藏控制层*/
 - (void)zf_playerHideControlView;
@@ -80,11 +87,6 @@
  下载按钮状态
  */
 - (void)zf_playerDownloadBtnState:(BOOL)state;
-
-/** 
- 设置标题 
- */
-- (void)zf_playerSetTitle:(NSString *)title;
 
 /** 
  加载的菊花

@@ -36,13 +36,18 @@
    return objc_getAssociatedObject(self, _cmd);
 }
 
+/** 设置播放模型 */
+- (void)zf_playerModel:(ZFPlayerModel *)playerModel{}
+
+/** 正在播放（隐藏placeholderImageView） */
+- (void)zf_playerItemPlaying{}
+
 /**
  显示top、bottom、lockBtn
  */
 - (void)zf_playerShowControlView{}
 /**
- 隐藏top、bottom、lockBt
- n*/
+ 隐藏top、bottom、lockBtn*/
 - (void)zf_playerHideControlView{}
 
 /**
@@ -90,11 +95,6 @@
  锁定屏幕方向按钮状态
  */
 - (void)zf_playerLockBtnState:(BOOL)state{}
-
-/**
- 设置标题
- */
-- (void)zf_playerSetTitle:(NSString *)title{}
 
 /**
  加载的菊花

@@ -29,7 +29,7 @@
 /** 视频URL */
 @property (nonatomic, strong) NSURL        *videoURL;
 /** 视频封面本地图片 */
-@property (nonatomic, copy  ) UIImage      *placeholderImage;
+@property (nonatomic, strong) UIImage      *placeholderImage;
 /** 视频分辨率 */
 @property (nonatomic, strong) NSDictionary *resolutionDic;
 /** 从xx秒开始播放视频(默认0) */

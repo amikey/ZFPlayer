@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 @property (nonatomic, copy  ) UIImage              *placeholderImage __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
 @property (nonatomic, copy  ) ZFPlayerBackCallBack goBackBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerBackAction' instead");
 @property (nonatomic, copy  ) ZFDownloadCallBack   downloadBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerDownload:' instead");
-@property (nonatomic, copy  ) NSString             *placeholderImageName __deprecated_msg("Please use 'placeholderImage' instead");
+@property (nonatomic, copy  ) NSString             *placeholderImageName __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
 
 /**
  *  自动播放，默认不自动播放

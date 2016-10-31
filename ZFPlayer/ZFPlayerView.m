@@ -66,8 +66,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                   isLocked;
 /** 是否在调节音量*/
 @property (nonatomic, assign) BOOL                   isVolume;
-/** 是否显示controlView*/
-@property (nonatomic, assign) BOOL                   isMaskShowing;
 /** 是否被用户暂停 */
 @property (nonatomic, assign) BOOL                   isPauseByUser;
 /** 是否播放本地文件 */
@@ -266,7 +264,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     [super layoutSubviews];
     self.playerLayer.frame = self.bounds;
-    
+
     [UIApplication sharedApplication].statusBarHidden = NO;
 
     // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
@@ -319,10 +317,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     _videoURL = videoURL;
     if (!self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
-    if (!self.placeholderImage) {
-        UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
-        self.layer.contents = (id) image.CGImage;
-    }
+
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;
     self.playDidEnd   = NO;
@@ -337,7 +332,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self createGesture];
 }
 
-
 /**
  *  设置Player相关参数
  */
@@ -351,14 +345,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     // 初始化playerLayer
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    
+    self.playerLayer.backgroundColor = [UIColor blackColor].CGColor;
+
     // 此处为默认视频填充模式
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     // 添加playerLayer到self.layer
     [self.layer insertSublayer:self.playerLayer atIndex:0];
     
-    // 初始化显示controlView为YES
-    self.isMaskShowing = YES;
     // 自动播放
     self.isAutoPlay    = YES;
     
@@ -610,7 +603,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             make.width.mas_equalTo(width);
             make.trailing.mas_equalTo(-10);
             make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
-            make.height.mas_equalTo(width*320/480).with.priority(750);
+            make.height.mas_equalTo(width*320/480);
         }];
     } else {
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -618,7 +611,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             make.width.mas_equalTo(width);
             make.trailing.mas_equalTo(-10);
             make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
-            make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+            make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f);
         }];
     }
     // 小屏播放
@@ -880,25 +873,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [_player pause];
 }
 
-
-/**
- *  重播点击事件
- *
- *  @param sender sender
- */
-- (void)repeatPlay:(UIButton *)sender
-{
-    // 没有播放完
-    self.playDidEnd    = NO;
-    // 重播改为NO
-    self.repeatToPlay  = NO;
-    // 准备显示控制层
-    self.isMaskShowing = NO;
-    // 重置控制层View
-    [self.controlView zf_playerResetControlView];
-    [self seekToTime:0 completionHandler:nil];
-}
-
 /** 全屏 */
 - (void)_fullScreenAction
 {
@@ -1147,22 +1121,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     return YES;
 }
 
-#pragma mark - Others
-
-/**
- *  通过颜色来生成一个纯色图片
- */
-- (UIImage *)buttonImageFromColor:(UIColor *)color
-{
-    CGRect rect = self.bounds;
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext(); return img;
-}
-
 #pragma mark - Setter 
 
 /**
@@ -1176,9 +1134,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 控制菊花显示、隐藏
     [self.controlView zf_playerActivity:state == ZFPlayerStateBuffering];
     if (state == ZFPlayerStatePlaying) {
-        // 改为黑色的背景，不然站位图会显示
-        UIImage *image = [self buttonImageFromColor:[UIColor blackColor]];
-        self.layer.contents = (id) image.CGImage;
+        // 隐藏占位图
+        [self.controlView zf_playerItemPlaying];
     } else if (state == ZFPlayerStateFailed) {
         NSError *error = [self.playerItem error];
         [self.controlView zf_playerItemStatusFailed:error];
@@ -1280,28 +1237,24 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     _placeholderImageName = placeholderImageName;
     if (placeholderImageName) {
         UIImage *image = [UIImage imageNamed:self.placeholderImageName];
-        self.layer.contents = (id) image.CGImage;
+        self.playerModel.placeholderImage = image;
     }else {
         UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
-        self.layer.contents = (id) image.CGImage;
+        self.playerModel.placeholderImage = image;
     }
+    [self.controlView zf_playerModel:self.playerModel];
 }
 
 - (void)setPlaceholderImage:(UIImage *)placeholderImage
 {
     _placeholderImage = placeholderImage;
     if (placeholderImage) {
-        self.layer.contents = (id) self.placeholderImage.CGImage;
+        self.playerModel.placeholderImage = self.placeholderImage;
     } else {
         UIImage *image = ZFPlayerImage(@"ZFPlayer_loading_bgView");
-        self.layer.contents = (id) image.CGImage;
+        self.playerModel.placeholderImage = image;
     }
-}
-
-- (void)setTitle:(NSString *)title
-{
-    _title = title;
-    [self.controlView zf_playerSetTitle:title];
+    [self.controlView zf_playerModel:self.playerModel];
 }
 
 - (void)setControlView:(UIView *)controlView
@@ -1335,9 +1288,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setPlayerModel:(ZFPlayerModel *)playerModel
 {
     _playerModel = playerModel;
-    if (playerModel.placeholderImage) self.placeholderImage = playerModel.placeholderImage;
-    else self.placeholderImage = ZFPlayerImage(@"ZFPlayer_loading_bgView");
-    if (playerModel.title) self.title = playerModel.title;
+    
+    if (playerModel.seekTime) { self.seekTime = playerModel.seekTime; }
+    [self.controlView zf_playerModel:playerModel];
 
     if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL && playerModel.cellImageViewTag) {
         [self setVideoURL:playerModel.videoURL withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath withImageViewTag:playerModel.cellImageViewTag];
@@ -1345,7 +1298,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         return;
     }
     self.videoURL = playerModel.videoURL;
-    self.seekTime = playerModel.seekTime;
 }
 
 #pragma mark - Getter
@@ -1419,10 +1371,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)zf_controlView:(UIView *)controlView repeatPlayAction:(UIButton *)sender
 {
     // 没有播放完
-    self.playDidEnd    = NO;
+    self.playDidEnd   = NO;
     // 重播改为NO
-    self.repeatToPlay  = NO;
+    self.repeatToPlay = NO;
     [self seekToTime:0 completionHandler:nil];
+    self.state = ZFPlayerStateBuffering;
 }
 
 /** 加载失败按钮事件 */
