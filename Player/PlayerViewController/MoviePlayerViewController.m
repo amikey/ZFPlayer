@@ -194,11 +194,9 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    ZFPlayerModel *playerModel   = [[ZFPlayerModel alloc] init];
-    playerModel.title            = @"这是新播放的视频";
-    playerModel.videoURL         = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1456665467509qingshu.mp4"];
-    playerModel.placeholderImage = [UIImage imageNamed:@"loading_bgView1"];
-    [self.playerView resetToPlayNewVideo:playerModel];
+    self.playerModel.title            = @"这是新播放的视频";
+    self.playerModel.videoURL         = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1456665467509qingshu.mp4"];
+    [self.playerView resetToPlayNewVideo:self.playerModel];
 }
 
 /*
