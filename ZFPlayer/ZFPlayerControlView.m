@@ -79,7 +79,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 @property (nonatomic, strong) UIImageView             *fastImageView;
 /** 当前选中的分辨率btn按钮 */
 @property (nonatomic, weak ) UIButton                 *resoultionCurrentBtn;
-
+/** 占位图 */
 @property (nonatomic, strong) UIImageView             *placeholderImageView;
 /** 播放模型 */
 @property (nonatomic, strong) ZFPlayerModel           *playerModel;

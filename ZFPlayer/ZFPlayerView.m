@@ -103,6 +103,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                   isBottomVideo;
 /** 是否切换分辨率*/
 @property (nonatomic, assign) BOOL                   isChangeResolution;
+/** 是否正在拖拽 */
+@property (nonatomic, assign) BOOL                   isDragged;
 
 @end
 
@@ -912,8 +914,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.playDidEnd   = NO;
         [self resetPlayer];
     } else {
-        self.playDidEnd = YES;
-        [self.controlView zf_playerPlayEnd];
+        if (!self.isDragged) { // 如果不是拖拽中，直接结束播放
+            self.playDidEnd = YES;
+            [self.controlView zf_playerPlayEnd];
+        }
     }
 }
 
@@ -961,6 +965,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             if (completionHandler) { completionHandler(finished); }
             [self.player play];
             self.seekTime = 0;
+            self.isDragged = NO;
             // 结束滑动
             [self.controlView zf_playerDraggedEnd];
             if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) { self.state = ZFPlayerStateBuffering; }
@@ -1081,6 +1086,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (value < 0) { style = NO; }
     if (value == 0) { return; }
     
+    self.isDragged = YES;
     [self.controlView zf_playerDraggedTime:self.sumTime totalTime:totalMovieDuration isForward:style hasPreview:NO];
 }
 
@@ -1375,7 +1381,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     // 重播改为NO
     self.repeatToPlay = NO;
     [self seekToTime:0 completionHandler:nil];
-    self.state = ZFPlayerStateBuffering;
+    
+    if ([self.videoURL.scheme isEqualToString:@"file"]) {
+        self.state = ZFPlayerStatePlaying;
+    } else {
+        self.state = ZFPlayerStateBuffering;
+    }
 }
 
 /** 加载失败按钮事件 */
@@ -1426,7 +1437,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     // 拖动改变视频播放进度
     if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-        
+        self.isDragged = YES;
         BOOL style = false;
         CGFloat value   = slider.value - self.sliderLastValue;
         if (value > 0) { style = YES; }
@@ -1482,6 +1493,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
         self.isPauseByUser = NO;
+        self.isDragged = NO;
         // 视频总时间长度
         CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
         //计算出拖动的当前秒数
