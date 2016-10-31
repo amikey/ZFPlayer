@@ -64,9 +64,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 /** 是否被用户暂停 */
 @property (nonatomic, assign, readonly) BOOL       isPauseByUser;
 
-/** 从xx秒开始播放视频跳转 */
-@property (nonatomic, assign) NSInteger            seekTime;
-
+/** 从xx秒开始播放视频 */
+@property (nonatomic, assign) NSInteger            seekTime __deprecated_msg("Please use 'ZFPlayerModel.seekTime' instead");;
 /** 视频URL */
 @property (nonatomic, strong) NSURL                *videoURL __deprecated_msg("Please use 'ZFPlayerModel.videoURL' instead");
 /** 视频标题 */

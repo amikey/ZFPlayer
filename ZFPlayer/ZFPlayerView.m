@@ -1345,6 +1345,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         return;
     }
     self.videoURL = playerModel.videoURL;
+    self.seekTime = playerModel.seekTime;
 }
 
 #pragma mark - Getter

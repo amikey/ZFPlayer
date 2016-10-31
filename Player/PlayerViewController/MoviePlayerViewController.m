@@ -107,9 +107,6 @@
     // 打开预览图
     self.playerView.hasPreviewView = YES;
     
-    // 从xx秒开始播放视频
-    // self.playerView.seekTime = 15;
-    
     // 是否自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];
 
@@ -176,6 +173,8 @@
     }
 }
 
+#pragma mark - Getter
+
 - (ZFPlayerModel *)playerModel
 {
     if (!_playerModel) {
@@ -187,15 +186,13 @@
     return _playerModel;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - Action
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
+- (IBAction)playNewVideo:(UIButton *)sender {
     self.playerModel.title            = @"这是新播放的视频";
     self.playerModel.videoURL         = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1456665467509qingshu.mp4"];
+    // 从xx秒开始播放视频
+    self.playerModel.seekTime         = 15;
     [self.playerView resetToPlayNewVideo:self.playerModel];
 }
 

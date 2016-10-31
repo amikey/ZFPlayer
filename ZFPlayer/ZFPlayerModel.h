@@ -32,7 +32,8 @@
 @property (nonatomic, copy  ) UIImage      *placeholderImage;
 /** 视频分辨率 */
 @property (nonatomic, strong) NSDictionary *resolutionDic;
-
+/** 从xx秒开始播放视频(默认0) */
+@property (nonatomic, assign) NSInteger    seekTime;
 // cell播放视频，以下属性必须设置值
 @property (nonatomic, strong) UITableView  *tableView;
 @property (nonatomic, strong) NSIndexPath  *indexPath;
