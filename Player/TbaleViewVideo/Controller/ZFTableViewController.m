@@ -149,7 +149,7 @@
         weakSelf.playerModel.tableView        = weakSelf.tableView;
         weakSelf.playerModel.indexPath        = weakIndexPath;
         // 赋值分辨率字典
-        weakSelf.playerModel.resolutionDic   = dic;
+        weakSelf.playerModel.resolutionDic    = dic;
         // (需要设置imageView的tag值，此处设置的为101)
         weakSelf.playerModel.cellImageViewTag = weakCell.picView.tag;
         

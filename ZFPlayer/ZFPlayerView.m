@@ -1300,7 +1300,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
     if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL && playerModel.cellImageViewTag) {
         [self setVideoURL:playerModel.videoURL withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath withImageViewTag:playerModel.cellImageViewTag];
-        self.resolutionDic = playerModel.resolutionDic;
+        if (playerModel.resolutionDic) { self.resolutionDic = playerModel.resolutionDic; }
         return;
     }
     self.videoURL = playerModel.videoURL;
