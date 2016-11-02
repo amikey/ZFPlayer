@@ -142,115 +142,121 @@ custom view you need to implement the following method in `.m`, you can referenc
 
 ```
 /** 
- Show controlView
+ * Set playaer model 
+ */
+- (void)zf_playerModel:(ZFPlayerModel *)playerModel;
+
+/** 
+ * Show controlView
  */
 - (void)zf_playerShowControlView;
+
 /** 
- Hide controlView
-*/
+ * Hide controlView
+ */
 - (void)zf_playerHideControlView;
 
 /** 
- Reset controlView 
+ * Reset controlView 
  */
 - (void)zf_playerResetControlView;
 
 /** 
- Reset controlView for resolution
+ * Reset controlView for resolution
  */
 - (void)zf_playerResetControlViewForResolution;
 
 /** 
- Cancel auto fadeOut controlView 
+ * Cancel auto fadeout controlView 
  */
 - (void)zf_playerCancelAutoFadeOutControlView;
 
 /** 
- Play end 
+ * Begin to play
+ */
+- (void)zf_playerItemPlaying;
+
+/** 
+ * Play end 
  */
 - (void)zf_playerPlayEnd;
 
 /** 
- Has download function
+ * Has download function
  */
 - (void)zf_playerHasDownloadFunction:(BOOL)sender;
 
 /**
- Resolution function
+ * Resolution function
  */
 - (void)zf_playerResolutionArray:(NSArray *)resolutionArray;
 
 /** 
- PlayBtn state (play or pause)
+ * PlayBtn state (play or pause)
  */
 - (void)zf_playerPlayBtnState:(BOOL)state;
 
 /** 
- LockBtn state 
+ * LockBtn state 
  */
 - (void)zf_playerLockBtnState:(BOOL)state;
 
 /**
- DownloadBtn state
+ * DownloadBtn state
  */
 - (void)zf_playerDownloadBtnState:(BOOL)state;
 
 /** 
- Set video title 
- */
-- (void)zf_playerSetTitle:(NSString *)title;
-
-/** 
- Player activity
+ * Player activity
  */
 - (void)zf_playerActivity:(BOOL)animated;
 
 /**
- Set preview View
+ * Set preview View
  */
 - (void)zf_playerDraggedTime:(NSInteger)draggedTime sliderImage:(UIImage *)image;
 
 /**
- Dragged to control video progress
-
- @param draggedTime Dragged time for video
- @param totalTime   Total time for video
- @param forawrd     Whether fast forward
- @param preview     Is there a preview
+ * Dragged to control video progress
+ 
+ * @param draggedTime Dragged time for video
+ * @param totalTime   Total time for video
+ * @param forawrd     Whether fast forward
+ * @param preview     Is there a preview
  */
 - (void)zf_playerDraggedTime:(NSInteger)draggedTime totalTime:(NSInteger)totalTime isForward:(BOOL)forawrd hasPreview:(BOOL)preview;
 
 /** 
- Dragged end
+ * Dragged end
  */
 - (void)zf_playerDraggedEnd;
 
 /**
- Normal play
+ * Normal play
 
- @param currentTime Current time for video
- @param totalTime   Total Time for video
- @param value       Slider value(0.0~1.0)
+ * @param currentTime Current time for video
+ * @param totalTime   Total Time for video
+ * @param value       Slider value(0.0~1.0)
  */
 - (void)zf_playerCurrentTime:(NSInteger)currentTime totalTime:(NSInteger)totalTime sliderValue:(CGFloat)value;
 
 /** 
- Progress display buffer
+ * Progress display buffer
  */
 - (void)zf_playerSetProgress:(CGFloat)progress;
 
 /** 
- Video load failure 
+ * Video load failure 
  */
 - (void)zf_playerItemStatusFailed:(NSError *)error;
 
 /**
- Bottom shrink play
+ * Bottom shrink play
  */
 - (void)zf_playerBottomShrinkPlay;
 
 /**
- play on cell
+ * play on cell
  */
 - (void)zf_playerCellPlay;
 ```
@@ -277,9 +283,6 @@ custom view you need to implement the following method in `.m`, you can referenc
 ---
 ### Swift Player:
 See the [BMPlayer](https://github.com/BrikerMan/BMPlayer) please, thanks the BMPlayer author's open source.
-
-### Swift project ZFZhiHuDaily:
-I recently written [ZFZhiHuDaily](https://github.com/renzifeng/ZFZhiHuDaily).
 
 ---
 
