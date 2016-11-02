@@ -347,8 +347,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     // 初始化playerLayer
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    self.playerLayer.backgroundColor = [UIColor blackColor].CGColor;
-
+    
+    self.backgroundColor = [UIColor blackColor];
     // 此处为默认视频填充模式
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     // 添加playerLayer到self.layer
