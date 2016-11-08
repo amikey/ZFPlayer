@@ -187,6 +187,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)resetPlayer
 {
     if (self.isPresentVC) { return; }
+    self.isPresentVC        = YES;
     // 改为为播放完
     self.playDidEnd         = NO;
     self.playerItem         = nil;
@@ -1433,6 +1434,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)zf_controlView:(UIView *)controlView resolutionAction:(UIButton *)sender
 {
+    self.isPresentVC = NO;
     // 记录切换分辨率的时刻
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds([self.player currentTime]);
     NSString *videoStr = self.videoURLArray[sender.tag - 200];
