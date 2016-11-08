@@ -80,12 +80,22 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                   didEnterBackground;
 /** 是否自动播放 */
 @property (nonatomic, assign) BOOL                   isAutoPlay;
+/** 单击 */
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
+/** 双击 */
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
 /** 视频URL的数组 */
 @property (nonatomic, strong) NSArray                *videoURLArray;
 /** slider预览图 */
 @property (nonatomic, strong) UIImage                *thumbImg;
+/** 播放器view的父视图 */
+@property (nonatomic, strong) UIView                 *fatherView;
+
+@property (nonatomic, strong) ZFFullScreenViewController *fullScreenVC;
+
+@property (nonatomic, strong) UIViewController      *currentVC;
+
+@property (nonatomic, assign) BOOL  isPresentVC;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -105,7 +115,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                   isChangeResolution;
 /** 是否正在拖拽 */
 @property (nonatomic, assign) BOOL                   isDragged;
-
 @end
 
 @implementation ZFPlayerView
@@ -177,6 +186,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)resetPlayer
 {
+    if (self.isPresentVC) { return; }
     // 改为为播放完
     self.playDidEnd         = NO;
     self.playerItem         = nil;
@@ -265,17 +275,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.playerLayer.frame = self.bounds;
-
-    [UIApplication sharedApplication].statusBarHidden = NO;
-
-    // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
-    if (iPhone4s && !self.isCellVideo) {
-        [self mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_offset(ScreenWidth*2/3);
-        }];
-    }
     [self layoutIfNeeded];
+    self.playerLayer.frame = self.bounds;
+    [UIApplication sharedApplication].statusBarHidden = NO;
 }
 
 #pragma mark - 设置视频URL
@@ -326,8 +328,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     
     // 添加通知
     [self addNotifications];
-    // 根据屏幕的方向设置相关UI
-    [self onDeviceOrientationChange];
+    
     self.isPauseByUser = YES;
 
     // 添加手势
@@ -597,25 +598,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         [self resetPlayer];
         return;
     }
+    [self layoutIfNeeded];
     [[UIApplication sharedApplication].keyWindow addSubview:self];
-    // 解决4s，屏幕宽高比不是16：9的问题
-    if (iPhone4s) {
-        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            CGFloat width = ScreenWidth*0.5-20;
-            make.width.mas_equalTo(width);
-            make.trailing.mas_equalTo(-10);
-            make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
-            make.height.mas_equalTo(width*320/480);
-        }];
-    } else {
-        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            CGFloat width = ScreenWidth*0.5-20;
-            make.width.mas_equalTo(width);
-            make.trailing.mas_equalTo(-10);
-            make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
-            make.height.equalTo(self.mas_width).multipliedBy(9.0f/16.0f);
-        }];
-    }
+    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+        CGFloat width = ScreenWidth*0.5-20;
+        CGFloat height = (self.bounds.size.height / self.bounds.size.width);
+        make.width.mas_equalTo(width);
+        make.height.equalTo(self.mas_width).multipliedBy(height);
+        make.trailing.mas_equalTo(-10);
+        make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
+    }];
     // 小屏播放
     [self.controlView zf_playerBottomShrinkPlay];
 }
@@ -627,7 +619,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (!self.isBottomVideo) { return; }
     self.isBottomVideo = NO;
-    [self setOrientationPortraitConstraint];
+    [self setOrientationPortraitConstraint:NO];
     [self.controlView zf_playerCellPlay];
 }
 
@@ -637,24 +629,26 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setOrientationLandscapeConstraint
 {
     if (self.isCellVideo) {
-        // 横屏时候移除tableView的观察者
-        [self.tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
-        // 亮度view加到window最上层
-        ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
-        [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
-        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
-        }];
+        self.isPresentVC = YES;
+        [self.currentVC presentViewController:self.fullScreenVC animated:NO completion:nil];
     }
 }
 
 /**
  *  设置竖屏的约束
  */
-- (void)setOrientationPortraitConstraint
+- (void)setOrientationPortraitConstraint:(BOOL)animated
 {
     if (self.isCellVideo) {
-        [self removeFromSuperview];
+        [self.fullScreenVC dismissViewControllerAnimated:NO completion:nil];
+        if (animated) {
+            self.transform = CGAffineTransformMakeRotation(M_PI_2);
+            [UIView animateWithDuration:0.5 animations:^{
+                self.transform = CGAffineTransformIdentity;
+            }];
+        }
+        self.fullScreenVC = nil;
+        self.isPresentVC  = NO;
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
         NSArray *visableCells = self.tableView.visibleCells;
         self.isBottomVideo = NO;
@@ -667,6 +661,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         }
     }
 }
+
 
 #pragma mark 屏幕转屏相关
 
@@ -694,8 +689,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         
     } else if (orientation == UIInterfaceOrientationPortrait) {
         // 设置竖屏
-        [self setOrientationPortraitConstraint];
-        
+        [self setOrientationPortraitConstraint:NO];
     }
     /*
      // 非arc下
@@ -890,10 +884,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         return;
     } else {
         if (self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
+        
         UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
         if (orientation == UIDeviceOrientationLandscapeRight) {
+            self.fullScreenVC.orientation = UIInterfaceOrientationLandscapeLeft;
             [self interfaceOrientation:UIInterfaceOrientationLandscapeLeft];
         } else {
+            self.fullScreenVC.orientation = UIInterfaceOrientationLandscapeRight;
             [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
     }
@@ -1277,17 +1274,40 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setIsFullScreen:(BOOL)isFullScreen
 {
     _isFullScreen = isFullScreen;
-    if (ZFPlayerShared.isLockScreen) { return; }
-    if (ZFPlayerShared.isAllowLandscape == NO) { return; }
+    if (!self.isCellVideo) {
+        if (isFullScreen) {
+            [self removeFromSuperview];
+            // 亮度view加到window最上层
+            ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
+            [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
+            [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.edges.mas_equalTo(UIEdgeInsetsZero);
+            }];
+        } else {
+            [self layoutIfNeeded];
+            _fatherView = self.superview;
+            [self removeFromSuperview];
+            [self.fatherView addSubview:self];
+            [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(self.frame.origin.y);
+                make.leading.mas_equalTo(self.frame.origin.x);
+                make.height.mas_equalTo(self.frame.size.height);
+                make.width.mas_equalTo(self.frame.size.width);
+            }];
+            // 父视图置为nil
+            self.fatherView = nil;
+        }
+        return;
+    }
+    if (ZFPlayerShared.isLockScreen || ZFPlayerShared.isAllowLandscape == NO) { return; }
+    
     if (!_isFullScreen && self.isCellVideo && ZFPlayerOrientationIsPortrait) {
         // 改为只允许竖屏播放
         ZFPlayerShared.isAllowLandscape = NO;
         // 竖屏时候table滑动到可视范围
         [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-        // 重新监听tableview偏移量
-        [self.tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil];
         // 当设备转到竖屏时候，设置为竖屏约束
-        [self setOrientationPortraitConstraint];
+        [self setOrientationPortraitConstraint:YES];
     }
 }
 
@@ -1314,6 +1334,22 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         _imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.urlAsset];
     }
     return _imageGenerator;
+}
+
+- (ZFFullScreenViewController *)fullScreenVC
+{
+    if (!_fullScreenVC) {
+        _fullScreenVC = [[ZFFullScreenViewController alloc] init];
+    }
+    return _fullScreenVC;
+}
+
+- (UIViewController *)currentVC
+{
+    if (!_currentVC) {
+        _currentVC = [NSObject currentRootViewController];
+    }
+    return _currentVC;
 }
 
 #pragma mark - ZFPlayerControlViewDelegate

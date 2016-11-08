@@ -85,8 +85,8 @@ self.playerView = [[ZFPlayerView alloc] init];
 [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
  	make.top.equalTo(self.view).offset(20);
  	make.left.right.equalTo(self.view);
-	// Note here, the aspect ratio 16:9 priority is lower than 1000 on the line, because the 4S iPhone aspect ratio is not 16:9
-    make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+	// Here a 16:9 aspect ratio, can customize the video aspect ratio
+    make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
 }];
 // Control layer（you can custom）
 ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];

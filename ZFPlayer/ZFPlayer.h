@@ -84,4 +84,6 @@
 #import "UITabBarController+ZFPlayerRotation.h"
 #import "UIViewController+ZFPlayerRotation.h"
 #import "UINavigationController+ZFPlayerRotation.h"
-#import <Masonry/Masonry.h>
+#import "Masonry.h"
+#import "ZFFullScreenViewController.h"
+#import "NSObject+Extend.h"

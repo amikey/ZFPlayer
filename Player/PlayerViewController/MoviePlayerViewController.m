@@ -85,8 +85,8 @@
     [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(20);
         make.left.right.equalTo(self.view);
-        // 注意此处，宽高比16：9优先级比1000低就行，在因为iPhone 4S宽高比不是16：9
-        make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+        // 这里宽高比16：9，可以自定义视频宽高比
+        make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
     }];
     */
     
@@ -118,6 +118,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)zf_playerDownload:(NSString *)url
 {
     // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
@@ -125,7 +126,6 @@
     [[ZFDownloadManager sharedDownloadManager] downFileUrl:url filename:name fileimage:nil];
     // 设置最多同时下载个数（默认是3）
     [ZFDownloadManager sharedDownloadManager].maxCount = 4;
-
 }
 
 #pragma mark - 转屏相关

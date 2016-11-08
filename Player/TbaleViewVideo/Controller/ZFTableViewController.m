@@ -75,36 +75,12 @@
 
 #pragma mark - 转屏相关
 
-// 是否支持自动转屏
-- (BOOL)shouldAutorotate
-{
-    // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
-    return !ZFPlayerShared.isLockScreen;
-    
-}
-
-// 支持哪些转屏方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-    if (ZFPlayerShared.isAllowLandscape) {
-        return UIInterfaceOrientationMaskAllButUpsideDown;
-    } else {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-}
-
-// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        self.view.backgroundColor = [UIColor whiteColor];
+//        self.view.backgroundColor = [UIColor whiteColor];
     }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-        self.view.backgroundColor = [UIColor blackColor];
+//        self.view.backgroundColor = [UIColor blackColor];
     }
 }
 

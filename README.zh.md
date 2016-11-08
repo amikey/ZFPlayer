@@ -85,8 +85,8 @@ self.playerView = [[ZFPlayerView alloc] init];
 [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
  	make.top.equalTo(self.view).offset(20);
  	make.left.right.equalTo(self.view);
-	// 注意此处，宽高比16：9优先级比1000低就行，在因为iPhone 4S宽高比不是16：9
-	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+	// 这里宽高比16：9，可以自定义视频宽高比
+	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
 }];
 
 // 指定控制层（可自定义）
