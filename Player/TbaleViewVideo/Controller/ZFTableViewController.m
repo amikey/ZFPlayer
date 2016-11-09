@@ -73,17 +73,6 @@
 
 }
 
-#pragma mark - 转屏相关
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-//        self.view.backgroundColor = [UIColor whiteColor];
-    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-//        self.view.backgroundColor = [UIColor blackColor];
-    }
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -121,7 +110,8 @@
         weakSelf.playerModel = [[ZFPlayerModel alloc] init];
         weakSelf.playerModel.title            = model.title;
         weakSelf.playerModel.videoURL         = videoURL;
-        weakSelf.playerModel.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
+//        weakSelf.playerModel.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
+        weakSelf.playerModel.placeholderImageURLString = model.coverForFeed;
         weakSelf.playerModel.tableView        = weakSelf.tableView;
         weakSelf.playerModel.indexPath        = weakIndexPath;
         // 赋值分辨率字典

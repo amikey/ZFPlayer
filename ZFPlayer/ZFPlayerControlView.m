@@ -929,7 +929,12 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     _playerModel = playerModel;
     if (playerModel.title) { self.titleLabel.text = playerModel.title; }
-    self.placeholderImageView.image = playerModel.placeholderImage;
+    // 设置网络占位图片
+    if (playerModel.placeholderImageURLString) {
+        [self.placeholderImageView setImageWithURLString:playerModel.placeholderImageURLString placeholder:ZFPlayerImage(@"ZFPlayer_loading_bgView")];
+    } else {
+        self.placeholderImageView.image = playerModel.placeholderImage;
+    }
     if (playerModel.resolutionDic) {
         [self zf_playerResolutionArray:[playerModel.resolutionDic allKeys]];
     }
@@ -938,7 +943,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /** 正在播放（隐藏placeholderImageView） */
 - (void)zf_playerItemPlaying
 {
-    [UIView animateWithDuration:.2 animations:^{
+    [UIView animateWithDuration:1.0 animations:^{
         self.placeholderImageView.alpha = 0;
     }];
 }

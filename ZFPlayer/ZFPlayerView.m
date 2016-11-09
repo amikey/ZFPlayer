@@ -356,7 +356,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self.layer insertSublayer:self.playerLayer atIndex:0];
     
     // 自动播放
-    self.isAutoPlay    = YES;
+    self.isAutoPlay = YES;
     
     // 添加播放进度计时器
     [self createTimer];
