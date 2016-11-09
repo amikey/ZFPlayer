@@ -35,12 +35,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.playerView = [ZFPlayerView sharedPlayerView];
     [self.view addSubview:self.playerView];
 }
 
@@ -86,6 +80,14 @@
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
+}
+
+- (ZFPlayerView *)playerView
+{
+    if (!_playerView) {
+        _playerView = [ZFPlayerView sharedPlayerView];
+    }
+    return _playerView;
 }
 
 @end
