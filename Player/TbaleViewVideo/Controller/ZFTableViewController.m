@@ -27,7 +27,6 @@
 #import "ZFVideoResolution.h"
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
-#import "SDWebImageManager.h"
 #import "ZFPlayer.h"
 
 @interface ZFTableViewController () <ZFPlayerDelegate>
@@ -46,7 +45,6 @@
     [super viewDidLoad];
     self.tableView.estimatedRowHeight = 379.0f;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    
     [self requestData];
 }
 
@@ -110,7 +108,6 @@
         weakSelf.playerModel = [[ZFPlayerModel alloc] init];
         weakSelf.playerModel.title            = model.title;
         weakSelf.playerModel.videoURL         = videoURL;
-//        weakSelf.playerModel.placeholderImage = [weakSelf getPreviewImage:model.coverForFeed];
         weakSelf.playerModel.placeholderImageURLString = model.coverForFeed;
         weakSelf.playerModel.tableView        = weakSelf.tableView;
         weakSelf.playerModel.indexPath        = weakIndexPath;
@@ -135,15 +132,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"didSelectRowAtIndexPath---%zd",indexPath.row);
-}
-
-- (UIImage *)getPreviewImage:(NSString *)url
-{
-    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:url];
-    if (!image) {
-        image = [UIImage imageNamed:@"loading_bgView1"];
-    }
-    return image;
 }
 
 - (ZFPlayerView *)playerView

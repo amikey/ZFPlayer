@@ -243,7 +243,6 @@
 
 - (NSUInteger)attemptToReloadTimesForFailedURL
 {
-
     NSUInteger count = [objc_getAssociatedObject(self, _cmd) integerValue];
     if (count == 0) {  count = 2; }
     return count;
@@ -302,7 +301,6 @@
                    completion:(void (^)(UIImage *image))completion {
     [self.layer removeAllAnimations];
     self.completion = completion;
-    
     
     if (url == nil || [url isKindOfClass:[NSNull class]] || (![url hasPrefix:@"http://"] && ![url hasPrefix:@"https://"])) {
         [self setImage:placeholderImageName isFromCache:YES];
