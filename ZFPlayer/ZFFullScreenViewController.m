@@ -50,7 +50,11 @@
     [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsZero);
     }];
-    self.playerView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+    if (self.orientation == UIInterfaceOrientationLandscapeLeft) {
+        self.playerView.transform = CGAffineTransformMakeRotation(M_PI_2);
+    } else {
+        self.playerView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+    }
     [UIView animateWithDuration:0.5 animations:^{
         self.playerView.transform = CGAffineTransformIdentity;
     }];

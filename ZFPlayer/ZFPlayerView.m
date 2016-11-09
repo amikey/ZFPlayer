@@ -90,12 +90,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, strong) UIImage                *thumbImg;
 /** 播放器view的父视图 */
 @property (nonatomic, strong) UIView                 *fatherView;
-
+/** cell播放时候全屏控制器 */
 @property (nonatomic, strong) ZFFullScreenViewController *fullScreenVC;
-
+/** 当前的PlayerView所在的控制器 */
 @property (nonatomic, strong) UIViewController      *currentVC;
-
-@property (nonatomic, assign) BOOL  isPresentVC;
+/** 是否是模态出来的cell播放的全屏控制器 */
+@property (nonatomic, assign) BOOL                  isPresentVC;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -187,7 +187,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)resetPlayer
 {
     if (self.isPresentVC) { return; }
-    self.isPresentVC        = YES;
     // 改为为播放完
     self.playDidEnd         = NO;
     self.playerItem         = nil;
@@ -631,7 +630,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (self.isCellVideo) {
         self.isPresentVC = YES;
-        [self.currentVC presentViewController:self.fullScreenVC animated:NO completion:nil];
+        [self.currentVC presentViewController:self.fullScreenVC animated:NO completion:^{
+            self.isPresentVC = NO;
+        }];
     }
 }
 
@@ -643,13 +644,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (self.isCellVideo) {
         [self.fullScreenVC dismissViewControllerAnimated:NO completion:nil];
         if (animated) {
-            self.transform = CGAffineTransformMakeRotation(M_PI_2);
+            if (self.fullScreenVC.orientation == UIInterfaceOrientationLandscapeLeft) {
+                self.transform = CGAffineTransformMakeRotation(-M_PI_2);
+            } else {
+                self.transform = CGAffineTransformMakeRotation(M_PI_2);
+            }
             [UIView animateWithDuration:0.5 animations:^{
                 self.transform = CGAffineTransformIdentity;
             }];
         }
         self.fullScreenVC = nil;
-        self.isPresentVC  = NO;
         UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
         NSArray *visableCells = self.tableView.visibleCells;
         self.isBottomVideo = NO;
@@ -1137,7 +1141,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     _state = state;
     // 控制菊花显示、隐藏
     [self.controlView zf_playerActivity:state == ZFPlayerStateBuffering];
-    if (state == ZFPlayerStatePlaying) {
+    if (state == ZFPlayerStatePlaying || state == ZFPlayerStateBuffering) {
         // 隐藏占位图
         [self.controlView zf_playerItemPlaying];
     } else if (state == ZFPlayerStateFailed) {
@@ -1434,7 +1438,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
 - (void)zf_controlView:(UIView *)controlView resolutionAction:(UIButton *)sender
 {
-    self.isPresentVC = NO;
     // 记录切换分辨率的时刻
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds([self.player currentTime]);
     NSString *videoStr = self.videoURLArray[sender.tag - 200];
