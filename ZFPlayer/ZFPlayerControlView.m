@@ -82,6 +82,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 @property (nonatomic, weak  ) UIButton                *resoultionCurrentBtn;
 /** 占位图 */
 @property (nonatomic, strong) UIImageView             *placeholderImageView;
+/** 控制层消失时候在底部显示的播放进度progress */
+@property (nonatomic, strong) UIProgressView          *bottomProgressView;
 /** 播放模型 */
 @property (nonatomic, strong) ZFPlayerModel           *playerModel;
 /** 显示控制层 */
@@ -134,7 +136,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         [self.topImageView addSubview:self.resolutionBtn];
         [self.topImageView addSubview:self.titleLabel];
         [self addSubview:self.closeBtn];
-        
+        [self addSubview:self.bottomProgressView];
         // 添加子控件的约束
         [self makeSubViewsConstraints];
         
@@ -298,6 +300,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         make.trailing.mas_equalTo(-12);
         make.top.mas_equalTo(self.fastTimeLabel.mas_bottom).offset(10);
     }];
+    
+    [self.bottomProgressView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.trailing.mas_offset(0);
+        make.bottom.mas_offset(0);
+    }];
 }
 
 - (void)layoutSubviews
@@ -460,6 +467,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)progressSliderTouchEnded:(ASValueTrackingSlider *)sender
 {
+    self.showing = YES;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchEnded:)]) {
         [self.delegate zf_controlView:self progressSliderTouchEnded:sender];
     }
@@ -532,20 +540,22 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)showControlView
 {
-    self.topImageView.alpha    = 1;
-    self.topBarView.alpha      = 1;
-    self.bottomImageView.alpha = 1;
-    self.lockBtn.alpha         = 1;
-    self.shrink                = NO;
+    self.topImageView.alpha       = 1;
+    self.topBarView.alpha         = 1;
+    self.bottomImageView.alpha    = 1;
+    self.lockBtn.alpha            = 1;
+    self.shrink                   = NO;
+    self.bottomProgressView.alpha = 0;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)hideControlView
 {
-    self.topImageView.alpha     = self.playeEnd;
-    self.topBarView.alpha       = 0;
-    self.bottomImageView.alpha  = 0;
-    self.lockBtn.alpha          = 0;
+    self.topImageView.alpha       = self.playeEnd;
+    self.topBarView.alpha         = 0;
+    self.bottomImageView.alpha    = 0;
+    self.lockBtn.alpha            = 0;
+    self.bottomProgressView.alpha = 1;
     // 隐藏resolutionView
     self.resolutionBtn.selected = YES;
     [self resolutionBtnClick:self.resolutionBtn];
@@ -818,8 +828,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (UIView *)fastView
 {
     if (!_fastView) {
-        _fastView = [[UIView alloc] init];
-        _fastView.backgroundColor = RGBA(0, 0, 0, 0.8);
+        _fastView                     = [[UIView alloc] init];
+        _fastView.backgroundColor     = RGBA(0, 0, 0, 0.8);
         _fastView.layer.cornerRadius  = 4;
         _fastView.layer.masksToBounds = YES;
     }
@@ -837,10 +847,10 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (UILabel *)fastTimeLabel
 {
     if (!_fastTimeLabel) {
-        _fastTimeLabel = [[UILabel alloc] init];
-        _fastTimeLabel.textColor = [UIColor whiteColor];
+        _fastTimeLabel               = [[UILabel alloc] init];
+        _fastTimeLabel.textColor     = [UIColor whiteColor];
         _fastTimeLabel.textAlignment = NSTextAlignmentCenter;
-        _fastTimeLabel.font = [UIFont systemFontOfSize:14.0];
+        _fastTimeLabel.font          = [UIFont systemFontOfSize:14.0];
     }
     return _fastTimeLabel;
 }
@@ -864,6 +874,16 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _placeholderImageView;
 }
 
+- (UIProgressView *)bottomProgressView
+{
+    if (!_bottomProgressView) {
+        _bottomProgressView                   = [[UIProgressView alloc] init];
+        _bottomProgressView.progressTintColor = [UIColor whiteColor];
+        _bottomProgressView.trackTintColor    = [UIColor clearColor];
+    }
+    return _bottomProgressView;
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
@@ -882,23 +902,24 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)zf_playerResetControlView
 {
     [self.activity stopAnimating];
-    self.videoSlider.value      = 0;
-    self.progressView.progress  = 0;
-    self.currentTimeLabel.text  = @"00:00";
-    self.totalTimeLabel.text    = @"00:00";
-    self.fastView.hidden        = YES;
-    self.repeatBtn.hidden       = YES;
-    self.playeBtn.hidden        = YES;
-    self.resolutionView.hidden  = YES;
-    self.failBtn.hidden         = YES;
-    self.backgroundColor        = [UIColor clearColor];
-    self.downLoadBtn.enabled    = YES;
-    self.shrink                 = NO;
-    self.showing                = NO;
-    self.playeEnd               = NO;
-    self.lockBtn.hidden         = YES;
-    self.failBtn.hidden         = YES;
-    self.placeholderImageView.alpha = 1;
+    self.videoSlider.value           = 0;
+    self.bottomProgressView.progress = 0;
+    self.progressView.progress       = 0;
+    self.currentTimeLabel.text       = @"00:00";
+    self.totalTimeLabel.text         = @"00:00";
+    self.fastView.hidden             = YES;
+    self.repeatBtn.hidden            = YES;
+    self.playeBtn.hidden             = YES;
+    self.resolutionView.hidden       = YES;
+    self.failBtn.hidden              = YES;
+    self.backgroundColor             = [UIColor clearColor];
+    self.downLoadBtn.enabled         = YES;
+    self.shrink                      = NO;
+    self.showing                     = NO;
+    self.playeEnd                    = NO;
+    self.lockBtn.hidden              = YES;
+    self.failBtn.hidden              = YES;
+    self.placeholderImageView.alpha  = 1;
 }
 
 - (void)zf_playerResetControlViewForResolution
@@ -987,7 +1008,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [self updateConstraints];
     [self layoutIfNeeded];
     [self hideControlView];
-    self.shrink = YES;
+    self.shrink                   = YES;
+    self.bottomProgressView.alpha = 0;
 }
 
 /** 在cell播放 */
@@ -1010,12 +1032,13 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     NSInteger durSec = totalTime % 60;//总分钟
     if (!self.isDragged) {
         // 更新slider
-        self.videoSlider.value = value;
+        self.videoSlider.value           = value;
+        self.bottomProgressView.progress = value;
         // 更新当前播放时间
-        self.currentTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
+        self.currentTimeLabel.text       = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
     }
     // 更新总时间
-    self.totalTimeLabel.text   = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
+    self.totalTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
 }
 
 - (void)zf_playerDraggedTime:(NSInteger)draggedTime totalTime:(NSInteger)totalTime isForward:(BOOL)forawrd hasPreview:(BOOL)preview
@@ -1038,9 +1061,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     // 显示、隐藏预览窗
     self.videoSlider.popUpView.hidden = !preview;
     // 更新slider的值
-    self.videoSlider.value = draggedValue;
+    self.videoSlider.value            = draggedValue;
+    // 更新bottomProgressView的值
+    self.bottomProgressView.progress  = draggedValue;
     // 更新当前时间
-    self.currentTimeLabel.text = currentTimeStr;
+    self.currentTimeLabel.text        = currentTimeStr;
     // 正在拖动控制播放进度
     self.dragged = YES;
     
@@ -1049,8 +1074,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     } else {
         self.fastImageView.image = ZFPlayerImage(@"ZFPlayer_fast_backward");
     }
-    self.fastView.hidden = preview;
-    self.fastTimeLabel.text = timeStr;
+    self.fastView.hidden           = preview;
+    self.fastTimeLabel.text        = timeStr;
     self.fastProgressView.progress = draggedValue;
 
 }
