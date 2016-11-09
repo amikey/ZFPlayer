@@ -598,6 +598,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     _shrink = shrink;
     self.closeBtn.hidden = !shrink;
+    self.bottomProgressView.hidden = shrink;
 }
 
 #pragma mark - getter
@@ -1008,8 +1009,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [self updateConstraints];
     [self layoutIfNeeded];
     [self hideControlView];
-    self.shrink                   = YES;
-    self.bottomProgressView.alpha = 0;
+    self.shrink = YES;
 }
 
 /** 在cell播放 */
