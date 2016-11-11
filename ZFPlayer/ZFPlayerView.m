@@ -269,6 +269,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [UIApplication sharedApplication].statusBarHidden = NO;
 }
 
+#pragma mark - public method
+
+- (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel
+{
+    self.controlView = controlView;
+    self.playerModel = playerModel;
+}
+
 #pragma mark - 设置视频URL
 
 /**
@@ -309,7 +317,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)setVideoURL:(NSURL *)videoURL
 {
     _videoURL = videoURL;
-//    if (!self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
 
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;

@@ -31,10 +31,10 @@ typedef void(^SliderTapBlock)(CGFloat value);
 @interface ZFPlayerControlView : UIView 
 
 /** 分辨率的名称 */
-@property (nonatomic, strong) NSArray               *resolutionArray  __deprecated_msg("Please implement 'zf_playerResolutionArray:' instead");
+@property (nonatomic, strong) NSArray               *resolutionArray  ZFPlayerDeprecated(zf_playerResolutionArray);
 /** 切换分辨率的block */
-@property (nonatomic, copy  ) ChangeResolutionBlock resolutionBlock __deprecated_msg("Please use ZFPlayerControlViewDelegate 'zf_controlView:resolutionAction:' instead");
+@property (nonatomic, copy  ) ChangeResolutionBlock resolutionBlock ZFPlayerDeprecated(zf_controlView:resolutionAction:);
 /** slidertap事件Block */
-@property (nonatomic, copy  ) SliderTapBlock        tapBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_controlView:progressSliderTap:' instead");
+@property (nonatomic, copy  ) SliderTapBlock        tapBlock ZFPlayerDeprecated(zf_controlView:progressSliderTap:);
 
 @end

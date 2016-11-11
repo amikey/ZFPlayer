@@ -60,15 +60,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @interface ZFPlayerView : UIView <ZFPlayerControlViewDelagate>
 
 /** 视频model */
-@property (nonatomic, strong) ZFPlayerModel           *playerModel;
 /** 设置playerLayer的填充模式 */
 @property (nonatomic, assign) ZFPlayerLayerGravity    playerLayerGravity;
 /** 是否有下载功能(默认是关闭) */
 @property (nonatomic, assign) BOOL                    hasDownload;
 /** 是否开启预览图 */
 @property (nonatomic, assign) BOOL                    hasPreviewView;
-/** 控制层View */
-@property (nonatomic, strong) UIView                  *controlView;
 /** 设置代理 */
 @property (nonatomic, weak) id<ZFPlayerDelegate>      delegate;
 /** 是否被用户暂停 */
@@ -76,24 +73,23 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /** 播发器的几种状态 */
 @property (nonatomic, assign, readonly) ZFPlayerState state;
 
-/** 从xx秒开始播放视频 */
-@property (nonatomic, assign) NSInteger               seekTime __deprecated_msg("Please use 'ZFPlayerModel.seekTime' instead");;
-/** 视频URL */
-@property (nonatomic, strong) NSURL                   *videoURL __deprecated_msg("Please use 'ZFPlayerModel.videoURL' instead");
-/** 视频标题 */
-@property (nonatomic, strong) NSString                *title __deprecated_msg("Please use 'ZFPlayerModel.title' instead");
-/** 切换分辨率传的字典(key:分辨率名称，value：分辨率url) */
-@property (nonatomic, strong) NSDictionary            *resolutionDic __deprecated_msg("Please use 'ZFPlayerModel.resolutionDic' instead");
-/** 播放前占位图片，不设置就显示默认占位图（需要在设置视频URL之前设置） */
-@property (nonatomic, copy  ) UIImage                 *placeholderImage __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
-@property (nonatomic, copy  ) ZFPlayerBackCallBack    goBackBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerBackAction' instead");
-@property (nonatomic, copy  ) ZFDownloadCallBack      downloadBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerDownload:' instead");
-@property (nonatomic, copy  ) NSString                *placeholderImageName __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
+@property (nonatomic, strong) UIView                  *controlView ZFPlayerDeprecated(playerControlView:playerModel:);
+@property (nonatomic, strong) ZFPlayerModel           *playerModel ZFPlayerDeprecated(playerControlView:playerModel:);
+@property (nonatomic, assign) NSInteger               seekTime ZFPlayerDeprecated(ZFPlayerModel.seekTime);
+@property (nonatomic, strong) NSURL                   *videoURL ZFPlayerDeprecated(ZFPlayerModel.videoURL);
+@property (nonatomic, strong) NSString                *title ZFPlayerDeprecated(ZFPlayerModel.title);
+@property (nonatomic, strong) NSDictionary            *resolutionDic ZFPlayerDeprecated(ZFPlayerModel.resolutionDic);
+@property (nonatomic, copy  ) UIImage                 *placeholderImage ZFPlayerDeprecated(ZFPlayerModel.placeholderImage);
+@property (nonatomic, copy  ) NSString                *placeholderImageName ZFPlayerDeprecated(ZFPlayerModel.placeholderImage);
+@property (nonatomic, copy  ) ZFPlayerBackCallBack    goBackBlock ZFPlayerDeprecated(zf_playerBackAction);
+@property (nonatomic, copy  ) ZFDownloadCallBack      downloadBlock ZFPlayerDeprecated(zf_playerDownload:);
 
 /**
  *  自动播放，默认不自动播放
  */
-- (void)autoPlayTheVideo; 
+- (void)autoPlayTheVideo;
+
+- (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel;
 
 /**
  *  单例，用于列表cell上多个视频
@@ -117,7 +113,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  在当前页面，设置新的Player的URL调用此方法
  */
-- (void)resetToPlayNewURL __deprecated_msg("Please use 'resetToPlayNewVideo:' instead");
+- (void)resetToPlayNewURL ZFPlayerDeprecated(resetToPlayNewVideo:);
 
 /**
  *  在当前页面，设置新的视频时候调用此方法
@@ -148,7 +144,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setVideoURL:(NSURL *)videoURL
       withTableView:(UITableView *)tableView
         AtIndexPath:(NSIndexPath *)indexPath
-   withImageViewTag:(NSInteger)tag  __deprecated_msg("Please use 'ZFPlayerModel' instead");
+   withImageViewTag:(NSInteger)tag  ZFPlayerDeprecated(ZFPlayerModel);
 
 
 @end

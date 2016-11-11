@@ -92,10 +92,9 @@
     
     // 指定控制层
     ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
-    self.playerView.controlView = controlView;
     
-    self.playerView.playerModel = self.playerModel;
-    
+    // 设置控制层和播放模型
+    [self.playerView playerControlView:controlView playerModel:self.playerModel];
     // 设置代理
     self.playerView.delegate = self;
     

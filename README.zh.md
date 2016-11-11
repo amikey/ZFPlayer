@@ -60,12 +60,20 @@ $ pod install
 请在info.plist中增加"View controller-based status bar appearance"字段，并改为NO
 
 ##### IB用法
-直接拖UIView到IB上，宽高比为约束为16：9(优先级改为750，比1000低就行)，代码部分只需要实现
+直接拖UIView到IB上，View类改为`ZFPlayerView`
 
 ```objc
-self.playerView.videoURL = self.videoURL;
+// 初始化控制层view(可自定义)
+ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+// 初始化播放模型
+ZFPlayerModel *playerModel = [[ZFPlayerModel alloc] init];
+playerModel.videoURL = ...
+playerModel.title = ...
+[self.playerView playerControlView:controlView playerModel:playerModel];
 // 设置代理
 self.playerView.delegate = self;
+// 自动播放
+[self.playerView autoPlayTheVideo];
 ```
 
 `ZFPlayerDelegate`
@@ -89,16 +97,18 @@ self.playerView = [[ZFPlayerView alloc] init];
 	make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
 }];
 
-// 指定控制层（可自定义）
+// 初始化控制层view(可自定义)
 ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
-self.playerView.controlView = controlView;
-
+// 初始化播放模型
 ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
-playerModel.videoUrl = @"...";
-// 设置视频model
-self.playerView.playerModel = playerModel;
+playerModel.videoURL = ...
+playerModel.title = ...
+[self.playerView playerControlView:controlView playerModel:playerModel];
+
 // 设置代理
 self.playerView.delegate = self;
+// 自动播放
+[self.playerView autoPlayTheVideo];
 ```
 
 ##### 设置视频的填充模式
@@ -128,9 +138,13 @@ self.playerView.delegate = self;
 ##### 设置播放前的占位图
 
 ```objc
-// 设置播放前的占位图
+// 设置播放前视频占位图
+// 如果网络图片和本地图片同时设置，则忽略本地图片，显示网络图片
 ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
+// 本地图片
 playerModel.placeholderImage = [UIImage imageNamed: @"..."];
+// 网络图片
+playerModel.placeholderImageURLString = @"https://xxx.jpg";
 self.playerView.playerModel = playerModel;
 
 ```

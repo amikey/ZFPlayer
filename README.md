@@ -28,7 +28,7 @@ A simple video player for iOS, based on AVPlayer. Support the vertical, horizont
 
 ## Requirements
 
-- iOS 8+
+- iOS 7+
 - Xcode 8+
 
 
@@ -60,12 +60,19 @@ $ pod install
 Please add the "View controller-based status bar appearance" field in info.plist and change it to NO
 
 ##### IB usage
-Direct drag IB to UIView, the aspect ratio for the 16:9 constraint (priority to 750, lower than the 1000 line), the code section only needs to achieve
-
+Drag IB to UIView,the View class `ZFPlayerView` instead
 ```objc
-self.playerView.videoURL = self.videoURL;
+// view
+ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+// model
+ZFPlayerModel *playerModel = [[ZFPlayerModel alloc] init];
+playerModel.videoURL = ...
+playerModel.title = ...
+[self.playerView playerControlView:controlView playerModel:playerModel];
 // delegate
 self.playerView.delegate = self;
+// auto play the video
+[self.playerView autoPlayTheVideo];
 ```
 
 `ZFPlayerDelegate`
@@ -88,17 +95,18 @@ self.playerView = [[ZFPlayerView alloc] init];
 	// Here a 16:9 aspect ratio, can customize the video aspect ratio
     make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
 }];
-// Control layer（you can custom）
+// control view（you can custom）
 ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
-self.playerView.controlView = controlView;
-
+// model
 ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
-playerModel.videoUrl = @"...";
-// Set ZFPlayerModel
-self.playerView.playerModel = playerModel;
+playerModel.videoURL = ...
+playerModel.title = ...
+[self.playerView playerControlView:controlView playerModel:playerModel];
 
-// Set delegate
+// delegate
 self.playerView.delegate = self;
+// auto play the video
+[self.playerView autoPlayTheVideo];
 ```
 
 ##### Set the fill mode for the video
@@ -129,9 +137,13 @@ self.playerView.delegate = self;
 ##### Set the video placeholderImage 
 
 ```objc
-// Here is the name of the picture
+//  The video placeholder image
+// If network image and local image set at the same time, ignore the local image, display the network images
 ZFPlayerModel *playerModel = [[ZFPlayerModel alloc]init];
+// local image
 playerModel.placeholderImage = [UIImage imageNamed: @"..."];
+// network image
+playerModel.placeholderImageURLString = @"https://xxx.jpg";
 self.playerView.playerModel = playerModel;
 ```
 
