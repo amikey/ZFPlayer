@@ -51,6 +51,12 @@
                         @"http://baobab.wdjcdn.com/1456231710844S(24).mp4"];
 }
 
+// 必须支持转屏，但只支持竖屏，否则横屏启动起来页面是横的
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.dataSource.count;

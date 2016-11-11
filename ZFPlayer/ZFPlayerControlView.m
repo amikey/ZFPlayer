@@ -310,10 +310,18 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    [self layoutIfNeeded];
     [self zf_playerCancelAutoFadeOutControlView];
     if (!self.isShrink && !self.isPlayEnd) {
         // 只要屏幕旋转就显示控制层
         [self zf_playerShowControlView];
+    }
+ 
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (currentOrientation == UIDeviceOrientationPortrait) {
+        [self setOrientationPortraitConstraint];
+    } else {
+        [self setOrientationLandscapeConstraint];
     }
 }
 
@@ -367,8 +375,10 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)backBtnClick:(UIButton *)sender
 {
+    // 状态条的方向旋转的方向,来判断当前屏幕的方向
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     // 在cell上并且是竖屏时候响应关闭事件
-    if (!ZFPlayerShared.isAllowLandscape && self.isCellVideo) {
+    if (self.isCellVideo && orientation == UIInterfaceOrientationPortrait) {
         if ([self.delegate respondsToSelector:@selector(zf_controlView:closeAction:)]) {
             [self.delegate zf_controlView:self closeAction:sender];
         }
@@ -479,7 +489,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)appDidEnterBackground
 {
     [self zf_playerCancelAutoFadeOutControlView];
-    self.startBtn.selected = NO;
 }
 
 /**
@@ -488,7 +497,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 - (void)appDidEnterPlayground
 {
     if (!self.isShrink) { [self zf_playerShowControlView]; }
-    self.startBtn.selected = YES;
 }
 
 - (void)playerPlayDidEnd
@@ -506,34 +514,49 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
  */
 - (void)onDeviceOrientationChange
 {
+    if (ZFPlayerShared.isLockScreen) { return; }
+    self.lockBtn.hidden         = !self.isFullScreen;
+    self.fullScreenBtn.selected = self.isFullScreen;
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
     if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationPortraitUpsideDown) { return; }
-    
-    if (!ZFPlayerShared.isAllowLandscape) { return; }
-    if (ZFPlayerOrientationIsLandscape || ZFPlayerShared.isLockScreen) {
-        self.shrink = NO;
-        self.fullScreen = YES;
-        [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
-        [self.topBarView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(20);
-        }];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    if (ZFPlayerOrientationIsLandscape) {
+        [self setOrientationLandscapeConstraint];
     } else {
-        self.fullScreen = NO;
-        [self.topBarView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(0);
-        }];
-        if (self.isCellVideo) {
-            [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-        } else {
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-        }
+        [self setOrientationPortraitConstraint];
     }
-    
-    self.lockBtn.hidden = !self.isFullScreen;
-    self.fullScreenBtn.selected = self.isFullScreen;
     [self layoutIfNeeded];
+}
+
+- (void)setOrientationLandscapeConstraint
+{
+    self.shrink                 = NO;
+    self.fullScreen             = YES;
+    self.lockBtn.hidden         = !self.isFullScreen;
+    self.fullScreenBtn.selected = self.isFullScreen;
+    [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
+    [self.topBarView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(20);
+    }];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+}
+/**
+ *  设置竖屏的约束
+ */
+- (void)setOrientationPortraitConstraint
+{
+    self.fullScreen             = NO;
+    self.lockBtn.hidden         = !self.isFullScreen;
+    self.fullScreenBtn.selected = self.isFullScreen;
+    [self.topBarView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(0);
+    }];
+    if (self.isCellVideo) {
+        [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    } else {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    }
+
 }
 
 #pragma mark - Private Method

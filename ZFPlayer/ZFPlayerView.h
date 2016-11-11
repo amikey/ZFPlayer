@@ -25,6 +25,7 @@
 #import "ZFPlayer.h"
 #import "ZFPlayerControlView.h"
 #import "ZFPlayerModel.h"
+#import "ZFPlayerControlViewDelegate.h"
 
 @protocol ZFPlayerDelegate <NSObject>
 @optional
@@ -47,36 +48,47 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
      ZFPlayerLayerGravityResizeAspectFill  // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
 };
 
+// 播放器的几种状态
+typedef NS_ENUM(NSInteger, ZFPlayerState) {
+    ZFPlayerStateFailed,     // 播放失败
+    ZFPlayerStateBuffering,  // 缓冲中
+    ZFPlayerStatePlaying,    // 播放中
+    ZFPlayerStateStopped,    // 停止播放
+    ZFPlayerStatePause       // 暂停播放
+};
+
 @interface ZFPlayerView : UIView <ZFPlayerControlViewDelagate>
 
 /** 视频model */
-@property (nonatomic, strong) ZFPlayerModel        *playerModel;
+@property (nonatomic, strong) ZFPlayerModel           *playerModel;
 /** 设置playerLayer的填充模式 */
-@property (nonatomic, assign) ZFPlayerLayerGravity playerLayerGravity;
+@property (nonatomic, assign) ZFPlayerLayerGravity    playerLayerGravity;
 /** 是否有下载功能(默认是关闭) */
-@property (nonatomic, assign) BOOL                 hasDownload;
+@property (nonatomic, assign) BOOL                    hasDownload;
 /** 是否开启预览图 */
-@property (nonatomic, assign) BOOL                 hasPreviewView;
+@property (nonatomic, assign) BOOL                    hasPreviewView;
 /** 控制层View */
-@property (nonatomic, strong) UIView               *controlView;
+@property (nonatomic, strong) UIView                  *controlView;
 /** 设置代理 */
-@property (nonatomic, weak) id<ZFPlayerDelegate>   delegate;
+@property (nonatomic, weak) id<ZFPlayerDelegate>      delegate;
 /** 是否被用户暂停 */
-@property (nonatomic, assign, readonly) BOOL       isPauseByUser;
+@property (nonatomic, assign, readonly) BOOL          isPauseByUser;
+/** 播发器的几种状态 */
+@property (nonatomic, assign, readonly) ZFPlayerState state;
 
 /** 从xx秒开始播放视频 */
-@property (nonatomic, assign) NSInteger            seekTime __deprecated_msg("Please use 'ZFPlayerModel.seekTime' instead");;
+@property (nonatomic, assign) NSInteger               seekTime __deprecated_msg("Please use 'ZFPlayerModel.seekTime' instead");;
 /** 视频URL */
-@property (nonatomic, strong) NSURL                *videoURL __deprecated_msg("Please use 'ZFPlayerModel.videoURL' instead");
+@property (nonatomic, strong) NSURL                   *videoURL __deprecated_msg("Please use 'ZFPlayerModel.videoURL' instead");
 /** 视频标题 */
-@property (nonatomic, strong) NSString             *title __deprecated_msg("Please use 'ZFPlayerModel.title' instead");
+@property (nonatomic, strong) NSString                *title __deprecated_msg("Please use 'ZFPlayerModel.title' instead");
 /** 切换分辨率传的字典(key:分辨率名称，value：分辨率url) */
-@property (nonatomic, strong) NSDictionary         *resolutionDic __deprecated_msg("Please use 'ZFPlayerModel.resolutionDic' instead");
+@property (nonatomic, strong) NSDictionary            *resolutionDic __deprecated_msg("Please use 'ZFPlayerModel.resolutionDic' instead");
 /** 播放前占位图片，不设置就显示默认占位图（需要在设置视频URL之前设置） */
-@property (nonatomic, copy  ) UIImage              *placeholderImage __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
-@property (nonatomic, copy  ) ZFPlayerBackCallBack goBackBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerBackAction' instead");
-@property (nonatomic, copy  ) ZFDownloadCallBack   downloadBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerDownload:' instead");
-@property (nonatomic, copy  ) NSString             *placeholderImageName __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
+@property (nonatomic, copy  ) UIImage                 *placeholderImage __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
+@property (nonatomic, copy  ) ZFPlayerBackCallBack    goBackBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerBackAction' instead");
+@property (nonatomic, copy  ) ZFDownloadCallBack      downloadBlock __deprecated_msg("Please use ZFPlayerDelegate 'zf_playerDownload:' instead");
+@property (nonatomic, copy  ) NSString                *placeholderImageName __deprecated_msg("Please use 'ZFPlayerModel.placeholderImage' instead");
 
 /**
  *  自动播放，默认不自动播放

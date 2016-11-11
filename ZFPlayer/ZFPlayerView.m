@@ -33,15 +33,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     PanDirectionVerticalMoved    // 纵向移动
 };
 
-// 播放器的几种状态
-typedef NS_ENUM(NSInteger, ZFPlayerState) {
-    ZFPlayerStateFailed,     // 播放失败
-    ZFPlayerStateBuffering,  // 缓冲中
-    ZFPlayerStatePlaying,    // 播放中
-    ZFPlayerStateStopped,    // 停止播放
-    ZFPlayerStatePause       // 暂停播放
-};
-
 @interface ZFPlayerView () <UIGestureRecognizerDelegate,UIAlertViewDelegate>
 
 /** 播放属性 */
@@ -90,12 +81,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, strong) UIImage                *thumbImg;
 /** 播放器view的父视图 */
 @property (nonatomic, strong) UIView                 *fatherView;
-/** cell播放时候全屏控制器 */
-@property (nonatomic, strong) ZFFullScreenViewController *fullScreenVC;
-/** 当前的PlayerView所在的控制器 */
-@property (nonatomic, strong) UIViewController      *currentVC;
-/** 是否是模态出来的cell播放的全屏控制器 */
-@property (nonatomic, assign) BOOL                  isPresentVC;
+/** 亮度view */
+@property (nonatomic, strong) ZFBrightnessView       *brightnessView;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -168,7 +155,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     self.playerItem = nil;
     self.tableView  = nil;
-    ZFPlayerShared.isAllowLandscape = NO;
     ZFPlayerShared.isLockScreen     = NO;
     [self.controlView zf_playerCancelAutoFadeOutControlView];
     // 移除通知
@@ -186,7 +172,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)resetPlayer
 {
-    if (self.isPresentVC) { return; }
     // 改为为播放完
     self.playDidEnd         = NO;
     self.playerItem         = nil;
@@ -204,11 +189,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self pause];
     // 移除原来的layer
     [self.playerLayer removeFromSuperlayer];
-    self.imageGenerator = nil;
     // 替换PlayerItem为nil
     [self.player replaceCurrentItemWithPlayerItem:nil];
     // 把player置为nil
-    self.player = nil;
+    self.imageGenerator = nil;
+    self.player         = nil;
+    self.controlView    = nil;
     if (self.isChangeResolution) { // 切换分辨率
         [self.controlView zf_playerResetControlViewForResolution];
         self.isChangeResolution = NO;
@@ -266,8 +252,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onDeviceOrientationChange)
                                                  name:UIDeviceOrientationDidChangeNotification
-                                               object:nil
-    ];
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onStatusBarOrientationChange)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                               object:nil];
 }
 
 #pragma mark - layoutSubviews
@@ -320,7 +309,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)setVideoURL:(NSURL *)videoURL
 {
     _videoURL = videoURL;
-    if (!self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
+//    if (!self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
 
     // 每次加载视频URL都设置重播为NO
     self.repeatToPlay = NO;
@@ -556,7 +545,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             }
             
         }
-    }else if (object == self.tableView) {
+    } else if (object == self.tableView) {
         if ([keyPath isEqualToString:kZFPlayerViewContentOffset]) {
             if (self.isFullScreen) { return; }
             // 当tableview滚动时处理playerView的位置
@@ -619,54 +608,96 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (!self.isBottomVideo) { return; }
     self.isBottomVideo = NO;
-    [self setOrientationPortraitConstraint:NO];
+    [self setOrientationPortraitConstraint];
     [self.controlView zf_playerCellPlay];
 }
 
 /**
  *  设置横屏的约束
  */
-- (void)setOrientationLandscapeConstraint
+- (void)setOrientationLandscapeConstraint:(UIInterfaceOrientation)orientation
 {
-    if (self.isCellVideo) {
-        self.isPresentVC = YES;
-        [self.currentVC presentViewController:self.fullScreenVC animated:NO completion:^{
-            self.isPresentVC = NO;
-        }];
-    }
+    [self toOrientation:orientation];
+    self.isFullScreen = YES;
 }
 
 /**
  *  设置竖屏的约束
  */
-- (void)setOrientationPortraitConstraint:(BOOL)animated
+- (void)setOrientationPortraitConstraint
 {
-    if (self.isCellVideo) {
-        [self.fullScreenVC dismissViewControllerAnimated:NO completion:nil];
-        if (animated) {
-            if (self.fullScreenVC.orientation == UIInterfaceOrientationLandscapeLeft) {
-                self.transform = CGAffineTransformMakeRotation(-M_PI_2);
-            } else {
-                self.transform = CGAffineTransformMakeRotation(M_PI_2);
-            }
-            [UIView animateWithDuration:0.5 animations:^{
-                self.transform = CGAffineTransformIdentity;
-            }];
-        }
-        self.fullScreenVC = nil;
-        UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
-        NSArray *visableCells = self.tableView.visibleCells;
-        self.isBottomVideo = NO;
-        if (![visableCells containsObject:cell]) {
-            [self updatePlayerViewToBottom];
-        } else {
-            // 根据tag取到对应的cellImageView
-            UIImageView *cellImageView = [cell viewWithTag:self.cellImageViewTag];
-            [self addPlayerToCellImageView:cellImageView];
-        }
+    [self removeFromSuperview];
+    UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
+    NSArray *visableCells = self.tableView.visibleCells;
+    self.isBottomVideo = NO;
+    if (![visableCells containsObject:cell]) {
+        [self updatePlayerViewToBottom];
+    } else {
+        // 根据tag取到对应的cellImageView
+        UIImageView *cellImageView = [cell viewWithTag:self.cellImageViewTag];
+        [self addPlayerToCellImageView:cellImageView];
     }
+    [self toOrientation:UIInterfaceOrientationPortrait];
+    self.isFullScreen = NO;
 }
 
+- (void)toOrientation:(UIInterfaceOrientation)orientation
+{
+    // 获取到当前状态条的方向
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    // 判断如果当前方向和要旋转的方向一致,那么不做任何操作
+    if (currentOrientation == orientation) { return; }
+    
+    // 根据要旋转的方向,使用Masonry重新修改限制
+    if (orientation != UIInterfaceOrientationPortrait) {//
+        // 这个地方加判断是为了从全屏的一侧,直接到全屏的另一侧不用修改限制,否则会出错;
+        if (currentOrientation == UIInterfaceOrientationPortrait) {
+            [self removeFromSuperview];
+            ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
+            [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
+            [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.width.equalTo(@(ScreenHeight));
+                make.height.equalTo(@(ScreenWidth));
+                make.center.equalTo(self.superview);
+            }];
+        }
+    }
+    // iOS6.0之后,设置状态条的方法能使用的前提是shouldAutorotate为NO,也就是说这个视图控制器内,旋转要关掉;
+    // 也就是说在实现这个方法的时候-(BOOL)shouldAutorotate返回值要为NO
+    [[UIApplication sharedApplication] setStatusBarOrientation:orientation animated:NO];
+    // 获取旋转状态条需要的时间:
+    [UIView beginAnimations:nil context:nil];
+    // 更改了状态条的方向,但是设备方向UIInterfaceOrientation还是正方向的,这就要设置给你播放视频的视图的方向设置旋转
+    // 给你的播放视频的view视图设置旋转
+    [UIView setAnimationDuration:0.4];
+    self.transform = CGAffineTransformIdentity;
+    self.transform = [self getTransformRotationAngle];
+    // 开始旋转
+    [UIView commitAnimations];
+    [self.controlView layoutIfNeeded];
+    [self.controlView setNeedsLayout];
+}
+
+
+/**
+ * 获取变换的旋转角度
+ *
+ * @return 角度
+ */
+- (CGAffineTransform)getTransformRotationAngle
+{
+    // 状态条的方向已经设置过,所以这个就是你想要旋转的方向
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    // 根据要进行旋转的方向来计算旋转的角度
+    if (orientation == UIInterfaceOrientationPortrait) {
+        return CGAffineTransformIdentity;
+    } else if (orientation == UIInterfaceOrientationLandscapeLeft){
+        return CGAffineTransformMakeRotation(-M_PI_2);
+    } else if(orientation == UIInterfaceOrientationLandscapeRight){
+        return CGAffineTransformMakeRotation(M_PI_2);
+    }
+    return CGAffineTransformIdentity;
+}
 
 #pragma mark 屏幕转屏相关
 
@@ -677,35 +708,27 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    // arc下
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector             = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val                  = orientation;
-        // 从2开始是因为0 1 两个参数已经被selector和target占用
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
+    if (!self.isCellVideo) {
+        // arc下
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector             = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val                  = orientation;
+            // 从2开始是因为0 1 两个参数已经被selector和target占用
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+    } else {
+        if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
+            // 设置横屏
+            [self setOrientationLandscapeConstraint:orientation];
+        } else if (orientation == UIInterfaceOrientationPortrait) {
+            // 设置竖屏
+            [self setOrientationPortraitConstraint];
+        }
     }
-    if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
-        // 设置横屏
-        [self setOrientationLandscapeConstraint];
-        
-    } else if (orientation == UIInterfaceOrientationPortrait) {
-        // 设置竖屏
-        [self setOrientationPortraitConstraint:NO];
-    }
-    /*
-     // 非arc下
-     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-     [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
-     withObject:@(orientation)];
-     }
-     
-     // 直接调用这个方法通不过apple上架审核
-     [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
-     */
 }
 
 /**
@@ -713,12 +736,123 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)onDeviceOrientationChange
 {
-    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
-    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationPortraitUpsideDown) { return; }
-
-    if (ZFPlayerShared.isAllowLandscape && ZFPlayerOrientationIsLandscape) { self.isFullScreen = YES; }
-    else { self.isFullScreen = NO; }
+    if (!self.player) { return; }
     if (ZFPlayerShared.isLockScreen) { return; }
+    if (self.didEnterBackground) { return; };
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
+    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown ) { return; }
+    
+    if (!self.isCellVideo) {
+        [self.brightnessView removeFromSuperview];
+        [[UIApplication sharedApplication].keyWindow addSubview:self.brightnessView];
+        [self.brightnessView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.mas_equalTo(155);
+            make.leading.mas_equalTo((ScreenWidth-155)/2);
+            make.top.mas_equalTo((ScreenHeight-155)/2);
+        }];
+        if (ZFPlayerOrientationIsLandscape || orientation == UIDeviceOrientationPortraitUpsideDown) {
+            self.isFullScreen = YES;
+        } else {
+            self.isFullScreen = NO;
+        }
+        [self normalVideoDeviceOrientationChange];
+    } else {
+        switch (interfaceOrientation) {
+            case UIInterfaceOrientationPortraitUpsideDown:{
+            }
+                break;
+            case UIInterfaceOrientationPortrait:{
+                if (self.isFullScreen) {
+                    [self toOrientation:UIInterfaceOrientationPortrait];
+                    
+                }
+            }
+                break;
+            case UIInterfaceOrientationLandscapeLeft:{
+                if (self.isFullScreen == NO) {
+                    [self toOrientation:UIInterfaceOrientationLandscapeLeft];
+                    self.isFullScreen = YES;
+                } else {
+                    [self toOrientation:UIInterfaceOrientationLandscapeLeft];
+                }
+                
+            }
+                break;
+            case UIInterfaceOrientationLandscapeRight:{
+                if (self.isFullScreen == NO) {
+                    [self toOrientation:UIInterfaceOrientationLandscapeRight];
+                    self.isFullScreen = YES;
+                } else {
+                    [self toOrientation:UIInterfaceOrientationLandscapeRight];
+                }
+            }
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+// 状态条变化通知（只有在cell播放时候去处理）
+- (void)onStatusBarOrientationChange
+{
+    if (self.isCellVideo && !self.didEnterBackground) {
+        // 获取到当前状态条的方向
+        UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (currentOrientation == UIInterfaceOrientationPortrait) {
+            [self setOrientationPortraitConstraint];
+            [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+            
+            [self.brightnessView removeFromSuperview];
+            [[UIApplication sharedApplication].keyWindow addSubview:self.brightnessView];
+            [self.brightnessView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.width.height.mas_equalTo(155);
+                make.leading.mas_equalTo((ScreenWidth-155)/2);
+                make.top.mas_equalTo((ScreenHeight-155)/2);
+            }];
+
+        } else {
+            if (currentOrientation == UIInterfaceOrientationLandscapeRight) {
+                [self toOrientation:UIInterfaceOrientationLandscapeRight];
+            } else if (currentOrientation == UIDeviceOrientationLandscapeLeft){
+                [self toOrientation:UIInterfaceOrientationLandscapeLeft];
+            }
+            [self.brightnessView removeFromSuperview];
+            [self addSubview:self.brightnessView];
+            [self.brightnessView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.center.mas_equalTo(self);
+                make.width.height.mas_equalTo(155);
+            }];
+            
+        }
+    }
+}
+
+// 普通状态播放（非cell上播放）视频
+- (void)normalVideoDeviceOrientationChange
+{
+    if (self.isFullScreen) {
+        [self removeFromSuperview];
+        // 亮度view加到window最上层
+        [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:self.brightnessView];
+        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(UIEdgeInsetsZero);
+        }];
+    } else {
+        [self layoutIfNeeded];
+        _fatherView = self.superview;
+        [self removeFromSuperview];
+        [self.fatherView addSubview:self];
+        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.frame.origin.y);
+            make.leading.mas_equalTo(self.frame.origin.x);
+            make.height.mas_equalTo(self.frame.size.height);
+            make.width.mas_equalTo(self.frame.size.width);
+        }];
+        // 父视图置为nil
+        self.fatherView = nil;
+    }
 }
 
 /**
@@ -879,25 +1013,20 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     if (ZFPlayerShared.isLockScreen) {
         [self unLockTheScreen];
-        ZFPlayerShared.isAllowLandscape = !self.isCellVideo;
         return;
     }
-    
     if (self.isFullScreen) {
         [self interfaceOrientation:UIInterfaceOrientationPortrait];
-        ZFPlayerShared.isAllowLandscape = !self.isCellVideo;
+        self.isFullScreen = NO;
         return;
     } else {
-        if (self.isCellVideo) { ZFPlayerShared.isAllowLandscape = YES; }
-        
         UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
         if (orientation == UIDeviceOrientationLandscapeRight) {
-            self.fullScreenVC.orientation = UIInterfaceOrientationLandscapeLeft;
             [self interfaceOrientation:UIInterfaceOrientationLandscapeLeft];
         } else {
-            self.fullScreenVC.orientation = UIInterfaceOrientationLandscapeRight;
             [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
         }
+        self.isFullScreen = YES;
     }
 }
 
@@ -943,6 +1072,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         self.state          = ZFPlayerStatePlaying;
         self.isPauseByUser  = NO;
         [self play];
+    }
+    if (self.isFullScreen) {
+        if (self.isCellVideo) {
+            [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
+            self.transform = [self getTransformRotationAngle];
+            [self.controlView setNeedsLayout];
+            [self.controlView layoutIfNeeded];
+        }
     }
 }
 
@@ -1276,46 +1413,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     }];
 }
 
-- (void)setIsFullScreen:(BOOL)isFullScreen
-{
-    _isFullScreen = isFullScreen;
-    if (!self.isCellVideo) {
-        if (isFullScreen) {
-            [self removeFromSuperview];
-            // 亮度view加到window最上层
-            ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
-            [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
-            [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.edges.mas_equalTo(UIEdgeInsetsZero);
-            }];
-        } else {
-            [self layoutIfNeeded];
-            _fatherView = self.superview;
-            [self removeFromSuperview];
-            [self.fatherView addSubview:self];
-            [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.mas_equalTo(self.frame.origin.y);
-                make.leading.mas_equalTo(self.frame.origin.x);
-                make.height.mas_equalTo(self.frame.size.height);
-                make.width.mas_equalTo(self.frame.size.width);
-            }];
-            // 父视图置为nil
-            self.fatherView = nil;
-        }
-        return;
-    }
-    if (ZFPlayerShared.isLockScreen || ZFPlayerShared.isAllowLandscape == NO) { return; }
-    
-    if (!_isFullScreen && self.isCellVideo && ZFPlayerOrientationIsPortrait) {
-        // 改为只允许竖屏播放
-        ZFPlayerShared.isAllowLandscape = NO;
-        // 竖屏时候table滑动到可视范围
-        [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-        // 当设备转到竖屏时候，设置为竖屏约束
-        [self setOrientationPortraitConstraint:YES];
-    }
-}
-
 - (void)setPlayerModel:(ZFPlayerModel *)playerModel
 {
     _playerModel = playerModel;
@@ -1341,20 +1438,12 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     return _imageGenerator;
 }
 
-- (ZFFullScreenViewController *)fullScreenVC
+- (ZFBrightnessView *)brightnessView
 {
-    if (!_fullScreenVC) {
-        _fullScreenVC = [[ZFFullScreenViewController alloc] init];
+    if (!_brightnessView) {
+        _brightnessView = [ZFBrightnessView sharedBrightnessView];
     }
-    return _fullScreenVC;
-}
-
-- (UIViewController *)currentVC
-{
-    if (!_currentVC) {
-        _currentVC = [NSObject currentRootViewController];
-    }
-    return _currentVC;
+    return _brightnessView;
 }
 
 #pragma mark - ZFPlayerControlViewDelegate
