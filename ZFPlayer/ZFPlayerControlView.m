@@ -253,7 +253,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }];
     
     [self.lockBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.mas_leading).offset(10);
+        make.leading.equalTo(self.mas_leading).offset(15);
         make.centerY.equalTo(self.mas_centerY);
         make.width.height.mas_equalTo(30);
     }];
@@ -941,7 +941,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.shrink                      = NO;
     self.showing                     = NO;
     self.playeEnd                    = NO;
-    self.lockBtn.hidden              = YES;
+    self.lockBtn.hidden              = !self.isFullScreen;
     self.failBtn.hidden              = YES;
     self.placeholderImageView.alpha  = 1;
 }
@@ -1156,8 +1156,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.repeatBtn.hidden = NO;
     self.playeEnd         = YES;
     self.showing          = NO;
-    // 延迟隐藏controlView
+    // 隐藏controlView
     [self hideControlView];
+    self.topBarView.alpha = self.isFullScreen;
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    self.bottomProgressView.alpha = 0;
 }
 
 /** 

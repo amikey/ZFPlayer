@@ -194,13 +194,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 把player置为nil
     self.imageGenerator = nil;
     self.player         = nil;
-    self.controlView    = nil;
     if (self.isChangeResolution) { // 切换分辨率
         [self.controlView zf_playerResetControlViewForResolution];
         self.isChangeResolution = NO;
     }else { // 重置控制层View
         [self.controlView zf_playerResetControlView];
     }
+    self.controlView   = nil;
     // 非重播时，移除当前playerView
     if (!self.repeatToPlay) { [self removeFromSuperview]; }
     // 底部播放video改为NO
@@ -1057,9 +1057,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
  */
 - (void)appDidEnterBackground
 {
-    self.didEnterBackground = YES;
+    self.didEnterBackground     = YES;
+    // 退到后台锁定屏幕方向
+    ZFPlayerShared.isLockScreen = YES;
     [_player pause];
-    self.state = ZFPlayerStatePause;
+    self.state                  = ZFPlayerStatePause;
 }
 
 /**
@@ -1067,19 +1069,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
  */
 - (void)appDidEnterPlayground
 {
-    self.didEnterBackground = NO;
+    self.didEnterBackground     = NO;
+    // 根据是否锁定屏幕方向 来恢复单例里锁定屏幕的方向
+    ZFPlayerShared.isLockScreen = self.isLocked;
     if (!self.isPauseByUser) {
-        self.state          = ZFPlayerStatePlaying;
-        self.isPauseByUser  = NO;
+        self.state         = ZFPlayerStatePlaying;
+        self.isPauseByUser = NO;
         [self play];
-    }
-    if (self.isFullScreen) {
-        if (self.isCellVideo) {
-            [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
-            self.transform = [self getTransformRotationAngle];
-            [self.controlView setNeedsLayout];
-            [self.controlView layoutIfNeeded];
-        }
     }
 }
 
