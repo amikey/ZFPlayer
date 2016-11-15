@@ -87,8 +87,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, strong) UIView                 *fatherView;
 /** 亮度view */
 @property (nonatomic, strong) ZFBrightnessView       *brightnessView;
-/** 普通状态播放器竖屏rect */
-@property (nonatomic, assign) CGRect                 portraitRect;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -181,7 +179,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 改为为播放完
     self.playDidEnd         = NO;
     self.playerItem         = nil;
-    self.fatherView         = nil;
     self.didEnterBackground = NO;
     // 视频跳转秒数置0
     self.seekTime           = 0;
@@ -260,6 +257,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                                              selector:@selector(onDeviceOrientationChange)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onStatusBarOrientationChange)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
@@ -274,13 +272,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self layoutIfNeeded];
     self.playerLayer.frame = self.bounds;
     [UIApplication sharedApplication].statusBarHidden = NO;
-    if (!self.isFullScreen && !self.isCellVideo) {
-        if (self.frame.origin.x < 0) { return; }
-        if (self.frame.size.width == 0) {  return; }
-        if (self.portraitRect.size.width != 0) { return; }
-        self.fatherView = self.superview;
-        self.portraitRect = self.frame;
+    // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
+    if (iPhone4s && !self.isCellVideo) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_offset(ScreenWidth*2/3);
+        }];
     }
+
 }
 
 #pragma mark - public method
@@ -761,19 +759,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown ) { return; }
     
     if (!self.isCellVideo) {
-        [self.brightnessView removeFromSuperview];
-        [[UIApplication sharedApplication].keyWindow addSubview:self.brightnessView];
-        [self.brightnessView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.mas_equalTo(155);
-            make.leading.mas_equalTo((ScreenWidth-155)/2);
-            make.top.mas_equalTo((ScreenHeight-155)/2);
-        }];
         if (ZFPlayerOrientationIsLandscape || orientation == UIDeviceOrientationPortraitUpsideDown) {
             self.isFullScreen = YES;
         } else {
             self.isFullScreen = NO;
         }
-        [self normalVideoDeviceOrientationChange];
     } else {
         switch (interfaceOrientation) {
             case UIInterfaceOrientationPortraitUpsideDown:{
@@ -843,28 +833,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
             }];
             
         }
-    }
-}
-
-// 普通状态播放（非cell上播放）视频
-- (void)normalVideoDeviceOrientationChange
-{
-    if (self.isFullScreen) {
-        [self removeFromSuperview];
-        // 亮度view加到window最上层
-        [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:self.brightnessView];
-        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_equalTo(UIEdgeInsetsZero);
-        }];
-    } else {
-        [self removeFromSuperview];
-        [self.fatherView addSubview:self];
-        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.portraitRect.origin.y);
-            make.leading.mas_equalTo(self.portraitRect.origin.x);
-            make.height.mas_equalTo(self.portraitRect.size.height);
-            make.width.mas_equalTo(self.portraitRect.size.width);
-        }];
     }
 }
 

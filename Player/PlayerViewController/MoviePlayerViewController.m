@@ -34,6 +34,7 @@
 /** 离开页面时候是否在播放 */
 @property (nonatomic, assign) BOOL isPlaying;
 @property (nonatomic, strong) ZFPlayerModel *playerModel;
+@property (nonatomic, strong) UIView *bottomView;
 @end
 
 @implementation MoviePlayerViewController
@@ -86,7 +87,7 @@
     [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(20);
         make.leading.trailing.mas_equalTo(0);
-        // 这里宽高比16：9，可以自定义视频宽高比
+        // 这里宽高比16：9
         make.height.mas_equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
     }];
     */
@@ -108,6 +109,15 @@
     
     // 是否自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];
+    
+    self.bottomView = [[UIView alloc] init];
+    self.bottomView.backgroundColor = [UIColor colorWithRed:229/255.0 green:70/255.0 blue:64/255.0 alpha:1.0];
+    [self.view addSubview:self.bottomView];
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.playerView.mas_bottom).offset(0);
+        make.leading.trailing.mas_equalTo(0);
+        make.bottom.mas_equalTo(self.view).offset(-60);
+    }];
 
 }
 
@@ -146,6 +156,19 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        [self.bottomView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self.view).offset(-60);
+        }];
+    } else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+        [self.bottomView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self.view).offset(0);
+        }];
+    }
 }
 
 #pragma mark - Getter
