@@ -719,7 +719,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0f3b40e2-b6a8-4783-8524-129d2f5c1077";
+				PROVISIONING_PROFILE = "24e511cc-5b10-4bde-8a6a-4f36abba21b5";
 				PROVISIONING_PROFILE_SPECIFIER = "IF wildcard profile";
 			};
 			name = Debug;

@@ -27,6 +27,9 @@
 #import "UIView+CustomControlView.h"
 #import "MMMaterialDesignSpinner.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored"-Wdeprecated-declarations"
+
 static const CGFloat ZFPlayerAnimationTimeInterval             = 7.0f;
 static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
@@ -258,17 +261,18 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         make.width.height.mas_equalTo(30);
     }];
     
-    [self.activity mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self);
-        make.width.with.height.mas_equalTo(26);
-    }];
-    
     [self.repeatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
          make.center.equalTo(self);
     }];
     
     [self.playeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.mas_equalTo(50);
         make.center.equalTo(self);
+    }];
+    
+    [self.activity mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self);
+        make.width.with.height.mas_equalTo(45);
     }];
     
     [self.failBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -789,7 +793,9 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 {
     if (!_activity) {
         _activity = [[MMMaterialDesignSpinner alloc] init];
-        _activity.tintColor = [UIColor whiteColor];
+        _activity.lineWidth = 1;
+        _activity.duration  = 1;
+        _activity.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
     }
     return _activity;
 }
@@ -1230,4 +1236,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.downLoadBtn.enabled = state;
 }
 
+//写在这个中间的代码,都不会被编译器提示-Wdeprecated-declarations类型的警告
+#pragma clang diagnostic pop
 @end

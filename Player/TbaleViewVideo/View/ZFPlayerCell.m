@@ -49,6 +49,7 @@
     [self.picView addSubview:self.playBtn];
     [self.playBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.picView);
+        make.width.height.mas_equalTo(50);
     }];
 }
 

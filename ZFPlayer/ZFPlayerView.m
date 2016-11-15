@@ -27,6 +27,10 @@
 #import "UIView+CustomControlView.h"
 #import "ZFPlayer.h"
 
+//忽略编译器的警告
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored"-Wdeprecated-declarations"
+
 // 枚举值，包含水平移动方向和垂直移动方向
 typedef NS_ENUM(NSInteger, PanDirection){
     PanDirectionHorizontalMoved, // 横向移动
@@ -83,6 +87,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, strong) UIView                 *fatherView;
 /** 亮度view */
 @property (nonatomic, strong) ZFBrightnessView       *brightnessView;
+/** 普通状态播放器竖屏rect */
+@property (nonatomic, assign) CGRect                 portraitRect;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -155,7 +161,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 {
     self.playerItem = nil;
     self.tableView  = nil;
-    ZFPlayerShared.isLockScreen     = NO;
+    ZFPlayerShared.isLockScreen = NO;
     [self.controlView zf_playerCancelAutoFadeOutControlView];
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -175,6 +181,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 改为为播放完
     self.playDidEnd         = NO;
     self.playerItem         = nil;
+    self.fatherView         = nil;
     self.didEnterBackground = NO;
     // 视频跳转秒数置0
     self.seekTime           = 0;
@@ -267,6 +274,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self layoutIfNeeded];
     self.playerLayer.frame = self.bounds;
     [UIApplication sharedApplication].statusBarHidden = NO;
+    if (!self.isFullScreen && !self.isCellVideo) {
+        if (self.frame.origin.x < 0) { return; }
+        if (self.frame.size.width == 0) {  return; }
+        if (self.portraitRect.size.width != 0) { return; }
+        self.fatherView = self.superview;
+        self.portraitRect = self.frame;
+    }
 }
 
 #pragma mark - public method
@@ -329,6 +343,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
     // 添加手势
     [self createGesture];
+    
 }
 
 /**
@@ -348,8 +363,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.backgroundColor = [UIColor blackColor];
     // 此处为默认视频填充模式
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    // 添加playerLayer到self.layer
-    [self.layer insertSublayer:self.playerLayer atIndex:0];
     
     // 自动播放
     self.isAutoPlay = YES;
@@ -373,10 +386,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 开始播放
     [self play];
     self.isPauseByUser = NO;
-    
-    // 强制让系统调用layoutSubviews 两个方法必须同时写
-    [self setNeedsLayout]; //是标记 异步刷新 会调但是慢
-    [self layoutIfNeeded]; //加上此代码立刻刷新
 }
 
 /**
@@ -507,7 +516,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if ([keyPath isEqualToString:@"status"]) {
             
             if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-                
+                // 添加playerLayer到self.layer
+                [self.layer insertSublayer:self.playerLayer atIndex:0];
                 self.state = ZFPlayerStatePlaying;
                 // 加载完成后，再添加平移手势
                 // 添加平移手势，用来控制音量、亮度、快进快退
@@ -847,18 +857,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
             make.edges.mas_equalTo(UIEdgeInsetsZero);
         }];
     } else {
-        [self layoutIfNeeded];
-        _fatherView = self.superview;
         [self removeFromSuperview];
         [self.fatherView addSubview:self];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.frame.origin.y);
-            make.leading.mas_equalTo(self.frame.origin.x);
-            make.height.mas_equalTo(self.frame.size.height);
-            make.width.mas_equalTo(self.frame.size.width);
+            make.top.mas_equalTo(self.portraitRect.origin.y);
+            make.leading.mas_equalTo(self.portraitRect.origin.x);
+            make.height.mas_equalTo(self.portraitRect.size.height);
+            make.width.mas_equalTo(self.portraitRect.size.width);
         }];
-        // 父视图置为nil
-        self.fatherView = nil;
     }
 }
 
@@ -1105,12 +1111,12 @@ typedef NS_ENUM(NSInteger, PanDirection){
             [weakSelf.controlView zf_playerActivity:NO];
             // 视频跳转回调
             if (completionHandler) { completionHandler(finished); }
-            [self.player play];
-            self.seekTime = 0;
-            self.isDragged = NO;
+            [weakSelf.player play];
+            weakSelf.seekTime = 0;
+            weakSelf.isDragged = NO;
             // 结束滑动
-            [self.controlView zf_playerDraggedEnd];
-            if (!self.playerItem.isPlaybackLikelyToKeepUp && !self.isLocalVideo) { self.state = ZFPlayerStateBuffering; }
+            [weakSelf.controlView zf_playerDraggedEnd];
+            if (!weakSelf.playerItem.isPlaybackLikelyToKeepUp && !weakSelf.isLocalVideo) { weakSelf.state = ZFPlayerStateBuffering; }
             
         }];
     }
@@ -1476,6 +1482,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if (!self.isFullScreen) {
             // player加到控制器上，只有一个player时候
             [self pause];
+            self.fatherView = nil;
             if ([self.delegate respondsToSelector:@selector(zf_playerBackAction)]) { [self.delegate zf_playerBackAction]; }
             if (self.goBackBlock) { self.goBackBlock(); }
         } else {
@@ -1634,5 +1641,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [self seekToTime:dragedSeconds completionHandler:nil];
     }
 }
+
+#pragma clang diagnostic pop
 
 @end

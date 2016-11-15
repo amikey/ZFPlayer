@@ -30,7 +30,6 @@
 #import "UINavigationController+FDFullscreenPopGesture.h"
 
 @interface MoviePlayerViewController () <ZFPlayerDelegate>
-
 @property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
 /** 离开页面时候是否在播放 */
 @property (nonatomic, assign) BOOL isPlaying;
@@ -41,6 +40,8 @@
 
 - (void)dealloc
 {
+    // 这句必须写，否则影响释放
+    [self.playerView resetPlayer];
     NSLog(@"%@释放了",self.class);
 }
 
@@ -70,7 +71,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    //if use Masonry,Please open this annotation
+    // use Masonry
     /*
     UIView *topView = [[UIView alloc] init];
     topView.backgroundColor = [UIColor blackColor];
@@ -83,14 +84,13 @@
     self.playerView = [[ZFPlayerView alloc] init];
     [self.view addSubview:self.playerView];
     [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(20);
-        make.left.right.equalTo(self.view);
+        make.top.mas_equalTo(20);
+        make.leading.trailing.mas_equalTo(0);
         // 这里宽高比16：9，可以自定义视频宽高比
-        make.height.equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+        make.height.mas_equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
     }];
     */
-    
-    // 指定控制层
+    // 指定控制层(可自定义)
     ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
     
     // 设置控制层和播放模型
@@ -146,30 +146,6 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
-}
-
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        self.view.backgroundColor = [UIColor whiteColor];
-        self.fd_interactivePopDisabled = NO;
-        //if use Masonry,Please open this annotation
-        /*
-         [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
-         make.top.equalTo(self.view).offset(20);
-         }];
-         */
-    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-        self.view.backgroundColor = [UIColor blackColor];
-        self.fd_interactivePopDisabled = YES;
-        //if use Masonry,Please open this annotation
-        /*
-         [self.playerView mas_updateConstraints:^(MASConstraintMaker *make) {
-         make.top.equalTo(self.view).offset(0);
-         }];
-         */
-    }
 }
 
 #pragma mark - Getter
