@@ -32,10 +32,10 @@ typedef void(^PlayBtnCallBackBlock)(UIButton *);
 @property (weak, nonatomic  ) IBOutlet UIImageView          *avatarImageView;
 @property (weak, nonatomic  ) IBOutlet UIImageView          *picView;
 @property (weak, nonatomic  ) IBOutlet UILabel              *titleLabel;
-@property (nonatomic, strong) UIButton             *playBtn;
+@property (nonatomic, strong) UIButton                      *playBtn;
 /** model */
-@property (nonatomic, strong) ZFVideoModel        *model;
+@property (nonatomic, strong) ZFVideoModel                  *model;
 /** 播放按钮block */
-@property (nonatomic, copy  ) PlayBtnCallBackBlock playBlock;
+@property (nonatomic, copy  ) PlayBtnCallBackBlock          playBlock;
 
 @end

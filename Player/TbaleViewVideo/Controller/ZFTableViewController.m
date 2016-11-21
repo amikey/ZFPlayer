@@ -31,9 +31,9 @@
 
 @interface ZFTableViewController () <ZFPlayerDelegate>
 
-@property (nonatomic, strong) NSMutableArray *dataSource;
-@property (nonatomic, strong) ZFPlayerView   *playerView;
-@property (nonatomic, strong) ZFPlayerModel  *playerModel;
+@property (nonatomic, strong) NSMutableArray      *dataSource;
+@property (nonatomic, strong) ZFPlayerView        *playerView;
+@property (nonatomic, strong) ZFPlayerControlView *controlView;
 
 @end
 
@@ -90,10 +90,9 @@
     __block ZFVideoModel *model        = self.dataSource[indexPath.row];
     // 赋值model
     cell.model                         = model;
-    
     __block NSIndexPath *weakIndexPath = indexPath;
     __block ZFPlayerCell *weakCell     = cell;
-    __weak typeof(self) weakSelf       = self;
+    __weak typeof(self)  weakSelf      = self;
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
         
@@ -105,24 +104,22 @@
         // 取出字典中的第一视频URL
         NSURL *videoURL = [NSURL URLWithString:dic.allValues.firstObject];
         
-        weakSelf.playerModel = [[ZFPlayerModel alloc] init];
-        weakSelf.playerModel.title            = model.title;
-        weakSelf.playerModel.videoURL         = videoURL;
-        weakSelf.playerModel.placeholderImageURLString = model.coverForFeed;
-        weakSelf.playerModel.tableView        = weakSelf.tableView;
-        weakSelf.playerModel.indexPath        = weakIndexPath;
+        ZFPlayerModel *playerModel = [[ZFPlayerModel alloc] init];
+        playerModel.title            = model.title;
+        playerModel.videoURL         = videoURL;
+        playerModel.placeholderImageURLString = model.coverForFeed;
+        playerModel.tableView        = weakSelf.tableView;
+        playerModel.indexPath        = weakIndexPath;
         // 赋值分辨率字典
-        weakSelf.playerModel.resolutionDic    = dic;
+        playerModel.resolutionDic    = dic;
         // (需要设置imageView的tag值，此处设置的为101)
-        weakSelf.playerModel.cellImageViewTag = weakCell.picView.tag;
+        playerModel.cellImageViewTag = weakCell.picView.tag;
         
-        // 设置播放model
-        weakSelf.playerView.playerModel = weakSelf.playerModel;
-        
+        // 设置播放控制层和model
+        [weakSelf.playerView playerControlView:weakSelf.controlView playerModel:playerModel];
         [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
-
-        //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
-        // weakSelf.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
+        // 下载功能
+        weakSelf.playerView.hasDownload = YES;
         // 自动播放
         [weakSelf.playerView autoPlayTheVideo];
     };
@@ -138,13 +135,24 @@
 {
     if (!_playerView) {
         _playerView = [ZFPlayerView sharedPlayerView];
+        // 当cell划出屏幕的时候停止播放
+        // _playerView.stopPlayWhileCellNotVisable = YES;
+        
+        //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
+        // _playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
         _playerView.delegate = self;
-        ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
-        _playerView.controlView = controlView;
-        // 下载功能
-        _playerView.hasDownload = YES;
+        // 静音
+        // _playerView.mute = YES;
     }
     return _playerView;
+}
+
+- (ZFPlayerControlView *)controlView
+{
+    if (!_controlView) {
+        _controlView = [[ZFPlayerControlView alloc] init];
+    }
+    return _controlView;
 }
 
 #pragma mark - ZFPlayerDelegate

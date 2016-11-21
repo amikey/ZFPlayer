@@ -514,6 +514,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if ([keyPath isEqualToString:@"status"]) {
             
             if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+                [self setNeedsLayout];
+                [self layoutIfNeeded];
                 // 添加playerLayer到self.layer
                 [self.layer insertSublayer:self.playerLayer atIndex:0];
                 self.state = ZFPlayerStatePlaying;
@@ -531,7 +533,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 if (self.seekTime) {
                     [self seekToTime:self.seekTime completionHandler:nil];
                 }
-                
+                self.player.muted = self.mute;
             } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
                 self.state = ZFPlayerStateFailed;
             }
@@ -583,9 +585,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if ([visableCells containsObject:cell]) {
         // 在显示中
         [self updatePlayerViewToCell];
-    }else {
-        // 在底部
-        [self updatePlayerViewToBottom];
+    } else {
+        if (self.stopPlayWhileCellNotVisable) {
+            [self resetPlayer];
+        } else {
+            // 在底部
+            [self updatePlayerViewToBottom];
+        }
     }
 }
 
