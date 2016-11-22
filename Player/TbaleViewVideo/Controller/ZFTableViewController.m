@@ -135,12 +135,14 @@
 {
     if (!_playerView) {
         _playerView = [ZFPlayerView sharedPlayerView];
+        _playerView.delegate = self;
+        // 当cell播放视频由全屏变为小屏时候，不回到中间位置
+        _playerView.cellPlayerOnCenter = NO;
+        
         // 当cell划出屏幕的时候停止播放
         // _playerView.stopPlayWhileCellNotVisable = YES;
-        
         //（可选设置）可以设置视频的填充模式，默认为（等比例填充，直到一个维度到达区域边界）
         // _playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
-        _playerView.delegate = self;
         // 静音
         // _playerView.mute = YES;
     }

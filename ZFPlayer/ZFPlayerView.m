@@ -113,21 +113,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 #pragma mark - life Cycle
 
 /**
- *  单例，用于列表cell上多个视频
- *
- *  @return ZFPlayer
- */
-+ (instancetype)sharedPlayerView
-{
-    static ZFPlayerView *playerView = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        playerView = [[ZFPlayerView alloc] init];
-    });
-    return playerView;
-}
-
-/**
  *  代码初始化调用此方法
  */
 - (instancetype)init
@@ -151,6 +136,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
  */
 - (void)initializeThePlayer
 {
+    self.cellPlayerOnCenter = YES;
     // 每次播放视频都解锁屏幕锁定
     [self unLockTheScreen];
 }
@@ -169,6 +155,102 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [self.player removeTimeObserver:self.timeObserve];
         self.timeObserve = nil;
     }
+}
+
+/**
+ *  在当前页面，设置新的Player的URL调用此方法
+ */
+- (void)resetToPlayNewURL
+{
+    self.repeatToPlay = YES;
+    [self resetPlayer];
+}
+
+#pragma mark - 观察者、通知
+
+/**
+ *  添加观察者、通知
+ */
+- (void)addNotifications
+{
+    // app退到后台
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
+    // app进入前台
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayground) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    // 监测设备方向
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDeviceOrientationChange)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onStatusBarOrientationChange)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                               object:nil];
+}
+
+#pragma mark - layoutSubviews
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self layoutIfNeeded];
+    self.playerLayer.frame = self.bounds;
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
+    if (iPhone4s && !self.isCellVideo) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_offset(ScreenWidth*2/3);
+        }];
+    }
+
+}
+
+#pragma mark - Public Method
+
+/**
+ *  单例，用于列表cell上多个视频
+ *
+ *  @return ZFPlayer
+ */
++ (instancetype)sharedPlayerView
+{
+    static ZFPlayerView *playerView = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        playerView = [[ZFPlayerView alloc] init];
+    });
+    return playerView;
+}
+
+- (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel
+{
+    self.controlView = controlView;
+    self.playerModel = playerModel;
+}
+
+/**
+ *  自动播放，默认不自动播放
+ */
+- (void)autoPlayTheVideo
+{
+    // 设置Player相关参数
+    [self configZFPlayer];
+}
+
+/**
+ *  player添加到cellImageView上
+ *
+ *  @param cell 添加player的cellImageView
+ */
+- (void)addPlayerToCellImageView:(UIImageView *)imageView
+{
+    [imageView addSubview:self];
+    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.leading.trailing.bottom.equalTo(imageView);
+    }];
 }
 
 /**
@@ -220,15 +302,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 }
 
 /**
- *  在当前页面，设置新的Player的URL调用此方法
- */
-- (void)resetToPlayNewURL
-{
-    self.repeatToPlay = YES;
-    [self resetPlayer];
-}
-
-/**
  *  在当前页面，设置新的视频时候调用此方法
  */
 - (void)resetToPlayNewVideo:(ZFPlayerModel *)playerModel
@@ -239,57 +312,34 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self configZFPlayer];
 }
 
-#pragma mark - 观察者、通知
+/**
+ *  播放
+ */
+- (void)play
+{
+    [self.controlView zf_playerPlayBtnState:YES];
+    if (self.state == ZFPlayerStatePause) { self.state = ZFPlayerStatePlaying; }
+    self.isPauseByUser = NO;
+    [_player play];
+    if (!self.isBottomVideo) {
+        // 显示控制层
+        [self.controlView zf_playerCancelAutoFadeOutControlView];
+        [self.controlView zf_playerShowControlView];
+    }
+}
 
 /**
- *  添加观察者、通知
+ * 暂停
  */
-- (void)addNotifications
+- (void)pause
 {
-    // app退到后台
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
-    // app进入前台
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayground) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
-    // 监测设备方向
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDeviceOrientationChange)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onStatusBarOrientationChange)
-                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
-                                               object:nil];
+    [self.controlView zf_playerPlayBtnState:NO];
+    if (self.state == ZFPlayerStatePlaying) { self.state = ZFPlayerStatePause;}
+    self.isPauseByUser = YES;
+    [_player pause];
 }
 
-#pragma mark - layoutSubviews
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self layoutIfNeeded];
-    self.playerLayer.frame = self.bounds;
-    [UIApplication sharedApplication].statusBarHidden = NO;
-    // 4s，屏幕宽高比不是16：9的问题,player加到控制器上时候
-    if (iPhone4s && !self.isCellVideo) {
-        [self mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_offset(ScreenWidth*2/3);
-        }];
-    }
-
-}
-
-#pragma mark - public method
-
-- (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel
-{
-    self.controlView = controlView;
-    self.playerModel = playerModel;
-}
-
-#pragma mark - 设置视频URL
+#pragma mark - Private Method
 
 /**
  *  用于cell上播放player
@@ -319,29 +369,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self setVideoURL:videoURL];
     // 在cell播放
     [self.controlView zf_playerCellPlay];
-}
-
-/**
- *  videoURL的setter方法
- *
- *  @param videoURL videoURL
- */
-- (void)setVideoURL:(NSURL *)videoURL
-{
-    _videoURL = videoURL;
-
-    // 每次加载视频URL都设置重播为NO
-    self.repeatToPlay = NO;
-    self.playDidEnd   = NO;
-    
-    // 添加通知
-    [self addNotifications];
-    
-    self.isPauseByUser = YES;
-
-    // 添加手势
-    [self createGesture];
-    
 }
 
 /**
@@ -384,15 +411,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 开始播放
     [self play];
     self.isPauseByUser = NO;
-}
-
-/**
- *  自动播放，默认不自动播放
- */
-- (void)autoPlayTheVideo
-{
-    // 设置Player相关参数
-    [self configZFPlayer];
 }
 
 /**
@@ -815,8 +833,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
         UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
         if (currentOrientation == UIInterfaceOrientationPortrait) {
             [self setOrientationPortraitConstraint];
-            [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-            
+            if (self.cellPlayerOnCenter) {
+                [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+            }
             [self.brightnessView removeFromSuperview];
             [[UIApplication sharedApplication].keyWindow addSubview:self.brightnessView];
             [self.brightnessView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -865,19 +884,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self.controlView zf_playerLockBtnState:NO];
     self.isLocked = NO;
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
-}
-
-/**
- *  player添加到cellImageView上
- *
- *  @param cell 添加player的cellImageView
- */
-- (void)addPlayerToCellImageView:(UIImageView *)imageView
-{
-    [imageView addSubview:self];
-    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.leading.trailing.bottom.equalTo(imageView);
-    }];
 }
 
 #pragma mark - 缓冲较差时候
@@ -966,33 +972,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
         self.isAutoPlay = YES;
         [self configZFPlayer];
     }
-}
-
-/**
- *  播放
- */
-- (void)play
-{
-    [self.controlView zf_playerPlayBtnState:YES];
-    if (self.state == ZFPlayerStatePause) { self.state = ZFPlayerStatePlaying; }
-    self.isPauseByUser = NO;
-    [_player play];
-    if (!self.isBottomVideo) {
-        // 显示控制层
-        [self.controlView zf_playerCancelAutoFadeOutControlView];
-        [self.controlView zf_playerShowControlView];
-    }
-}
-
-/**
- * 暂停
- */
-- (void)pause
-{
-    [self.controlView zf_playerPlayBtnState:NO];
-    if (self.state == ZFPlayerStatePlaying) { self.state = ZFPlayerStatePause;}
-    self.isPauseByUser = YES;
-    [_player pause];
 }
 
 /** 全屏 */
@@ -1250,6 +1229,29 @@ typedef NS_ENUM(NSInteger, PanDirection){
 }
 
 #pragma mark - Setter 
+
+/**
+ *  videoURL的setter方法
+ *
+ *  @param videoURL videoURL
+ */
+- (void)setVideoURL:(NSURL *)videoURL
+{
+    _videoURL = videoURL;
+    
+    // 每次加载视频URL都设置重播为NO
+    self.repeatToPlay = NO;
+    self.playDidEnd   = NO;
+    
+    // 添加通知
+    [self addNotifications];
+    
+    self.isPauseByUser = YES;
+    
+    // 添加手势
+    [self createGesture];
+    
+}
 
 /**
  *  设置播放的状态

@@ -76,6 +76,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                    mute;
 /** 当cell划出屏幕的时候停止播放（默认为NO） */
 @property (nonatomic, assign) BOOL                    stopPlayWhileCellNotVisable;
+/** 当cell播放视频由全屏变为小屏时候，是否回到中间位置(默认YES) */
+@property (nonatomic, assign) BOOL                    cellPlayerOnCenter;
 
 @property (nonatomic, strong) UIView                  *controlView ZFPlayerDeprecated(playerControlView:playerModel:);
 @property (nonatomic, strong) ZFPlayerModel           *playerModel ZFPlayerDeprecated(playerControlView:playerModel:);
@@ -89,18 +91,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, copy  ) ZFDownloadCallBack      downloadBlock ZFPlayerDeprecated(zf_playerDownload:);
 
 /**
- *  自动播放，默认不自动播放
- */
-- (void)autoPlayTheVideo;
-
-- (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel;
-
-/**
  *  单例，用于列表cell上多个视频
  *
  *  @return ZFPlayer
  */
 + (instancetype)sharedPlayerView;
+
+/**
+ * 指定播放的控制层和模型
+ */
+- (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel;
 
 /**
  *  player添加到cell上
@@ -110,14 +110,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)addPlayerToCellImageView:(UIImageView *)imageView;
 
 /**
+ *  自动播放，默认不自动播放
+ */
+- (void)autoPlayTheVideo;
+
+/**
  *  重置player
  */
 - (void)resetPlayer;
-
-/**
- *  在当前页面，设置新的Player的URL调用此方法
- */
-- (void)resetToPlayNewURL ZFPlayerDeprecated(resetToPlayNewVideo:);
 
 /**
  *  在当前页面，设置新的视频时候调用此方法
@@ -134,21 +134,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)pause;
 
-/** 设置URL的setter方法 */
-- (void)setVideoURL:(NSURL *)videoURL;
-
-/**
- *  用于cell上播放player
- *
- *  @param videoURL  视频的URL
- *  @param tableView tableView
- *  @param indexPath indexPath 
- *  @param ImageViewTag ImageViewTag
- */
+- (void)setVideoURL:(NSURL *)videoURL ZFPlayerDeprecated(ZFPlayerModel.videoURL);
+- (void)resetToPlayNewURL ZFPlayerDeprecated(resetToPlayNewVideo:);
 - (void)setVideoURL:(NSURL *)videoURL
       withTableView:(UITableView *)tableView
         AtIndexPath:(NSIndexPath *)indexPath
    withImageViewTag:(NSInteger)tag  ZFPlayerDeprecated(ZFPlayerModel);
-
 
 @end
