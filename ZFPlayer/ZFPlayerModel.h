@@ -43,7 +43,7 @@
 @property (nonatomic, strong) UITableView  *tableView;
 /** cell所在的indexPath */
 @property (nonatomic, strong) NSIndexPath  *indexPath;
-/** playerView所在的父视图tag值 */
-@property (nonatomic, assign) NSInteger    cellImageViewTag;
+/** 播放器View的父视图（必须指定父视图）*/
+@property (nonatomic, weak  ) UIView       *fatherView;
 
 @end

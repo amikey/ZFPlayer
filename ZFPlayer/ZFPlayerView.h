@@ -36,11 +36,6 @@
 
 @end
 
-// 返回按钮的block
-typedef void(^ZFPlayerBackCallBack)(void);
-// 下载按钮的回调
-typedef void(^ZFDownloadCallBack)(NSString *urlStr);
-
 // playerLayer的填充模式（默认：等比例填充，直到一个维度到达区域边界）
 typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
      ZFPlayerLayerGravityResize,           // 非均匀模式。两个维度完全填充至整个视图区域
@@ -79,17 +74,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /** 当cell播放视频由全屏变为小屏时候，是否回到中间位置(默认YES) */
 @property (nonatomic, assign) BOOL                    cellPlayerOnCenter;
 
-@property (nonatomic, strong) UIView                  *controlView ZFPlayerDeprecated(playerControlView:playerModel:);
-@property (nonatomic, strong) ZFPlayerModel           *playerModel ZFPlayerDeprecated(playerControlView:playerModel:);
-@property (nonatomic, assign) NSInteger               seekTime ZFPlayerDeprecated(ZFPlayerModel.seekTime);
-@property (nonatomic, strong) NSURL                   *videoURL ZFPlayerDeprecated(ZFPlayerModel.videoURL);
-@property (nonatomic, strong) NSString                *title ZFPlayerDeprecated(ZFPlayerModel.title);
-@property (nonatomic, strong) NSDictionary            *resolutionDic ZFPlayerDeprecated(ZFPlayerModel.resolutionDic);
-@property (nonatomic, copy  ) UIImage                 *placeholderImage ZFPlayerDeprecated(ZFPlayerModel.placeholderImage);
-@property (nonatomic, copy  ) NSString                *placeholderImageName ZFPlayerDeprecated(ZFPlayerModel.placeholderImage);
-@property (nonatomic, copy  ) ZFPlayerBackCallBack    goBackBlock ZFPlayerDeprecated(zf_playerBackAction);
-@property (nonatomic, copy  ) ZFDownloadCallBack      downloadBlock ZFPlayerDeprecated(zf_playerDownload:);
-
 /**
  *  单例，用于列表cell上多个视频
  *
@@ -101,13 +85,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  * 指定播放的控制层和模型
  */
 - (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel;
-
-/**
- *  player添加到cell上
- *
- *  @param cell 添加player的cellImageView
- */
-- (void)addPlayerToCellImageView:(UIImageView *)imageView;
 
 /**
  *  自动播放，默认不自动播放
@@ -133,12 +110,5 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
   * 暂停
  */
 - (void)pause;
-
-- (void)setVideoURL:(NSURL *)videoURL ZFPlayerDeprecated(ZFPlayerModel.videoURL);
-- (void)resetToPlayNewURL ZFPlayerDeprecated(resetToPlayNewVideo:);
-- (void)setVideoURL:(NSURL *)videoURL
-      withTableView:(UITableView *)tableView
-        AtIndexPath:(NSIndexPath *)indexPath
-   withImageViewTag:(NSInteger)tag  ZFPlayerDeprecated(ZFPlayerModel);
 
 @end

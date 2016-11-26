@@ -68,7 +68,6 @@
         [model setValuesForKeysWithDictionary:dataDic];
         [self.dataSource addObject:model];
     }
-
 }
 
 #pragma mark - Table view data source
@@ -112,12 +111,11 @@
         playerModel.indexPath        = weakIndexPath;
         // 赋值分辨率字典
         playerModel.resolutionDic    = dic;
-        // (需要设置imageView的tag值，此处设置的为101)
-        playerModel.cellImageViewTag = weakCell.picView.tag;
+        // player的父视图
+        playerModel.fatherView       = weakCell.picView;
         
         // 设置播放控制层和model
         [weakSelf.playerView playerControlView:weakSelf.controlView playerModel:playerModel];
-        [weakSelf.playerView addPlayerToCellImageView:weakCell.picView];
         // 下载功能
         weakSelf.playerView.hasDownload = YES;
         // 自动播放

@@ -30,7 +30,9 @@
 #import "UINavigationController+FDFullscreenPopGesture.h"
 
 @interface MoviePlayerViewController () <ZFPlayerDelegate>
-@property (weak, nonatomic) IBOutlet ZFPlayerView *playerView;
+/** 播放器View的父视图*/
+@property (weak, nonatomic)  IBOutlet UIView *playerFatherView;
+@property (strong, nonatomic) ZFPlayerView *playerView;
 /** 离开页面时候是否在播放 */
 @property (nonatomic, assign) BOOL isPlaying;
 @property (nonatomic, strong) ZFPlayerModel *playerModel;
@@ -41,8 +43,6 @@
 
 - (void)dealloc
 {
-    // 这句必须写，否则影响释放
-    [self.playerView resetPlayer];
     NSLog(@"%@释放了",self.class);
 }
 
@@ -71,26 +71,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // use Masonry
     /*
-    UIView *topView = [[UIView alloc] init];
-    topView.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:topView];
-    [topView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.mas_offset(20);
-    }];
-    
-    self.playerView = [[ZFPlayerView alloc] init];
-    [self.view addSubview:self.playerView];
-    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.playerFatherView = [[UIView alloc] init];
+    [self.view addSubview:self.playerFatherView];
+    [self.playerFatherView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(20);
         make.leading.trailing.mas_equalTo(0);
-        // 这里宽高比16：9
-        make.height.mas_equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+        // 这里宽高比16：9,可自定义宽高比
+        make.height.mas_equalTo(self.playerFatherView.mas_width).multipliedBy(9.0f/16.0f);
     }];
     */
+    self.playerView = [[ZFPlayerView alloc] init];
+    [self.playerFatherView addSubview:self.playerView];
+    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_offset(UIEdgeInsetsZero);
+    }];
+    
     // 指定控制层(可自定义)
     ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
     
@@ -110,15 +106,6 @@
     // 是否自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];
     
-    self.bottomView = [[UIView alloc] init];
-    self.bottomView.backgroundColor = [UIColor colorWithRed:229/255.0 green:70/255.0 blue:64/255.0 alpha:1.0];
-    [self.view addSubview:self.bottomView];
-    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.playerView.mas_bottom).offset(0);
-        make.leading.trailing.mas_equalTo(0);
-        make.bottom.mas_equalTo(self.view).offset(-60);
-    }];
-
 }
 
 #pragma mark - ZFPlayerDelegate
@@ -137,40 +124,6 @@
     [ZFDownloadManager sharedDownloadManager].maxCount = 4;
 }
 
-#pragma mark - 转屏相关
-
-// 是否支持自动转屏
-- (BOOL)shouldAutorotate
-{
-    // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
-    return !ZFPlayerShared.isLockScreen;
-}
-
-// 支持哪些转屏方向
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
-}
-
-// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        [self.bottomView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(self.view).offset(-60);
-        }];
-    } else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-        [self.bottomView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(self.view).offset(0);
-        }];
-    }
-}
-
 #pragma mark - Getter
 
 - (ZFPlayerModel *)playerModel
@@ -180,6 +133,8 @@
         _playerModel.title            = @"这里设置视频标题";
         _playerModel.videoURL         = self.videoURL;
         _playerModel.placeholderImage = [UIImage imageNamed:@"loading_bgView1"];
+        _playerModel.fatherView       = self.playerFatherView;
+
     }
     return _playerModel;
 }
