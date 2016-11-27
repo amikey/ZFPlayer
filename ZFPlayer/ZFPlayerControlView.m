@@ -114,8 +114,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     if (self) {
         
         [self addSubview:self.placeholderImageView];
-//        [self addSubview:self.topBarView];
-        
         [self addSubview:self.topImageView];
         [self addSubview:self.bottomImageView];
         [self.bottomImageView addSubview:self.startBtn];
@@ -780,7 +778,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         _activity = [[MMMaterialDesignSpinner alloc] init];
         _activity.lineWidth = 1;
         _activity.duration  = 1;
-        _activity.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
+        _activity.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
     }
     return _activity;
 }

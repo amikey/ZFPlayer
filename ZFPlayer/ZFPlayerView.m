@@ -176,7 +176,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // app退到后台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground) name:UIApplicationWillResignActiveNotification object:nil];
     // app进入前台
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayground) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayground) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     // 监测设备方向
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -234,15 +234,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
 }
 
 /**
- *  player添加到cellImageView上
- *
- *  @param cell 添加player的cellImageView
+ *  player添加到fatherView上
  */
-- (void)addPlayerToCell:(UIView *)view
+- (void)addPlayerToFatherView:(UIView *)view
 {
+    [self removeFromSuperview];
     [view addSubview:self];
     [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.leading.trailing.bottom.equalTo(view);
+        make.edges.mas_offset(UIEdgeInsetsZero);
     }];
 }
 
@@ -551,7 +550,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             NSTimeInterval timeInterval = [self availableDuration];
             CMTime duration             = self.playerItem.duration;
             CGFloat totalDuration       = CMTimeGetSeconds(duration);
-            
+            if (!self.isPauseByUser) { [self play]; } // 如果没有被用户暂停，就继续播放，只要缓冲就播放。
             [self.controlView zf_playerSetProgress:timeInterval / totalDuration];
             
         } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
@@ -662,21 +661,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if (![visableCells containsObject:cell]) {
             [self updatePlayerViewToBottom];
         } else {
-            [self removeFromSuperview];
-            UIView *bgView = self.playerModel.fatherView;
-            [bgView addSubview:self];
-            [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.edges.mas_offset(UIEdgeInsetsZero);
-            }];
+            [self addPlayerToFatherView:self.playerModel.fatherView];
         }
     } else {
-        [self removeFromSuperview];
-        UIView *bgView = self.playerModel.fatherView;
-        [bgView addSubview:self];
-        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_offset(UIEdgeInsetsZero);
-        }];
-
+        [self addPlayerToFatherView:self.playerModel.fatherView];
     }
     
     [self toOrientation:UIInterfaceOrientationPortrait];
@@ -720,7 +708,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self.controlView setNeedsLayout];
 }
 
-
 /**
  * 获取变换的旋转角度
  *
@@ -744,7 +731,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 #pragma mark 屏幕转屏相关
 
 /**
- *  强制屏幕转屏
+ *  屏幕转屏
  *
  *  @param orientation 屏幕方向
  */
@@ -824,7 +811,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 make.leading.mas_equalTo((ScreenWidth-155)/2);
                 make.top.mas_equalTo((ScreenHeight-155)/2);
             }];
-
         } else {
             if (currentOrientation == UIInterfaceOrientationLandscapeRight) {
                 [self toOrientation:UIInterfaceOrientationLandscapeRight];
@@ -1356,7 +1342,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
     if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL && playerModel.fatherView) {
         [self setVideoURL:playerModel.videoURL withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath];
-        [self addPlayerToCell:playerModel.fatherView];
+        [self addPlayerToFatherView:playerModel.fatherView];
         if (playerModel.resolutionDic) { self.resolutionDic = playerModel.resolutionDic; }
         return;
     }
