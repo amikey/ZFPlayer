@@ -336,13 +336,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
 /**
  *  用于cell上播放player
  *
- *  @param videoURL  视频的URL
  *  @param tableView tableView
  *  @param indexPath indexPath
  */
-- (void)setVideoURL:(NSURL *)videoURL
-      withTableView:(UITableView *)tableView
-        AtIndexPath:(NSIndexPath *)indexPath
+- (void)cellVideoWithTableView:(UITableView *)tableView
+                   AtIndexPath:(NSIndexPath *)indexPath
 {
     // 如果页面没有消失，并且playerItem有值，需要重置player(其实就是点击播放其他视频时候)
     if (!self.viewDisappear && self.playerItem) { [self resetPlayer]; }
@@ -354,8 +352,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.tableView        = tableView;
     // 设置indexPath
     self.indexPath        = indexPath;
-    // 设置视频URL
-    [self setVideoURL:videoURL];
     // 在cell播放
     [self.controlView zf_playerCellPlay];
 }
@@ -1340,12 +1336,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (playerModel.seekTime) { self.seekTime = playerModel.seekTime; }
     [self.controlView zf_playerModel:playerModel];
 
-    if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL && playerModel.fatherView) {
-        [self setVideoURL:playerModel.videoURL withTableView:playerModel.tableView AtIndexPath:playerModel.indexPath];
-        [self addPlayerToFatherView:playerModel.fatherView];
+    if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL) {
+        [self cellVideoWithTableView:playerModel.tableView AtIndexPath:playerModel.indexPath];
         if (playerModel.resolutionDic) { self.resolutionDic = playerModel.resolutionDic; }
-        return;
     }
+    [self addPlayerToFatherView:playerModel.fatherView];
     self.videoURL = playerModel.videoURL;
 }
 

@@ -27,7 +27,7 @@
 
 ## 要求
 
-- iOS 8+
+- iOS 7+
 - Xcode 8+
 
 
@@ -67,6 +67,8 @@ $ pod install
 ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
 // 初始化播放模型
 ZFPlayerModel *playerModel = [[ZFPlayerModel alloc] init];
+// playerView的父视图
+playerModel.fatherView = ...;
 playerModel.videoURL = ...
 playerModel.title = ...
 [self.playerView playerControlView:controlView playerModel:playerModel];

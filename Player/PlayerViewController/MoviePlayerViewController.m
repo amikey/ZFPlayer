@@ -82,10 +82,6 @@
     }];
     */
     self.playerView = [[ZFPlayerView alloc] init];
-    [self.playerFatherView addSubview:self.playerView];
-    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_offset(UIEdgeInsetsZero);
-    }];
     
     // 指定控制层(可自定义)
     ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
