@@ -14,7 +14,7 @@
 		4947F7B31BE996AC003093C8 /* PlayerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4947F7B21BE996AC003093C8 /* PlayerUITests.m */; };
 		49CD65D11BF0C4EC0060DB9E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */; };
 		49F272801BF2330700FCC767 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F2727F1BF2330700FCC767 /* Info.plist */; };
-		6ABB55490C74E05F7D555585 /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD3A22BAD69B58F1146AED6 /* libPods-Player.a */; };
+		6DFFA86AB7DE7145F8B2FDBB /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E3CE675A5AD72E88B7F01B /* libPods-Player.a */; };
 		CC220D4A1DB7B504001191C7 /* MMMaterialDesignSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = CC220D491DB7B504001191C7 /* MMMaterialDesignSpinner.m */; };
 		CC2877CC1D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877C71D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.m */; };
 		CC2877CD1D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877C91D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m */; };
@@ -73,6 +73,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		15E3CE675A5AD72E88B7F01B /* libPods-Player.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Player.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2200AEC72BC281E1988F0335 /* Pods-Player.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Player.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Player/Pods-Player.debug.xcconfig"; sourceTree = "<group>"; };
 		4947F78A1BE996AC003093C8 /* Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Player.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4947F78E1BE996AC003093C8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4947F7901BE996AC003093C8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -86,8 +88,7 @@
 		4947F7B41BE996AC003093C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		49F2727F1BF2330700FCC767 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B4219404F7FE7E904D4DC224 /* Pods-Player.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Player.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Player/Pods-Player.debug.xcconfig"; sourceTree = "<group>"; };
-		B6A5F0372312CB175A6AA157 /* Pods-Player.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Player.release.xcconfig"; path = "Pods/Target Support Files/Pods-Player/Pods-Player.release.xcconfig"; sourceTree = "<group>"; };
+		5025702D2252268F74E00592 /* Pods-Player.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Player.release.xcconfig"; path = "Pods/Target Support Files/Pods-Player/Pods-Player.release.xcconfig"; sourceTree = "<group>"; };
 		CC220D481DB7B504001191C7 /* MMMaterialDesignSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMMaterialDesignSpinner.h; sourceTree = "<group>"; };
 		CC220D491DB7B504001191C7 /* MMMaterialDesignSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMMaterialDesignSpinner.m; sourceTree = "<group>"; };
 		CC2877C61D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
@@ -136,7 +137,6 @@
 		CCEF1BF31CAA826900B0DD78 /* ZFDownloadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadingCell.m; sourceTree = "<group>"; };
 		CCEF1BF71CACB28E00B0DD78 /* ZFDownloadedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadedCell.h; sourceTree = "<group>"; };
 		CCEF1BF81CACB28E00B0DD78 /* ZFDownloadedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadedCell.m; sourceTree = "<group>"; };
-		DBD3A22BAD69B58F1146AED6 /* libPods-Player.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Player.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,7 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49CD65D11BF0C4EC0060DB9E /* MediaPlayer.framework in Frameworks */,
-				6ABB55490C74E05F7D555585 /* libPods-Player.a in Frameworks */,
+				6DFFA86AB7DE7145F8B2FDBB /* libPods-Player.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,14 +166,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		03B77B954065E65F99AD14AC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DBD3A22BAD69B58F1146AED6 /* libPods-Player.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		4947F7811BE996AC003093C8 = {
 			isa = PBXGroup;
 			children = (
@@ -182,8 +174,8 @@
 				4947F7A61BE996AC003093C8 /* PlayerTests */,
 				4947F7B11BE996AC003093C8 /* PlayerUITests */,
 				4947F78B1BE996AC003093C8 /* Products */,
-				FAB78691E3DCD902BFC97C9E /* Pods */,
-				03B77B954065E65F99AD14AC /* Frameworks */,
+				D8295B2B943DB5BDE382931A /* Pods */,
+				A89D51315C5CAFCAFF4E0FB8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -240,6 +232,14 @@
 				4947F7B41BE996AC003093C8 /* Info.plist */,
 			);
 			path = PlayerUITests;
+			sourceTree = "<group>";
+		};
+		A89D51315C5CAFCAFF4E0FB8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				15E3CE675A5AD72E88B7F01B /* libPods-Player.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CC2877C51D9B60760097CEDA /* Category */ = {
@@ -355,11 +355,11 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		FAB78691E3DCD902BFC97C9E /* Pods */ = {
+		D8295B2B943DB5BDE382931A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B4219404F7FE7E904D4DC224 /* Pods-Player.debug.xcconfig */,
-				B6A5F0372312CB175A6AA157 /* Pods-Player.release.xcconfig */,
+				2200AEC72BC281E1988F0335 /* Pods-Player.debug.xcconfig */,
+				5025702D2252268F74E00592 /* Pods-Player.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -378,7 +378,6 @@
 				CC6132E21CB3A406008A979C /* Embed Frameworks */,
 				1202318A809FA973180E9823 /* [CP] Embed Pods Frameworks */,
 				385D90847BB6F8583952B056 /* [CP] Copy Pods Resources */,
-				1896BDC16DE371408D1411E4 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -508,21 +507,6 @@
 			inputPaths = (
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Player/Pods-Player-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1896BDC16DE371408D1411E4 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -707,7 +691,7 @@
 		};
 		4947F7B81BE996AC003093C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4219404F7FE7E904D4DC224 /* Pods-Player.debug.xcconfig */;
+			baseConfigurationReference = 2200AEC72BC281E1988F0335 /* Pods-Player.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -715,7 +699,7 @@
 				DEVELOPMENT_TEAM = S23J948BYW;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Player/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -726,7 +710,7 @@
 		};
 		4947F7B91BE996AC003093C8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6A5F0372312CB175A6AA157 /* Pods-Player.release.xcconfig */;
+			baseConfigurationReference = 5025702D2252268F74E00592 /* Pods-Player.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -734,7 +718,7 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Player/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renzifeng.Player;
 				PRODUCT_NAME = "$(TARGET_NAME)";
