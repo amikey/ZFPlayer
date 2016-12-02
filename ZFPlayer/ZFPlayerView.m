@@ -220,7 +220,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel
 {
-    self.controlView = controlView;
+    if (!controlView) {
+        // 指定默认控制层
+        ZFPlayerControlView *defaultControlView = [[ZFPlayerControlView alloc] init];
+        self.controlView = defaultControlView;
+    } else {
+        self.controlView = controlView;
+    }
     self.playerModel = playerModel;
 }
 

@@ -83,11 +83,14 @@
     */
     self.playerView = [[ZFPlayerView alloc] init];
     
-    // 指定控制层(可自定义)
-    ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+    /*****************************************************************************************
+     *   // 指定控制层(可自定义)
+     *   // ZFPlayerControlView *controlView = [[ZFPlayerControlView alloc] init];
+     *   // 设置控制层和播放模型
+     *   // 控制层传nil，默认使用ZFPlayerControlView(如自定义可传自定义的控制层)
+    ******************************************************************************************/
+    [self.playerView playerControlView:nil playerModel:self.playerModel];
     
-    // 设置控制层和播放模型
-    [self.playerView playerControlView:controlView playerModel:self.playerModel];
     // 设置代理
     self.playerView.delegate = self;
     
@@ -102,6 +105,12 @@
     // 是否自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];
     
+}
+
+// 返回值要必须为NO
+- (BOOL)shouldAutorotate
+{
+    return NO;
 }
 
 #pragma mark - ZFPlayerDelegate
