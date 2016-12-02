@@ -43,8 +43,6 @@
 
 #define ZFPlayerOrientationIsPortrait       UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)
 
-#define ZFPlayerDeprecated(instead)         DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")
-
 
 #import "ZFPlayerView.h"
 #import "ZFPlayerModel.h"
@@ -55,4 +53,4 @@
 #import "UINavigationController+ZFPlayerRotation.h"
 #import "UIImageView+ZFCache.h"
 #import "ZFPlayerControlViewDelegate.h"
-#import "Masonry.h"
+#import <Masonry/Masonry.h>

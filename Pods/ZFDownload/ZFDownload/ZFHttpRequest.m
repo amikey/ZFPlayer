@@ -25,7 +25,7 @@
 
 @interface ZFHttpRequest()<ASIHTTPRequestDelegate,ASIProgressDelegate>
 {
-    ASIHTTPRequest* _realRequest;
+    ASIHTTPRequest *_realRequest;
 }
 @end
 
