@@ -552,7 +552,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
             NSTimeInterval timeInterval = [self availableDuration];
             CMTime duration             = self.playerItem.duration;
             CGFloat totalDuration       = CMTimeGetSeconds(duration);
-            if (!self.isPauseByUser) { [self play]; } // 如果没有被用户暂停，就继续播放，只要缓冲就播放。
             [self.controlView zf_playerSetProgress:timeInterval / totalDuration];
             
         } else if ([keyPath isEqualToString:@"playbackBufferEmpty"]) {
