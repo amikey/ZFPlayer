@@ -1180,7 +1180,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        if ((self.isCellVideo && !self.isFullScreen) || self.playDidEnd){
+        if ((self.isCellVideo && !self.isFullScreen) || self.playDidEnd || self.isLocked){
             return NO;
         }
     }
