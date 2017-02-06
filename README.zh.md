@@ -308,7 +308,7 @@ self.playerView.playerModel = playerModel;
 # 联系我
 - 微博: [@任子丰](https://weibo.com/zifeng1300)
 - 邮箱: zifeng1300@gmail.com
-- QQ群：213376937
+- QQ群：213376937（已满） 213375947（添加这个）
 
 # License
 
