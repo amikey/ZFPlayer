@@ -303,7 +303,9 @@ See the [BMPlayer](https://github.com/BrikerMan/BMPlayer) please, thanks the BMP
 # Contact me
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email:  zifeng1300@gmail.com
+- QQ：459643690
 - QQ Group: 213376937（full） 213375947（add this）
+- 最近有换工作的意向，坐标北京，有合适的位置可以联系我！
 
 # License
 
