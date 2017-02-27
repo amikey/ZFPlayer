@@ -54,8 +54,7 @@
 }
 
 // 切圆角
-- (void)cutRoundView:(UIImageView *)imageView
-{
+- (void)cutRoundView:(UIImageView *)imageView {
     CGFloat corner = imageView.frame.size.width / 2;
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:imageView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(corner, corner)];
@@ -70,8 +69,7 @@
     // Configure the view for the selected state
 }
 
--(void)setModel:(ZFVideoModel *)model
-{
+- (void)setModel:(ZFVideoModel *)model {
     [self.picView sd_setImageWithURL:[NSURL URLWithString:model.coverForFeed] placeholderImage:[UIImage imageNamed:@"loading_bgView"]];
     self.titleLabel.text = model.title;
 }

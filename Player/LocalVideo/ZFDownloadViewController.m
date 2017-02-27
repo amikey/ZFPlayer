@@ -39,8 +39,7 @@
 
 @implementation ZFDownloadViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
@@ -56,8 +55,7 @@
     // NSLog(@"%@", NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES));
 }
 
-- (void)initData
-{
+- (void)initData {
     [DownloadManager startLoad];
     NSMutableArray *downladed = DownloadManager.finishedlist;
     NSMutableArray *downloading = DownloadManager.downinglist;
@@ -68,32 +66,27 @@
 }
 
 /** 全部开始 */
-- (IBAction)startAll:(UIBarButtonItem *)sender
-{
+- (IBAction)startAll:(UIBarButtonItem *)sender {
     [DownloadManager startAllDownloads];
 }
 
 /** 全部暂停 */
-- (IBAction)pauseAll:(UIBarButtonItem *)sender
-{
+- (IBAction)pauseAll:(UIBarButtonItem *)sender {
     [DownloadManager pauseAllDownloads];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
    
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSArray *sectionArray = self.downloadObjectArr[section];
     return sectionArray.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         ZFDownloadedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"downloadedCell"];
         ZFFileModel *fileInfo = self.downloadObjectArr[indexPath.section][indexPath.row];
@@ -120,23 +113,19 @@
     return nil;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"删除";
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         ZFFileModel *fileInfo = self.downloadObjectArr[indexPath.section][indexPath.row];
         [DownloadManager deleteFinishFile:fileInfo];
@@ -147,35 +136,30 @@
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return @[@"下载完成",@"下载中"][section];
 }
 
 #pragma mark - ZFDownloadDelegate
 
 // 开始下载
-- (void)startDownload:(ZFHttpRequest *)request
-{
+- (void)startDownload:(ZFHttpRequest *)request {
     NSLog(@"开始下载!");
 }
 
 // 下载中
-- (void)updateCellProgress:(ZFHttpRequest *)request
-{
+- (void)updateCellProgress:(ZFHttpRequest *)request {
     ZFFileModel *fileInfo = [request.userInfo objectForKey:@"File"];
     [self performSelectorOnMainThread:@selector(updateCellOnMainThread:) withObject:fileInfo waitUntilDone:YES];
 }
 
 // 下载完成
-- (void)finishedDownload:(ZFHttpRequest *)request
-{
+- (void)finishedDownload:(ZFHttpRequest *)request {
     [self initData];
 }
 
 // 更新下载进度
-- (void)updateCellOnMainThread:(ZFFileModel *)fileInfo
-{
+- (void)updateCellOnMainThread:(ZFFileModel *)fileInfo {
     NSArray *cellArr = [self.tableView visibleCells];
     for (id obj in cellArr) {
         if([obj isKindOfClass:[ZFDownloadingCell class]]) {

@@ -25,8 +25,7 @@
 
 @implementation ZFVideoModel
 
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key
-{
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     // 转换系统关键字description
     if ([key isEqualToString:@"description"]) {
         self.video_description = [NSString stringWithFormat:@"%@",value];
@@ -34,8 +33,7 @@
 
 }
 
-- (void)setValue:(id)value forKey:(NSString *)key
-{
+- (void)setValue:(id)value forKey:(NSString *)key {
     if ([key isEqualToString:@"playInfo"]) {
         self.playInfo = @[].mutableCopy;
         NSMutableArray *array = @[].mutableCopy;

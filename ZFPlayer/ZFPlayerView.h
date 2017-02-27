@@ -86,6 +86,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  * 控制层传nil，默认使用ZFPlayerControlView(如自定义可传自定义的控制层)
  */
 - (void)playerControlView:(UIView *)controlView playerModel:(ZFPlayerModel *)playerModel;
+/**
+ * 使用自带的控制层时候可使用此API
+ */
+- (void)playerModel:(ZFPlayerModel *)playerModel;
 
 /**
  *  自动播放，默认不自动播放

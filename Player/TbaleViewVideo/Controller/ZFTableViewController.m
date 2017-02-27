@@ -49,14 +49,12 @@
 }
 
 // 页面消失时候
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.playerView resetPlayer];
 }
 
-- (void)requestData
-{
+- (void)requestData {
     NSString *path = [[NSBundle mainBundle] pathForResource:@"videoData" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -124,8 +122,8 @@
 
     return cell;
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"didSelectRowAtIndexPath---%zd",indexPath.row);
 }
 
@@ -147,8 +145,7 @@
     return _playerView;
 }
 
-- (ZFPlayerControlView *)controlView
-{
+- (ZFPlayerControlView *)controlView {
     if (!_controlView) {
         _controlView = [[ZFPlayerControlView alloc] init];
     }
@@ -157,8 +154,7 @@
 
 #pragma mark - ZFPlayerDelegate
 
-- (void)zf_playerDownload:(NSString *)url
-{
+- (void)zf_playerDownload:(NSString *)url {
     // 此处是截取的下载地址，可以自己根据服务器的视频名称来赋值
     NSString *name = [url lastPathComponent];
     [[ZFDownloadManager sharedDownloadManager] downFileUrl:url filename:name fileimage:nil];

@@ -108,10 +108,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 @implementation ZFPlayerControlView
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
-    
     if (self) {
         
         [self addSubview:self.placeholderImageView];
@@ -159,14 +157,12 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
 
-- (void)makeSubViewsConstraints
-{
+- (void)makeSubViewsConstraints {
     [self layoutIfNeeded];
     [self.placeholderImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsZero);
@@ -308,8 +304,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }];
 }
 
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     [self layoutIfNeeded];
     [self zf_playerCancelAutoFadeOutControlView];
@@ -331,8 +326,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  点击切换分别率按钮
  */
-- (void)changeResolution:(UIButton *)sender
-{
+- (void)changeResolution:(UIButton *)sender {
     sender.selected = YES;
     if (sender.isSelected) {
         sender.backgroundColor = RGBA(86, 143, 232, 1);
@@ -356,8 +350,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  UISlider TapAction
  */
-- (void)tapSliderAction:(UITapGestureRecognizer *)tap
-{
+- (void)tapSliderAction:(UITapGestureRecognizer *)tap {
     if ([tap.view isKindOfClass:[UISlider class]]) {
         UISlider *slider = (UISlider *)tap.view;
         CGPoint point = [tap locationInView:slider];
@@ -372,8 +365,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 // 不做处理，只是为了滑动slider其他地方不响应其他手势
 - (void)panRecognizer:(UIPanGestureRecognizer *)sender {}
 
-- (void)backBtnClick:(UIButton *)sender
-{
+- (void)backBtnClick:(UIButton *)sender {
     // 状态条的方向旋转的方向,来判断当前屏幕的方向
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     // 在cell上并且是竖屏时候响应关闭事件
@@ -388,8 +380,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
 }
 
-- (void)lockScrrenBtnClick:(UIButton *)sender
-{
+- (void)lockScrrenBtnClick:(UIButton *)sender {
     sender.selected = !sender.selected;
     self.showing = NO;
     [self zf_playerShowControlView];
@@ -398,31 +389,27 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
 }
 
-- (void)playBtnClick:(UIButton *)sender
-{
+- (void)playBtnClick:(UIButton *)sender {
     sender.selected = !sender.selected;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:playAction:)]) {
         [self.delegate zf_controlView:self playAction:sender];
     }
 }
 
-- (void)closeBtnClick:(UIButton *)sender
-{
+- (void)closeBtnClick:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(zf_controlView:closeAction:)]) {
         [self.delegate zf_controlView:self closeAction:sender];
     }
 }
 
-- (void)fullScreenBtnClick:(UIButton *)sender
-{
+- (void)fullScreenBtnClick:(UIButton *)sender {
     sender.selected = !sender.selected;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:fullScreenAction:)]) {
         [self.delegate zf_controlView:self fullScreenAction:sender];
     }
 }
 
-- (void)repeatBtnClick:(UIButton *)sender
-{
+- (void)repeatBtnClick:(UIButton *)sender {
     // 重置控制层View
     [self zf_playerResetControlView];
     [self zf_playerShowControlView];
@@ -431,37 +418,32 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
 }
 
-- (void)downloadBtnClick:(UIButton *)sender
-{
+- (void)downloadBtnClick:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(zf_controlView:downloadVideoAction:)]) {
         [self.delegate zf_controlView:self downloadVideoAction:sender];
     }
 }
 
-- (void)resolutionBtnClick:(UIButton *)sender
-{
+- (void)resolutionBtnClick:(UIButton *)sender {
     sender.selected = !sender.selected;
     // 显示隐藏分辨率View
     self.resolutionView.hidden = !sender.isSelected;
 }
 
-- (void)centerPlayBtnClick:(UIButton *)sender
-{
+- (void)centerPlayBtnClick:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(zf_controlView:cneterPlayAction:)]) {
         [self.delegate zf_controlView:self cneterPlayAction:sender];
     }
 }
 
-- (void)failBtnClick:(UIButton *)sender
-{
+- (void)failBtnClick:(UIButton *)sender {
     self.failBtn.hidden = YES;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:failAction:)]) {
         [self.delegate zf_controlView:self failAction:sender];
     }
 }
 
-- (void)progressSliderTouchBegan:(ASValueTrackingSlider *)sender
-{
+- (void)progressSliderTouchBegan:(ASValueTrackingSlider *)sender {
     [self zf_playerCancelAutoFadeOutControlView];
     self.videoSlider.popUpView.hidden = YES;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchBegan:)]) {
@@ -469,15 +451,13 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }
 }
 
-- (void)progressSliderValueChanged:(ASValueTrackingSlider *)sender
-{
+- (void)progressSliderValueChanged:(ASValueTrackingSlider *)sender {
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderValueChanged:)]) {
         [self.delegate zf_controlView:self progressSliderValueChanged:sender];
     }
 }
 
-- (void)progressSliderTouchEnded:(ASValueTrackingSlider *)sender
-{
+- (void)progressSliderTouchEnded:(ASValueTrackingSlider *)sender {
     self.showing = YES;
     if ([self.delegate respondsToSelector:@selector(zf_controlView:progressSliderTouchEnded:)]) {
         [self.delegate zf_controlView:self progressSliderTouchEnded:sender];
@@ -487,21 +467,18 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  应用退到后台
  */
-- (void)appDidEnterBackground
-{
+- (void)appDidEnterBackground {
     [self zf_playerCancelAutoFadeOutControlView];
 }
 
 /**
  *  应用进入前台
  */
-- (void)appDidEnterPlayground
-{
+- (void)appDidEnterPlayground {
     if (!self.isShrink) { [self zf_playerShowControlView]; }
 }
 
-- (void)playerPlayDidEnd
-{
+- (void)playerPlayDidEnd {
     self.backgroundColor  = RGBA(0, 0, 0, .6);
     self.repeatBtn.hidden = NO;
     // 初始化显示controlView为YES
@@ -513,8 +490,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  屏幕方向发生变化会调用这里
  */
-- (void)onDeviceOrientationChange
-{
+- (void)onDeviceOrientationChange {
     if (ZFPlayerShared.isLockScreen) { return; }
     self.lockBtn.hidden         = !self.isFullScreen;
     self.fullScreenBtn.selected = self.isFullScreen;
@@ -528,8 +504,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [self layoutIfNeeded];
 }
 
-- (void)setOrientationLandscapeConstraint
-{
+- (void)setOrientationLandscapeConstraint {
     self.shrink                 = NO;
     self.fullScreen             = YES;
     self.lockBtn.hidden         = !self.isFullScreen;
@@ -547,8 +522,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  设置竖屏的约束
  */
-- (void)setOrientationPortraitConstraint
-{
+- (void)setOrientationPortraitConstraint {
     self.fullScreen             = NO;
     self.lockBtn.hidden         = !self.isFullScreen;
     self.fullScreenBtn.selected = self.isFullScreen;
@@ -570,8 +544,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 #pragma mark - Private Method
 
-- (void)showControlView
-{
+- (void)showControlView {
     if (self.lockBtn.isSelected) {
         self.topImageView.alpha    = 0;
         self.bottomImageView.alpha = 0;
@@ -586,8 +559,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
-- (void)hideControlView
-{
+- (void)hideControlView {
     self.backgroundColor          = RGBA(0, 0, 0, 0);
     self.topImageView.alpha       = self.playeEnd;
     self.bottomImageView.alpha    = 0;
@@ -602,8 +574,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  监听设备旋转通知
  */
-- (void)listeningRotating
-{
+- (void)listeningRotating {
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onDeviceOrientationChange)
@@ -613,8 +584,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 
-- (void)autoFadeOutControlView
-{
+- (void)autoFadeOutControlView {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(zf_playerHideControlView) object:nil];
     [self performSelector:@selector(zf_playerHideControlView) withObject:nil afterDelay:ZFPlayerAnimationTimeInterval];
 }
@@ -622,8 +592,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  slider滑块的bounds
  */
-- (CGRect)thumbRect
-{
+- (CGRect)thumbRect {
     return [self.videoSlider thumbRectForBounds:self.videoSlider.bounds
                                       trackRect:[self.videoSlider trackRectForBounds:self.videoSlider.bounds]
                                           value:self.videoSlider.value];
@@ -631,8 +600,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 #pragma mark - setter
 
-- (void)setShrink:(BOOL)shrink
-{
+- (void)setShrink:(BOOL)shrink {
     _shrink = shrink;
     self.closeBtn.hidden = !shrink;
     self.bottomProgressView.hidden = shrink;
@@ -640,8 +608,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 #pragma mark - getter
 
-- (UILabel *)titleLabel
-{
+- (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = [UIColor whiteColor];
@@ -650,8 +617,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _titleLabel;
 }
 
-- (UIButton *)backBtn
-{
+- (UIButton *)backBtn {
     if (!_backBtn) {
         _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
@@ -660,8 +626,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _backBtn;
 }
 
-- (UIImageView *)topImageView
-{
+- (UIImageView *)topImageView {
     if (!_topImageView) {
         _topImageView                        = [[UIImageView alloc] init];
         _topImageView.userInteractionEnabled = YES;
@@ -670,8 +635,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _topImageView;
 }
 
-- (UIImageView *)bottomImageView
-{
+- (UIImageView *)bottomImageView {
     if (!_bottomImageView) {
         _bottomImageView                        = [[UIImageView alloc] init];
         _bottomImageView.userInteractionEnabled = YES;
@@ -680,8 +644,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _bottomImageView;
 }
 
-- (UIButton *)lockBtn
-{
+- (UIButton *)lockBtn {
     if (!_lockBtn) {
         _lockBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_lockBtn setImage:ZFPlayerImage(@"ZFPlayer_unlock-nor") forState:UIControlStateNormal];
@@ -692,8 +655,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _lockBtn;
 }
 
-- (UIButton *)startBtn
-{
+- (UIButton *)startBtn {
     if (!_startBtn) {
         _startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_startBtn setImage:ZFPlayerImage(@"ZFPlayer_play") forState:UIControlStateNormal];
@@ -703,8 +665,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _startBtn;
 }
 
-- (UIButton *)closeBtn
-{
+- (UIButton *)closeBtn {
     if (!_closeBtn) {
         _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_closeBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
@@ -713,8 +674,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _closeBtn;
 }
 
-- (UILabel *)currentTimeLabel
-{
+- (UILabel *)currentTimeLabel {
     if (!_currentTimeLabel) {
         _currentTimeLabel               = [[UILabel alloc] init];
         _currentTimeLabel.textColor     = [UIColor whiteColor];
@@ -724,8 +684,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _currentTimeLabel;
 }
 
-- (UIProgressView *)progressView
-{
+- (UIProgressView *)progressView {
     if (!_progressView) {
         _progressView                   = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
         _progressView.progressTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
@@ -734,8 +693,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _progressView;
 }
 
-- (ASValueTrackingSlider *)videoSlider
-{
+- (ASValueTrackingSlider *)videoSlider {
     if (!_videoSlider) {
         _videoSlider                       = [[ASValueTrackingSlider alloc] init];
         _videoSlider.popUpViewCornerRadius = 0.0;
@@ -768,8 +726,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _videoSlider;
 }
 
-- (UILabel *)totalTimeLabel
-{
+- (UILabel *)totalTimeLabel {
     if (!_totalTimeLabel) {
         _totalTimeLabel               = [[UILabel alloc] init];
         _totalTimeLabel.textColor     = [UIColor whiteColor];
@@ -779,8 +736,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _totalTimeLabel;
 }
 
-- (UIButton *)fullScreenBtn
-{
+- (UIButton *)fullScreenBtn {
     if (!_fullScreenBtn) {
         _fullScreenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_fullScreenBtn setImage:ZFPlayerImage(@"ZFPlayer_fullscreen") forState:UIControlStateNormal];
@@ -790,8 +746,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _fullScreenBtn;
 }
 
-- (MMMaterialDesignSpinner *)activity
-{
+- (MMMaterialDesignSpinner *)activity {
     if (!_activity) {
         _activity = [[MMMaterialDesignSpinner alloc] init];
         _activity.lineWidth = 1;
@@ -801,8 +756,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _activity;
 }
 
-- (UIButton *)repeatBtn
-{
+- (UIButton *)repeatBtn {
     if (!_repeatBtn) {
         _repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_repeatBtn setImage:ZFPlayerImage(@"ZFPlayer_repeat_video") forState:UIControlStateNormal];
@@ -811,8 +765,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _repeatBtn;
 }
 
-- (UIButton *)downLoadBtn
-{
+- (UIButton *)downLoadBtn {
     if (!_downLoadBtn) {
         _downLoadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_downLoadBtn setImage:ZFPlayerImage(@"ZFPlayer_download") forState:UIControlStateNormal];
@@ -822,8 +775,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _downLoadBtn;
 }
 
-- (UIButton *)resolutionBtn
-{
+- (UIButton *)resolutionBtn {
     if (!_resolutionBtn) {
         _resolutionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _resolutionBtn.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -833,8 +785,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _resolutionBtn;
 }
 
-- (UIButton *)playeBtn
-{
+- (UIButton *)playeBtn {
     if (!_playeBtn) {
         _playeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_playeBtn setImage:ZFPlayerImage(@"ZFPlayer_play_btn") forState:UIControlStateNormal];
@@ -843,8 +794,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _playeBtn;
 }
 
-- (UIButton *)failBtn
-{
+- (UIButton *)failBtn {
     if (!_failBtn) {
         _failBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         [_failBtn setTitle:@"加载失败,点击重试" forState:UIControlStateNormal];
@@ -856,8 +806,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _failBtn;
 }
 
-- (UIView *)fastView
-{
+- (UIView *)fastView {
     if (!_fastView) {
         _fastView                     = [[UIView alloc] init];
         _fastView.backgroundColor     = RGBA(0, 0, 0, 0.8);
@@ -867,16 +816,14 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _fastView;
 }
 
-- (UIImageView *)fastImageView
-{
+- (UIImageView *)fastImageView {
     if (!_fastImageView) {
         _fastImageView = [[UIImageView alloc] init];
     }
     return _fastImageView;
 }
 
-- (UILabel *)fastTimeLabel
-{
+- (UILabel *)fastTimeLabel {
     if (!_fastTimeLabel) {
         _fastTimeLabel               = [[UILabel alloc] init];
         _fastTimeLabel.textColor     = [UIColor whiteColor];
@@ -886,8 +833,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _fastTimeLabel;
 }
 
-- (UIProgressView *)fastProgressView
-{
+- (UIProgressView *)fastProgressView {
     if (!_fastProgressView) {
         _fastProgressView                   = [[UIProgressView alloc] init];
         _fastProgressView.progressTintColor = [UIColor whiteColor];
@@ -896,8 +842,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _fastProgressView;
 }
 
-- (UIImageView *)placeholderImageView
-{
+- (UIImageView *)placeholderImageView {
     if (!_placeholderImageView) {
         _placeholderImageView = [[UIImageView alloc] init];
         _placeholderImageView.userInteractionEnabled = YES;
@@ -905,8 +850,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     return _placeholderImageView;
 }
 
-- (UIProgressView *)bottomProgressView
-{
+- (UIProgressView *)bottomProgressView {
     if (!_bottomProgressView) {
         _bottomProgressView                   = [[UIProgressView alloc] init];
         _bottomProgressView.progressTintColor = [UIColor whiteColor];
@@ -917,8 +861,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 #pragma mark - UIGestureRecognizerDelegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGRect rect = [self thumbRect];
     CGPoint point = [touch locationInView:self.videoSlider];
     if ([touch.view isKindOfClass:[UISlider class]]) { // 如果在滑块上点击就不响应pan手势
@@ -930,8 +873,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 #pragma mark - Public method
 
 /** 重置ControlView */
-- (void)zf_playerResetControlView
-{
+- (void)zf_playerResetControlView {
     [self.activity stopAnimating];
     self.videoSlider.value           = 0;
     self.bottomProgressView.progress = 0;
@@ -953,8 +895,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.placeholderImageView.alpha  = 1;
 }
 
-- (void)zf_playerResetControlViewForResolution
-{
+- (void)zf_playerResetControlViewForResolution {
     self.fastView.hidden        = YES;
     self.repeatBtn.hidden       = YES;
     self.resolutionView.hidden  = YES;
@@ -970,15 +911,13 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  取消延时隐藏controlView的方法
  */
-- (void)zf_playerCancelAutoFadeOutControlView
-{
+- (void)zf_playerCancelAutoFadeOutControlView {
     self.showing = NO;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
 /** 设置播放模型 */
-- (void)zf_playerModel:(ZFPlayerModel *)playerModel
-{
+- (void)zf_playerModel:(ZFPlayerModel *)playerModel {
     _playerModel = playerModel;
     if (playerModel.title) { self.titleLabel.text = playerModel.title; }
     // 设置网络占位图片
@@ -993,8 +932,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 /** 正在播放（隐藏placeholderImageView） */
-- (void)zf_playerItemPlaying
-{
+- (void)zf_playerItemPlaying {
     [UIView animateWithDuration:1.0 animations:^{
         self.placeholderImageView.alpha = 0;
     }];
@@ -1003,8 +941,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /**
  *  显示控制层
  */
-- (void)zf_playerShowControlView
-{
+- (void)zf_playerShowControlView {
     if (self.isShowing) {
         [self zf_playerHideControlView];
         return;
@@ -1016,14 +953,12 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         self.showing = YES;
         [self autoFadeOutControlView];
     }];
-
 }
 
 /**
  *  隐藏控制层
  */
-- (void)zf_playerHideControlView
-{
+- (void)zf_playerHideControlView {
     if (!self.isShowing) { return; }
     [self zf_playerCancelAutoFadeOutControlView];
     [UIView animateWithDuration:ZFPlayerControlBarAutoFadeOutTimeInterval animations:^{
@@ -1034,8 +969,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 /** 小屏播放 */
-- (void)zf_playerBottomShrinkPlay
-{
+- (void)zf_playerBottomShrinkPlay {
     [self updateConstraints];
     [self layoutIfNeeded];
     [self hideControlView];
@@ -1043,8 +977,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 /** 在cell播放 */
-- (void)zf_playerCellPlay
-{
+- (void)zf_playerCellPlay {
     self.cellVideo = YES;
     self.shrink    = YES;
     [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_close") forState:UIControlStateNormal];
@@ -1052,8 +985,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [self zf_playerShowControlView];
 }
 
-- (void)zf_playerCurrentTime:(NSInteger)currentTime totalTime:(NSInteger)totalTime sliderValue:(CGFloat)value
-{
+- (void)zf_playerCurrentTime:(NSInteger)currentTime totalTime:(NSInteger)totalTime sliderValue:(CGFloat)value {
     // 当前时长进度progress
     NSInteger proMin = currentTime / 60;//当前秒
     NSInteger proSec = currentTime % 60;//当前分钟
@@ -1071,8 +1003,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.totalTimeLabel.text = [NSString stringWithFormat:@"%02zd:%02zd", durMin, durSec];
 }
 
-- (void)zf_playerDraggedTime:(NSInteger)draggedTime totalTime:(NSInteger)totalTime isForward:(BOOL)forawrd hasPreview:(BOOL)preview
-{
+- (void)zf_playerDraggedTime:(NSInteger)draggedTime totalTime:(NSInteger)totalTime isForward:(BOOL)forawrd hasPreview:(BOOL)preview {
     // 快进快退时候停止菊花
     [self.activity stopAnimating];
     // 拖拽的时长
@@ -1110,8 +1041,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 }
 
-- (void)zf_playerDraggedEnd
-{
+- (void)zf_playerDraggedEnd {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.fastView.hidden = YES;
     });
@@ -1122,8 +1052,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     [self autoFadeOutControlView];
 }
 
-- (void)zf_playerDraggedTime:(NSInteger)draggedTime sliderImage:(UIImage *)image;
-{
+- (void)zf_playerDraggedTime:(NSInteger)draggedTime sliderImage:(UIImage *)image; {
     // 拖拽的时长
     NSInteger proMin = draggedTime / 60;//当前秒
     NSInteger proSec = draggedTime % 60;//当前分钟
@@ -1134,20 +1063,17 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 /** progress显示缓冲进度 */
-- (void)zf_playerSetProgress:(CGFloat)progress
-{
+- (void)zf_playerSetProgress:(CGFloat)progress {
     [self.progressView setProgress:progress animated:NO];
 }
 
 /** 视频加载失败 */
-- (void)zf_playerItemStatusFailed:(NSError *)error
-{
+- (void)zf_playerItemStatusFailed:(NSError *)error {
     self.failBtn.hidden = NO;
 }
 
 /** 加载的菊花 */
-- (void)zf_playerActivity:(BOOL)animated
-{
+- (void)zf_playerActivity:(BOOL)animated {
     if (animated) {
         [self.activity startAnimating];
         self.fastView.hidden = YES;
@@ -1157,8 +1083,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 /** 播放完了 */
-- (void)zf_playerPlayEnd
-{
+- (void)zf_playerPlayEnd {
     self.repeatBtn.hidden = NO;
     self.playeEnd         = YES;
     self.showing          = NO;
@@ -1172,16 +1097,14 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /** 
  是否有下载功能 
  */
-- (void)zf_playerHasDownloadFunction:(BOOL)sender
-{
+- (void)zf_playerHasDownloadFunction:(BOOL)sender {
     self.downLoadBtn.hidden = !sender;
 }
 
 /**
  是否有切换分辨率功能
  */
-- (void)zf_playerResolutionArray:(NSArray *)resolutionArray
-{
+- (void)zf_playerResolutionArray:(NSArray *)resolutionArray {
     self.resolutionBtn.hidden = NO;
     
     _resolutionArray = resolutionArray;
@@ -1219,23 +1142,20 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 }
 
 /** 播放按钮状态 */
-- (void)zf_playerPlayBtnState:(BOOL)state
-{
+- (void)zf_playerPlayBtnState:(BOOL)state {
     self.startBtn.selected = state;
 }
 
 /** 锁定屏幕方向按钮状态 */
-- (void)zf_playerLockBtnState:(BOOL)state
-{
+- (void)zf_playerLockBtnState:(BOOL)state {
     self.lockBtn.selected = state;
 }
 
 /** 下载按钮状态 */
-- (void)zf_playerDownloadBtnState:(BOOL)state
-{
+- (void)zf_playerDownloadBtnState:(BOOL)state {
     self.downLoadBtn.enabled = state;
 }
 
-//写在这个中间的代码,都不会被编译器提示-Wdeprecated-declarations类型的警告
 #pragma clang diagnostic pop
+
 @end
