@@ -167,6 +167,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 - (void)makeSubViewsConstraints
 {
+    [self layoutIfNeeded];
     [self.placeholderImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsZero);
     }];
@@ -185,8 +186,8 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     
     [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.topImageView.mas_leading).offset(10);
-        make.top.equalTo(self.topImageView.mas_top).offset(7);
-        make.width.height.mas_equalTo(30);
+        make.top.equalTo(self.topImageView.mas_top).offset(3);
+        make.width.height.mas_equalTo(40);
     }];
 
     [self.downLoadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -210,7 +211,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     }];
     
     [self.bottomImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.trailing.bottom.equalTo(self);
+        make.leading.trailing.bottom.mas_equalTo(0);
         make.height.mas_equalTo(50);
     }];
     
@@ -534,8 +535,12 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.lockBtn.hidden         = !self.isFullScreen;
     self.fullScreenBtn.selected = self.isFullScreen;
     [self.backBtn setImage:ZFPlayerImage(@"ZFPlayer_back_full") forState:UIControlStateNormal];
-    [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_offset(27);
+    [self layoutIfNeeded];
+    [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topImageView.mas_top).offset(23);
+        make.leading.equalTo(self.topImageView.mas_leading).offset(10);
+        make.width.height.mas_equalTo(40);
+
     }];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
@@ -547,8 +552,11 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
     self.fullScreen             = NO;
     self.lockBtn.hidden         = !self.isFullScreen;
     self.fullScreenBtn.selected = self.isFullScreen;
-    [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_offset(7);
+    [self layoutIfNeeded];
+    [self.backBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.topImageView.mas_leading).offset(10);
+        make.top.equalTo(self.topImageView.mas_top).offset(3);
+        make.width.height.mas_equalTo(40);
     }];
 
     if (self.isCellVideo) {

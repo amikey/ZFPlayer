@@ -1327,9 +1327,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (_controlView) { return; }
     _controlView = controlView;
     controlView.delegate = self;
+    [self layoutIfNeeded];
     [self addSubview:controlView];
     [controlView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.leading.trailing.bottom.equalTo(self);
+        make.edges.mas_equalTo(UIEdgeInsetsZero);
     }];
 }
 
