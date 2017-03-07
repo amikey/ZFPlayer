@@ -35,6 +35,9 @@
 		CC7D5E961D59AAAC000AC18A /* ASValuePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7D5E941D59AAAC000AC18A /* ASValuePopUpView.m */; };
 		CC8693471CC9BF5E0037E71B /* ZFPVideoResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8693461CC9BF5E0037E71B /* ZFPVideoResolution.m */; };
 		CCB3510E1E63C02800FAF8FD /* UIAlertController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB3510D1E63C02800FAF8FD /* UIAlertController+ZFPlayerRotation.m */; };
+		CCB351261E6421AD00FAF8FD /* LCPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB351211E6421AD00FAF8FD /* LCPanGestureRecognizer.m */; };
+		CCB351271E6421AD00FAF8FD /* LCPanNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB351231E6421AD00FAF8FD /* LCPanNavigationController.m */; };
+		CCB351281E6421AD00FAF8FD /* UIView+Snapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB351251E6421AD00FAF8FD /* UIView+Snapshot.m */; };
 		CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */; };
 		CCE1C13B1C9AA11F004C95AC /* ZFVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13A1C9AA11F004C95AC /* ZFVideoModel.m */; };
 		CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE1C13D1C9AA128004C95AC /* ZFTableViewController.m */; };
@@ -129,6 +132,12 @@
 		CC8693461CC9BF5E0037E71B /* ZFPVideoResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPVideoResolution.m; sourceTree = "<group>"; };
 		CCB3510C1E63C02800FAF8FD /* UIAlertController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
 		CCB3510D1E63C02800FAF8FD /* UIAlertController+ZFPlayerRotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
+		CCB351201E6421AD00FAF8FD /* LCPanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCPanGestureRecognizer.h; sourceTree = "<group>"; };
+		CCB351211E6421AD00FAF8FD /* LCPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCPanGestureRecognizer.m; sourceTree = "<group>"; };
+		CCB351221E6421AD00FAF8FD /* LCPanNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCPanNavigationController.h; sourceTree = "<group>"; };
+		CCB351231E6421AD00FAF8FD /* LCPanNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCPanNavigationController.m; sourceTree = "<group>"; };
+		CCB351241E6421AD00FAF8FD /* UIView+Snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Snapshot.h"; sourceTree = "<group>"; };
+		CCB351251E6421AD00FAF8FD /* UIView+Snapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Snapshot.m"; sourceTree = "<group>"; };
 		CCE1C1361C9AA115004C95AC /* ZFPlayerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerCell.h; sourceTree = "<group>"; };
 		CCE1C1371C9AA115004C95AC /* ZFPlayerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerCell.m; sourceTree = "<group>"; };
 		CCE1C1391C9AA11F004C95AC /* ZFVideoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFVideoModel.h; sourceTree = "<group>"; };
@@ -195,6 +204,7 @@
 		4947F78C1BE996AC003093C8 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				CCB3511F1E6421AD00FAF8FD /* PanNavigationController */,
 				CC2CC6301CA24D4B0028BBDD /* ZFPlayer */,
 				CC725C1E1C894C8100C3EAF2 /* NetVideo */,
 				CC6C7AE21C9BDFBA0000AD58 /* PlayerViewController */,
@@ -318,6 +328,19 @@
 				CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */,
 			);
 			path = NetVideo;
+			sourceTree = "<group>";
+		};
+		CCB3511F1E6421AD00FAF8FD /* PanNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				CCB351201E6421AD00FAF8FD /* LCPanGestureRecognizer.h */,
+				CCB351211E6421AD00FAF8FD /* LCPanGestureRecognizer.m */,
+				CCB351221E6421AD00FAF8FD /* LCPanNavigationController.h */,
+				CCB351231E6421AD00FAF8FD /* LCPanNavigationController.m */,
+				CCB351241E6421AD00FAF8FD /* UIView+Snapshot.h */,
+				CCB351251E6421AD00FAF8FD /* UIView+Snapshot.m */,
+			);
+			path = PanNavigationController;
 			sourceTree = "<group>";
 		};
 		CCE1C1321C9AA0D9004C95AC /* TbaleViewVideo */ = {
@@ -546,7 +569,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -556,6 +579,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCB351261E6421AD00FAF8FD /* LCPanGestureRecognizer.m in Sources */,
 				CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */,
 				CCB3510E1E63C02800FAF8FD /* UIAlertController+ZFPlayerRotation.m in Sources */,
 				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,
@@ -575,6 +599,8 @@
 				CC2877CD1D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m in Sources */,
 				CC6FF3681DB4A32E00222AAC /* UIView+CustomControlView.m in Sources */,
 				CCEF1BF41CAA826900B0DD78 /* ZFDownloadingCell.m in Sources */,
+				CCB351271E6421AD00FAF8FD /* LCPanNavigationController.m in Sources */,
+				CCB351281E6421AD00FAF8FD /* UIView+Snapshot.m in Sources */,
 				CCE1C1381C9AA115004C95AC /* ZFPlayerCell.m in Sources */,
 				CC7D5E961D59AAAC000AC18A /* ASValuePopUpView.m in Sources */,
 				CC2877CC1D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.m in Sources */,

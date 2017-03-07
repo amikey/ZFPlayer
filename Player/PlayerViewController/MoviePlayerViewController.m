@@ -27,7 +27,8 @@
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
 #import "ZFPlayer.h"
-#import "UINavigationController+FDFullscreenPopGesture.h"
+#import "LCPanNavigationController.h"
+//#import "UINavigationController+FDFullscreenPopGesture.h"
 
 @interface MoviePlayerViewController () <ZFPlayerDelegate>
 /** 播放器View的父视图*/
@@ -64,10 +65,12 @@
         self.isPlaying = YES;
         [self.playerView pause];
     }
+
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.zf_prefersNavigationBarHidden = YES;
     /*
     self.playerFatherView = [[UIView alloc] init];
     [self.view addSubview:self.playerFatherView];
