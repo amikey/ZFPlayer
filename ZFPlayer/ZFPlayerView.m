@@ -85,6 +85,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, strong) UIImage                *thumbImg;
 /** 亮度view */
 @property (nonatomic, strong) ZFBrightnessView       *brightnessView;
+/** 视频填充模式 */
+@property (nonatomic, copy) NSString                 *videoGravity;
 
 #pragma mark - UITableViewCell PlayerView
 
@@ -371,7 +373,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     
     self.backgroundColor = [UIColor blackColor];
     // 此处为默认视频填充模式
-    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    self.playerLayer.videoGravity = self.videoGravity;
     
     // 自动播放
     self.isAutoPlay = YES;
@@ -1250,12 +1252,15 @@ typedef NS_ENUM(NSInteger, PanDirection){
     switch (playerLayerGravity) {
         case ZFPlayerLayerGravityResize:
             self.playerLayer.videoGravity = AVLayerVideoGravityResize;
+            self.videoGravity = AVLayerVideoGravityResize;
             break;
         case ZFPlayerLayerGravityResizeAspect:
             self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+            self.videoGravity = AVLayerVideoGravityResizeAspect;
             break;
         case ZFPlayerLayerGravityResizeAspectFill:
             self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            self.videoGravity = AVLayerVideoGravityResizeAspectFill;
             break;
         default:
             break;
@@ -1316,6 +1321,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
         _brightnessView = [ZFBrightnessView sharedBrightnessView];
     }
     return _brightnessView;
+}
+
+- (NSString *)videoGravity {
+    if (!_videoGravity) {
+        _videoGravity = AVLayerVideoGravityResizeAspect;
+    }
+    return _videoGravity;
 }
 
 #pragma mark - ZFPlayerControlViewDelegate

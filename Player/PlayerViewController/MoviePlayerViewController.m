@@ -65,7 +65,6 @@
         self.isPlaying = YES;
         [self.playerView pause];
     }
-
 }
 
 - (void)viewDidLoad {
@@ -84,7 +83,6 @@
     
     // 自动播放，默认不自动播放
     [self.playerView autoPlayTheVideo];
-    
 }
 
 // 返回值要必须为NO
@@ -115,7 +113,6 @@
         _playerModel.videoURL         = self.videoURL;
         _playerModel.placeholderImage = [UIImage imageNamed:@"loading_bgView1"];
         _playerModel.fatherView       = self.playerFatherView;
-
     }
     return _playerModel;
 }
@@ -137,7 +134,7 @@
         _playerView.delegate = self;
         
         //（可选设置）可以设置视频的填充模式，内部设置默认（ZFPlayerLayerGravityResizeAspect：等比例填充，直到一个维度到达区域边界）
-        // self.playerView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
+        // _playerView.playerLayerGravity = ZFPlayerLayerGravityResize;
         
         // 打开下载功能（默认没有这个功能）
         _playerView.hasDownload    = YES;
