@@ -38,6 +38,7 @@
 ## 组件
 
 - 断点下载: [ZFDownload](https://github.com/renzifeng/ZFDownload)
+- 导航: [ZFNavigationController](https://github.com/renzifeng/ZFNavigationController)（滑动返回页面时候视频播放不卡顿）
 - 布局: Masonry
 
 

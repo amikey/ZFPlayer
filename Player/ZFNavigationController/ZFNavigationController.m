@@ -194,12 +194,12 @@
         self.screenShotView.hidden = NO;
         self.screenShotView.imageView.image = [self.childVCImages lastObject];
         self.screenShotView.imageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -self.showViewOffset, 0);
-        self.screenShotView.maskView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.5];
+        self.screenShotView.maskView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.4];
     } else if (recognizer.state == UIGestureRecognizerStateChanged){
         // 移动view
             width_scale = tx / SCREEN_WIDTH;
             self.view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity,tx, 0);;
-            self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5 - width_scale * 0.5];
+            self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4 - width_scale * 0.5];
             self.screenShotView.imageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -self.showViewOffset + tx * self.showViewOffsetScale, 0);
 
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
@@ -219,7 +219,7 @@
             }];
         } else {
             [UIView animateWithDuration:0.25 animations:^{
-                self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5 + width_scale * 0.5];
+                self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4 + width_scale * 0.5];
                 self.view.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
                 self.screenShotView.imageView.transform = CGAffineTransformIdentity;
