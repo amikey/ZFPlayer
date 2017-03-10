@@ -27,8 +27,7 @@
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
 #import "ZFPlayer.h"
-#import "LCPanNavigationController.h"
-//#import "UINavigationController+FDFullscreenPopGesture.h"
+#import "ZFNavigationController.h"
 
 @interface MoviePlayerViewController () <ZFPlayerDelegate>
 /** 播放器View的父视图*/

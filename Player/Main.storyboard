@@ -266,7 +266,7 @@
         <!--Navigation Controller-->
         <scene sceneID="xRO-Dx-zsC">
             <objects>
-                <navigationController id="7mG-mj-crH" sceneMemberID="viewController">
+                <navigationController id="7mG-mj-crH" customClass="ZFNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="search" id="3rB-RS-00r"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ghh-Jw-xLD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -399,7 +399,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Htv-Kw-f6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1602" y="1314"/>
+            <point key="canvasLocation" x="1831" y="2175"/>
         </scene>
         <!--二级页面-->
         <scene sceneID="Y0Y-rS-5Oj">
@@ -419,7 +419,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DHQ-W9-Ypj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2367" y="1314"/>
+            <point key="canvasLocation" x="2998" y="2175"/>
         </scene>
         <!--本地视频-->
         <scene sceneID="Por-U2-cMz">
@@ -610,10 +610,10 @@
             </objects>
             <point key="canvasLocation" x="-860" y="1314"/>
         </scene>
-        <!--Pan Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="GNS-Uz-8Xs">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7Xx-X8-Lzw" customClass="LCPanNavigationController" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7Xx-X8-Lzw" customClass="ZFNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="mostViewed" id="vRI-7k-vg1"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MpB-sS-45J">
@@ -632,7 +632,7 @@
         <!--Navigation Controller-->
         <scene sceneID="QwU-pp-hN6">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HX3-NW-XW1" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HX3-NW-XW1" customClass="ZFNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="downloads" id="mrV-KX-krx"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ROl-sd-bmh">
@@ -666,6 +666,6 @@
         <image name="menu_play" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PT2-y1-2eg"/>
+        <segue reference="8B8-xC-tWR"/>
     </inferredMetricsTieBreakers>
 </document>
