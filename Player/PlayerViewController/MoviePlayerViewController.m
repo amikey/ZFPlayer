@@ -27,7 +27,7 @@
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
 #import "ZFPlayer.h"
-#import "ZFNavigationController.h"
+#import "UINavigationController+ZFFullscreenPopGesture.h"
 
 @interface MoviePlayerViewController () <ZFPlayerDelegate>
 /** 播放器View的父视图*/
@@ -87,6 +87,18 @@
 // 返回值要必须为NO
 - (BOOL)shouldAutorotate {
     return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    // 这里设置横竖屏不同颜色的statusbar
+    // if (ZFPlayerShared.isLandscape) {
+    //    return UIStatusBarStyleDefault;
+    // }
+    return UIStatusBarStyleLightContent;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return ZFPlayerShared.isStatusBarHidden;
 }
 
 #pragma mark - ZFPlayerDelegate

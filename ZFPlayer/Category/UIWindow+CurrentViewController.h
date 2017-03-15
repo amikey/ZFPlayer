@@ -1,5 +1,6 @@
 //
-//  ZFNavigationController.h
+//  UIWindow+CurrentViewController.h
+//  Player
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -23,21 +24,18 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^_ZFViewControllerWillAppearInjectBlock)(UIViewController *viewController, BOOL animated);
+@interface UIWindow (CurrentViewController)
+/*!
+ @method topMostController
+ 
+ @return Returns the current Top Most ViewController in hierarchy.
+ */
+- (UIViewController*)zf_topMostController;
 
-@interface UIViewController (ZFFullscreenPopGesture)
-
-@property (nonatomic, copy) _ZFViewControllerWillAppearInjectBlock zf_willAppearInjectBlock;
-/// 隐藏NavigationBar（默认NO）
-@property (nonatomic, assign) BOOL zf_prefersNavigationBarHidden;
-/// 关闭某个控制器的pop手势（默认NO）
-@property (nonatomic, assign) BOOL zf_interactivePopDisabled;
-/// 自定义的滑动返回手势是否与其他手势共存，一般使用默认值(默认返回NO：不与任何手势共存)
-@property (nonatomic, assign) BOOL zf_recognizeSimultaneouslyEnable;
-
+/*!
+ @method currentViewController
+ 
+ @return Returns the topViewController in stack of topMostController.
+ */
+- (UIViewController*)zf_currentViewController;
 @end
-
-@interface ZFNavigationController : UINavigationController
-
-@end
-

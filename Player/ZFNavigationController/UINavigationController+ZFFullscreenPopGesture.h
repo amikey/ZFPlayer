@@ -1,5 +1,5 @@
 //
-//  ZFBrightnessView.h
+//  UINavigationController+ZFFullscreenPopGesture.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,16 +22,23 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "ZFScreenShotView.h"
 
-@interface ZFBrightnessView : UIView
+typedef void (^_ZFViewControllerWillAppearInjectBlock)(UIViewController *viewController, BOOL animated);
 
-/** 调用单例记录播放状态是否锁定屏幕方向*/
-@property (nonatomic, assign) BOOL     isLockScreen;
-/** 是否允许横屏,来控制只有竖屏的状态*/
-@property (nonatomic, assign) BOOL     isAllowLandscape;
-@property (nonatomic, assign) BOOL     isStatusBarHidden;
-/** 是否是横屏状态 */
-@property (nonatomic, assign) BOOL     isLandscape;
-+ (instancetype)sharedBrightnessView;
+@interface UIViewController (ZFFullscreenPopGesture)
+
+@property (nonatomic, copy) _ZFViewControllerWillAppearInjectBlock zf_willAppearInjectBlock;
+/// 隐藏NavigationBar（默认NO）
+@property (nonatomic, assign) BOOL zf_prefersNavigationBarHidden;
+/// 关闭某个控制器的pop手势（默认NO）
+@property (nonatomic, assign) BOOL zf_interactivePopDisabled;
+/// 自定义的滑动返回手势是否与其他手势共存，一般使用默认值(默认返回NO：不与任何手势共存)
+@property (nonatomic, assign) BOOL zf_recognizeSimultaneouslyEnable;
 
 @end
+
+@interface UINavigationController (ZFFullscreenPopGesture)<UIGestureRecognizerDelegate>
+
+@end
+
