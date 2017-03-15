@@ -279,6 +279,7 @@
             [UIView animateWithDuration:0.25 animations:^{
                 self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4 + width_scale * 0.5];
                 self.view.transform = CGAffineTransformIdentity;
+                self.screenShotView.imageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -self.showViewOffset, 0);
             } completion:^(BOOL finished) {
                 self.screenShotView.imageView.transform = CGAffineTransformIdentity;
             }];
@@ -288,7 +289,6 @@
 
 // 截屏
 - (void)createScreenShot {
-    NSLog(@"%zd",self.childViewControllers.count);
     if (self.childViewControllers.count == self.childVCImages.count+1) {
         UIGraphicsBeginImageContextWithOptions(APP_WINDOW.bounds.size, YES, 0);
         [APP_WINDOW.layer renderInContext:UIGraphicsGetCurrentContext()];
