@@ -392,6 +392,7 @@
                             </mask>
                         </variation>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="playerFatherView" destination="CJd-vt-Xpq" id="wBN-km-2N3"/>
@@ -416,6 +417,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="二级页面" id="W4L-aU-i2b"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DHQ-W9-Ypj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -666,6 +668,6 @@
         <image name="menu_play" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8B8-xC-tWR"/>
+        <segue reference="PT2-y1-2eg"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -47,7 +47,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     // pop回来时候是否自动播放
     if (self.navigationController.viewControllers.count == 2 && self.playerView && self.isPlaying) {
         self.isPlaying = NO;
@@ -57,7 +56,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     // push出下一级页面时候暂停
     if (self.navigationController.viewControllers.count == 3 && self.playerView && !self.playerView.isPauseByUser)
     {

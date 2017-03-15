@@ -195,7 +195,7 @@
     _ZFViewControllerWillAppearInjectBlock block = ^(UIViewController *viewController, BOOL animated) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf) {
-            [strongSelf setNavigationBarHidden:viewController.zf_prefersNavigationBarHidden animated:!viewController.zf_prefersNavigationBarHidden];
+            [strongSelf setNavigationBarHidden:viewController.zf_prefersNavigationBarHidden animated:animated];
         }
     };
     appearingViewController.zf_willAppearInjectBlock = block;
