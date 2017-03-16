@@ -80,14 +80,14 @@
 }
 
 - (BOOL)zf_recognizeSimultaneouslyEnable {
-   return [objc_getAssociatedObject(self, _cmd) boolValue];
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 @end
 
 typedef void (^_ZFViewControllerWillAppearInjectBlock)(UIViewController *viewController, BOOL animated);
 
-@interface UIViewController (ZFFullscreenPopGesturePrivate) 
+@interface UIViewController (ZFFullscreenPopGesturePrivate)
 @property (nonatomic, copy) _ZFViewControllerWillAppearInjectBlock zf_willAppearInjectBlock;
 
 @end
@@ -142,7 +142,8 @@ typedef void (^_ZFViewControllerWillAppearInjectBlock)(UIViewController *viewCon
             @selector(viewDidLoad),
             @selector(pushViewController:animated:),
             @selector(popToViewController:animated:),
-            @selector(popToRootViewControllerAnimated:)
+            @selector(popToRootViewControllerAnimated:),
+            @selector(popViewControllerAnimated:)
         };
         for (NSUInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
             SEL originalSelector = selectors[index];
@@ -236,14 +237,14 @@ typedef void (^_ZFViewControllerWillAppearInjectBlock)(UIViewController *viewCon
         self.screenShotView.hidden = NO;
         self.screenShotView.imageView.image = [self.childVCImages lastObject];
         self.screenShotView.imageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -self.showViewOffset, 0);
-        self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+        self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4];
     } else if (recognizer.state == UIGestureRecognizerStateChanged){
         // 移动view
         width_scale = tx / SCREEN_WIDTH;
         self.view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity,tx, 0);
-        self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5 - width_scale * 0.5];
+        self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4 - width_scale * 0.5];
         self.screenShotView.imageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -self.showViewOffset + tx * self.showViewOffsetScale, 0);
-
+        
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:self.view];
         BOOL reset = velocity.x < 0;
@@ -254,7 +255,6 @@ typedef void (^_ZFViewControllerWillAppearInjectBlock)(UIViewController *viewCon
                 self.screenShotView.imageView.transform = reset ? CGAffineTransformTranslate(CGAffineTransformIdentity, -self.showViewOffset, 0) : CGAffineTransformIdentity;
                 self.view.transform = reset ? CGAffineTransformIdentity : CGAffineTransformTranslate(CGAffineTransformIdentity, SCREEN_WIDTH, 0);
             } completion:^(BOOL finished) {
-                [self.childVCImages removeLastObject];
                 [self popViewControllerAnimated:NO];
                 self.screenShotView.hidden = YES;
                 self.view.transform = CGAffineTransformIdentity;
@@ -262,7 +262,7 @@ typedef void (^_ZFViewControllerWillAppearInjectBlock)(UIViewController *viewCon
             }];
         } else { // 还原回去
             [UIView animateWithDuration:0.25 animations:^{
-                self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5 + width_scale * 0.5];
+                self.screenShotView.maskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4 + width_scale * 0.5];
                 self.view.transform = CGAffineTransformIdentity;
                 self.screenShotView.imageView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -self.showViewOffset, 0);
             } completion:^(BOOL finished) {
