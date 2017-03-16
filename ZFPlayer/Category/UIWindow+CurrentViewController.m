@@ -25,8 +25,8 @@
 #import "UIWindow+CurrentViewController.h"
 
 @implementation UIWindow (CurrentViewController)
-- (UIViewController*)zf_topMostController
-{
+
+- (UIViewController*)zf_topMostController {
     UIViewController *topController = [self rootViewController];
     
     //  Getting topMost ViewController
@@ -36,8 +36,7 @@
     return topController;
 }
 
-- (UIViewController*)zf_currentViewController;
-{
+- (UIViewController*)zf_currentViewController; {
     UIViewController *currentViewController = [self zf_topMostController];
     
     while ([currentViewController isKindOfClass:[UINavigationController class]] && [(UINavigationController*)currentViewController topViewController])
@@ -45,4 +44,5 @@
     
     return currentViewController;
 }
+
 @end

@@ -1277,7 +1277,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)setResolutionDic:(NSDictionary *)resolutionDic {
     _resolutionDic = resolutionDic;
-    [self.controlView zf_playerResolutionArray:[resolutionDic allKeys]];
     self.videoURLArray = [resolutionDic allValues];
 }
 
@@ -1298,10 +1297,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
     if (playerModel.seekTime) { self.seekTime = playerModel.seekTime; }
     [self.controlView zf_playerModel:playerModel];
+    // 分辨率
+    if (playerModel.resolutionDic) {
+       self.resolutionDic = playerModel.resolutionDic;
+    }
 
     if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL) {
         [self cellVideoWithTableView:playerModel.tableView AtIndexPath:playerModel.indexPath];
-        if (playerModel.resolutionDic) { self.resolutionDic = playerModel.resolutionDic; }
     }
     [self addPlayerToFatherView:playerModel.fatherView];
     self.videoURL = playerModel.videoURL;

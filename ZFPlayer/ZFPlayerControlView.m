@@ -89,8 +89,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 /** 分辨率的名称 */
 @property (nonatomic, strong) NSArray                 *resolutionArray;
 
-/** 播放模型 */
-@property (nonatomic, strong) ZFPlayerModel           *playerModel;
 /** 显示控制层 */
 @property (nonatomic, assign, getter=isShowing) BOOL  showing;
 /** 小屏播放 */
@@ -923,7 +921,7 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
 
 /** 设置播放模型 */
 - (void)zf_playerModel:(ZFPlayerModel *)playerModel {
-    _playerModel = playerModel;
+
     if (playerModel.title) { self.titleLabel.text = playerModel.title; }
     // 设置网络占位图片
     if (playerModel.placeholderImageURLString) {

@@ -122,6 +122,8 @@
         _playerModel.videoURL         = self.videoURL;
         _playerModel.placeholderImage = [UIImage imageNamed:@"loading_bgView1"];
         _playerModel.fatherView       = self.playerFatherView;
+//        _playerModel.resolutionDic = @{@"高清" : self.videoURL.absoluteString,
+//                                       @"标清" : self.videoURL.absoluteString};
     }
     return _playerModel;
 }
