@@ -245,11 +245,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
  *  player添加到fatherView上
  */
 - (void)addPlayerToFatherView:(UIView *)view {
-    [self removeFromSuperview];
-    [view addSubview:self];
-    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_offset(UIEdgeInsetsZero);
-    }];
+    // 这里应该添加判断，因为view有可能为空，当view为空时[view addSubview:self]会crash
+    if (view) {
+        [self removeFromSuperview];
+        [view addSubview:self];
+        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_offset(UIEdgeInsetsZero);
+        }];
+    }
 }
 
 /**

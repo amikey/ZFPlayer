@@ -312,6 +312,10 @@ self.playerView.playerModel = playerModel;
 - QQ：459643690
 - QQ群：213376937（已满） 213375947（添加这个）
 
+# 广告时间
+
+有不错的iOS职位可以联系我，坐标北京，谢谢！！
+
 # License
 
 ZFPlayer is available under the MIT license. See the LICENSE file for more info.
