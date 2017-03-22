@@ -1,4 +1,4 @@
-//
+    //
 //  MoviePlayerViewController.m
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
@@ -37,6 +37,7 @@
 @property (nonatomic, assign) BOOL isPlaying;
 @property (nonatomic, strong) ZFPlayerModel *playerModel;
 @property (nonatomic, strong) UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UIButton *backBtn;
 @end
 
 @implementation MoviePlayerViewController
@@ -113,6 +114,20 @@
     [ZFDownloadManager sharedDownloadManager].maxCount = 4;
 }
 
+- (void)zf_playerControlViewWillShow:(UIView *)controlView isFullscreen:(BOOL)fullscreen {
+//    self.backBtn.hidden = YES;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.backBtn.alpha = 0;
+    }];
+}
+
+- (void)zf_playerControlViewWillHidden:(UIView *)controlView isFullscreen:(BOOL)fullscreen {
+//    self.backBtn.hidden = fullscreen;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.backBtn.alpha = !fullscreen;
+    }];
+}
+
 #pragma mark - Getter
 
 - (ZFPlayerModel *)playerModel {
@@ -158,6 +173,10 @@
 }
 
 #pragma mark - Action
+
+- (IBAction)backClick {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (IBAction)playNewVideo:(UIButton *)sender {
     self.playerModel.title            = @"这是新播放的视频";

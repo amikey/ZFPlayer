@@ -31,7 +31,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GMP-fV-smq" id="5zH-w5-J9b">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
@@ -82,7 +82,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="343"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kzk-rb-IGS" id="3dy-Pu-1jL">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="343"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="342"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5LT-yX-98V">
@@ -347,9 +347,21 @@
                                     <constraint firstAttribute="width" secondItem="CJd-vt-Xpq" secondAttribute="height" multiplier="16:9" id="hvN-ls-cpz"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FrF-9H-B9c">
+                                <rect key="frame" x="10" y="23" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="T1j-Ck-26v"/>
+                                    <constraint firstAttribute="width" constant="40" id="hIR-IC-P3e"/>
+                                </constraints>
+                                <state key="normal" image="ZFPlayer_back_full"/>
+                                <connections>
+                                    <action selector="backClick" destination="Dif-MC-umB" eventType="touchUpInside" id="3kw-aH-O24"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="FrF-9H-B9c" firstAttribute="leading" secondItem="Fed-wT-5xN" secondAttribute="leading" constant="10" id="4fh-dH-cvb"/>
                             <constraint firstAttribute="bottom" secondItem="Yyi-Pf-hND" secondAttribute="bottom" constant="20" id="9Pn-WI-Wii"/>
                             <constraint firstItem="JCd-dg-hvU" firstAttribute="leading" secondItem="Fed-wT-5xN" secondAttribute="leading" id="KOG-LS-fdb"/>
                             <constraint firstAttribute="trailing" secondItem="CJd-vt-Xpq" secondAttribute="trailing" id="KYu-uX-7oq"/>
@@ -359,6 +371,7 @@
                             <constraint firstAttribute="trailing" secondItem="JCd-dg-hvU" secondAttribute="trailing" id="g8m-FH-XTF"/>
                             <constraint firstItem="ss2-oZ-TBs" firstAttribute="leading" secondItem="Fed-wT-5xN" secondAttribute="leading" constant="20" id="hVs-uW-sIr"/>
                             <constraint firstItem="CJd-vt-Xpq" firstAttribute="leading" secondItem="Fed-wT-5xN" secondAttribute="leading" id="keh-Vz-KSI"/>
+                            <constraint firstItem="FrF-9H-B9c" firstAttribute="top" secondItem="JCd-dg-hvU" secondAttribute="bottom" constant="3" id="l8s-z0-z9j"/>
                             <constraint firstItem="CJd-vt-Xpq" firstAttribute="top" secondItem="Fed-wT-5xN" secondAttribute="top" id="rGc-os-Jy3">
                                 <variation key="heightClass=regular-widthClass=compact" constant="20"/>
                             </constraint>
@@ -395,6 +408,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="backBtn" destination="FrF-9H-B9c" id="Cxw-sr-Kyw"/>
                         <outlet property="playerFatherView" destination="CJd-vt-Xpq" id="wBN-km-2N3"/>
                     </connections>
                 </viewController>
@@ -443,7 +457,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wjZ-fx-Crs" id="ofg-qh-H6d">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="file" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-Qo-0bT">
@@ -486,7 +500,7 @@
                                         <rect key="frame" x="0.0" y="98" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mXf-Nv-kVF" id="meR-9p-AD5">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="042-bg-ODB">
@@ -652,6 +666,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ZFPlayer_back_full" width="27" height="27"/>
         <image name="cell-button-line" width="1" height="29"/>
         <image name="defaultUserIcon" width="50" height="50"/>
         <image name="file" width="63" height="71"/>
@@ -668,6 +683,6 @@
         <image name="menu_play" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PT2-y1-2eg"/>
+        <segue reference="8B8-xC-tWR"/>
     </inferredMetricsTieBreakers>
 </document>

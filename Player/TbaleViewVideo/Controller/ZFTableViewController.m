@@ -125,7 +125,7 @@
         playerModel.fatherView       = weakCell.picView;
         
         // 设置播放控制层和model
-        [weakSelf.playerView playerControlView:weakSelf.controlView playerModel:playerModel];
+        [weakSelf.playerView playerControlView:nil playerModel:playerModel];
         // 下载功能
         weakSelf.playerView.hasDownload = YES;
         // 自动播放

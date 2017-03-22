@@ -27,6 +27,8 @@
 #import "UIView+CustomControlView.h"
 #import "ZFPlayer.h"
 
+#define CellPlayerFatherViewTag  200
+
 //忽略编译器的警告
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"
@@ -104,6 +106,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) BOOL                   isChangeResolution;
 /** 是否正在拖拽 */
 @property (nonatomic, assign) BOOL                   isDragged;
+/** 小窗口距屏幕右边和下边的距离 */
+@property (nonatomic, assign) CGPoint                shrinkRightBottomPoint;
+
+@property (nonatomic, strong) UIPanGestureRecognizer *shrinkPanGesture;
 
 @property (nonatomic, strong) UIView                 *controlView;
 @property (nonatomic, strong) ZFPlayerModel          *playerModel;
@@ -137,7 +143,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
  *  初始化player
  */
 - (void)initializeThePlayer {
-    self.cellPlayerOnCenter = YES;;
+    self.cellPlayerOnCenter = YES;
 }
 
 - (void)dealloc {
@@ -191,9 +197,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [self layoutIfNeeded];
     self.playerLayer.frame = self.bounds;
-    [UIApplication sharedApplication].statusBarHidden = NO;
 }
 
 #pragma mark - Public Method
@@ -227,10 +231,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
  * 使用自带的控制层时候可使用此API
  */
 - (void)playerModel:(ZFPlayerModel *)playerModel {
-    // 指定默认控制层
-    ZFPlayerControlView *defaultControlView = [[ZFPlayerControlView alloc] init];
-    self.controlView = defaultControlView;
-    self.playerModel = playerModel;
+    [self playerControlView:nil playerModel:playerModel];
 }
 
 /**
@@ -320,11 +321,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (self.state == ZFPlayerStatePause) { self.state = ZFPlayerStatePlaying; }
     self.isPauseByUser = NO;
     [_player play];
-    if (!self.isBottomVideo) {
-        // 显示控制层
-        [self.controlView zf_playerCancelAutoFadeOutControlView];
-        [self.controlView zf_playerShowControlView];
-    }
 }
 
 /**
@@ -359,6 +355,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.indexPath        = indexPath;
     // 在cell播放
     [self.controlView zf_playerCellPlay];
+    
+    self.shrinkPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(shrikPanAction:)];
+    self.shrinkPanGesture.delegate = self;
+    [self addGestureRecognizer:self.shrinkPanGesture];
 }
 
 /**
@@ -418,7 +418,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.doubleTap.delegate                = self;
     self.doubleTap.numberOfTouchesRequired = 1; //手指数
     self.doubleTap.numberOfTapsRequired    = 2;
-
     [self addGestureRecognizer:self.doubleTap];
 
     // 解决点击当前view时候响应其他控件事件
@@ -605,16 +604,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [self resetPlayer];
         return;
     }
-    [self layoutIfNeeded];
     [[UIApplication sharedApplication].keyWindow addSubview:self];
-    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        CGFloat width = ScreenWidth*0.5-20;
-        CGFloat height = (self.bounds.size.height / self.bounds.size.width);
-        make.width.mas_equalTo(width);
-        make.height.equalTo(self.mas_width).multipliedBy(height);
-        make.trailing.mas_equalTo(-10);
-        make.bottom.mas_equalTo(-self.tableView.contentInset.bottom-10);
-    }];
+
+    if (CGPointEqualToPoint(self.shrinkRightBottomPoint, CGPointZero)) { // 没有初始值
+        self.shrinkRightBottomPoint = CGPointMake(10, self.tableView.contentInset.bottom+10);
+    } else {
+        [self setShrinkRightBottomPoint:self.shrinkRightBottomPoint];
+    }
     // 小屏播放
     [self.controlView zf_playerBottomShrinkPlay];
 }
@@ -648,7 +644,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if (![visableCells containsObject:cell]) {
             [self updatePlayerViewToBottom];
         } else {
-            [self addPlayerToFatherView:self.playerModel.fatherView];
+            UIView *fatherView = [cell.contentView viewWithTag:CellPlayerFatherViewTag];
+            [self addPlayerToFatherView:fatherView];
         }
     } else {
         [self addPlayerToFatherView:self.playerModel.fatherView];
@@ -690,8 +687,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.transform = [self getTransformRotationAngle];
     // 开始旋转
     [UIView commitAnimations];
-    [self.controlView layoutIfNeeded];
-    [self.controlView setNeedsLayout];
 }
 
 /**
@@ -895,7 +890,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if (self.isBottomVideo && !self.isFullScreen) { [self _fullScreenAction]; }
         else {
             if (self.playDidEnd) { return; }
-            else { [self.controlView zf_playerShowControlView]; }
+            else {
+                [self.controlView zf_playerShowOrHideControlView];
+            }
         }
     }
 }
@@ -908,7 +905,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)doubleTapAction:(UIGestureRecognizer *)gesture {
     if (self.playDidEnd) { return;  }
     // 显示控制层
-    [self.controlView zf_playerCancelAutoFadeOutControlView];
     [self.controlView zf_playerShowControlView];
     if (self.isPauseByUser) { [self play]; }
     else { [self pause]; }
@@ -916,6 +912,50 @@ typedef NS_ENUM(NSInteger, PanDirection){
         self.isAutoPlay = YES;
         [self configZFPlayer];
     }
+}
+
+- (void)shrikPanAction:(UIPanGestureRecognizer *)gesture {
+    CGPoint point = [gesture locationInView:[UIApplication sharedApplication].keyWindow];
+    ZFPlayerView *view = (ZFPlayerView *)gesture.view;
+    const CGFloat width = view.frame.size.width;
+    const CGFloat height = view.frame.size.height;
+    const CGFloat distance = 10;  // 离四周的最小边距
+    
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        // x轴的的移动
+        if (point.x < width/2) {
+            point.x = width/2 + distance;
+        } else if (point.x > ScreenWidth - width/2) {
+            point.x = ScreenWidth - width/2 - distance;
+        }
+        // y轴的移动
+        if (point.y < height/2) {
+            point.y = height/2 + distance;
+        } else if (point.y > ScreenHeight - height/2) {
+            point.y = ScreenHeight - height/2 - distance;
+        }
+
+        [UIView animateWithDuration:0.5 animations:^{
+            view.center = point;
+            self.shrinkRightBottomPoint = CGPointMake(ScreenWidth - view.frame.origin.x - width, ScreenHeight - view.frame.origin.y - height);
+        }];
+    
+    } else {
+        view.center = point;
+        self.shrinkRightBottomPoint = CGPointMake(ScreenWidth - view.frame.origin.x- view.frame.size.width, ScreenHeight - view.frame.origin.y-view.frame.size.height);
+    }
+}
+
+- (void)setShrinkRightBottomPoint:(CGPoint)shrinkRightBottomPoint {
+    _shrinkRightBottomPoint = shrinkRightBottomPoint;
+    CGFloat width = ScreenWidth*0.5-20;
+    CGFloat height = (self.bounds.size.height / self.bounds.size.width);
+    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(width);
+        make.height.equalTo(self.mas_width).multipliedBy(height);
+        make.trailing.mas_equalTo(-shrinkRightBottomPoint.x);
+        make.bottom.mas_equalTo(-shrinkRightBottomPoint.y);
+    }];
 }
 
 /** 全屏 */
@@ -1145,7 +1185,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+    
+    if (gestureRecognizer == self.shrinkPanGesture && self.isCellVideo) {
+        if (!self.isBottomVideo || self.isFullScreen) {
+            return NO;
+        }
+    }
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && gestureRecognizer != self.shrinkPanGesture) {
         if ((self.isCellVideo && !self.isFullScreen) || self.playDidEnd || self.isLocked){
             return NO;
         }
@@ -1287,7 +1333,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (_controlView) { return; }
     _controlView = controlView;
     controlView.delegate = self;
-    [self layoutIfNeeded];
     [self addSubview:controlView];
     [controlView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsZero);
@@ -1307,6 +1352,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
     if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL) {
         [self cellVideoWithTableView:playerModel.tableView AtIndexPath:playerModel.indexPath];
+        playerModel.fatherView.tag = CellPlayerFatherViewTag;
     }
     [self addPlayerToFatherView:playerModel.fatherView];
     self.videoURL = playerModel.videoURL;
@@ -1503,6 +1549,18 @@ typedef NS_ENUM(NSInteger, PanDirection){
         //计算出拖动的当前秒数
         NSInteger dragedSeconds = floorf(total * slider.value);
         [self seekToTime:dragedSeconds completionHandler:nil];
+    }
+}
+
+- (void)zf_controlViewWillShow:(UIView *)controlView isFullscreen:(BOOL)fullscreen {
+    if ([self.delegate respondsToSelector:@selector(zf_playerControlViewWillShow:isFullscreen:)]) {
+        [self.delegate zf_playerControlViewWillShow:controlView isFullscreen:fullscreen];
+    }
+}
+
+- (void)zf_controlViewWillHidden:(UIView *)controlView isFullscreen:(BOOL)fullscreen {
+    if ([self.delegate respondsToSelector:@selector(zf_playerControlViewWillHidden:isFullscreen:)]) {
+        [self.delegate zf_playerControlViewWillHidden:controlView isFullscreen:fullscreen];
     }
 }
 
