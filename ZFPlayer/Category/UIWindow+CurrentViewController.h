@@ -25,12 +25,6 @@
 #import <UIKit/UIKit.h>
 
 @interface UIWindow (CurrentViewController)
-/*!
- @method topMostController
- 
- @return Returns the current Top Most ViewController in hierarchy.
- */
-- (UIViewController*)zf_topMostController;
 
 /*!
  @method currentViewController
