@@ -1,35 +1,16 @@
 //
-//  ZFTableViewController.m
+//  ZFCollectionViewController.m
+//  Player
 //
-// Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
+//  Created by 任子丰 on 17/3/22.
+//  Copyright © 2017年 任子丰. All rights reserved.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
 
-#import "ZFTableViewController.h"
-#import "ZFPlayerCell.h"
-#import "ZFVideoModel.h"
-#import "ZFVideoResolution.h"
-#import <Masonry/Masonry.h>
+#import "ZFCollectionViewController.h"
+#import "ZFCollectionViewCell.h"
 #import <ZFDownload/ZFDownloadManager.h>
-#import "ZFPlayer.h"
 
-@interface ZFTableViewController () <ZFPlayerDelegate>
+@interface ZFCollectionViewController () <ZFPlayerDelegate>
 
 @property (nonatomic, strong) NSMutableArray      *dataSource;
 @property (nonatomic, strong) ZFPlayerView        *playerView;
@@ -37,14 +18,21 @@
 
 @end
 
-@implementation ZFTableViewController
+@implementation ZFCollectionViewController
 
-#pragma mark - life Cycle
+static NSString * const reuseIdentifier = @"collectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.estimatedRowHeight = 379.0f;
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    CGFloat margin = 5;
+    CGFloat itemWidth = ScreenWidth/2 - 2*margin;
+    CGFloat itemHeight = itemWidth*9/16 + 30;
+    layout.itemSize = CGSizeMake(itemWidth, itemHeight);
+    layout.sectionInset = UIEdgeInsetsMake(10, margin, 10, margin);
+    layout.minimumLineSpacing = 5;
+    layout.minimumInteritemSpacing = 5;
+    self.collectionView.collectionViewLayout = layout;
     [self requestData];
 }
 
@@ -80,27 +68,21 @@
     return ZFPlayerShared.isStatusBarHidden;
 }
 
-#pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
+#pragma mark <UICollectionViewDataSource>
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.dataSource.count;
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    static NSString *identifier        = @"playerCell";
-    ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    ZFCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     // 取到对应cell的model
     __block ZFVideoModel *model        = self.dataSource[indexPath.row];
     // 赋值model
     cell.model                         = model;
     __block NSIndexPath *weakIndexPath = indexPath;
-    __block ZFPlayerCell *weakCell     = cell;
+    __block ZFCollectionViewCell *weakCell = cell;
     __weak typeof(self)  weakSelf      = self;
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
@@ -117,12 +99,12 @@
         playerModel.title            = model.title;
         playerModel.videoURL         = videoURL;
         playerModel.placeholderImageURLString = model.coverForFeed;
-        playerModel.scrollView       = weakSelf.tableView;
+        playerModel.scrollView       = weakSelf.collectionView;
         playerModel.indexPath        = weakIndexPath;
         // 赋值分辨率字典
         playerModel.resolutionDic    = dic;
         // player的父视图tag
-        playerModel.fatherViewTag    = weakCell.picView.tag;
+        playerModel.fatherViewTag    = weakCell.topicImageView.tag;
         
         // 设置播放控制层和model
         [weakSelf.playerView playerControlView:nil playerModel:playerModel];
@@ -131,12 +113,8 @@
         // 自动播放
         [weakSelf.playerView autoPlayTheVideo];
     };
-
+    
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"didSelectRowAtIndexPath---%zd",indexPath.row);
 }
 
 - (ZFPlayerView *)playerView {
@@ -173,14 +151,5 @@
     [ZFDownloadManager sharedDownloadManager].maxCount = 4;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

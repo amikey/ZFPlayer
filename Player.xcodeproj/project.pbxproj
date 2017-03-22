@@ -31,6 +31,8 @@
 		CC6FF40D1DB9DFB300222AAC /* ZFPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6FF40C1DB9DFB300222AAC /* ZFPlayerModel.m */; };
 		CC725C2D1C894D2500C3EAF2 /* ZFVideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */; };
 		CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725C2F1C894D2D00C3EAF2 /* ZFDownloadViewController.m */; };
+		CC747D701E8267BB00D917B7 /* ZFCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC747D6F1E8267BB00D917B7 /* ZFCollectionViewController.m */; };
+		CC747D731E8268C100D917B7 /* ZFCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC747D721E8268C100D917B7 /* ZFCollectionViewCell.m */; };
 		CC7D5E951D59AAAC000AC18A /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7D5E921D59AAAC000AC18A /* ASValueTrackingSlider.m */; };
 		CC7D5E961D59AAAC000AC18A /* ASValuePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7D5E941D59AAAC000AC18A /* ASValuePopUpView.m */; };
 		CC8693471CC9BF5E0037E71B /* ZFPVideoResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8693461CC9BF5E0037E71B /* ZFPVideoResolution.m */; };
@@ -122,6 +124,10 @@
 		CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFVideoListViewController.m; sourceTree = "<group>"; };
 		CC725C2E1C894D2D00C3EAF2 /* ZFDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFDownloadViewController.h; sourceTree = "<group>"; };
 		CC725C2F1C894D2D00C3EAF2 /* ZFDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFDownloadViewController.m; sourceTree = "<group>"; };
+		CC747D6E1E8267BB00D917B7 /* ZFCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFCollectionViewController.h; sourceTree = "<group>"; };
+		CC747D6F1E8267BB00D917B7 /* ZFCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFCollectionViewController.m; sourceTree = "<group>"; };
+		CC747D711E8268C100D917B7 /* ZFCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFCollectionViewCell.h; sourceTree = "<group>"; };
+		CC747D721E8268C100D917B7 /* ZFCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFCollectionViewCell.m; sourceTree = "<group>"; };
 		CC7D5E911D59AAAC000AC18A /* ASValueTrackingSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValueTrackingSlider.h; sourceTree = "<group>"; };
 		CC7D5E921D59AAAC000AC18A /* ASValueTrackingSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValueTrackingSlider.m; sourceTree = "<group>"; };
 		CC7D5E931D59AAAC000AC18A /* ASValuePopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValuePopUpView.h; sourceTree = "<group>"; };
@@ -206,6 +212,7 @@
 				CC725C1E1C894C8100C3EAF2 /* NetVideo */,
 				CC6C7AE21C9BDFBA0000AD58 /* PlayerViewController */,
 				CCE1C1321C9AA0D9004C95AC /* TbaleViewVideo */,
+				CC747D6D1E82672400D917B7 /* CollectionViewVideo */,
 				CC725C1D1C894C4A00C3EAF2 /* LocalVideo */,
 				4947F7901BE996AC003093C8 /* AppDelegate.h */,
 				4947F7911BE996AC003093C8 /* AppDelegate.m */,
@@ -327,6 +334,17 @@
 				CC725C2B1C894D2500C3EAF2 /* ZFVideoListViewController.m */,
 			);
 			path = NetVideo;
+			sourceTree = "<group>";
+		};
+		CC747D6D1E82672400D917B7 /* CollectionViewVideo */ = {
+			isa = PBXGroup;
+			children = (
+				CC747D6E1E8267BB00D917B7 /* ZFCollectionViewController.h */,
+				CC747D6F1E8267BB00D917B7 /* ZFCollectionViewController.m */,
+				CC747D711E8268C100D917B7 /* ZFCollectionViewCell.h */,
+				CC747D721E8268C100D917B7 /* ZFCollectionViewCell.m */,
+			);
+			path = CollectionViewVideo;
 			sourceTree = "<group>";
 		};
 		CCD7ECC11E72A1E500A9207F /* ZFNavigationController */ = {
@@ -578,8 +596,10 @@
 				CCB3510E1E63C02800FAF8FD /* UIAlertController+ZFPlayerRotation.m in Sources */,
 				CC6C7AE51C9BDFE90000AD58 /* MoviePlayerViewController.m in Sources */,
 				CC69BD1F1DD2DC1B00019AC6 /* UIImageView+ZFCache.m in Sources */,
+				CC747D731E8268C100D917B7 /* ZFCollectionViewCell.m in Sources */,
 				4947F7921BE996AC003093C8 /* AppDelegate.m in Sources */,
 				CCE1C13B1C9AA11F004C95AC /* ZFVideoModel.m in Sources */,
+				CC747D701E8267BB00D917B7 /* ZFCollectionViewController.m in Sources */,
 				CCD7ECC61E72A1E500A9207F /* UINavigationController+ZFFullscreenPopGesture.m in Sources */,
 				CC725C321C894D2D00C3EAF2 /* ZFDownloadViewController.m in Sources */,
 				CC2CC63F1CA24D4B0028BBDD /* ZFPlayerView.m in Sources */,

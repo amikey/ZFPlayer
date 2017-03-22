@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--网络视频-->
+        <!--Video list-->
         <scene sceneID="38U-Mm-uZ0">
             <objects>
                 <viewController id="yGq-uZ-KfD" customClass="ZFVideoListViewController" sceneMemberID="viewController">
@@ -31,7 +31,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GMP-fV-smq" id="5zH-w5-J9b">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
@@ -59,7 +59,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="网络视频" id="PW6-tY-j6n"/>
+                    <navigationItem key="navigationItem" title="Video list" id="PW6-tY-j6n"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="xPJ-vR-AzQ" id="hdz-VR-94A"/>
@@ -69,7 +69,7 @@
             </objects>
             <point key="canvasLocation" x="825.5" y="459.5"/>
         </scene>
-        <!--列表视频-->
+        <!--TableView-->
         <scene sceneID="KcN-Y8-2Q4">
             <objects>
                 <tableViewController id="x8g-fk-vKS" customClass="ZFTableViewController" sceneMemberID="viewController">
@@ -82,7 +82,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="343"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kzk-rb-IGS" id="3dy-Pu-1jL">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="342"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="343"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5LT-yX-98V">
@@ -257,7 +257,7 @@
                             <outlet property="delegate" destination="x8g-fk-vKS" id="qmw-E5-i8N"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="列表视频" id="nIO-gx-iSh"/>
+                    <navigationItem key="navigationItem" title="TableView" id="nIO-gx-iSh"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="990-VC-cOh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -278,7 +278,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vz9-r5-S9B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="82" y="1314"/>
+            <point key="canvasLocation" x="65" y="1314"/>
         </scene>
         <!--Movie Player View Controller-->
         <scene sceneID="w6M-Wm-SpO">
@@ -414,7 +414,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Htv-Kw-f6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1831" y="2175"/>
+            <point key="canvasLocation" x="1746" y="1639"/>
         </scene>
         <!--二级页面-->
         <scene sceneID="Y0Y-rS-5Oj">
@@ -435,9 +435,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DHQ-W9-Ypj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2998" y="2175"/>
+            <point key="canvasLocation" x="2527" y="1639"/>
         </scene>
-        <!--本地视频-->
+        <!--Download-->
         <scene sceneID="Por-U2-cMz">
             <objects>
                 <viewController id="tuC-Bt-GHL" customClass="ZFDownloadViewController" sceneMemberID="viewController">
@@ -457,7 +457,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wjZ-fx-Crs" id="ofg-qh-H6d">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="file" translatesAutoresizingMaskIntoConstraints="NO" id="Vdw-Qo-0bT">
@@ -500,7 +500,7 @@
                                         <rect key="frame" x="0.0" y="98" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mXf-Nv-kVF" id="meR-9p-AD5">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="042-bg-ODB">
@@ -586,7 +586,7 @@
                             <constraint firstItem="SYQ-F5-DeS" firstAttribute="leading" secondItem="55d-QJ-m8x" secondAttribute="leading" id="m4X-CZ-aWs"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="本地视频" id="ICO-w0-Zak">
+                    <navigationItem key="navigationItem" title="Download" id="ICO-w0-Zak">
                         <barButtonItem key="leftBarButtonItem" title="全部开始" id="2OY-fD-liH">
                             <connections>
                                 <action selector="startAll:" destination="tuC-Bt-GHL" id="JTp-md-bME"/>
@@ -605,7 +605,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R7w-8v-nBz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="839.5" y="2175.5"/>
+            <point key="canvasLocation" x="839" y="2909"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="B5I-ua-aVA">
@@ -619,12 +619,13 @@
                     <connections>
                         <segue destination="7Xx-X8-Lzw" kind="relationship" relationship="viewControllers" id="d2e-GI-IF0"/>
                         <segue destination="7mG-mj-crH" kind="relationship" relationship="viewControllers" id="vC4-9R-t5z"/>
-                        <segue destination="HX3-NW-XW1" kind="relationship" relationship="viewControllers" id="nfx-rg-goz"/>
+                        <segue destination="S1F-JB-1gz" kind="relationship" relationship="viewControllers" id="72k-pE-L1e"/>
+                        <segue destination="HX3-NW-XW1" kind="relationship" relationship="viewControllers" id="RK7-4E-lgr"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPx-h0-S2o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-860" y="1314"/>
+            <point key="canvasLocation" x="-1052" y="1640"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GNS-Uz-8Xs">
@@ -645,6 +646,68 @@
             </objects>
             <point key="canvasLocation" x="65" y="459"/>
         </scene>
+        <!--CollectionView-->
+        <scene sceneID="pIy-ny-9dT">
+            <objects>
+                <collectionViewController id="WWg-Do-Qkz" customClass="ZFCollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="P5n-GB-oKp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="PD6-Zw-kf6">
+                            <size key="itemSize" width="169" height="131"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionViewCell" id="zWy-dg-Pd5" customClass="ZFCollectionViewCell">
+                                <rect key="frame" x="0.0" y="0.0" width="169" height="131"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="169" height="131"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BfR-qs-DZr">
+                                            <rect key="frame" x="10" y="5" width="149" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" misplaced="YES" image="loading_bgView" translatesAutoresizingMaskIntoConstraints="NO" id="oZI-Dr-bUy">
+                                            <rect key="frame" x="0.0" y="30" width="169" height="95"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="oZI-Dr-bUy" secondAttribute="height" multiplier="16:9" id="trp-aU-v7u"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="oZI-Dr-bUy" firstAttribute="leading" secondItem="zWy-dg-Pd5" secondAttribute="leading" id="JbB-8X-wOu"/>
+                                    <constraint firstItem="BfR-qs-DZr" firstAttribute="leading" secondItem="zWy-dg-Pd5" secondAttribute="leading" constant="10" id="ODt-iD-B8J"/>
+                                    <constraint firstAttribute="trailing" secondItem="BfR-qs-DZr" secondAttribute="trailing" constant="10" id="P0N-2l-wOG"/>
+                                    <constraint firstAttribute="bottom" secondItem="oZI-Dr-bUy" secondAttribute="bottom" constant="5" id="UfA-Pf-pc4"/>
+                                    <constraint firstItem="BfR-qs-DZr" firstAttribute="top" secondItem="zWy-dg-Pd5" secondAttribute="top" constant="5" id="ea7-EZ-kkC"/>
+                                    <constraint firstAttribute="trailing" secondItem="oZI-Dr-bUy" secondAttribute="trailing" id="yEY-iH-SQv"/>
+                                </constraints>
+                                <size key="customSize" width="169" height="131"/>
+                                <connections>
+                                    <outlet property="titleLabel" destination="BfR-qs-DZr" id="Qad-Sy-4dP"/>
+                                    <outlet property="topicImageView" destination="oZI-Dr-bUy" id="fcI-YF-zeJ"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="WWg-Do-Qkz" id="Bsh-kk-pDf"/>
+                            <outlet property="delegate" destination="WWg-Do-Qkz" id="9lY-oG-EFa"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="CollectionView" id="j3H-Sj-WTO"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e58-8s-7Hh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="838" y="2131"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="QwU-pp-hN6">
             <objects>
@@ -662,7 +725,26 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tST-3w-JXa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="81" y="2175"/>
+            <point key="canvasLocation" x="65" y="2909"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zkM-8Y-c48">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="S1F-JB-1gz" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="more" id="RaO-Xs-VXb"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="YrE-Xn-dLi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="WWg-Do-Qkz" kind="relationship" relationship="rootViewController" id="7Rs-Oi-j8a"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dQL-pR-sbs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="65" y="2131"/>
         </scene>
     </scenes>
     <resources>
@@ -683,6 +765,6 @@
         <image name="menu_play" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8B8-xC-tWR"/>
+        <segue reference="PT2-y1-2eg"/>
     </inferredMetricsTieBreakers>
 </document>

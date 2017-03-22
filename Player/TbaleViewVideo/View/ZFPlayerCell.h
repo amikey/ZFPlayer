@@ -25,8 +25,6 @@
 #import "ZFPlayer.h"
 #import "ZFVideoModel.h"
 
-typedef void(^PlayBtnCallBackBlock)(UIButton *);
-
 @interface ZFPlayerCell : UITableViewCell
 
 @property (weak, nonatomic  ) IBOutlet UIImageView          *avatarImageView;
@@ -36,6 +34,6 @@ typedef void(^PlayBtnCallBackBlock)(UIButton *);
 /** model */
 @property (nonatomic, strong) ZFVideoModel                  *model;
 /** 播放按钮block */
-@property (nonatomic, copy  ) PlayBtnCallBackBlock          playBlock;
+@property (nonatomic, copy  ) void(^playBlock)(UIButton *);
 
 @end

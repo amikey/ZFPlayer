@@ -93,7 +93,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 #pragma mark - UITableViewCell PlayerView
 
 /** palyer加到tableView */
-@property (nonatomic, strong) UITableView            *tableView;
+@property (nonatomic, strong) UIScrollView           *scrollView;
 /** player所在cell的indexPath */
 @property (nonatomic, strong) NSIndexPath            *indexPath;
 /** ViewController中页面是否消失 */
@@ -148,7 +148,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)dealloc {
     self.playerItem = nil;
-    self.tableView  = nil;
+    self.scrollView  = nil;
     ZFPlayerShared.isLockScreen = NO;
     [self.controlView zf_playerCancelAutoFadeOutControlView];
     // 移除通知
@@ -298,7 +298,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
         // vicontroller中页面消失
         self.viewDisappear = YES;
         self.isCellVideo   = NO;
-        self.tableView     = nil;
+        self.scrollView     = nil;
         self.indexPath     = nil;
     }
 }
@@ -341,8 +341,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
  *  @param tableView tableView
  *  @param indexPath indexPath
  */
-- (void)cellVideoWithTableView:(UITableView *)tableView
-                   AtIndexPath:(NSIndexPath *)indexPath {
+- (void)cellVideoWithScrollView:(UIScrollView *)scrollView
+                    AtIndexPath:(NSIndexPath *)indexPath {
     // 如果页面没有消失，并且playerItem有值，需要重置player(其实就是点击播放其他视频时候)
     if (!self.viewDisappear && self.playerItem) { [self resetPlayer]; }
     // 在cell上播放视频
@@ -350,7 +350,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // viewDisappear改为NO
     self.viewDisappear    = NO;
     // 设置tableview
-    self.tableView        = tableView;
+    self.scrollView       = scrollView;
     // 设置indexPath
     self.indexPath        = indexPath;
     // 在cell播放
@@ -560,7 +560,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 self.state = ZFPlayerStatePlaying;
             }
         }
-    } else if (object == self.tableView) {
+    } else if (object == self.scrollView) {
         if ([keyPath isEqualToString:kZFPlayerViewContentOffset]) {
             if (self.isFullScreen) { return; }
             // 当tableview滚动时处理playerView的位置
@@ -577,17 +577,34 @@ typedef NS_ENUM(NSInteger, PanDirection){
  *  @param dict void
  */
 - (void)handleScrollOffsetWithDict:(NSDictionary*)dict {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
-    NSArray *visableCells = self.tableView.visibleCells;
-    if ([visableCells containsObject:cell]) {
-        // 在显示中
-        [self updatePlayerViewToCell];
-    } else {
-        if (self.stopPlayWhileCellNotVisable) {
-            [self resetPlayer];
+    if ([self.scrollView isKindOfClass:[UITableView class]]) {
+        UITableView *tableView = (UITableView *)self.scrollView;
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:self.indexPath];
+        NSArray *visableCells = tableView.visibleCells;
+        if ([visableCells containsObject:cell]) {
+            // 在显示中
+            [self updatePlayerViewToCell];
         } else {
-            // 在底部
-            [self updatePlayerViewToBottom];
+            if (self.stopPlayWhileCellNotVisable) {
+                [self resetPlayer];
+            } else {
+                // 在底部
+                [self updatePlayerViewToBottom];
+            }
+        }
+    } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
+        UICollectionView *collectionView = (UICollectionView *)self.scrollView;
+        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:self.indexPath];
+        if ( [collectionView.visibleCells containsObject:cell]) {
+            // 在显示中
+            [self updatePlayerViewToCell];
+        } else {
+            if (self.stopPlayWhileCellNotVisable) {
+                [self resetPlayer];
+            } else {
+                // 在底部
+                [self updatePlayerViewToBottom];
+            }
         }
     }
 }
@@ -607,7 +624,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [[UIApplication sharedApplication].keyWindow addSubview:self];
 
     if (CGPointEqualToPoint(self.shrinkRightBottomPoint, CGPointZero)) { // 没有初始值
-        self.shrinkRightBottomPoint = CGPointMake(10, self.tableView.contentInset.bottom+10);
+        self.shrinkRightBottomPoint = CGPointMake(10, self.scrollView.contentInset.bottom+10);
     } else {
         [self setShrinkRightBottomPoint:self.shrinkRightBottomPoint];
     }
@@ -638,14 +655,26 @@ typedef NS_ENUM(NSInteger, PanDirection){
  */
 - (void)setOrientationPortraitConstraint {
     if (self.isCellVideo) {
-        UITableViewCell * cell = [self.tableView cellForRowAtIndexPath:self.indexPath];
-        NSArray *visableCells = self.tableView.visibleCells;
-        self.isBottomVideo = NO;
-        if (![visableCells containsObject:cell]) {
-            [self updatePlayerViewToBottom];
-        } else {
-            UIView *fatherView = [cell.contentView viewWithTag:CellPlayerFatherViewTag];
-            [self addPlayerToFatherView:fatherView];
+        if ([self.scrollView isKindOfClass:[UITableView class]]) {
+            UITableView *tableView = (UITableView *)self.scrollView;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:self.indexPath];
+            self.isBottomVideo = NO;
+            if (![tableView.visibleCells containsObject:cell]) {
+                [self updatePlayerViewToBottom];
+            } else {
+                UIView *fatherView = [cell.contentView viewWithTag:self.playerModel.fatherViewTag];
+                [self addPlayerToFatherView:fatherView];
+            }
+        } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
+            UICollectionView *collectionView = (UICollectionView *)self.scrollView;
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:self.indexPath];
+            self.isBottomVideo = NO;
+            if (![collectionView.visibleCells containsObject:cell]) {
+                [self updatePlayerViewToBottom];
+            } else {
+                UIView *fatherView = [cell viewWithTag:self.playerModel.fatherViewTag];
+                [self addPlayerToFatherView:fatherView];
+            }
         }
     } else {
         [self addPlayerToFatherView:self.playerModel.fatherView];
@@ -779,7 +808,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if (currentOrientation == UIInterfaceOrientationPortrait) {
             [self setOrientationPortraitConstraint];
             if (self.cellPlayerOnCenter) {
-                [self.tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+                if ([self.scrollView isKindOfClass:[UITableView class]]) {
+                    UITableView *tableView = (UITableView *)self.scrollView;
+                    [tableView scrollToRowAtIndexPath:self.indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+
+                } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
+                    UICollectionView *collectionView = (UICollectionView *)self.scrollView;
+                    [collectionView scrollToItemAtIndexPath:self.indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+                }
             }
             [self.brightnessView removeFromSuperview];
             [[UIApplication sharedApplication].keyWindow addSubview:self.brightnessView];
@@ -1282,13 +1318,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
  *
  *  @param tableView tableView 
  */
-- (void)setTableView:(UITableView *)tableView {
-    if (_tableView == tableView) { return; }
-    if (_tableView) {
-        [_tableView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
+- (void)setScrollView:(UIScrollView *)scrollView {
+    if (_scrollView == scrollView) { return; }
+    if (_scrollView) {
+        [_scrollView removeObserver:self forKeyPath:kZFPlayerViewContentOffset];
     }
-    _tableView = tableView;
-    if (tableView) { [tableView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil]; }
+    _scrollView = scrollView;
+    if (scrollView) { [scrollView addObserver:self forKeyPath:kZFPlayerViewContentOffset options:NSKeyValueObservingOptionNew context:nil]; }
 }
 
 /**
@@ -1341,7 +1377,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 - (void)setPlayerModel:(ZFPlayerModel *)playerModel {
     _playerModel = playerModel;
-    NSCAssert(playerModel.fatherView, @"请指定playerView的faterView");
 
     if (playerModel.seekTime) { self.seekTime = playerModel.seekTime; }
     [self.controlView zf_playerModel:playerModel];
@@ -1350,11 +1385,24 @@ typedef NS_ENUM(NSInteger, PanDirection){
        self.resolutionDic = playerModel.resolutionDic;
     }
 
-    if (playerModel.tableView && playerModel.indexPath && playerModel.videoURL) {
-        [self cellVideoWithTableView:playerModel.tableView AtIndexPath:playerModel.indexPath];
-        playerModel.fatherView.tag = CellPlayerFatherViewTag;
+    if (playerModel.scrollView && playerModel.indexPath && playerModel.videoURL) {
+        NSCAssert(playerModel.fatherViewTag, @"请指定playerViews所在的faterViewTag");
+        [self cellVideoWithScrollView:playerModel.scrollView AtIndexPath:playerModel.indexPath];
+        if ([self.scrollView isKindOfClass:[UITableView class]]) {
+            UITableView *tableView = (UITableView *)playerModel.scrollView;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:playerModel.indexPath];
+            UIView *fatherView = [cell.contentView viewWithTag:playerModel.fatherViewTag];
+            [self addPlayerToFatherView:fatherView];
+        } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
+            UICollectionView *collectionView = (UICollectionView *)playerModel.scrollView;
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:playerModel.indexPath];
+            UIView *fatherView = [cell.contentView viewWithTag:playerModel.fatherViewTag];
+            [self addPlayerToFatherView:fatherView];
+        }
+    } else {
+        NSCAssert(playerModel.fatherView, @"请指定playerView的faterView");
+        [self addPlayerToFatherView:playerModel.fatherView];
     }
-    [self addPlayerToFatherView:playerModel.fatherView];
     self.videoURL = playerModel.videoURL;
 }
 
