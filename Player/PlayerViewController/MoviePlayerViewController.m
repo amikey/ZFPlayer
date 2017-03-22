@@ -51,7 +51,7 @@
     // pop回来时候是否自动播放
     if (self.navigationController.viewControllers.count == 2 && self.playerView && self.isPlaying) {
         self.isPlaying = NO;
-        [self.playerView play];
+        self.playerView.playerPushedOrPresented = NO;
     }
 }
 
@@ -61,7 +61,8 @@
     if (self.navigationController.viewControllers.count == 3 && self.playerView && !self.playerView.isPauseByUser)
     {
         self.isPlaying = YES;
-        [self.playerView pause];
+//        [self.playerView pause];
+        self.playerView.playerPushedOrPresented = YES;
     }
 }
 

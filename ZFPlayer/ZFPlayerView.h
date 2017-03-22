@@ -76,6 +76,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                    stopPlayWhileCellNotVisable;
 /** 当cell播放视频由全屏变为小屏时候，是否回到中间位置(默认YES) */
 @property (nonatomic, assign) BOOL                    cellPlayerOnCenter;
+/** player在栈上，即此时push或者模态了新控制器 */
+@property (nonatomic, assign) BOOL                    playerPushedOrPresented;
 
 /**
  *  单例，用于列表cell上多个视频

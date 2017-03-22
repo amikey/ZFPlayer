@@ -180,6 +180,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // app进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayground) name:UIApplicationDidBecomeActiveNotification object:nil];
     
+    // 监听耳机插入和拔掉通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioRouteChangeListenerCallback:) name:AVAudioSessionRouteChangeNotification object:nil];
+    
     // 监测设备方向
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -474,8 +477,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     
     if (!success) { /* handle the error in setCategoryError */ }
     
-    // 监听耳机插入和拔掉通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioRouteChangeListenerCallback:) name:AVAudioSessionRouteChangeNotification object:nil];
 }
 
 /**
@@ -761,6 +762,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (!self.player) { return; }
     if (ZFPlayerShared.isLockScreen) { return; }
     if (self.didEnterBackground) { return; };
+    if (self.playerPushedOrPresented) { return; }
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown ) { return; }
@@ -980,18 +982,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
         view.center = point;
         self.shrinkRightBottomPoint = CGPointMake(ScreenWidth - view.frame.origin.x- view.frame.size.width, ScreenHeight - view.frame.origin.y-view.frame.size.height);
     }
-}
-
-- (void)setShrinkRightBottomPoint:(CGPoint)shrinkRightBottomPoint {
-    _shrinkRightBottomPoint = shrinkRightBottomPoint;
-    CGFloat width = ScreenWidth*0.5-20;
-    CGFloat height = (self.bounds.size.height / self.bounds.size.width);
-    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(width);
-        make.height.equalTo(self.mas_width).multipliedBy(height);
-        make.trailing.mas_equalTo(-shrinkRightBottomPoint.x);
-        make.bottom.mas_equalTo(-shrinkRightBottomPoint.y);
-    }];
 }
 
 /** 全屏 */
@@ -1406,6 +1396,26 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.videoURL = playerModel.videoURL;
 }
 
+- (void)setShrinkRightBottomPoint:(CGPoint)shrinkRightBottomPoint {
+    _shrinkRightBottomPoint = shrinkRightBottomPoint;
+    CGFloat width = ScreenWidth*0.5-20;
+    CGFloat height = (self.bounds.size.height / self.bounds.size.width);
+    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(width);
+        make.height.equalTo(self.mas_width).multipliedBy(height);
+        make.trailing.mas_equalTo(-shrinkRightBottomPoint.x);
+        make.bottom.mas_equalTo(-shrinkRightBottomPoint.y);
+    }];
+}
+
+- (void)setPlayerPushedOrPresented:(BOOL)playerPushedOrPresented {
+    _playerPushedOrPresented = playerPushedOrPresented;
+    if (playerPushedOrPresented) {
+        [self pause];
+    } else {
+        [self play];
+    }
+}
 #pragma mark - Getter
 
 - (AVAssetImageGenerator *)imageGenerator {

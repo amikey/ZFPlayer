@@ -131,7 +131,7 @@
         // 自动播放
         [weakSelf.playerView autoPlayTheVideo];
     };
-
+    
     return cell;
 }
 

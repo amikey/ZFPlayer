@@ -492,11 +492,6 @@ static const CGFloat ZFPlayerControlBarAutoFadeOutTimeInterval = 0.35f;
         // 显示、隐藏控制层
         [self zf_playerShowOrHideControlView];
     }
-//    if (ZFPlayerOrientationIsLandscape) {
-//        [self setOrientationLandscapeConstraint];
-//    } else {
-//        [self setOrientationPortraitConstraint];
-//    }
 }
 
 - (void)setOrientationLandscapeConstraint {
