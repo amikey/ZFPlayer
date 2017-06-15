@@ -31,5 +31,6 @@
  
  @return Returns the topViewController in stack of topMostController.
  */
-- (UIViewController*)zf_currentViewController;
++ (UIViewController*)zf_currentViewController;
+
 @end

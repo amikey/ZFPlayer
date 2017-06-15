@@ -1,6 +1,5 @@
 //
-//  UIWindow+CurrentViewController.m
-//  Player
+//  ZFFullScreenViewController.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,26 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "UIWindow+CurrentViewController.h"
+#import <UIKit/UIKit.h>
 
-@implementation UIWindow (CurrentViewController)
-
-+ (UIViewController*)zf_currentViewController; {
-    UIWindow *window = [[UIApplication sharedApplication].delegate window];
-    UIViewController *topViewController = [window rootViewController];
-    while (true) {
-        if (topViewController.presentedViewController) {
-            topViewController = topViewController.presentedViewController;
-        } else if ([topViewController isKindOfClass:[UINavigationController class]] && [(UINavigationController*)topViewController topViewController]) {
-            topViewController = [(UINavigationController *)topViewController topViewController];
-        } else if ([topViewController isKindOfClass:[UITabBarController class]]) {
-            UITabBarController *tab = (UITabBarController *)topViewController;
-            topViewController = tab.selectedViewController;
-        } else {
-            break;
-        }
-    }
-    return topViewController;
-}
+@interface ZFFullScreenViewController : UIViewController
+/** 播放器页面的截图 */
+@property (nonatomic, strong) UIImage *screenshotImage;
+/** 设备横屏的方向  UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationLandscapeRight */
+@property (nonatomic, assign) UIInterfaceOrientation orientation;
 
 @end

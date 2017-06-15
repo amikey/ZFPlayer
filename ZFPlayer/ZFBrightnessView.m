@@ -48,39 +48,31 @@
 
 - (instancetype)init {
 	if (self = [super init]) {
-		self.frame = CGRectMake(ScreenWidth * 0.5, ScreenHeight * 0.5, 155, 155);
-		
+		self.frame = CGRectMake(0, 0, 155, 155);
+        self.center = CGPointMake(ScreenWidth * 0.5, ScreenHeight * 0.5);
+
         self.layer.cornerRadius  = 10;
         self.layer.masksToBounds = YES;
         
-        // 使用UIToolbar实现毛玻璃效果，简单粗暴，支持iOS7+
+        // 使用UIToolbar实现毛玻璃效果，支持iOS7+
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:self.bounds];
         toolbar.alpha = 0.97;
         [self addSubview:toolbar];
         
-		self.backImage = ({
-            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];
-            imgView.image        = ZFPlayerImage(@"ZFPlayer_brightness");
-			[self addSubview:imgView];
-			imgView;
-		});
+        self.backImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 79, 76)];
+        self.backImage.image        = ZFPlayerImage(@"ZFPlayer_brightness");
+        [self addSubview:self.backImage];
 		
-		self.title = ({
-            UILabel *title      = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.bounds.size.width, 30)];
-            title.font          = [UIFont boldSystemFontOfSize:16];
-            title.textColor     = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
-            title.textAlignment = NSTextAlignmentCenter;
-            title.text          = @"亮度";
-			[self addSubview:title];
-			title;
-		});
+        self.title      = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.bounds.size.width, 30)];
+        self.title.font          = [UIFont boldSystemFontOfSize:16];
+        self.title.textColor     = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
+        self.title.textAlignment = NSTextAlignmentCenter;
+        self.title.text          = @"亮度";
+        [self addSubview:self.title];
 		
-		self.longView = ({
-            UIView *longView         = [[UIView alloc]initWithFrame:CGRectMake(13, 132, self.bounds.size.width - 26, 7)];
-            longView.backgroundColor = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
-			[self addSubview:longView];
-			longView;
-		});
+        self.longView         = [[UIView alloc]initWithFrame:CGRectMake(13, 132, self.bounds.size.width - 26, 7)];
+        self.longView.backgroundColor = [UIColor colorWithRed:0.25f green:0.22f blue:0.21f alpha:1.00f];
+        [self addSubview:self.longView];
 		
 		[self createTips];
 		[self addNotification];
@@ -119,6 +111,11 @@
 											 selector:@selector(updateLayer:)
 												 name:UIDeviceOrientationDidChangeNotification
 											   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusBarOrientationNotification:)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                               object:nil];
 }
 
 - (void)addObserver {
@@ -142,6 +139,19 @@
 	self.orientationDidChange = YES;
 	[self setNeedsLayout];
     [self layoutIfNeeded];
+}
+
+- (void)statusBarOrientationNotification:(NSNotification*)notification {
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        CGFloat width = MAX(ScreenWidth, ScreenHeight);
+        CGFloat height = MIN(ScreenWidth, ScreenHeight);
+        self.center = CGPointMake(width * 0.5, height * 0.5);
+    } else {
+        CGFloat width = MIN(ScreenWidth, ScreenHeight);
+        CGFloat height = MAX(ScreenWidth, ScreenHeight);
+        self.center = CGPointMake(width * 0.5, height * 0.5);
+    }
 }
 
 #pragma mark - Methond
@@ -185,7 +195,6 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
     self.backImage.center = CGPointMake(155 * 0.5, 155 * 0.5);
-    self.center = CGPointMake(ScreenWidth * 0.5, ScreenHeight * 0.5);
 }
 
 - (void)dealloc {
@@ -195,14 +204,12 @@
 
 - (void)setIsStatusBarHidden:(BOOL)isStatusBarHidden {
     _isStatusBarHidden = isStatusBarHidden;
-    UIWindow *window = [[UIApplication sharedApplication].delegate window];
-    [[window zf_currentViewController] setNeedsStatusBarAppearanceUpdate];
+    [[UIWindow zf_currentViewController] setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)setIsLandscape:(BOOL)isLandscape {
     _isLandscape = isLandscape;
-    UIWindow *window = [[UIApplication sharedApplication].delegate window];
-    [[window zf_currentViewController] setNeedsStatusBarAppearanceUpdate];
+    [[UIWindow zf_currentViewController] setNeedsStatusBarAppearanceUpdate];
 }
 
 @end

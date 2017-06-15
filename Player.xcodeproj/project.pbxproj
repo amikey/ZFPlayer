@@ -15,6 +15,7 @@
 		49CD65D11BF0C4EC0060DB9E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */; };
 		49F272801BF2330700FCC767 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F2727F1BF2330700FCC767 /* Info.plist */; };
 		6DFFA86AB7DE7145F8B2FDBB /* libPods-Player.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E3CE675A5AD72E88B7F01B /* libPods-Player.a */; };
+		CC19316B1EF135D3003B9A5E /* ZFFullScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC19316A1EF135D3003B9A5E /* ZFFullScreenViewController.m */; };
 		CC220D4A1DB7B504001191C7 /* MMMaterialDesignSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = CC220D491DB7B504001191C7 /* MMMaterialDesignSpinner.m */; };
 		CC2877CC1D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877C71D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.m */; };
 		CC2877CD1D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2877C91D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m */; };
@@ -94,6 +95,8 @@
 		49CD65D01BF0C4EC0060DB9E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		49F2727F1BF2330700FCC767 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5025702D2252268F74E00592 /* Pods-Player.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Player.release.xcconfig"; path = "Pods/Target Support Files/Pods-Player/Pods-Player.release.xcconfig"; sourceTree = "<group>"; };
+		CC1931691EF135D3003B9A5E /* ZFFullScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFFullScreenViewController.h; sourceTree = "<group>"; };
+		CC19316A1EF135D3003B9A5E /* ZFFullScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFFullScreenViewController.m; sourceTree = "<group>"; };
 		CC220D481DB7B504001191C7 /* MMMaterialDesignSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMMaterialDesignSpinner.h; sourceTree = "<group>"; };
 		CC220D491DB7B504001191C7 /* MMMaterialDesignSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMMaterialDesignSpinner.m; sourceTree = "<group>"; };
 		CC2877C61D9B60760097CEDA /* UINavigationController+ZFPlayerRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
@@ -301,6 +304,8 @@
 				CC7D5E941D59AAAC000AC18A /* ASValuePopUpView.m */,
 				CC2CC6311CA24D4B0028BBDD /* ZFBrightnessView.h */,
 				CC2CC6321CA24D4B0028BBDD /* ZFBrightnessView.m */,
+				CC1931691EF135D3003B9A5E /* ZFFullScreenViewController.h */,
+				CC19316A1EF135D3003B9A5E /* ZFFullScreenViewController.m */,
 			);
 			path = ZFPlayer;
 			sourceTree = SOURCE_ROOT;
@@ -610,6 +615,7 @@
 				CC220D4A1DB7B504001191C7 /* MMMaterialDesignSpinner.m in Sources */,
 				CCEF1BF91CACB28E00B0DD78 /* ZFDownloadedCell.m in Sources */,
 				CC6FF40D1DB9DFB300222AAC /* ZFPlayerModel.m in Sources */,
+				CC19316B1EF135D3003B9A5E /* ZFFullScreenViewController.m in Sources */,
 				CCE1C13E1C9AA128004C95AC /* ZFTableViewController.m in Sources */,
 				CC2877CD1D9B60760097CEDA /* UITabBarController+ZFPlayerRotation.m in Sources */,
 				CC6FF3681DB4A32E00222AAC /* UIView+CustomControlView.m in Sources */,
