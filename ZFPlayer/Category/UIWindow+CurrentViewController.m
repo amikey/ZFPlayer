@@ -26,8 +26,9 @@
 
 @implementation UIWindow (CurrentViewController)
 
-- (UIViewController*)zf_currentViewController; {
-    UIViewController *topViewController = [self rootViewController];
++ (UIViewController*)zf_currentViewController; {
+    UIWindow *window = [[UIApplication sharedApplication].delegate window];
+    UIViewController *topViewController = [window rootViewController];
     while (true) {
         if (topViewController.presentedViewController) {
             topViewController = topViewController.presentedViewController;
