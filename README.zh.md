@@ -31,9 +31,9 @@
 - Xcode 8+
 
 
-## 统计
+## 测试版
 
-哪些APP使用ZFPlayer，并上架AppStore，请告诉我，帮助我统计。
+[Test Version](http://git.oschina.net/renzifeng/zfplayer) 这是一个测试版本，请谨慎使用，还有一些bug，正在继续完善，有需要可以参考。
 
 ## 组件
 
