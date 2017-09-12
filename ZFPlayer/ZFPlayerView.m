@@ -280,8 +280,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self pause];
     // 移除原来的layer
     [self.playerLayer removeFromSuperlayer];
-    // 替换PlayerItem为nil
-    [self.player replaceCurrentItemWithPlayerItem:nil];
     // 把player置为nil
     self.imageGenerator = nil;
     self.player         = nil;
