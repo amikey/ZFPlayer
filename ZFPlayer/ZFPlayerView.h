@@ -79,6 +79,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /** player在栈上，即此时push或者模态了新控制器 */
 @property (nonatomic, assign) BOOL                    playerPushedOrPresented;
 
+/** 是否强制竖屏播放，默认为NO */
+@property (nonatomic, assign) BOOL     forcePortrait;
+
 /**
  *  单例，用于列表cell上多个视频
  *
