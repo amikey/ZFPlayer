@@ -81,6 +81,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                    disablePanGesture;
 /** 是否强制竖屏播放，默认为NO */
 @property (nonatomic, assign) BOOL                    forcePortrait;
+/// 播放时候默认自动全屏
+@property (nonatomic, assign) BOOL                    fullScreenPlay;
 
 /**
  *  单例，用于列表cell上多个视频

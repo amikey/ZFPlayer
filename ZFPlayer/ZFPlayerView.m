@@ -1466,6 +1466,12 @@ typedef NS_ENUM(NSInteger, PanDirection){
         [self play];
     }
 }
+
+- (void)setFullScreenPlay:(BOOL)fullScreenPlay {
+    _fullScreenPlay = fullScreenPlay;
+    if (fullScreenPlay) [self _fullScreenAction];
+}
+
 #pragma mark - Getter
 
 - (AVAssetImageGenerator *)imageGenerator {
