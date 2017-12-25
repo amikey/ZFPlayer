@@ -22,7 +22,6 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import "ZFPlayer.h"
 #import "ZFPlayerControlView.h"
 #import "ZFPlayerModel.h"
 #import "ZFPlayerControlViewDelegate.h"
@@ -80,9 +79,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                    playerPushedOrPresented;
 /** 添加平移手势，用来控制音量、亮度、快进快退 */
 @property (nonatomic, assign) BOOL                    disablePanGesture;
-
 /** 是否强制竖屏播放，默认为NO */
-@property (nonatomic, assign) BOOL     forcePortrait;
+@property (nonatomic, assign) BOOL                    forcePortrait;
 
 /**
  *  单例，用于列表cell上多个视频

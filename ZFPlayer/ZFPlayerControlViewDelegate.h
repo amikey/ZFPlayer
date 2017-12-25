@@ -24,7 +24,6 @@
 #ifndef ZFPlayerControlViewDelegate_h
 #define ZFPlayerControlViewDelegate_h
 
-
 #endif /* ZFPlayerControlViewDelegate_h */
 
 @protocol ZFPlayerControlViewDelagate <NSObject>

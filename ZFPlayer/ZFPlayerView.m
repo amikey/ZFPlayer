@@ -288,7 +288,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (self.isChangeResolution) { // 切换分辨率
         [self.controlView zf_playerResetControlViewForResolution];
         self.isChangeResolution = NO;
-    }else { // 重置控制层View
+    } else { // 重置控制层View
         [self.controlView zf_playerResetControlView];
     }
     self.controlView   = nil;
@@ -476,7 +476,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
                     error: &setCategoryError];
     
     if (!success) { /* handle the error in setCategoryError */ }
-    
 }
 
 /**
@@ -493,8 +492,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             // 耳机插入
             break;
             
-        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
-        {
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable: {
             // 耳机拔掉
             // 拔掉耳机继续播放
             [self play];
@@ -719,8 +717,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                     make.center.equalTo([UIApplication sharedApplication].keyWindow);
                     make.top.equalTo(@([self.class getNavBarTopHeight]));
                     make.bottom.equalTo(@0);
-                }
-                else {
+                } else {
                     make.width.equalTo(@(ScreenHeight));
                     make.height.equalTo(@(ScreenWidth));
                     make.center.equalTo([UIApplication sharedApplication].keyWindow);
@@ -799,17 +796,17 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown ) { return; }
     
     switch (interfaceOrientation) {
-        case UIInterfaceOrientationPortraitUpsideDown:{
+        case UIInterfaceOrientationPortraitUpsideDown: {
         }
             break;
-        case UIInterfaceOrientationPortrait:{
+        case UIInterfaceOrientationPortrait: {
             if (self.isFullScreen) {
                 [self toOrientation:UIInterfaceOrientationPortrait];
                 
             }
         }
             break;
-        case UIInterfaceOrientationLandscapeLeft:{
+        case UIInterfaceOrientationLandscapeLeft: {
             if (self.isFullScreen == NO) {
                 [self toOrientation:UIInterfaceOrientationLandscapeLeft];
                 self.isFullScreen = YES;
@@ -819,7 +816,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             
         }
             break;
-        case UIInterfaceOrientationLandscapeRight:{
+        case UIInterfaceOrientationLandscapeRight: {
             if (self.isFullScreen == NO) {
                 [self toOrientation:UIInterfaceOrientationLandscapeRight];
                 self.isFullScreen = YES;
@@ -869,7 +866,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 make.center.mas_equalTo(self);
                 make.width.height.mas_equalTo(155);
             }];
-            
         }
     }
 }
@@ -1137,14 +1133,13 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)panDirection:(UIPanGestureRecognizer *)pan {
     //根据在view上Pan的位置，确定是调音量还是亮度
     CGPoint locationPoint = [pan locationInView:self];
-    
     // 我们要响应水平移动和垂直移动
     // 根据上次和本次移动的位置，算出一个速率的point
     CGPoint veloctyPoint = [pan velocityInView:self];
     
     // 判断是垂直移动还是水平移动
     switch (pan.state) {
-        case UIGestureRecognizerStateBegan:{ // 开始移动
+        case UIGestureRecognizerStateBegan: { // 开始移动
             // 使用绝对值来判断移动的方向
             CGFloat x = fabs(veloctyPoint.x);
             CGFloat y = fabs(veloctyPoint.y);
@@ -1154,8 +1149,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 // 给sumTime初值
                 CMTime time       = self.player.currentTime;
                 self.sumTime      = time.value/time.timescale;
-            }
-            else if (x < y){ // 垂直移动
+            } else if (x < y) { // 垂直移动
                 self.panDirection = PanDirectionVerticalMoved;
                 // 开始滑动的时候,状态改为正在控制音量
                 if (locationPoint.x > self.bounds.size.width / 2) {
@@ -1166,7 +1160,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             }
             break;
         }
-        case UIGestureRecognizerStateChanged:{ // 正在移动
+        case UIGestureRecognizerStateChanged: { // 正在移动
             switch (self.panDirection) {
                 case PanDirectionHorizontalMoved:{
                     [self horizontalMoved:veloctyPoint.x]; // 水平移动的方法只要x方向的值
@@ -1181,7 +1175,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
             }
             break;
         }
-        case UIGestureRecognizerStateEnded:{ // 移动停止
+        case UIGestureRecognizerStateEnded: { // 移动停止
             // 移动结束也需要判断垂直或者平移
             // 比如水平移动结束时，要快进到指定位置，如果这里没有判断，当我们调节音量完之后，会出现屏幕跳动的bug
             switch (self.panDirection) {
@@ -1224,7 +1218,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
 - (void)horizontalMoved:(CGFloat)value {
     // 每次滑动需要叠加时间
     self.sumTime += value / 200;
-    
     // 需要限定sumTime的范围
     CMTime totalTime           = self.playerItem.duration;
     CGFloat totalMovieDuration = (CGFloat)totalTime.value/totalTime.timescale;
@@ -1527,7 +1520,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
     }
-
 }
 
 - (void)zf_controlView:(UIView *)controlView closeAction:(UIButton *)sender {
@@ -1560,7 +1552,6 @@ typedef NS_ENUM(NSInteger, PanDirection){
     // 重播改为NO
     self.repeatToPlay = NO;
     [self seekToTime:0 completionHandler:nil];
-    
     if ([self.videoURL.scheme isEqualToString:@"file"]) {
         self.state = ZFPlayerStatePlaying;
     } else {
@@ -1601,10 +1592,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
     CGFloat total = (CGFloat)self.playerItem.duration.value / self.playerItem.duration.timescale;
     //计算出拖动的当前秒数
     NSInteger dragedSeconds = floorf(total * value);
-    
     [self.controlView zf_playerPlayBtnState:YES];
     [self seekToTime:dragedSeconds completionHandler:^(BOOL finished) {}];
-
 }
 
 - (void)zf_controlView:(UIView *)controlView progressSliderValueChanged:(UISlider *)slider {
@@ -1616,11 +1605,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if (value > 0) { style = YES; }
         if (value < 0) { style = NO; }
         if (value == 0) { return; }
-        
         self.sliderLastValue  = slider.value;
-        
         CGFloat totalTime     = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-        
         //计算出拖动的当前秒数
         CGFloat dragedSeconds = floorf(totalTime * slider.value);
 
@@ -1654,12 +1640,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
             // 此时设置slider值为0
             slider.value = 0;
         }
-        
-    }else { // player状态加载失败
+    } else { // player状态加载失败
         // 此时设置slider值为0
         slider.value = 0;
     }
-
 }
 
 - (void)zf_controlView:(UIView *)controlView progressSliderTouchEnded:(UISlider *)slider {
