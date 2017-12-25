@@ -78,6 +78,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 @property (nonatomic, assign) BOOL                    cellPlayerOnCenter;
 /** player在栈上，即此时push或者模态了新控制器 */
 @property (nonatomic, assign) BOOL                    playerPushedOrPresented;
+/** 添加平移手势，用来控制音量、亮度、快进快退 */
+@property (nonatomic, assign) BOOL                    disablePanGesture;
 
 /** 是否强制竖屏播放，默认为NO */
 @property (nonatomic, assign) BOOL     forcePortrait;

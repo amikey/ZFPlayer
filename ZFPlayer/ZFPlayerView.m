@@ -533,14 +533,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
                 [self.layer insertSublayer:self.playerLayer atIndex:0];
                 self.state = ZFPlayerStatePlaying;
                 // 加载完成后，再添加平移手势
-                // 添加平移手势，用来控制音量、亮度、快进快退
-                UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
-                panRecognizer.delegate = self;
-                [panRecognizer setMaximumNumberOfTouches:1];
-                [panRecognizer setDelaysTouchesBegan:YES];
-                [panRecognizer setDelaysTouchesEnded:YES];
-                [panRecognizer setCancelsTouchesInView:YES];
-                [self addGestureRecognizer:panRecognizer];
+                if (!self.disablePanGesture) {
+                    // 添加平移手势，用来控制音量、亮度、快进快退
+                    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panDirection:)];
+                    panRecognizer.delegate = self;
+                    [panRecognizer setMaximumNumberOfTouches:1];
+                    [panRecognizer setDelaysTouchesBegan:YES];
+                    [panRecognizer setDelaysTouchesEnded:YES];
+                    [panRecognizer setCancelsTouchesInView:YES];
+                    [self addGestureRecognizer:panRecognizer];
+                }
                 
                 // 跳到xx秒播放视频
                 if (self.seekTime) {
@@ -1322,6 +1324,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
 }
 
 /**
+ *  设置静音
+ *
+ *  @param mute BOOL
+ */
+- (void)setMute:(BOOL)mute {
+    _mute = mute;
+    self.player.muted = self.mute;
+}
+
+/**
  *  根据playerItem，来添加移除观察者
  *
  *  @param playerItem playerItem
@@ -1532,6 +1544,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
     self.isLocked               = sender.selected;
     // 调用AppDelegate单例记录播放状态是否锁屏
     ZFPlayerShared.isLockScreen = sender.selected;
+}
+
+- (void)zf_controlView:(UIView *)controlView muteAction:(UIButton *)sender {
+    self.mute = sender.isSelected;
 }
 
 - (void)zf_controlView:(UIView *)controlView cneterPlayAction:(UIButton *)sender {
