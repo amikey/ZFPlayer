@@ -116,6 +116,8 @@ typedef NS_ENUM(NSInteger, PanDirection){
 @property (nonatomic, assign) NSInteger              seekTime;
 @property (nonatomic, strong) NSURL                  *videoURL;
 @property (nonatomic, strong) NSDictionary           *resolutionDic;
+
+@property (nonatomic, strong) UIColor                *statusOriginBackgroundColor;
 @end
 
 @implementation ZFPlayerView
@@ -506,6 +508,18 @@ typedef NS_ENUM(NSInteger, PanDirection){
     }
 }
 
+/**
+ 兼容iPhoneX的NavBaf顶部高度 （statusHeight）
+
+ @return iPhoneX：44 other:20
+ */
++ (CGFloat )getNavBarTopHeight {
+    if (ScreenWidth == 375 && ScreenHeight == 812) {
+        return 44;
+    }
+    return 20;
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -695,24 +709,41 @@ typedef NS_ENUM(NSInteger, PanDirection){
         if (currentOrientation == UIInterfaceOrientationPortrait) {
             [self removeFromSuperview];
             ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
+            [[UIApplication sharedApplication].keyWindow bringSubviewToFront:brightnessView];
             [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
             [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.width.equalTo(@(ScreenHeight));
-                make.height.equalTo(@(ScreenWidth));
-                make.center.equalTo([UIApplication sharedApplication].keyWindow);
+                if (self.forcePortrait) {
+                    make.width.equalTo(@(ScreenWidth));
+                    make.center.equalTo([UIApplication sharedApplication].keyWindow);
+                    make.top.equalTo(@([self.class getNavBarTopHeight]));
+                    make.bottom.equalTo(@0);
+                }
+                else {
+                    make.width.equalTo(@(ScreenHeight));
+                    make.height.equalTo(@(ScreenWidth));
+                    make.center.equalTo([UIApplication sharedApplication].keyWindow);
+                }
             }];
         }
     }
     // iOS6.0之后,设置状态条的方法能使用的前提是shouldAutorotate为NO,也就是说这个视图控制器内,旋转要关掉;
     // 也就是说在实现这个方法的时候-(BOOL)shouldAutorotate返回值要为NO
-    [[UIApplication sharedApplication] setStatusBarOrientation:orientation animated:NO];
+    if (self.forcePortrait) {
+        [self changeStatusBackgroundColor:self.backgroundColor];
+    }
+    else {
+        [[UIApplication sharedApplication] setStatusBarOrientation:orientation animated:NO];
+    }
+
     // 获取旋转状态条需要的时间:
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     // 更改了状态条的方向,但是设备方向UIInterfaceOrientation还是正方向的,这就要设置给你播放视频的视图的方向设置旋转
     // 给你的播放视频的view视图设置旋转
     self.transform = CGAffineTransformIdentity;
-    self.transform = [self getTransformRotationAngle];
+    if (!self.forcePortrait) {
+        self.transform = [self getTransformRotationAngle];
+    }
     // 开始旋转
     [UIView commitAnimations];
 }
@@ -864,6 +895,21 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [self interfaceOrientation:UIInterfaceOrientationPortrait];
 }
 
+- (void)changeStatusBackgroundColor:(UIColor *)color {
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = color;
+    }
+}
+
+- (UIColor *)getOriginStatusBackgroundColor {
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(backgroundColor)]) {
+        return statusBar.backgroundColor;
+    }
+    return self.backgroundColor;
+}
+
 #pragma mark - 缓冲较差时候
 
 /**
@@ -984,6 +1030,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 /** 全屏 */
 - (void)_fullScreenAction {
+    self.statusOriginBackgroundColor = [self getOriginStatusBackgroundColor];
     if (ZFPlayerShared.isLockScreen) {
         [self unLockTheScreen];
         return;
@@ -1456,6 +1503,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 }
 
 - (void)zf_controlView:(UIView *)controlView backAction:(UIButton *)sender {
+    [self changeStatusBackgroundColor:self.statusOriginBackgroundColor];
     if (ZFPlayerShared.isLockScreen) {
         [self unLockTheScreen];
     } else {
@@ -1467,9 +1515,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
             [self interfaceOrientation:UIInterfaceOrientationPortrait];
         }
     }
+
 }
 
 - (void)zf_controlView:(UIView *)controlView closeAction:(UIButton *)sender {
+    [self changeStatusBackgroundColor:self.statusOriginBackgroundColor];
     [self resetPlayer];
     [self removeFromSuperview];
 }
