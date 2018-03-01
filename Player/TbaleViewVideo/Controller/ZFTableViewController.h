@@ -23,6 +23,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZFTableViewController : UITableViewController
+@interface ZFTableViewController : UIViewController
 
 @end

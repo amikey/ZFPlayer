@@ -28,13 +28,17 @@
 #import <Masonry/Masonry.h>
 #import <ZFDownload/ZFDownloadManager.h>
 #import "ZFPlayer.h"
+#import "ZFPlayerTableViewCell.h"
 
-@interface ZFTableViewController () <ZFPlayerDelegate>
+
+static NSString *const kIdentifier = @"ZFPlayerTableViewCell";
+
+@interface ZFTableViewController () <ZFPlayerDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray      *dataSource;
 @property (nonatomic, strong) ZFPlayerView        *playerView;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
-
+@property (nonatomic, strong) UITableView *tableView;
 @end
 
 @implementation ZFTableViewController
@@ -43,9 +47,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.estimatedRowHeight = 379.0f;
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+//    self.tableView.estimatedRowHeight = 379.0f;
+//    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    [self.view addSubview:self.tableView];
+    self.tableView.rowHeight = self.view.frame.size.width * 9/16;
     [self requestData];
+}
+
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+//    self.tableView.frame = self.view.bounds;
 }
 
 // 页面消失时候
@@ -66,6 +80,7 @@
         [model setValuesForKeysWithDictionary:dataDic];
         [self.dataSource addObject:model];
     }
+    [self.tableView reloadData];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -94,14 +109,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    static NSString *identifier        = @"playerCell";
-    ZFPlayerCell *cell                 = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+//    static NSString *identifier        = @"playerCell";
+    ZFPlayerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier forIndexPath:indexPath];
     // 取到对应cell的model
     __block ZFVideoModel *model        = self.dataSource[indexPath.row];
     // 赋值model
     cell.model                         = model;
     __block NSIndexPath *weakIndexPath = indexPath;
-    __block ZFPlayerCell *weakCell     = cell;
+    __block ZFPlayerTableViewCell *weakCell     = cell;
     __weak typeof(self)  weakSelf      = self;
     // 点击播放的回调
     cell.playBlock = ^(UIButton *btn){
@@ -123,7 +138,7 @@
         // 赋值分辨率字典
         playerModel.resolutionDic    = dic;
         // player的父视图tag
-        playerModel.fatherViewTag    = weakCell.picView.tag;
+        playerModel.fatherViewTag    = weakCell.picImageView.tag;
         
         // 设置播放控制层和model
         [weakSelf.playerView playerControlView:nil playerModel:playerModel];
@@ -179,6 +194,16 @@
     [[ZFDownloadManager sharedDownloadManager] downFileUrl:url filename:name fileimage:nil];
     // 设置最多同时下载个数（默认是3）
     [ZFDownloadManager sharedDownloadManager].maxCount = 4;
+}
+
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        [_tableView registerClass:[ZFPlayerTableViewCell class] forCellReuseIdentifier:kIdentifier];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+    }
+    return _tableView;
 }
 
 /*

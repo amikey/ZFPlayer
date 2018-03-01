@@ -254,13 +254,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
  *  player添加到fatherView上
  */
 - (void)addPlayerToFatherView:(UIView *)view {
+    self.orentationObserver.containerView = view;
     // 这里应该添加判断，因为view有可能为空，当view为空时[view addSubview:self]会crash
     if (view) {
         [self removeFromSuperview];
         [view addSubview:self];
-//        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.edges.mas_offset(UIEdgeInsetsZero);
-//        }];
         self.frame = view.bounds;
     }
 }
@@ -1438,14 +1436,11 @@ typedef NS_ENUM(NSInteger, PanDirection){
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:playerModel.indexPath];
             UIView *fatherView = [cell.contentView viewWithTag:playerModel.fatherViewTag];
             [self addPlayerToFatherView:fatherView];
-            self.orentationObserver.containerView = fatherView;
-
         } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
             UICollectionView *collectionView = (UICollectionView *)playerModel.scrollView;
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:playerModel.indexPath];
             UIView *fatherView = [cell.contentView viewWithTag:playerModel.fatherViewTag];
             [self addPlayerToFatherView:fatherView];
-            self.orentationObserver.containerView = fatherView;
         }
     } else {
         NSCAssert(playerModel.fatherView, @"请指定playerView的faterView");
