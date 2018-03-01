@@ -77,7 +77,8 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return ZFPlayerShared.isStatusBarHidden;
+//    return ZFPlayerShared.isStatusBarHidden;
+    return NO;
 }
 
 #pragma mark - Table view data source

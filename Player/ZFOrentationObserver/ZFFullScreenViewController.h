@@ -1,5 +1,6 @@
 //
-//  UIViewController+ZFPlayerRotation.h
+//  ZFFullScreenViewController.h
+//  ZFPlayer
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,19 +23,14 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "ZFOrentationObserver.h"
 
-@interface UIViewController (ZFPlayerRotation)
+@interface ZFFullScreenViewController : UIViewController
 
-@end
-
-@interface UITabBarController (ZFPlayerRotation)
-
-@end
-
-@interface UINavigationController (ZFPlayerRotation)<UIGestureRecognizerDelegate>
-
-@end
-
-@interface UIAlertController (ZFPlayerRotation)
-
+/// 播放器页面的截图
+@property (nonatomic, strong) UIImage *screenshotImage;
+/// 设备横屏的方向  UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationLandscapeRight
+@property (nonatomic, assign) UIInterfaceOrientation orientation;
+//@property (nonatomic, weak) UIView *playerView;
+@property (nonatomic, assign) ZFFullScreenMode fullScreenMode;
 @end

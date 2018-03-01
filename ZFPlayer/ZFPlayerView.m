@@ -25,6 +25,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "UIView+CustomControlView.h"
+#import "ZFOrentationObserver.h"
 #import "ZFPlayer.h"
 
 #define CellPlayerFatherViewTag  200
@@ -41,7 +42,9 @@ typedef NS_ENUM(NSInteger, PanDirection){
 
 @interface ZFPlayerView () <UIGestureRecognizerDelegate,UIAlertViewDelegate>
 
+
 /** 播放属性 */
+@property (nonatomic, strong) ZFOrentationObserver *orentationObserver;
 @property (nonatomic, strong) AVPlayer               *player;
 @property (nonatomic, strong) AVPlayerItem           *playerItem;
 @property (nonatomic, strong) AVURLAsset             *urlAsset;
@@ -186,16 +189,16 @@ typedef NS_ENUM(NSInteger, PanDirection){
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioRouteChangeListenerCallback:) name:AVAudioSessionRouteChangeNotification object:nil];
     
     // 监测设备方向
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDeviceOrientationChange)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onStatusBarOrientationChange)
-                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
-                                               object:nil];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(onDeviceOrientationChange)
+//                                                 name:UIDeviceOrientationDidChangeNotification
+//                                               object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(onStatusBarOrientationChange)
+//                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+//                                               object:nil];
 }
 
 #pragma mark - layoutSubviews
@@ -255,9 +258,10 @@ typedef NS_ENUM(NSInteger, PanDirection){
     if (view) {
         [self removeFromSuperview];
         [view addSubview:self];
-        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_offset(UIEdgeInsetsZero);
-        }];
+//        [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.edges.mas_offset(UIEdgeInsetsZero);
+//        }];
+        self.frame = view.bounds;
     }
 }
 
@@ -698,6 +702,7 @@ typedef NS_ENUM(NSInteger, PanDirection){
 }
 
 - (void)toOrientation:(UIInterfaceOrientation)orientation {
+
     // 获取到当前状态条的方向
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     // 判断如果当前方向和要旋转的方向一致,那么不做任何操作
@@ -1433,15 +1438,19 @@ typedef NS_ENUM(NSInteger, PanDirection){
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:playerModel.indexPath];
             UIView *fatherView = [cell.contentView viewWithTag:playerModel.fatherViewTag];
             [self addPlayerToFatherView:fatherView];
+            self.orentationObserver.containerView = fatherView;
+
         } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
             UICollectionView *collectionView = (UICollectionView *)playerModel.scrollView;
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:playerModel.indexPath];
             UIView *fatherView = [cell.contentView viewWithTag:playerModel.fatherViewTag];
             [self addPlayerToFatherView:fatherView];
+            self.orentationObserver.containerView = fatherView;
         }
     } else {
         NSCAssert(playerModel.fatherView, @"请指定playerView的faterView");
         [self addPlayerToFatherView:playerModel.fatherView];
+        self.orentationObserver.containerView = self.playerModel.fatherView;
     }
     self.videoURL = playerModel.videoURL;
 }
@@ -1493,6 +1502,14 @@ typedef NS_ENUM(NSInteger, PanDirection){
         _videoGravity = AVLayerVideoGravityResizeAspect;
     }
     return _videoGravity;
+}
+
+- (ZFOrentationObserver *)orentationObserver {
+    if (!_orentationObserver) {
+        _orentationObserver = [[ZFOrentationObserver alloc] initWithRotateViewView:self containerView:nil];
+        _orentationObserver.fullScreenMode = ZFFullScreenModeLandscape;
+    }
+    return _orentationObserver;
 }
 
 #pragma mark - ZFPlayerControlViewDelegate
