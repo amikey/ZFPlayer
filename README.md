@@ -32,10 +32,6 @@ A simple video player for iOS, based on AVPlayer. Support the vertical, horizont
 - Xcode 8+
 
 
-## New test version
-
-[Test Version](http://git.oschina.net/renzifeng/zfplayer)This is a test version,has some bugs.
-
 ## Component
 
 - Breakpoint Download: [ZFDownload](https://github.com/renzifeng/ZFDownload)
