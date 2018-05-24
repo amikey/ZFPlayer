@@ -13,7 +13,6 @@
 #import "ZFAVPlayerManager.h"
 #import "ZFAVPlayerResourceSupport.h"
 #import "UIScrollView+ZFPlayer.h"
-#import "UIView+ZFFrame.h"
 #import "UIViewController+ZFPlayerRotation.h"
 #import "ZFFloatView.h"
 #import "ZFKVOController.h"
