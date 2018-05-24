@@ -1,7 +1,7 @@
 {
   "name": "ZFPlayer",
   "version": "3.0.0",
-  "summary": "A short description of ZFPlayer.",
+  "summary": "A good player made by renzifeng",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/renzifeng/ZFPlayer",
   "license": {
@@ -9,14 +9,20 @@
     "file": "LICENSE"
   },
   "authors": {
-    "renzifeng": "459643690@qq.com"
+    "renzifeng": "zifeng1300@gmail.com"
   },
   "source": {
     "git": "https://github.com/renzifeng/ZFPlayer.git",
     "tag": "3.0.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "7.0"
   },
-  "source_files": "ZFPlayer/Classes/**/*"
+  "source_files": "ZFPlayer/Classes/**/*",
+  "public_header_files": "Pod/Classes/**/*.h",
+  "frameworks": [
+    "UIKit",
+    "MediaPlayer",
+    "AVFoundation"
+  ]
 }

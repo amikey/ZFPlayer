@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'ZFPlayer'
   s.version          = '3.0.0'
-  s.summary          = 'A short description of ZFPlayer.'
+  s.summary          = 'A good player made by renzifeng'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,17 +18,17 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+  support the vertical, horizontal screen(lock screen direction). Support adjust volume, brigtness and video progress
+  DESC
 
   s.homepage         = 'https://github.com/renzifeng/ZFPlayer'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'renzifeng' => '459643690@qq.com' }
+  s.author           = { 'renzifeng' => 'zifeng1300@gmail.com' }
   s.source           = { :git => 'https://github.com/renzifeng/ZFPlayer.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'http://weibo.com/zifeng1300'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '7.0'
 
   s.source_files = 'ZFPlayer/Classes/**/*'
   
@@ -36,7 +36,7 @@ TODO: Add long description of the pod here.
   #   'ZFPlayer' => ['ZFPlayer/Assets/*.png']
   # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.public_header_files = 'Pod/Classes/**/*.h'
+  s.frameworks = 'UIKit', 'MediaPlayer', 'AVFoundation'
+  s.requires_arc = true
 end
