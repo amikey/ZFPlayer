@@ -11,9 +11,9 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
-Before this, you used ZFPlayer, are you worried about encapsulating avplayer instead of using or modifying the source code to support other players, the control layer is not easy to customize, and so on? In order to solve these problems, I have wrote this player joke, for player SDK you can follow the <ZFPlayerMediaPlayback> protocol, for control view you can follow the <ZFPlayerMediaControl> protocol, can achieve the custom player and custom control layer.
+Before this, you used ZFPlayer, are you worried about encapsulating avplayer instead of using or modifying the source code to support other players, the control layer is not easy to customize, and so on? In order to solve these problems, I have wrote this player joke, for player SDK you can follow the `ZFPlayerMediaPlayback` protocol, for control view you can follow the `ZFPlayerMediaControl` protocol, can achieve the custom player and custom control layer.
 
-在此之前你使用ZFPlayer，是不是在烦恼封装的是avplayer而放弃使用或者修改源码来支持其他播放器，控制层不好自定义等等问题。为了解决这些问题，我特意写了这个播放器壳子，播放器SDK只要遵守<ZFPlayerMediaPlayback>协议，控制层只要遵守<ZFPlayerMediaControl>协议，完全可以实现自定义播放器和自定义控制层。
+在此之前你使用ZFPlayer，是不是在烦恼封装的是avplayer而放弃使用或者修改源码来支持其他播放器，控制层不好自定义等等问题。为了解决这些问题，我特意写了这个播放器壳子，播放器SDK只要遵守`ZFPlayerMediaPlayback`协议，控制层只要遵守`ZFPlayerMediaControl`协议，完全可以实现自定义播放器和自定义控制层。
 
 ![ZFPlayer.png](https://upload-images.jianshu.io/upload_images/635942-7f0c5bb8b22f0b27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
