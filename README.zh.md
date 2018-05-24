@@ -30,6 +30,12 @@
 - iOS 7+
 - Xcode 8+
 
+## 测试版(支持任意播放器和控制层自定义)
+
+clone代码并切换到`develop`分支
+
+https://github.com/renzifeng/ZFPlayer/tree/develop  这是一个测试版本，请谨慎使用.
+
 
 ## 组件
 
