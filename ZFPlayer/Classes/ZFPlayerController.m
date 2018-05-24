@@ -94,7 +94,7 @@
     return player;
 }
 
-- (instancetype)initwithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager {
+- (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager {
     ZFPlayerController *player = [self init];
     player.currentPlayerManager = playerManager;
     return player;

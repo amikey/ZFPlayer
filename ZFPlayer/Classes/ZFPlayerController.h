@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param             playerManager must follow `ZFPlayerMediaPlayback` protocol
  @result            An instance of ZFPlayerController
  */
-- (instancetype)initwithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager;
+- (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager;
 
 /*!
  @method            playerWithScrollView:playerManager:
