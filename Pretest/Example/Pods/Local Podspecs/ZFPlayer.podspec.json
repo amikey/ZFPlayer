@@ -1,0 +1,22 @@
+{
+  "name": "ZFPlayer",
+  "version": "3.0.0",
+  "summary": "A short description of ZFPlayer.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/renzifeng/ZFPlayer",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "renzifeng": "459643690@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/renzifeng/ZFPlayer.git",
+    "tag": "3.0.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "ZFPlayer/Classes/**/*"
+}

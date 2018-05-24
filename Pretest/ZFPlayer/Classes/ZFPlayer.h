@@ -23,21 +23,14 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+
+//! Project version number for ZFPlayer.
+FOUNDATION_EXPORT double ZFPlayerVersionNumber;
+
+//! Project version string for ZFPlayer.
+FOUNDATION_EXPORT const unsigned char ZFPlayerVersionString[];
+
 #import "ZFPlayerController.h"
 #import "ZFPlayerGestureControl.h"
 #import "ZFPlayerMediaPlayback.h"
 #import "ZFPlayerMediaControl.h"
-
-#define iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
-
-// 图片路径
-#define ZFPlayer_SrcName(file)               [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
-
-#define ZFPlayer_FrameworkSrcName(file)      [@"Frameworks/ZFPlayer.framework/ZFPlayer.bundle" stringByAppendingPathComponent:file]
-
-#define ZFPlayer_Image(file)                 [UIImage imageNamed:ZFPlayer_SrcName(file)] ? :[UIImage imageNamed:ZFPlayer_FrameworkSrcName(file)]
-
-// 屏幕的宽
-#define ZFPlayer_ScreenWidth                 [[UIScreen mainScreen] bounds].size.width
-// 屏幕的高
-#define ZFPlayer_ScreenHeight                [[UIScreen mainScreen] bounds].size.height

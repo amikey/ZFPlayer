@@ -153,10 +153,14 @@
 
 @end
 
-@implementation UIAlertController (ZFPlayerRotation)
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
-}
-
-@end
+//@implementation UIAlertController (ZFPlayerRotation)
+//
+//- (BOOL)shouldAutorotate {
+//    return NO;
+//}
+//
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+//    return UIInterfaceOrientationMaskAll;
+//}
+//
+//@end

@@ -35,6 +35,6 @@
 
 @end
 
-@interface UIAlertController (ZFPlayerRotation)
-
-@end
+//@interface UIAlertController (ZFPlayerRotation)
+//
+//@end

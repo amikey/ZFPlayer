@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #import "ZFFloatView.h"
-#import "UIView+ZFFrame.h"
 
 @implementation ZFFloatView
 
@@ -31,10 +30,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self initilize];
-        
-        
-        
-        
     }
     return self;
 }
@@ -72,13 +67,13 @@
     newCenter.y = MAX(recognizer.view.frame.size.height/2 + self.safeInsets.top, newCenter.y);
     
     // 下边界的限制
-    newCenter.y = MIN(self.parentView.height - self.safeInsets.bottom - recognizer.view.frame.size.height/2, newCenter.y);
+    newCenter.y = MIN(self.parentView.frame.size.height - self.safeInsets.bottom - recognizer.view.frame.size.height/2, newCenter.y);
     
     // 左边界的限制
     newCenter.x = MAX(recognizer.view.frame.size.width/2, newCenter.x);
     
     // 右边界的限制
-    newCenter.x = MIN(self.parentView.width - recognizer.view.frame.size.width/2,newCenter.x);
+    newCenter.x = MIN(self.parentView.frame.size.width - recognizer.view.frame.size.width/2,newCenter.x);
     
     // 设置中心点范围
     recognizer.view.center = newCenter;
