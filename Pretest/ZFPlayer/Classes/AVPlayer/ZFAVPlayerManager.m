@@ -351,7 +351,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
              }
          } else if ([keyPath isEqualToString:kPresentationSize]) {
              _presentationSize = self.playerItem.presentationSize;
-             NSLog(@"视频尺寸=======================================%@",NSStringFromCGSize(_presentationSize));
          } else {
              [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
          }
