@@ -26,10 +26,10 @@
 
 @interface ZFFloatView : UIView
 
-/// 传入父View
+/// The parent View
 @property(nonatomic, weak) UIView *parentView;
 
-/// 安全边距，主要是针对有Navbar 以及 tabbar的
+/// Safe margins, mainly for those with Navbar and tabbar
 @property(nonatomic, assign) UIEdgeInsets safeInsets;
 
 @end

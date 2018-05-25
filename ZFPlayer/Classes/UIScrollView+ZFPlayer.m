@@ -82,7 +82,7 @@ static NSString *const kContentOffset = @"contentOffset";
     if ([self isKindOfClass:[UITableView class]]) {
         UITableView *tableView = (UITableView *)self;
         visiableCells = [tableView visibleCells];
-        // 顶部
+        // Top
         indexPath = tableView.indexPathsForVisibleRows.firstObject;
         if (self.contentOffset.y <= 0 && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
             if (handler) handler(indexPath);
@@ -90,7 +90,7 @@ static NSString *const kContentOffset = @"contentOffset";
             return;
         }
         
-        // 底
+        // Bottom
         indexPath = tableView.indexPathsForVisibleRows.lastObject;
         if (self.contentOffset.y + self.frame.size.height >= self.contentSize.height && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
             if (handler) handler(indexPath);
@@ -100,7 +100,7 @@ static NSString *const kContentOffset = @"contentOffset";
     } else if ([self isKindOfClass:[UICollectionView class]]) {
         UICollectionView *collectionView = (UICollectionView *)self;
         visiableCells = [collectionView visibleCells];
-        // 顶部
+        // Top
         indexPath = collectionView.indexPathsForVisibleItems.firstObject;
         if (self.contentOffset.y <= 0 && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
             if (handler) handler(indexPath);
@@ -108,7 +108,7 @@ static NSString *const kContentOffset = @"contentOffset";
             return;
         }
         
-        // 底
+        // Bottom
         indexPath = collectionView.indexPathsForVisibleItems.lastObject;
         if (self.contentOffset.y + self.frame.size.height >= self.contentSize.height && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
             if (handler) handler(indexPath);
@@ -130,7 +130,7 @@ static NSString *const kContentOffset = @"contentOffset";
         CGFloat topSpacing = rect.origin.y - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
         CGFloat bottomSpacing = CGRectGetMaxY(self.frame) - CGRectGetMaxY(rect) + CGRectGetMinY(self.frame) + self.contentInset.top;
         NSIndexPath *indexPath = [self zf_getIndexPathForCell:cell];
-        /// 当视频播放部分可见区域时候播放
+        /// Play when the video playback section is visible.
         if ((topSpacing >= -CGRectGetHeight(rect)/2) && (bottomSpacing >= -CGRectGetHeight(rect)/2)) {
             if (self.playingIndexPath) {
                 indexPath = self.playingIndexPath;
@@ -143,7 +143,7 @@ static NSString *const kContentOffset = @"contentOffset";
 }
 
 - (void)zf_scrollViewDidScroll {
-    // 避免第一次播放的时候被暂停
+    // Avoid being paused the first time you play it.
     if (self.contentOffset.y < 0) return;
     if (self.playingIndexPath) {
         UIView *cell = [self zf_getCellForIndexPath:self.playingIndexPath];
@@ -159,45 +159,57 @@ static NSString *const kContentOffset = @"contentOffset";
         CGFloat topSpacing = rect.origin.y - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
         CGFloat bottomSpacing = CGRectGetMaxY(self.frame) - CGRectGetMaxY(rect) + CGRectGetMinY(self.frame) + self.contentInset.top;
         
-        if (self.scrollDerection == ZFPlayerScrollDerectionUp) { /// 手往上滚动
-            /// 上部区域
-            if (topSpacing <= 0 && topSpacing > -CGRectGetHeight(rect)/2) {  /// 播放器刚开始移除可见区域
+        if (self.scrollDerection == ZFPlayerScrollDerectionUp) { /// Scroll up
+            /// Top area
+            if (topSpacing <= 0 && topSpacing > -CGRectGetHeight(rect)/2) {
+                /// When the player will disappear.
                 if (self.playerWillDisappearInScrollView) self.playerWillDisappearInScrollView(self.playingIndexPath);
-            } else if (topSpacing <= -CGRectGetHeight(rect)/2 && topSpacing > -CGRectGetHeight(rect)) { /// 播放器滑入可见区域部分
+            } else if (topSpacing <= -CGRectGetHeight(rect)/2 && topSpacing > -CGRectGetHeight(rect)) {
+                /// When the player did disappeared half.
                 if (self.playerDisappearHalfInScrollView) self.playerDisappearHalfInScrollView(self.playingIndexPath);
-            } else if (topSpacing <= -CGRectGetHeight(rect)) { /// 播放器完全移除可见区域
+            } else if (topSpacing <= -CGRectGetHeight(rect)) {
+                /// When the player did disappeared.
                 if (self.playerDidDisappearInScrollView) self.playerDidDisappearInScrollView(self.playingIndexPath);
-            } else if (topSpacing > 0 && topSpacing < CGRectGetHeight(self.frame)) { /// 在可见区域
-
+            } else if (topSpacing > 0 && topSpacing < CGRectGetHeight(self.frame)) {
+                /// In visable area
             }
             
-            /// 底部区域
-            if (bottomSpacing >= 0) {  /// 播放器完全显示在可见区域
+            /// Bottom area
+            if (bottomSpacing >= 0) {
+                /// When the player did appeared.
                 if (self.playerDidAppearInScrollView) self.playerDidAppearInScrollView(self.playingIndexPath);
-            } else if (bottomSpacing <= -CGRectGetHeight(rect)/2 && bottomSpacing > -CGRectGetHeight(rect)) { /// 播放器滑入可见区域部分
+            } else if (bottomSpacing <= -CGRectGetHeight(rect)/2 && bottomSpacing > -CGRectGetHeight(rect)) {
+                /// When the player did appeared half.
                 if (self.playerAppearHalfInScrollView) self.playerAppearHalfInScrollView(self.playingIndexPath);
-            } else if (bottomSpacing <= -CGRectGetHeight(rect)) { /// 播放器刚开始滑入可见区域
+            } else if (bottomSpacing <= -CGRectGetHeight(rect)) {
+                /// When the player will appear.
                 if (self.playerWillAppearInScrollView) self.playerWillAppearInScrollView(self.playingIndexPath);
             }
-        } else if (self.scrollDerection == ZFPlayerScrollDerectionDown) { /// 手往下滚动
-             /// 上部区域
-            if (topSpacing >= 0) {  /// 播放器完全显示在可见区域
+        } else if (self.scrollDerection == ZFPlayerScrollDerectionDown) { /// Scroll Down
+             /// Top area
+            if (topSpacing >= 0) {
+                /// When the player did appeared.
                 if (self.playerDidAppearInScrollView) self.playerDidAppearInScrollView(self.playingIndexPath);
-            } else if (topSpacing <= -CGRectGetHeight(rect)/2 && topSpacing > -CGRectGetHeight(rect)) { /// 播放器滑入可见区域部分
+            } else if (topSpacing <= -CGRectGetHeight(rect)/2 && topSpacing > -CGRectGetHeight(rect)) {
+                /// When the player did appeared half.
                 if (self.playerAppearHalfInScrollView) self.playerAppearHalfInScrollView(self.playingIndexPath);
-            } else if (topSpacing <= -CGRectGetHeight(rect)) { /// 播放器刚开始滑入可见区域
+            } else if (topSpacing <= -CGRectGetHeight(rect)) {
+                /// When the player will appear.
                 if (self.playerWillAppearInScrollView) self.playerWillAppearInScrollView(self.playingIndexPath);
             }
             
-            /// 底部区域
-            if (bottomSpacing <= 0 && bottomSpacing > -CGRectGetHeight(rect)/2) {  /// 播放器刚开始移除可见区域
+            /// Bottom area
+            if (bottomSpacing <= 0 && bottomSpacing > -CGRectGetHeight(rect)/2) {
+                /// When the player will disappear.
                 if (self.playerWillDisappearInScrollView) self.playerWillDisappearInScrollView(self.playingIndexPath);
-            } else if (bottomSpacing <= -CGRectGetHeight(rect)/2 && bottomSpacing > -CGRectGetHeight(rect)) { /// 播放器滑入可见区域部分
+            } else if (bottomSpacing <= -CGRectGetHeight(rect)/2 && bottomSpacing > -CGRectGetHeight(rect)) {
+                /// When the player did disappeared half.
                 if (self.playerDisappearHalfInScrollView) self.playerDisappearHalfInScrollView(self.playingIndexPath);
-            } else if (bottomSpacing <= -CGRectGetHeight(rect)) { /// 播放器完全移除可见区域
+            } else if (bottomSpacing <= -CGRectGetHeight(rect)) {
+                /// When the player did disappeared.
                 if (self.playerDidDisappearInScrollView) self.playerDidDisappearInScrollView(self.playingIndexPath);
-            } else if (bottomSpacing > 0 && bottomSpacing < CGRectGetHeight(self.frame)) { /// 在可见区域
-
+            } else if (bottomSpacing > 0 && bottomSpacing < CGRectGetHeight(self.frame)) {
+                /// In visable area
             }
         }
     }
@@ -216,9 +228,6 @@ static NSString *const kContentOffset = @"contentOffset";
     }];
 }
 
-/**
- 根据indexPath获取对应的cell
- */
 - (UIView *)zf_getCellForIndexPath:(NSIndexPath *)indexPath {
     if ([self isKindOfClass:[UITableView class]]) {
         UITableView *tableView = (UITableView *)self;

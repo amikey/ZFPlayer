@@ -34,7 +34,3 @@
 @interface UINavigationController (ZFPlayerRotation)
 
 @end
-
-//@interface UIAlertController (ZFPlayerRotation)
-//
-//@end

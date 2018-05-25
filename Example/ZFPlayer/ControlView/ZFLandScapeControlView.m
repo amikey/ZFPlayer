@@ -225,6 +225,9 @@
     if (point.y > self.bottomToolView.y || [touch.view isKindOfClass:[UIButton class]]) {
         return NO;
     }
+    if (self.player.isLockedScreen && type != ZFPlayerGestureTypeSingleTap) { // 锁定屏幕方向后只相应tap手势
+        return NO;
+    }
     return YES;
 }
 

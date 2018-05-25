@@ -36,11 +36,12 @@
 @property (nonatomic, strong) ZFPlayerNotification *notification;
 @property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
 @property (nonatomic, strong, nullable) UIScrollView *scrollView;
-/// 列表播放滑出屏幕后，小窗时候的播放器的容器视图
+/// The list plays the container view of the player when the window is small after the player has slid off the screen.
 @property (nonatomic, strong, nullable) ZFFloatView *smallFloatView;
-/// 是否被用户暂停
+/// Is pauseByUser.
 @property (nonatomic, assign, getter=isPauseByUser) BOOL pauseByUser;
 @property (nonatomic, strong) UISlider *volumeViewSlider;
+
 @end
 
 @implementation ZFPlayerController
@@ -317,6 +318,14 @@
     return volume;
 }
 
+- (BOOL)isMuted {
+   return self.volume == 0;
+}
+
+- (float)lastVolumeValue {
+    return [objc_getAssociatedObject(self, _cmd) floatValue];
+}
+
 - (ZFPlayerPlaybackState)playState {
     return self.currentPlayerManager.playState;
 }
@@ -350,6 +359,19 @@
 - (void)setVolume:(float)volume {
     objc_setAssociatedObject(self, @selector(volume), @(volume), OBJC_ASSOCIATION_ASSIGN);
     self.volumeViewSlider.value = volume;
+}
+
+- (void)setMuted:(BOOL)muted {
+    if (muted) {
+        self.lastVolumeValue = self.volumeViewSlider.value;
+        self.volumeViewSlider.value = 0;
+    } else {
+        self.volumeViewSlider.value = self.lastVolumeValue;
+    }
+}
+
+- (void)setLastVolumeValue:(float)lastVolumeValue {
+    objc_setAssociatedObject(self, @selector(lastVolumeValue), @(lastVolumeValue), OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (void)setBrightness:(float)brightness {

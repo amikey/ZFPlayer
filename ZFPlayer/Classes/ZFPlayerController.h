@@ -34,51 +34,50 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPlayerController : NSObject
 
-/// To see the video frames must set the contrainerView
+/// To see the video frames must set the contrainerView.
 @property (nonatomic, strong) UIView *containerView;
 
-/// The currentPlayerManager must follow `ZFPlayerMediaPlayback` protocol
+/// The currentPlayerManager must follow `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic, strong, readonly) id<ZFPlayerMediaPlayback> currentPlayerManager;
 
-/// The custom controlView must follow `ZFPlayerMediaControl` protocol
+/// The custom controlView must follow `ZFPlayerMediaControl` protocol.
 @property (nonatomic, strong) UIView<ZFPlayerMediaControl> *controlView;
 
 /*!
  @method            playerWithPlayerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol
- @result            An instance of ZFPlayerController
+ @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @result            An instance of ZFPlayerController.
  */
 + (instancetype)playerWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager;
 
 /*!
  @method            playerWithPlayerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol
- @result            An instance of ZFPlayerController
+ @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @result            An instance of ZFPlayerController.
  */
 - (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager;
 
 /*!
  @method            playerWithScrollView:playerManager:
- @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`
- @param             scrollView is `tableView` or `collectionView`
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol
- @result            An instance of ZFPlayerController
+ @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
+ @param             scrollView is `tableView` or `collectionView`.
+ @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @result            An instance of ZFPlayerController.
  */
 + (instancetype)playerWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager;
 
 /*!
  @method            playerWithScrollView:playerManager:
- @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`
- @param             scrollView is `tableView` or `collectionView`
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol
- @result            An instance of ZFPlayerController
+ @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
+ @param             scrollView is `tableView` or `collectionView`.
+ @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @result            An instance of ZFPlayerController.
  */
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager;
 
 @end
-
 
 @interface ZFPlayerController (ZFPlayerTimeControl)
 
@@ -95,31 +94,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPlayerController (ZFPlayerPlaybackControl)
 
-/// 0...1  the system volume
+/// 0...1.0
+/// Only affects audio volume for the device instance and not for the player.
+/// You can change device volume or player volume as needed,change the player volume you can folllow the `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic) float volume;
-/// 0...1
-@property (nonatomic, assign) float brightness;
 
-/// 移动网络自动播放 default NO
+/// Only affects audio muting for the device instance and not for the player.
+/// You can change device mute or player mute as needed,change the player mute you can folllow the `ZFPlayerMediaPlayback` protocol.
+@property (nonatomic, getter=isMuted) BOOL muted;
+
+// 0...1.0, where 1.0 is maximum brightness. Only supported by main screen.
+@property (nonatomic) float brightness;
+
+/// WWAN network auto play, default is NO.
 @property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
-/// 当前播放的下标，仅限一维数组
-@property (nonatomic, assign) NSInteger currentPlayIndex;
+/// The currently playing index,limited to one-dimensional arrays.
+@property (nonatomic) NSInteger currentPlayIndex;
 
-/**
- If Yes, player will be called pause method When Received `UIApplicationWillResignActiveNotification` notification.
- default is YES.
- */
+/// If Yes, player will be called pause method When Received `UIApplicationWillResignActiveNotification` notification.
+/// default is YES.
 @property (nonatomic) BOOL pauseWhenAppResignActive;
 
-/// 播放完了
+/// When the player is play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id asset);
 
+/// Play the next url ,while the `assetURLs` is not NULL.
 - (void)playTheNext;
 
+/// Play the previous url ,while the `assetURLs` is not NULL.
 - (void)playThePrevious;
 
-/// 播放某一个
+/// Play the index of url ,while the `assetURLs` is not NULL.
 - (void)playTheIndex:(NSInteger)index;
 
 /*!
@@ -136,94 +142,86 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) ZFOrientationObserver *orientationObserver;
 
-
-/// When Orientation is LandscapeLeft or LandscapeRight, this value is YES.
+/// When ZFFullScreenMode is ZFFullScreenModeLandscape the orientation is LandscapeLeft or LandscapeRight, this value is YES.
+/// When ZFFullScreenMode is ZFFullScreenModePortrait, while the player fullSceen this value is YES.
 @property (nonatomic, readonly) BOOL isFullScreen;
 
-/// Lock the screen orientation
+/// Lock the screen orientation.
 @property (nonatomic, getter=isLockedScreen) BOOL lockedScreen;
 
-/// The statusbar hidden
+/// The statusbar hidden.
 @property (nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden;
 
-/**
- The current orientation of the player.
- Default is UIInterfaceOrientationPortrait.
- */
+/// The current orientation of the player.
+/// Default is UIInterfaceOrientationPortrait.
 @property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
 
-/**
- The block invoked When player will rotate.
- */
+/// The block invoked When player will rotate.
 @property (nonatomic, copy, nullable) void(^orientationWillChange)(ZFPlayerController *player, BOOL isFullScreen);
 
-/**
- The block invoked when player rotated.
- */
+/// The block invoked when player rotated.
 @property (nonatomic, copy, nullable) void(^orientationDidChanged)(ZFPlayerController *player, BOOL isFullScreen);
 
+/// Add the device orientation observer.
 - (void)addDeviceOrientationObserver;
 
+/// Remove the device orientation observer.
 - (void)removeDeviceOrientationObserver;
 
-/// 进入横屏全屏状态
+/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModeLandscape.
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
 
-/// 进入竖屏全屏状态
+/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
 
-/// 根据视频比例来判断全屏模式
+// FullScreen mode is determined by ZFFullScreenMode
 - (void)enterFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
-
 
 @end
 
 @interface ZFPlayerController (ZFPlayerViewGesture)
 
-/**
- @constant gestureControl
- @abstract An instance of ZFPlayerGestureControl
- */
+/// An instance of ZFPlayerGestureControl.
 @property (nonatomic, readonly) ZFPlayerGestureControl *gestureControl;
 
+/// The gesture types that the player not support.
 @property (nonatomic, assign) ZFPlayerDisableGestureTypes disableGestureTypes;
 
 @end
 
 @interface ZFPlayerController (ZFPlayerScrollView)
 
+/// The scroll view is `tableView` or `collectionView`.
 @property (nonatomic, readonly, nullable) UIScrollView *scrollView;
 
-/// 列表播放滑出屏幕后，小窗时候的播放器的容器视图
+/// The list plays the container view of the player when the window is small after the player has slid off the screen.
 @property (nonatomic, readonly, nullable) ZFFloatView *smallFloatView;
 
-/// 正在播放的indexPath
+/// The indexPath is playing.
 @property (nonatomic, nullable) NSIndexPath *playingIndexPath;
 
+/// The view tag that the player displays.
 @property (nonatomic) NSInteger playerViewTag;
 
-/// 当前播放的cell移除屏幕时候是否停止播放，defalut is YES
+/// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;
 
-/// 小窗口是否显示
+/// Whether the small window is displayed.
 @property (nonatomic, readonly) BOOL isSmallFloatViewShow;
 
-/**
- if tableView or collectionView has only one section , use sectionAssetURLs
- if normal model set this can use `playTheNext` `playThePrevious` `playTheIndex:`
- */
+/// if tableView or collectionView has only one section , use sectionAssetURLs.
+/// if normal model set this can use `playTheNext` `playThePrevious` `playTheIndex:`.
 @property (nonatomic, copy) NSArray <NSURL *>*assetURLs;
 
-/**
- if tableView or collectionView has more section, use sectionAssetURLs
- */
+/// if tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
 
+/// stop the current playing video on cell.
 - (void)stopCurrentPlayingCell;
 
+/// Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
 - (void)playTheIndexPath:(NSIndexPath *)indexPath;
 
 @end
-
 
 NS_ASSUME_NONNULL_END

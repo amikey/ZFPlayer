@@ -27,8 +27,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ZFPlayerBackgroundState) {
-    ZFPlayerBackgroundStateForeground,  // 从后台进入前台
-    ZFPlayerBackgroundStateBackground, // 从前台进入后台
+    ZFPlayerBackgroundStateForeground,  // Enter the foreground from the background
+    ZFPlayerBackgroundStateBackground,  // From the foreground to the background
 };
 
 @interface ZFPlayerNotification : NSObject

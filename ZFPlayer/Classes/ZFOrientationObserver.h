@@ -26,67 +26,73 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 全屏的模式
+/// Full screen mode
 typedef NS_ENUM(NSUInteger, ZFFullScreenMode) {
-    ZFFullScreenModeLandscape, // 横屏全屏
-    ZFFullScreenModePortrait   // 竖屏全屏
+    ZFFullScreenModeLandscape,  // Landscape full screen mode
+    ZFFullScreenModePortrait    // Portrait full screen Model
 };
 
-/// 全屏的模式
+/// Full screen mode on the view
 typedef NS_ENUM(NSUInteger, ZFRotateType) {
-    ZFRotateTypeNormal,    // 普通
-    ZFRotateTypeCell,      // cell
-    ZFRotateTypeCellSmall  // cell模式小窗口
+    ZFRotateTypeNormal,         // Normal
+    ZFRotateTypeCell,           // Cell
+    ZFRotateTypeCellSmall       // Cell mode small window
 };
 
 @interface ZFOrientationObserver : NSObject
-/// 普通播放
+
+/// normal play
 - (instancetype)initWithRotateView:(UIView *)rotateView
                      containerView:(UIView *)containerView;
-/// 列表播放
+
+/// list play
 - (void)cellModelRotateView:(UIView *)rotateView
            rotateViewAtCell:(UIView *)cell
               playerViewTag:(NSInteger)playerViewTag;
-///
+
+/// cell small window rotation
 - (void)cellSmallModelRotateView:(UIView *)rotateView
                    containerView:(UIView *)containerView;
 
-/// 小屏状态播放器的容器视图
+/// Container view of a small screen state player
 @property (nonatomic, weak) UIView *containerView;
-/// 是否全屏
+
+/// If the full screen
 @property (nonatomic, readonly, getter=isFullScreen) BOOL fullScreen;
-/// 锁定屏幕方向
+
+/// Lock screen orientation
 @property (nonatomic, getter=isLockedScreen) BOOL lockedScreen;
-/// 设备方向即将改变
+
+/// The block invoked When player will rotate.
 @property (nonatomic, copy, nullable) void(^orientationWillChange)(ZFOrientationObserver *observer, BOOL isFullScreen);
-/// 设备方向已经改变
+
+/// The block invoked when player rotated.
 @property (nonatomic, copy, nullable) void(^orientationDidChanged)(ZFOrientationObserver *observer, BOOL isFullScreen);
-/// 全屏的模式，默认横屏进入全屏
+
+/// Full screen mode, the default landscape into full screen
 @property (nonatomic) ZFFullScreenMode fullScreenMode;
 
-@property (nonatomic) float duration; // rotate duration, default is 0.25
+/// rotate duration, default is 0.25
+@property (nonatomic) float duration;
 
-/// 锁定屏幕方向
+/// The statusbar hidden.
 @property (nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden;
 
-/**
- The current orientation of the player.
- Default is UIInterfaceOrientationPortrait.
- 
- readonly.
- */
+/// The current orientation of the player.
+/// Default is UIInterfaceOrientationPortrait.
 @property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
 
+/// Add the device orientation observer.
 - (void)addDeviceOrientationObserver;
 
+/// Remove the device orientation observer.
 - (void)removeDeviceOrientationObserver;
 
-/// 进入横屏全屏状态
+/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModeLandscape.
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
 
-/// 进入竖屏全屏状态
+/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
-
 
 @end
 

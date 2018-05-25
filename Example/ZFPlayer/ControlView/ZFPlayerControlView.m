@@ -297,13 +297,13 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         if (velocity.x == 0) { return; }
         [self sliderValueChangingValue:self.sumTime/totalMovieDuration isForward:style];
     } else if (direction == ZFPanDirectionV) {
-        if (location == ZFPanLocationLeft) { /// 调节声音
+        if (location == ZFPanLocationLeft) { /// 调节亮度
+            self.player.brightness -= (velocity.y) / 10000;
+            [self.volumeBrightnessView updateProgress:self.player.brightness withVolumeBrightnessType:ZFVolumeBrightnessTypeumeBrightness];
+        } else if (location == ZFPanLocationRight) { /// 调节声音
             self.player.volume -= (velocity.y) / 10000;
             NSLog(@"%f",self.player.volume);
             [self.volumeBrightnessView updateProgress:self.player.volume withVolumeBrightnessType:ZFVolumeBrightnessTypeVolume];
-        } else if (location == ZFPanLocationRight) { /// 调节亮度
-            self.player.brightness -= (velocity.y) / 10000;
-            [self.volumeBrightnessView updateProgress:self.player.brightness withVolumeBrightnessType:ZFVolumeBrightnessTypeumeBrightness];
         }
     }
 }

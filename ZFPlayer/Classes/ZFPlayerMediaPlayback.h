@@ -55,15 +55,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 
 @protocol ZFPlayerMediaPlayback <NSObject>
 
-/// 必须继承<ZFPlayerView>
+/// The view must inherited `ZFPlayerView`,this view deals with some gesture conflicts
 @property (nonatomic) ZFPlayerView *view;
-/* indicates whether or not audio output of the player is muted. Only affects audio muting for the player instance and not for the device. */
 
-/// the player volume
+/// The player volume
 @property (nonatomic) float volume;
-
+/// indicates whether or not audio output of the player is muted. Only affects audio muting for the player instance and not for the device.
 @property (nonatomic, getter=isMuted) BOOL muted;
-/// 0.5...2
+/// Playback speed 0.5...2
 @property (nonatomic) float rate;
 
 @property (nonatomic) BOOL shouldAutoPlay;
@@ -77,34 +76,43 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 @property (nonatomic) ZFPlayerScalingMode scalingMode;
 
 /**
- @abstract 查询视频准备是否完成
- @discussion isPreparedToPlay处理逻辑
+ @abstract Check whether video preparation is complete.
+ @discussion isPreparedToPlay processing logic
  
- * 如果isPreparedToPlay为TRUE，则可以调用[ZFPlayerMediaPlayback play]接口开始播放;
- * 如果isPreparedToPlay为FALSE，直接调用[ZFPlayerMediaPlayback play]，则在play内部自动调用[ZFPlayerMediaPlayback prepareToPlay]接口。
- @see prepareToPlay
+ * If isPreparedToPlay is TRUE, you can call [ZFPlayerMediaPlayback play] API start playing;
+ * If isPreparedToPlay to FALSE, direct call [ZFPlayerMediaPlayback play], in the play the internal automatic call [ZFPlayerMediaPlayback prepareToPlay] API.
+ * Returns YES if prepared for playback.
  */
-// Returns YES if prepared for playback.
 @property (nonatomic, readonly) BOOL isPreparedToPlay;
-/// the play asset
+
+/// The play asset URL.
 @property (nonatomic) NSURL *assetURL;
-/// the video size
+
+/// The video size.
 @property (nonatomic, readonly) CGSize presentationSize;
-/// the playback state
+
+/// The playback state.
 @property (nonatomic, readonly) ZFPlayerPlaybackState playState;
+
+/// The player load state.
 @property (nonatomic, readonly) ZFPlayerLoadState loadState;
 
-/// 开始准备播放
+/// The block invoked when the player is Ready to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id asset, NSURL *assetURL);
-/// 播放进度改变
+
+/// The block invoked when the player play progress changed.
 @property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id asset, NSTimeInterval currentTime, NSTimeInterval duration);
-/// buffer
+
+/// The block invoked when the player play buffer changed.
 @property (nonatomic, copy, nullable) void(^playerBufferTimeChanged)(id asset, NSTimeInterval bufferTime, NSTimeInterval duration);
-//// 状态改变
+
+/// The block invoked when the player playback state changed.
 @property (nonatomic, copy, nullable) void(^playerPlayStatChanged)(id asset, ZFPlayerPlaybackState playState);
-//// 加载状态改变
+
+/// The block invoked when the player load state changed.
 @property (nonatomic, copy, nullable) void(^playerLoadStatChanged)(id asset, ZFPlayerLoadState loadState);
-/// 播放完了
+
+/// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id asset);
 
 - (void)prepareToPlay;

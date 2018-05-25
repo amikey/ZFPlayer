@@ -56,7 +56,7 @@
     CGFloat margin = 10;
     
     min_x = margin;
-    min_w = 30;
+    min_w = 25;
     min_h = min_w;
     min_y = (min_view_h-min_h)/2;
     self.iconImageView.frame = CGRectMake(min_x, min_y, min_w, min_h);
@@ -78,7 +78,7 @@
 }
 
 /**
- *  系统音量toast
+ *  移除系统音量toast
  */
 - (void)configureVolume {
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
@@ -96,7 +96,7 @@
     self.progressView.progress = progress;
     self.volumeBrightnessType = volumeBrightnessType;
     if (volumeBrightnessType == ZFVolumeBrightnessTypeVolume && progress == 0) {
-        self.iconImageView.image = ZFPlayer_Image(@"ZFPlayer_volume_small");
+        self.iconImageView.image = ZFPlayer_Image(@"ZFPlayer_muted");
     }
     self.hidden = NO;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideTipView) object:nil];
@@ -106,7 +106,7 @@
 - (void)setVolumeBrightnessType:(ZFVolumeBrightnessType)volumeBrightnessType {
     _volumeBrightnessType = volumeBrightnessType;
     if (volumeBrightnessType == ZFVolumeBrightnessTypeVolume) {
-        self.iconImageView.image = ZFPlayer_Image(@"ZFPlayer_voice");
+        self.iconImageView.image = ZFPlayer_Image(@"ZFPlayer_volume");
     } else {
         self.iconImageView.image = ZFPlayer_Image(@"ZFPlayer_brightness");
     }

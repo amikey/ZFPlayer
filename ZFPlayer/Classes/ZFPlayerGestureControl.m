@@ -137,7 +137,7 @@
         _doubleTap.delegate = self;
         _doubleTap.delaysTouchesBegan = YES;
         _singleTap.delaysTouchesEnded = YES;
-        _doubleTap.numberOfTouchesRequired = 1; //手指数
+        _doubleTap.numberOfTouchesRequired = 1; 
         _doubleTap.numberOfTapsRequired = 2;
     }
     return _doubleTap;

@@ -44,7 +44,6 @@
 
 - (void)initilize {
     self.safeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
-    //添加手势
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(doMoveAction:)];
     [self addGestureRecognizer:panGestureRecognizer];
 }
@@ -57,27 +56,28 @@
 #pragma mark - 手势方法
 
 - (void)doMoveAction:(UIPanGestureRecognizer *)recognizer {
-    //手势在self.view坐标系中移动的位置
+    /// The position where the gesture is moving in the self.view.
     CGPoint translation = [recognizer translationInView:self.parentView];
     CGPoint newCenter = CGPointMake(recognizer.view.center.x + translation.x,
                                     recognizer.view.center.y + translation.y);
     
-    // 限制屏幕范围：
-    // 上边界的限制
+    // Limited screen range:
+    // Top margin limit.
     newCenter.y = MAX(recognizer.view.frame.size.height/2 + self.safeInsets.top, newCenter.y);
     
-    // 下边界的限制
+    // Bottom margin limit.
     newCenter.y = MIN(self.parentView.frame.size.height - self.safeInsets.bottom - recognizer.view.frame.size.height/2, newCenter.y);
     
-    // 左边界的限制
+    // Left margin limit.
     newCenter.x = MAX(recognizer.view.frame.size.width/2, newCenter.x);
     
-    // 右边界的限制
+    // Right margin limit.
     newCenter.x = MIN(self.parentView.frame.size.width - recognizer.view.frame.size.width/2,newCenter.x);
     
-    // 设置中心点范围
+    // Set the center point.
     recognizer.view.center = newCenter;
-    // 将手势坐标点归0、否则会累加
+    
+    // Set the gesture coordinates to 0, otherwise it will add up.
     [recognizer setTranslation:CGPointZero inView:self.parentView];
 }
 

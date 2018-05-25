@@ -103,7 +103,6 @@ static UIWindow *kWindow;
     self.playerViewTag = playerViewTag;
 }
 
-///
 - (void)cellSmallModelRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
     self.roateType = ZFRotateTypeCellSmall;
     self.view = rotateView;
@@ -210,11 +209,7 @@ static UIWindow *kWindow;
     }
 }
 
-/**
- * 获取变换的旋转角度
- *
- * @return 角度
- */
+/// Gets the rotation Angle of the transformation.
 - (CGAffineTransform)getTransformRotationAngle:(UIInterfaceOrientation)orientation {
     // 根据要进行旋转的方向来计算旋转的角度
     if (orientation == UIInterfaceOrientationPortrait) {
@@ -227,7 +222,6 @@ static UIWindow *kWindow;
     return CGAffineTransformIdentity;
 }
 
-/// 进入竖屏全屏状态
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated {
     if (self.fullScreenMode == ZFFullScreenModeLandscape) return;
     UIView *superview = nil;

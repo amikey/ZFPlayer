@@ -27,20 +27,21 @@
 @implementation UIViewController (ZFPlayerRotation)
 
 /**
- * 默认所有都不支持转屏,如需个别页面支持除竖屏外的其他方向，请在viewController重新下边这三个方法
+ * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController+ZFPlayerRotation.
+ * All you need to do is revisit the following three methods on a page that supports directions other than portrait。
  */
 
-// 是否支持自动转屏
+// Whether automatic screen rotation is supported.
 - (BOOL)shouldAutorotate {
     return NO;
 }
 
-// 支持哪些屏幕方向
+// Which screen directions are supported.
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
-// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+// The default screen direction (the current ViewController must be represented by a modal UIViewController (which is not valid with modal navigation) to call this method).
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     return UIInterfaceOrientationPortrait;
 }
@@ -82,11 +83,11 @@
 }
 
 /**
- * 如果window的根视图是UITabBarController，则会先调用这个Category，然后调用UIViewController+ZFPlayerRotation
- * 只需要在支持除竖屏以外方向的页面重新下边三个方法
+ * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController+ZFPlayerRotation.
+ * All you need to do is revisit the following three methods on a page that supports directions other than portrait。
  */
 
-// 是否支持自动转屏
+// Whether automatic screen rotation is supported.
 - (BOOL)shouldAutorotate {
     UIViewController *vc = self.viewControllers[self.selectedIndex];
     if ([vc isKindOfClass:[UINavigationController class]]) {
@@ -97,7 +98,7 @@
     }
 }
 
-// 支持哪些屏幕方向
+// Which screen directions are supported.
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     UIViewController *vc = self.viewControllers[self.selectedIndex];
     if ([vc isKindOfClass:[UINavigationController class]]) {
@@ -108,7 +109,7 @@
     }
 }
 
-// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+// The default screen direction (the current ViewController must be represented by a modal UIViewController (which is not valid with modal navigation) to call this method).
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     UIViewController *vc = self.viewControllers[self.selectedIndex];
     if ([vc isKindOfClass:[UINavigationController class]]) {
@@ -124,21 +125,21 @@
 @implementation UINavigationController (ZFPlayerRotation)
 
 /**
- * 如果window的根视图是UINavigationController，则会先调用这个Category，然后调用UIViewController+ZFPlayerRotation
- * 只需要在支持除竖屏以外方向的页面重新下边三个方法
+ * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController+ZFPlayerRotation.
+ * All you need to do is revisit the following three methods on a page that supports directions other than portrait。
  */
 
-// 是否支持自动转屏
+// Whether automatic screen rotation is supported
 - (BOOL)shouldAutorotate {
     return [self.topViewController shouldAutorotate];
 }
 
-// 支持哪些屏幕方向
+// Which screen directions are supported
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return [self.topViewController supportedInterfaceOrientations];
 }
 
-// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+// The default screen direction (the current ViewController must be represented by a modal UIViewController (which is not valid with modal navigation) to call this method).
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     return [self.topViewController preferredInterfaceOrientationForPresentation];
 }
@@ -152,15 +153,3 @@
 }
 
 @end
-
-//@implementation UIAlertController (ZFPlayerRotation)
-//
-//- (BOOL)shouldAutorotate {
-//    return NO;
-//}
-//
-//- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-//    return UIInterfaceOrientationMaskAll;
-//}
-//
-//@end

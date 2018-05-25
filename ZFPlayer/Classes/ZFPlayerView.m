@@ -27,11 +27,11 @@
 @implementation ZFPlayerView
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-    // 1.判断自己能否接收触摸事件
+    // Determine whether you can receive touch events
     if (self.userInteractionEnabled == NO || self.hidden == YES || self.alpha <= 0.01) return nil;
-    // 2.判断触摸点在不在自己范围内
+    // Determine if the touch point is out of reach
     if (![self pointInside:point withEvent:event]) return nil;
-    // 3.从后往前遍历自己的子控件，看是否有子控件更适合响应此事件
+    // Iterate through your child controls from behind to see if any child controls are better suited to respond to this event
     NSInteger count = self.subviews.count;
     for (NSInteger i = count - 1; i >= 0; i--) {
         UIView *childView = self.subviews[i];
@@ -41,7 +41,7 @@
             return fitView;
         }
     }
-    // 没有找到比自己更合适的view
+    // Did ont find a better view than myself
     return self;
 }
 
