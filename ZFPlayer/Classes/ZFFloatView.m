@@ -53,7 +53,7 @@
     [parentView addSubview:self];
 }
 
-#pragma mark - 手势方法
+#pragma mark - Action
 
 - (void)doMoveAction:(UIPanGestureRecognizer *)recognizer {
     /// The position where the gesture is moving in the self.view.

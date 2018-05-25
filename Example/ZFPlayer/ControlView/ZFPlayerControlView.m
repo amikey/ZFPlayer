@@ -190,9 +190,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 - (void)autoFadeOutControlView {
     self.controlViewAppeared = YES;
     [self cancelAutoFadeOutControlView];
-    __weak typeof(self) _self = self;
+    @weakify(self)
     self.afterBlock = dispatch_block_create(0, ^{
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         [self hideControlViewWithAnimated:YES];
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ZFPlayerAnimationTimeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(),self.afterBlock);
@@ -246,7 +246,13 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.bottomPgrogress.value = 0;
     self.bottomPgrogress.bufferValue = 0;
     self.floatControlView.hidden = YES;
-    self.portraitControlView.hidden = NO;
+    if (self.player.isFullScreen) {
+        self.portraitControlView.hidden = YES;
+        self.landScapeControlView.hidden = NO;
+    } else {
+        self.portraitControlView.hidden = NO;
+        self.landScapeControlView.hidden = YES;
+    }
 }
 
 #pragma mark - 手势
@@ -427,15 +433,15 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 - (ZFPortraitControlView *)portraitControlView {
     if (!_portraitControlView) {
-        __weak typeof(self) _self = self;
+        @weakify(self)
         _portraitControlView = [[ZFPortraitControlView alloc] init];
         _portraitControlView.sliderValueChanging = ^(CGFloat value, BOOL forward) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             [self sliderValueChangingValue:value isForward:forward];
             [self cancelAutoFadeOutControlView];
         };
         _portraitControlView.sliderValueChanged = ^(CGFloat value) {
-             __strong typeof(_self) self = _self;
+             @strongify(self)
             [self autoFadeOutControlView];
         };
     }
@@ -444,15 +450,15 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 - (ZFLandScapeControlView *)landScapeControlView {
     if (!_landScapeControlView) {
-        __weak typeof(self) _self = self;
+        @weakify(self)
         _landScapeControlView = [[ZFLandScapeControlView alloc] init];
         _landScapeControlView.sliderValueChanging = ^(CGFloat value, BOOL forward) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             [self sliderValueChangingValue:value isForward:forward];
             [self cancelAutoFadeOutControlView];
         };
         _landScapeControlView.sliderValueChanged = ^(CGFloat value) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             [self autoFadeOutControlView];
         };
     }
@@ -554,9 +560,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 - (ZFSmallFloatControlView *)floatControlView {
     if (!_floatControlView) {
         _floatControlView = [[ZFSmallFloatControlView alloc] init];
-        __weak typeof(self) _self = self;
+        @weakify(self)
         _floatControlView.closeClickCallback = ^{
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             [self.player stopCurrentPlayingCell];
             [self resetControlView];
         };

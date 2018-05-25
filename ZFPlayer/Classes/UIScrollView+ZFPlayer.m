@@ -26,6 +26,7 @@
 #import <objc/runtime.h>
 #import "ZFKVOController.h"
 #import "ZFReachabilityManager.h"
+#import "ZFPlayer.h"
 
 static NSString *const kContentOffset = @"contentOffset";
 
@@ -62,9 +63,9 @@ static NSString *const kContentOffset = @"contentOffset";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     dispatch_async(dispatch_get_main_queue(), ^{
          if ([keyPath isEqualToString:kContentOffset]) {
-             if ([change[@"new"] CGPointValue].y > [change[@"old"] CGPointValue].y) { // 向上滚动
+             if ([change[@"new"] CGPointValue].y > [change[@"old"] CGPointValue].y) { // Scroll up
                  self.scrollDerection = ZFPlayerScrollDerectionUp;
-             } else if ([change[@"new"] CGPointValue].y < [change[@"old"] CGPointValue].y) { // 向下滚动
+             } else if ([change[@"new"] CGPointValue].y < [change[@"old"] CGPointValue].y) { // Scroll dwon
                  self.scrollDerection = ZFPlayerScrollDerectionDown;
              }
              [self zf_scrollViewDidScroll];
@@ -217,9 +218,9 @@ static NSString *const kContentOffset = @"contentOffset";
 
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler {
     if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.WWANAutoPlay) return;
-    __weak typeof(self) _self = self;
+    @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         if ([ZFReachabilityManager sharedManager].isReachableViaWWAN) return;
         if (!self.playingIndexPath) {
             if (handler) handler(indexPath);
@@ -264,7 +265,7 @@ static NSString *const kContentOffset = @"contentOffset";
             [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         }
     } completion:^(BOOL finished) {
-        /// 为了强制调用scrollDidScroll
+        /// To force scrollDidScroll
         [self setContentOffset:CGPointMake(0, self.contentOffset.y+1)];
         [self setContentOffset:CGPointMake(0, self.contentOffset.y-1)];
     } ];
@@ -386,8 +387,6 @@ static NSString *const kContentOffset = @"contentOffset";
 - (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
     objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_ASSIGN);
 }
-
-#pragma mark
 
 - (void)setPlayerWillAppearInScrollView:(void (^)(NSIndexPath * _Nonnull))playerWillAppearInScrollView {
     objc_setAssociatedObject(self, @selector(playerWillAppearInScrollView), playerWillAppearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);

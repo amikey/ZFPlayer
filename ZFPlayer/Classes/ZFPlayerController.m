@@ -36,9 +36,6 @@
 @property (nonatomic, strong) ZFPlayerNotification *notification;
 @property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
 @property (nonatomic, strong, nullable) UIScrollView *scrollView;
-/// The list plays the container view of the player when the window is small after the player has slid off the screen.
-@property (nonatomic, strong, nullable) ZFFloatView *smallFloatView;
-/// Is pauseByUser.
 @property (nonatomic, assign, getter=isPauseByUser) BOOL pauseByUser;
 @property (nonatomic, strong) UISlider *volumeViewSlider;
 
@@ -49,10 +46,10 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        __weak typeof(self) _self = self;
+        @weakify(self)
         [[ZFReachabilityManager sharedManager] startMonitoring];
         [[ZFReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(ZFReachabilityStatus status) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(videoPlayer:reachabilityChanged:)]) {
                 [self.controlView videoPlayer:self reachabilityChanged:status];
             }
@@ -62,9 +59,7 @@
     return self;
 }
 
-/**
- *  获取系统音量
- */
+/// Get system volume
 - (void)configureVolume {
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
     self.volumeViewSlider = nil;
@@ -74,11 +69,12 @@
             break;
         }
     }
+    // Apps using this category don't mute when the phone's mute button is turned on, but play sound when the phone is silent
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 
 - (void)dealloc {
-    [self.smallFloatView removeFromSuperview];
-    self.smallFloatView = nil;
     [self.currentPlayerManager stop];
 }
 
@@ -109,44 +105,44 @@
 }
 
 - (void)playerManagerCallbcak {
-    __weak typeof(self) _self = self;
+    @weakify(self)
     self.currentPlayerManager.playerPlayTimeChanged = ^(id  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
-        __strong typeof(_self) self = _self;
+       @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:currentTime:totalTime:)]) {
             [self.controlView videoPlayer:self currentTime:currentTime totalTime:duration];
         }
     };
     
     self.currentPlayerManager.playerBufferTimeChanged = ^(id  _Nonnull asset, NSTimeInterval bufferTime, NSTimeInterval duration) {
-        __strong typeof(_self) self = _self;
+         @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:bufferTime:totalTime:)]) {
             [self.controlView videoPlayer:self bufferTime:bufferTime totalTime:duration];
         }
     };
     
     self.currentPlayerManager.playerPrepareToPlay = ^(id  _Nonnull asset, NSURL * _Nonnull assetURL) {
-         __strong typeof(_self) self = _self;
+          @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
             [self.controlView videoPlayer:self prepareToPlay:self.currentPlayerManager.assetURL];
         }
     };
     
     self.currentPlayerManager.playerPlayStatChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
-        __strong typeof(_self) self = _self;
+         @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
             [self.controlView videoPlayer:self playStateChanged:playState];
         }
     };
     
     self.currentPlayerManager.playerLoadStatChanged = ^(id  _Nonnull asset, ZFPlayerLoadState loadState) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:loadStateChanged:)]) {
             [self.controlView videoPlayer:self loadStateChanged:loadState];
         }
     };
     
     self.currentPlayerManager.playerDidToEnd = ^(id  _Nonnull asset) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         if (self.playerDidToEnd) self.playerDidToEnd(asset);
         if ([self.controlView respondsToSelector:@selector(videoPlayerPlayEnd:)]) {
             [self.controlView videoPlayerPlayEnd:self];
@@ -170,16 +166,16 @@
 - (ZFPlayerNotification *)notification {
     if (!_notification) {
         _notification = [[ZFPlayerNotification alloc] init];
-        __weak typeof(self) _self = self;
+        @weakify(self)
         _notification.willResignActive = ^(ZFPlayerNotification * _Nonnull registrar) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if (self.pauseWhenAppResignActive && self.currentPlayerManager.isPlaying) {
                 [self.currentPlayerManager pause];
                 self.pauseByUser = YES;
             }
         };
         _notification.didBecomeActive = ^(ZFPlayerNotification * _Nonnull registrar) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if (self.isPauseByUser) {
                 [self.currentPlayerManager play];
                 self.pauseByUser = NO;
@@ -289,7 +285,6 @@
     self.currentPlayIndex = [self.assetURLs indexOfObject:assetURL];
 }
 
-/// 播放某一个
 - (void)playTheIndex:(NSInteger)index {
     if (index >= self.assetURLs.count) return;
     NSURL *assetURL = [self.assetURLs objectAtIndex:index];
@@ -409,13 +404,11 @@
     [self.orientationObserver removeDeviceOrientationObserver];
 }
 
-/// 进入横屏全屏状态
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated {
     self.orientationObserver.fullScreenMode = ZFFullScreenModeLandscape;
     [self.orientationObserver enterLandscapeFullScreen:orientation animated:animated];
 }
 
-/// 进入竖屏全屏状态
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated {
     self.orientationObserver.fullScreenMode = ZFFullScreenModePortrait;
     [self.orientationObserver enterPortraitFullScreen:fullScreen animated:YES];
@@ -435,12 +428,12 @@
 
 - (ZFOrientationObserver *)orientationObserver {
     if (!self.currentPlayerManager.view && !self.containerView) return nil;
-    __weak typeof(self) _self = self;
+    @weakify(self)
     ZFOrientationObserver *orientationObserver = objc_getAssociatedObject(self, _cmd);
     if (!orientationObserver) {
         orientationObserver = [[ZFOrientationObserver alloc] initWithRotateView:self.currentPlayerManager.view containerView:self.containerView];
         orientationObserver.orientationWillChange = ^(ZFOrientationObserver * _Nonnull observer, BOOL isFullScreen) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if (self.orientationWillChange) self.orientationWillChange(self, isFullScreen);
             if ([self.controlView respondsToSelector:@selector(videoPlayer:orientationWillChange:)]) {
                 [self.controlView videoPlayer:self orientationWillChange:observer];
@@ -449,7 +442,7 @@
             [self.controlView layoutIfNeeded];
         };
         orientationObserver.orientationDidChanged = ^(ZFOrientationObserver * _Nonnull observer, BOOL isFullScreen) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if (self.orientationDidChanged) self.orientationDidChanged(self, isFullScreen);
             if ([self.controlView respondsToSelector:@selector(videoPlayer:orientationDidChanged:)]) {
                 [self.controlView videoPlayer:self orientationDidChanged:observer];
@@ -519,9 +512,9 @@
     ZFPlayerGestureControl *gestureControl = objc_getAssociatedObject(self, _cmd);
     if (!gestureControl) {
         gestureControl = [[ZFPlayerGestureControl alloc] initWithTargetView:self.currentPlayerManager.view];
-        __weak typeof(self) _self = self;
+        @weakify(self)
         gestureControl.triggerCondition = ^BOOL(ZFPlayerGestureControl * _Nonnull control, ZFPlayerGestureType type, UIGestureRecognizer * _Nonnull gesture, UITouch *touch) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(gestureTriggerCondition:gestureType:gestureRecognizer:touch:)]) {
                 return [self.controlView gestureTriggerCondition:control gestureType:type gestureRecognizer:gesture touch:touch];
             }
@@ -529,42 +522,42 @@
         };
         
         gestureControl.singleTapped = ^(ZFPlayerGestureControl * _Nonnull control) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(gestureSingleTapped:)]) {
                 [self.controlView gestureSingleTapped:control];
             }
         };
         
         gestureControl.doubleTapped = ^(ZFPlayerGestureControl * _Nonnull control) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(gestureDoubleTapped:)]) {
                 [self.controlView gestureDoubleTapped:control];
             }
         };
         
         gestureControl.beganPan = ^(ZFPlayerGestureControl * _Nonnull control, ZFPanDirection direction, ZFPanLocation location) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(gestureBeganPan:panDirection:panLocation:)]) {
                 [self.controlView gestureBeganPan:control panDirection:direction panLocation:location];
             }
         };
         
         gestureControl.changedPan = ^(ZFPlayerGestureControl * _Nonnull control, ZFPanDirection direction, ZFPanLocation location, CGPoint velocity) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(gestureChangedPan:panDirection:panLocation:withVelocity:)]) {
                 [self.controlView gestureChangedPan:control panDirection:direction panLocation:location withVelocity:velocity];
             }
         };
         
         gestureControl.endedPan = ^(ZFPlayerGestureControl * _Nonnull control, ZFPanDirection direction, ZFPanLocation location) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(gestureEndedPan:panDirection:panLocation:)]) {
                 [self.controlView gestureEndedPan:control panDirection:direction panLocation:location];
             }
         };
         
         gestureControl.pinched = ^(ZFPlayerGestureControl * _Nonnull control, float scale) {
-            __strong typeof(_self) self = _self;
+            @strongify(self)
             if ([self.controlView respondsToSelector:@selector(gesturePinched:scale:)]) {
                 [self.controlView gesturePinched:control scale:scale];
             }
@@ -590,68 +583,31 @@
 
 @implementation ZFPlayerController (ZFPlayerScrollView)
 
-#pragma mark - setter
-
-- (void)setScrollView:(UIScrollView *)scrollView {
-    objc_setAssociatedObject(self, @selector(scrollView), scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    self.scrollView.WWANAutoPlay = self.isWWANAutoPlay;
-    __weak typeof(self) _self = self;
-    scrollView.enableDirection = YES;
-    scrollView.playerWillAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(_self) self = _self;
-        if ([self.controlView respondsToSelector:@selector(playerWillAppearInScrollView:)]) {
-            [self.controlView playerWillAppearInScrollView:self];
-        }
-        if (!self.stopWhileNotVisible) {
-            [self addPlayerViewToCell];
-        }
++ (void)load {
+    SEL selectors[] = {
+        NSSelectorFromString(@"dealloc")
     };
     
-    scrollView.playerAppearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(_self) self = _self;
-        if ([self.controlView respondsToSelector:@selector(playerAppearHalfInScrollView:)]) {
-            [self.controlView playerAppearHalfInScrollView:self];
-        }
-    };
-    
-    scrollView.playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(_self) self = _self;
-        if ([self.controlView respondsToSelector:@selector(playerDidAppearInScrollView:)]) {
-            [self.controlView playerDidAppearInScrollView:self];
-        }
-    };
-    
-    scrollView.playerWillDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(_self) self = _self;
-        if ([self.controlView respondsToSelector:@selector(playerWillDisappearInScrollView:)]) {
-            [self.controlView playerWillDisappearInScrollView:self];
-        }
-    };
-    
-    scrollView.playerDisappearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(_self) self = _self;
-        if ([self.controlView respondsToSelector:@selector(playerDisappearHalfInScrollView:)]) {
-            [self.controlView playerDisappearHalfInScrollView:self];
-        }
-        if (self.stopWhileNotVisible) {
-            [self stopCurrentPlayingCell];
-        }
-    };
-    
-    scrollView.playerDidDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(_self) self = _self;
-        if ([self.controlView respondsToSelector:@selector(playerDidDisappearInScrollView:)]) {
-            [self.controlView playerDidDisappearInScrollView:self];
-        }
-        if (!self.stopWhileNotVisible) {
-            [self addPlayerViewToKeyWindow];
+    for (NSUInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
+        SEL originalSelector = selectors[index];
+        SEL swizzledSelector = NSSelectorFromString([@"zf_" stringByAppendingString:NSStringFromSelector(originalSelector)]);
+        Method originalMethod = class_getInstanceMethod(self, originalSelector);
+        Method swizzledMethod = class_getInstanceMethod(self, swizzledSelector);
+        if (class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))) {
+            class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
         } else {
-            [self stopCurrentPlayingCell];
+            method_exchangeImplementations(originalMethod, swizzledMethod);
         }
-    };
+    }
 }
 
-//// 添加视频到cell上
+- (void)zf_dealloc {
+    [self.smallFloatView removeFromSuperview];
+    self.smallFloatView = nil;
+    [self zf_dealloc];
+}
+
+//// Add video to the cell
 - (void)addPlayerViewToCell {
     self.isSmallFloatViewShow = NO;
     self.smallFloatView.hidden = YES;
@@ -663,13 +619,74 @@
     [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.playerViewTag];
 }
 
-/// 加到keyWindow上
+/// Add to the keyWindow
 - (void)addPlayerViewToKeyWindow {
     self.isSmallFloatViewShow = YES;
     self.smallFloatView.hidden = NO;
     [self.smallFloatView addSubview:self.currentPlayerManager.view];
     self.currentPlayerManager.view.frame = self.smallFloatView.bounds;
     [self.orientationObserver cellSmallModelRotateView:self.currentPlayerManager.view containerView:self.smallFloatView];
+}
+
+#pragma mark - setter
+
+- (void)setScrollView:(UIScrollView *)scrollView {
+    objc_setAssociatedObject(self, @selector(scrollView), scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.scrollView.WWANAutoPlay = self.isWWANAutoPlay;
+    @weakify(self)
+    scrollView.enableDirection = YES;
+    scrollView.playerWillAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if ([self.controlView respondsToSelector:@selector(playerWillAppearInScrollView:)]) {
+            [self.controlView playerWillAppearInScrollView:self];
+        }
+        if (!self.stopWhileNotVisible) {
+            [self addPlayerViewToCell];
+        }
+    };
+    
+    scrollView.playerAppearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if ([self.controlView respondsToSelector:@selector(playerAppearHalfInScrollView:)]) {
+            [self.controlView playerAppearHalfInScrollView:self];
+        }
+    };
+    
+    scrollView.playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if ([self.controlView respondsToSelector:@selector(playerDidAppearInScrollView:)]) {
+            [self.controlView playerDidAppearInScrollView:self];
+        }
+    };
+    
+    scrollView.playerWillDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if ([self.controlView respondsToSelector:@selector(playerWillDisappearInScrollView:)]) {
+            [self.controlView playerWillDisappearInScrollView:self];
+        }
+    };
+    
+    scrollView.playerDisappearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if ([self.controlView respondsToSelector:@selector(playerDisappearHalfInScrollView:)]) {
+            [self.controlView playerDisappearHalfInScrollView:self];
+        }
+        if (self.stopWhileNotVisible) {
+            [self stopCurrentPlayingCell];
+        }
+    };
+    
+    scrollView.playerDidDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if ([self.controlView respondsToSelector:@selector(playerDidDisappearInScrollView:)]) {
+            [self.controlView playerDidDisappearInScrollView:self];
+        }
+        if (!self.stopWhileNotVisible) {
+            [self addPlayerViewToKeyWindow];
+        } else {
+            [self stopCurrentPlayingCell];
+        }
+    };
 }
 
 - (void)setStopWhileNotVisible:(BOOL)stopWhileNotVisible {
@@ -694,11 +711,11 @@
     }
 }
 
-- (void)setAssetURLs:(NSArray<NSURL *> * _Nonnull)assetURLs {
+- (void)setAssetURLs:(NSArray<NSURL *> * _Nullable)assetURLs {
     objc_setAssociatedObject(self, @selector(assetURLs), assetURLs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setSectionAssetURLs:(NSArray<NSArray<NSURL *> *> * _Nonnull)sectionAssetURLs {
+- (void)setSectionAssetURLs:(NSArray<NSArray<NSURL *> *> * _Nullable)sectionAssetURLs {
     objc_setAssociatedObject(self, @selector(sectionAssetURLs), sectionAssetURLs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

@@ -26,7 +26,7 @@
 #import "ZFKVOController.h"
 #import "ZFAVPlayerResourceSupport.h"
 #import "ZFPlayerView.h"
-
+#import <ZFPlayer/ZFPlayer.h>
 /*!
  *  Refresh interval for timed observations of AVPlayer
  */
@@ -200,7 +200,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     }];
 }
 
-/// 更换当前的播放地址
+/// Replace the current playback address
 - (void)replaceCurrentAssetURL:(NSURL *)assetURL {
     if (self.player) [self stop];
     _assetURL = assetURL;
@@ -232,6 +232,31 @@ static NSString *const kPresentationSize         = @"presentationSize";
     return image;
 }
 
+#pragma mark - private method
+
+/// Calculate buffer progress
+- (NSTimeInterval)availableDuration {
+    NSArray *timeRangeArray = _playerItem.loadedTimeRanges;
+    CMTime currentTime = [_player currentTime];
+    BOOL foundRange = NO;
+    CMTimeRange aTimeRange = {0};
+    if (timeRangeArray.count) {
+        aTimeRange = [[timeRangeArray objectAtIndex:0] CMTimeRangeValue];
+        if (CMTimeRangeContainsTime(aTimeRange, currentTime)) {
+            foundRange = YES;
+        }
+    }
+    
+    if (foundRange) {
+        CMTime maxTime = CMTimeRangeGetEnd(aTimeRange);
+        NSTimeInterval playableDuration = CMTimeGetSeconds(maxTime);
+        if (playableDuration > 0) {
+            return playableDuration;
+        }
+    }
+    return 0;
+}
+
 - (void)initializePlayer {
     self.assetLoader = [[ZFAVPlayerResourceSupport alloc] initWithURL:_assetURL];
     _asset = [self.assetLoader urlAsset:nil queue:dispatch_get_main_queue()];
@@ -239,11 +264,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
     _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
     [self enableAudioTracks:YES inPlayerItem:_playerItem];
-    
-    /// 解决8.1系统播放无声音问题，8.0、9.0以上未发现此问题
-    AVAudioSession * session = [AVAudioSession sharedInstance];
-    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
-    [session setActive:YES error:nil];
     
     ZFPlayerPresentView *presentView = (ZFPlayerPresentView *)self.view;
     presentView.player = _player;
@@ -258,7 +278,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     [self itemObserving];
 }
 
-/// 倍速切换方法
+/// Playback speed switching method
 - (void)enableAudioTracks:(BOOL)enable inPlayerItem:(AVPlayerItem*)playerItem {
     for (AVPlayerItemTrack *track in playerItem.tracks){
         if ([track.assetTrack.mediaType isEqual:AVMediaTypeVideo]) {
@@ -268,14 +288,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 - (void)itemObserving {
-    /*!
-     AVPlayerItemStatusUnknown 该状态表示当前媒体还未载入并且还不在播放队列中.
-     将`AVPlayerItem`与一个`AVPlayer`对象进行关联就开始将媒体放入队列中, 但是在具体内容可以播放前, 需要等待对象的状态由`unknown`变为`readyToPlay`.
-     我们可以通过`KVO`来监听`status`的改变.
-     
-     AVPlayerItemStatusReadyToPlay,
-     AVPlayerItemStatusFailed
-     **/
     [_playerItemKVO safelyRemoveAllObservers];
     _playerItemKVO = [[ZFKVOController alloc] initWithTarget:_playerItem];
     [_playerItemKVO safelyAddObserver:self
@@ -300,20 +312,20 @@ static NSString *const kPresentationSize         = @"presentationSize";
                               context:nil];
 
     CMTime interval = CMTimeMakeWithSeconds(kTimeRefreshInterval, NSEC_PER_SEC);
-    __weak typeof(self) _self = self;
+    @weakify(self)
     _timeObserver = [self.player addPeriodicTimeObserverForInterval:interval queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         if (!self) return;
         NSArray *loadedRanges = self.playerItem.seekableTimeRanges;
         if (loadedRanges.count > 0 && self.playerItem.duration.timescale != 0) {
-            _currentTime = CMTimeGetSeconds(time);
-            _totalTime = CMTimeGetSeconds(self.playerItem.duration);
+            self->_currentTime = CMTimeGetSeconds(time);
+            self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
             if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
         }
     }];
     
     _itemEndObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:self.playerItem queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         if (!self) return;
         self.playState = ZFPlayerPlayStatePlayStopped;
         if (self.playerDidToEnd) self.playerDidToEnd(self);
@@ -325,7 +337,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
          if ([keyPath isEqualToString:kStatus]) {
              if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
                  self.loadState = ZFPlayerLoadStatePlaythroughOK;
-                 // 跳到xx秒播放视频
                  if (self.seekTime) [self seekToTime:self.seekTime completionHandler:nil];
                  if (self.shouldAutoPlay) [self play];
                  self.player.muted = self.muted;
@@ -333,24 +344,24 @@ static NSString *const kPresentationSize         = @"presentationSize";
                  self.playState = ZFPlayerPlayStatePlayFailed;
              }
          } else if ([keyPath isEqualToString:kPlaybackBufferEmpty]) {
-             // 当缓冲是空的时候
+             // When the buffer is empty
              if (self.playerItem.playbackBufferEmpty) {
                  self.loadState = ZFPlayerLoadStateStalled;
              }
          } else if ([keyPath isEqualToString:kPlaybackLikelyToKeepUp]) {
-             // 当缓冲好的时候
+             // When the buffer is good
              if (self.playerItem.playbackLikelyToKeepUp) {
                  self.loadState = ZFPlayerLoadStatePlayable;
              }
          } else if ([keyPath isEqualToString:kLoadedTimeRanges]) {
              NSTimeInterval bufferTime = [self availableDuration];
-             _totalTime = CMTimeGetSeconds(self.playerItem.duration);
-             _bufferTime = bufferTime;
+             self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
+             self->_bufferTime = bufferTime;
              if (self.playerBufferTimeChanged) {
-                 self.playerBufferTimeChanged(self, bufferTime, _totalTime);
+                 self.playerBufferTimeChanged(self, bufferTime, self->_totalTime);
              }
          } else if ([keyPath isEqualToString:kPresentationSize]) {
-             _presentationSize = self.playerItem.presentationSize;
+             self->_presentationSize = self.playerItem.presentationSize;
          } else {
              [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
          }
@@ -435,35 +446,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
     }
     _volume = volume;
     self.player.volume = volume;
-}
-
-#pragma mark - private method
-
-/**
- *  计算缓冲进度
- *
- *  @return 缓冲进度
- */
-- (NSTimeInterval)availableDuration {
-    NSArray *timeRangeArray = _playerItem.loadedTimeRanges;
-    CMTime currentTime = [_player currentTime];
-    BOOL foundRange = NO;
-    CMTimeRange aTimeRange = {0};
-    if (timeRangeArray.count) {
-        aTimeRange = [[timeRangeArray objectAtIndex:0] CMTimeRangeValue];
-        if (CMTimeRangeContainsTime(aTimeRange, currentTime)) {
-            foundRange = YES;
-        }
-    }
-    
-    if (foundRange) {
-        CMTime maxTime = CMTimeRangeGetEnd(aTimeRange);
-        NSTimeInterval playableDuration = CMTimeGetSeconds(maxTime);
-        if (playableDuration > 0) {
-            return playableDuration;
-        }
-    }
-    return 0;
 }
 
 @end

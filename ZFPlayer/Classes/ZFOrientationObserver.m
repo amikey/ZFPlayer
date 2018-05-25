@@ -28,7 +28,6 @@
 
 /*!
  @method currentViewController
- 
  @return Returns the topViewController in stack of topMostController.
  */
 + (UIViewController*)zf_currentViewController;
@@ -157,14 +156,14 @@ static UIWindow *kWindow;
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated {
     if (self.fullScreenMode == ZFFullScreenModeLandscape) {
         UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-        // 判断如果当前方向和要旋转的方向一致,那么不做任何操作
+        // Determine that if the current direction is the same as the direction you want to rotate, do nothing
         if (currentOrientation == orientation) { return; }
         
         UIView *superview = nil;
         CGRect frame;
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             superview = kWindow;
-            if (!self.isFullScreen) { /// 从屏幕另一侧到这一侧时候不设置
+            if (!self.isFullScreen) { /// It's not set from the other side of the screen to this side
                 self.view.frame = [self.view convertRect:self.view.frame toView:superview];
             }
             for (NSInteger i = 0; i < _containerView.subviews.count; i++) {
@@ -211,7 +210,6 @@ static UIWindow *kWindow;
 
 /// Gets the rotation Angle of the transformation.
 - (CGAffineTransform)getTransformRotationAngle:(UIInterfaceOrientation)orientation {
-    // 根据要进行旋转的方向来计算旋转的角度
     if (orientation == UIInterfaceOrientationPortrait) {
         return CGAffineTransformIdentity;
     } else if (orientation == UIInterfaceOrientationLandscapeLeft){

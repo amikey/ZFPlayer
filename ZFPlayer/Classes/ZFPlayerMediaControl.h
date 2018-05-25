@@ -39,15 +39,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-#pragma mark - 播放之前/状态
+#pragma mark - Playback state
 
-/// 播放状态
+/// Playback state
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer playStateChanged:(ZFPlayerPlaybackState)state;
 
-/// 加载状态
+/// Loading state
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state;
 
-#pragma mark - 进度
+#pragma mark - progress
 
 /**
  Call it when the playback changed
@@ -79,13 +79,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoPlayerPlayEnd:(ZFPlayerController *)videoPlayer;
 
-#pragma mark - 锁屏
+#pragma mark - lock screen
+
 /**
  Call it when set videoPlayer.lockedScreen.
  */
 - (void)lockedVideoPlayer:(ZFPlayerController *)videoPlayer lockedScreen:(BOOL)locked;
 
-#pragma mark - 屏幕旋转
+#pragma mark - Screen rotation
 
 /**
  Call it when the fullScreen maode will changed.
@@ -104,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer reachabilityChanged:(ZFReachabilityStatus)status;
 
-#pragma mark - 手势
+#pragma mark - Gesture
 
 /**
  Call when the gesture condition

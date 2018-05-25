@@ -50,9 +50,9 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.playerViewTag = 100;
     self.player.assetURLs = self.urls;
     
-    __weak typeof(self) _self = self;
+    @weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
             [self playTheVideoAtIndexPath:indexPath];
@@ -84,9 +84,9 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    __weak typeof(self) _self = self;
+    @weakify(self)
     [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         [self playTheVideoAtIndexPath:indexPath];
     }];
     __weak typeof(self) weakSelf = self;
@@ -180,9 +180,9 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (void)scrollDidStoppedToPlay {
     /// 停止的时候找出最合适的播放
-    __weak typeof(self) _self = self;
+    @weakify(self)
     [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(_self) self = _self;
+        @strongify(self)
         [self playTheVideoAtIndexPath:indexPath];
     }];
 }

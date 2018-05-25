@@ -107,7 +107,7 @@
     return YES;
 }
 
-// 是否支持多时候触发，返回YES，则可以多个手势一起触发方法，返回NO则为互斥
+// Whether to support multi-trigger, return YES, you can trigger a method with multiple gestures, return NO is mutually exclusive
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     if (otherGestureRecognizer != self.singleTap &&
         otherGestureRecognizer != self.doubleTap &&
@@ -125,7 +125,7 @@
         _singleTap.delegate = self;
         _singleTap.delaysTouchesBegan = YES;
         _singleTap.delaysTouchesEnded = YES;
-        _singleTap.numberOfTouchesRequired = 1; //手指数
+        _singleTap.numberOfTouchesRequired = 1;  
         _singleTap.numberOfTapsRequired = 1;
     }
     return _singleTap;

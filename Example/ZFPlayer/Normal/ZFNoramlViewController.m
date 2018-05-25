@@ -43,10 +43,10 @@
         [weakSelf.view endEditing:YES];
         [weakSelf setNeedsStatusBarAppearanceUpdate];
     };
-//    self.player.playerDidToEnd = ^(id  _Nonnull asset) {
-//        [weakSelf.controlView resetControlView];
-//        [weakSelf.player.currentPlayerManager replay];
-//    };
+    self.player.playerDidToEnd = ^(id  _Nonnull asset) {
+        [weakSelf.controlView resetControlView];
+        [weakSelf.player.currentPlayerManager replay];
+    };
     playerManager.assetURL = [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4"];
 }
 

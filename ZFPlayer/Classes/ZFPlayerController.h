@@ -211,10 +211,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// if tableView or collectionView has only one section , use sectionAssetURLs.
 /// if normal model set this can use `playTheNext` `playThePrevious` `playTheIndex:`.
-@property (nonatomic, copy) NSArray <NSURL *>*assetURLs;
+@property (nonatomic, copy, nullable) NSArray <NSURL *>*assetURLs;
 
 /// if tableView or collectionView has more section, use sectionAssetURLs.
-@property (nonatomic, copy) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
+@property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
 
 /// stop the current playing video on cell.
 - (void)stopCurrentPlayingCell;

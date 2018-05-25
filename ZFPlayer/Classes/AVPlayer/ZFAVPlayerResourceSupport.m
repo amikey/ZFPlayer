@@ -134,17 +134,17 @@
         NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithRequest:request completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             //获取视频资源大小结束
             if (error == nil) { //获取成功
-                _videoLength = (NSInteger)[response expectedContentLength];
+                self->_videoLength = (NSInteger)[response expectedContentLength];
                 
-                NSDictionary *infoDict = [NSDictionary dictionaryWithObject:@(_videoLength) forKey:@"length"];
-                [infoDict writeToFile:[_infoDictionaryPath stringByAppendingPathComponent:@"info.plist"] atomically:YES];
-                _getVideoLengthState = 1;
+                NSDictionary *infoDict = [NSDictionary dictionaryWithObject:@(self->_videoLength) forKey:@"length"];
+                [infoDict writeToFile:[self->_infoDictionaryPath stringByAppendingPathComponent:@"info.plist"] atomically:YES];
+                self->_getVideoLengthState = 1;
                 [self getLocationFilesInfo];
                 long long length = [self requestLengthForStartLocation];
-                [self makeRequest:_currentStartOffset requestLength:length];
+                [self makeRequest:self->_currentStartOffset requestLength:length];
                 [self setRequestData];
             } else {
-                _getVideoLengthState = 0;
+                self->_getVideoLengthState = 0;
             }
             
         }];
@@ -396,9 +396,7 @@
         LocationFileInfo *fileInfo = [_locationFiles objectAtIndex:i];
         if (_currentRequestInfo!=nil && _currentRequestInfo.startLocation <= searchLocaiton && (_currentRequestInfo.startLocation+_currentRequestInfo.downloadLength) > searchLocaiton) {
             NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:_currentRequestInfo.filePath];
-            
             [handle seekToFileOffset:(searchLocaiton -_currentRequestInfo.startLocation)];
-            
             NSData *data = [handle readDataOfLength:(int)(MIN(_currentRequestInfo.downloadLength-((searchLocaiton-_currentRequestInfo.startLocation)), needLength))];
             [handle closeFile];
             searchLocaiton += data.length;
@@ -406,9 +404,7 @@
             [fileData appendData:data];
         } else if (fileInfo.startLocation <= searchLocaiton && (fileInfo.startLocation+fileInfo.dataLength) > searchLocaiton && needLength>0) {
             NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:fileInfo.filePath];
-            
             [handle seekToFileOffset:(searchLocaiton -fileInfo.startLocation)];
-            
             NSData *data = [handle readDataOfLength:(int)(MIN(fileInfo.dataLength-((searchLocaiton-fileInfo.startLocation)), needLength))];
             [handle closeFile];
             searchLocaiton += data.length;
