@@ -44,6 +44,7 @@
 		D209362820B65A4E0002C956 /* ZFPortraitControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D209361D20B65A4E0002C956 /* ZFPortraitControlView.m */; };
 		D209365920B79C1E0002C956 /* ZFKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D209365820B79C1E0002C956 /* ZFKeyboardViewController.m */; };
 		D2EEFE6320BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */; };
+		D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EEFE6520BBF3890097D6D9 /* ZFSmallPlayViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,8 @@
 		D209365820B79C1E0002C956 /* ZFKeyboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFKeyboardViewController.m; sourceTree = "<group>"; };
 		D2EEFE6120BBB03E0097D6D9 /* ZFNotAutoPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFNotAutoPlayViewController.h; sourceTree = "<group>"; };
 		D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFNotAutoPlayViewController.m; sourceTree = "<group>"; };
+		D2EEFE6420BBF3890097D6D9 /* ZFSmallPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFSmallPlayViewController.h; sourceTree = "<group>"; };
+		D2EEFE6520BBF3890097D6D9 /* ZFSmallPlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFSmallPlayViewController.m; sourceTree = "<group>"; };
 		FC1C8E2C2FD8F2B2F76D6B1E /* Pods-ZFPlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFPlayer_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZFPlayer_Tests/Pods-ZFPlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -254,6 +257,8 @@
 				D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */,
 				D20935F720B658AE0002C956 /* ZFNormalTableViewController.h */,
 				D20935F220B658AE0002C956 /* ZFNormalTableViewController.m */,
+				D2EEFE6420BBF3890097D6D9 /* ZFSmallPlayViewController.h */,
+				D2EEFE6520BBF3890097D6D9 /* ZFSmallPlayViewController.m */,
 				D20935F320B658AE0002C956 /* ZFLightTableViewController.h */,
 				D20935FC20B658AE0002C956 /* ZFLightTableViewController.m */,
 				D20935F920B658AE0002C956 /* ZFTableViewCellLayout.h */,
@@ -548,6 +553,7 @@
 				D209362820B65A4E0002C956 /* ZFPortraitControlView.m in Sources */,
 				D209362620B65A4E0002C956 /* ZFSmallFloatControlView.m in Sources */,
 				D209362520B65A4E0002C956 /* ZFPlayerControlView.m in Sources */,
+				D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */,
 				D209360020B658AE0002C956 /* ZFTableData.m in Sources */,
 				D209360620B658CE0002C956 /* UIImageView+ZFCache.m in Sources */,
 				D209360220B658AE0002C956 /* NSString+Size.m in Sources */,

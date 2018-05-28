@@ -780,7 +780,7 @@
     return self.scrollView.shouldAutoPlay;
 }
 
-- (void)playTheIndexPath:(NSIndexPath *)indexPath {
+- (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
     self.playingIndexPath = indexPath;
     NSURL *assetURL;
     if (self.sectionAssetURLs.count) {
@@ -790,6 +790,9 @@
         self.currentPlayIndex = indexPath.row;
     }
     self.currentPlayerManager.assetURL = assetURL;
+    if (scrollToTop) {
+        [self.scrollView zf_scrollToRowAtIndexPath:indexPath];
+    }
 }
 
 - (void)stopCurrentPlayingCell {

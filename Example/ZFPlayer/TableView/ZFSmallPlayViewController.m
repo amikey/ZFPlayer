@@ -1,12 +1,12 @@
 //
-//  ZFNormalTableViewController.m
+//  ZFSmallPlayViewController.m
 //  ZFPlayer
 //
 //  Created by 任子丰 on 2018/4/1.
 //  Copyright © 2018年 紫枫. All rights reserved.
 //
 
-#import "ZFNormalTableViewController.h"
+#import "ZFSmallPlayViewController.h"
 #import "ZFTableViewCell.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import "ZFAVPlayerManager.h"
@@ -15,7 +15,7 @@
 
 static NSString *kIdentifier = @"kIdentifier";
 
-@interface ZFNormalTableViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
+@interface ZFSmallPlayViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -31,19 +31,19 @@ static NSString *kIdentifier = @"kIdentifier";
 
 @end
 
-@implementation ZFNormalTableViewController
+@implementation ZFSmallPlayViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
     self.view.backgroundColor = [UIColor redColor];
     [self requestData];
-    self.navigationItem.title = @"自动播放";
+    self.navigationItem.title = @"小窗播放";
     
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];
     self.playerManager.shouldAutoPlay = YES;
-
+    
     /// player
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager];
     self.player.controlView = self.controlView;
@@ -65,14 +65,14 @@ static NSString *kIdentifier = @"kIdentifier";
         }
     };
     
-//    /// 以下设置滑出屏幕后不停止播放
-//    self.player.stopWhileNotVisible = NO;
-//    CGFloat margin = 20;
-//    CGFloat w = ZFPlayer_ScreenWidth/2;
-//    CGFloat h = w * 9/16;
-//    CGFloat x = ZFPlayer_ScreenWidth - w - margin;
-//    CGFloat y = ZFPlayer_ScreenHeight - h - margin;
-//    self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
+    /// 以下设置滑出屏幕后不停止播放
+    self.player.stopWhileNotVisible = NO;
+    CGFloat margin = 20;
+    CGFloat w = ZFPlayer_ScreenWidth/2;
+    CGFloat h = w * 9/16;
+    CGFloat x = ZFPlayer_ScreenWidth - w - margin;
+    CGFloat y = ZFPlayer_ScreenHeight - h - margin;
+    self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
 }
 
 - (void)viewWillLayoutSubviews {

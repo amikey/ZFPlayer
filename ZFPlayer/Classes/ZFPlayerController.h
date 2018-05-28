@@ -223,7 +223,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stopCurrentPlayingCell;
 
 /// Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
-- (void)playTheIndexPath:(NSIndexPath *)indexPath;
+/// `scrollToTop` scroll to top with animations.
+- (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop;
 
 @end
 
