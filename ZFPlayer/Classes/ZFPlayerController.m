@@ -711,6 +711,10 @@
     }
 }
 
+- (void)setShouldAutoPlay:(BOOL)shouldAutoPlay {
+    self.scrollView.shouldAutoPlay = shouldAutoPlay;
+}
+
 - (void)setAssetURLs:(NSArray<NSURL *> * _Nullable)assetURLs {
     objc_setAssociatedObject(self, @selector(assetURLs), assetURLs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -770,6 +774,10 @@
 
 - (NSArray<NSArray<NSURL *> *> *)sectionAssetURLs {
     return objc_getAssociatedObject(self, _cmd);
+}
+
+- (BOOL)shouldAutoPlay {
+    return self.scrollView.shouldAutoPlay;
 }
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath {

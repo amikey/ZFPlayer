@@ -15,7 +15,7 @@
 
 static NSString *kIdentifier = @"kIdentifier";
 
-@interface ZFLightTableViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface ZFLightTableViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -130,6 +130,7 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ZFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
+    [cell setDelegate:self withIndexPath:indexPath];
     cell.layout = self.dataSource[indexPath.row];
     return cell;
 }
@@ -142,6 +143,13 @@ static NSString *kIdentifier = @"kIdentifier";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
     return layout.height;
+}
+
+
+#pragma mark - ZFTableViewCellDelegate
+
+- (void)zf_playTheVideoAtIndexPath:(NSIndexPath *)indexPath {
+    [self playTheVideoAtIndexPath:indexPath];
 }
 
 #pragma mark - UIScrollViewDelegate

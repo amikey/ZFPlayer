@@ -17,6 +17,8 @@
 @property (nonatomic, strong) UIView *fullMaskView;
 @property (nonatomic, strong) UIButton *playBtn;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, weak) id<ZFTableViewCellDelegate> delegate;
+@property (nonatomic, strong) NSIndexPath *indexPath;
 
 @end
 
@@ -52,6 +54,11 @@
     self.titleLabel.text = layout.data.title;
 }
 
+- (void)setDelegate:(id<ZFTableViewCellDelegate>)delegate withIndexPath:(NSIndexPath *)indexPath {
+    self.delegate = delegate;
+    self.indexPath = indexPath;
+}
+
 - (void)setNormalMode {
     self.fullMaskView.hidden = YES;
     self.titleLabel.textColor = [UIColor blackColor];
@@ -71,10 +78,20 @@
     }];
 }
 
+
+- (void)playBtnClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(zf_playTheVideoAtIndexPath:)]) {
+        [self.delegate zf_playTheVideoAtIndexPath:self.indexPath];
+    }
+}
+
+#pragma mark - getter
+
 - (UIButton *)playBtn {
     if (!_playBtn) {
         _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_playBtn setImage:[UIImage imageNamed:@"new_allPlay_44x44_"] forState:UIControlStateNormal];
+        [_playBtn addTarget:self action:@selector(playBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _playBtn;
 }

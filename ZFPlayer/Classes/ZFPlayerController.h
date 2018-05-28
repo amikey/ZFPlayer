@@ -194,6 +194,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The scroll view is `tableView` or `collectionView`.
 @property (nonatomic, readonly, nullable) UIScrollView *scrollView;
 
+/// The scrollView player should auto player,default is YES.
+@property (nonatomic) BOOL shouldAutoPlay;
+
 /// The list plays the container view of the player when the window is small after the player has slid off the screen.
 @property (nonatomic, readonly, nullable) ZFFloatView *smallFloatView;
 

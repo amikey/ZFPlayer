@@ -58,19 +58,37 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 /// The view must inherited `ZFPlayerView`,this view deals with some gesture conflicts
 @property (nonatomic) ZFPlayerView *view;
 
-/// The player volume
+/// The player volume, 0...1.0
+/// Only affects audio volume for the player instance and not for the device.
+/// You can change device volume or player volume as needed,change the player volume you can folllow the `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic) float volume;
+
+/// The player muted
 /// indicates whether or not audio output of the player is muted. Only affects audio muting for the player instance and not for the device.
+/// You can change device volume or player muted as needed,change the player muted you can folllow the `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic, getter=isMuted) BOOL muted;
-/// Playback speed 0.5...2
+
+/// Playback speed,0.5...2
 @property (nonatomic) float rate;
 
+/// Should auto play.
 @property (nonatomic) BOOL shouldAutoPlay;
+
+/// The player current play time.
 @property (nonatomic, readonly) NSTimeInterval currentTime;
+
+/// The player total time.
 @property (nonatomic, readonly) NSTimeInterval totalTime;
+
+/// The player buffer time.
 @property (nonatomic, readonly) NSTimeInterval bufferTime;
+
+/// The player seek time.
 @property (nonatomic) NSTimeInterval seekTime;
+
+/// The player play state,playing or not playing.
 @property (nonatomic, readonly) BOOL isPlaying;
+
 /// Determines how the content scales to fit the view. Defaults to ZFPlayerScalingModeNone.
 @property (nonatomic) ZFPlayerScalingMode scalingMode;
 

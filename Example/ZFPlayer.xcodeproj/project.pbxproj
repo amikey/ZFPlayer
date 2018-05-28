@@ -43,6 +43,7 @@
 		D209362720B65A4E0002C956 /* ZFLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = D209361B20B65A4E0002C956 /* ZFLoadingView.m */; };
 		D209362820B65A4E0002C956 /* ZFPortraitControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D209361D20B65A4E0002C956 /* ZFPortraitControlView.m */; };
 		D209365920B79C1E0002C956 /* ZFKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D209365820B79C1E0002C956 /* ZFKeyboardViewController.m */; };
+		D2EEFE6320BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,8 @@
 		D209361E20B65A4E0002C956 /* ZFLandScapeControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFLandScapeControlView.h; sourceTree = "<group>"; };
 		D209365720B79C1E0002C956 /* ZFKeyboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFKeyboardViewController.h; sourceTree = "<group>"; };
 		D209365820B79C1E0002C956 /* ZFKeyboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFKeyboardViewController.m; sourceTree = "<group>"; };
+		D2EEFE6120BBB03E0097D6D9 /* ZFNotAutoPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFNotAutoPlayViewController.h; sourceTree = "<group>"; };
+		D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFNotAutoPlayViewController.m; sourceTree = "<group>"; };
 		FC1C8E2C2FD8F2B2F76D6B1E /* Pods-ZFPlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFPlayer_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZFPlayer_Tests/Pods-ZFPlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -247,6 +250,8 @@
 		D20935EF20B658AE0002C956 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				D2EEFE6120BBB03E0097D6D9 /* ZFNotAutoPlayViewController.h */,
+				D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */,
 				D20935F720B658AE0002C956 /* ZFNormalTableViewController.h */,
 				D20935F220B658AE0002C956 /* ZFNormalTableViewController.m */,
 				D20935F320B658AE0002C956 /* ZFLightTableViewController.h */,
@@ -551,6 +556,7 @@
 				D209365920B79C1E0002C956 /* ZFKeyboardViewController.m in Sources */,
 				D209362020B65A4E0002C956 /* UIView+ZFFrame.m in Sources */,
 				D20935FF20B658AE0002C956 /* ZFNormalTableViewController.m in Sources */,
+				D2EEFE6320BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

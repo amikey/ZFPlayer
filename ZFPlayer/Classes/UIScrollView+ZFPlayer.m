@@ -76,6 +76,7 @@ static NSString *const kContentOffset = @"contentOffset";
 }
 
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler {
+    if (!self.shouldAutoPlay) return;
     if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.WWANAutoPlay) return;
     NSArray *cellsArray = nil;
     NSArray *visiableCells = nil;
@@ -217,6 +218,7 @@ static NSString *const kContentOffset = @"contentOffset";
 }
 
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler {
+    if (!self.shouldAutoPlay) return;
     if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.WWANAutoPlay) return;
     @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
@@ -313,6 +315,13 @@ static NSString *const kContentOffset = @"contentOffset";
     return number.boolValue;
 }
 
+- (BOOL)shouldAutoPlay {
+    NSNumber *number = objc_getAssociatedObject(self, _cmd);
+    if (number) return number.boolValue;
+    self.shouldAutoPlay = YES;
+    return YES;
+}
+
 - (void (^)(NSIndexPath * _Nonnull))playerWillAppearInScrollView {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -386,6 +395,10 @@ static NSString *const kContentOffset = @"contentOffset";
 
 - (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
     objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (void)setShouldAutoPlay:(BOOL)shouldAutoPlay {
+    objc_setAssociatedObject(self, @selector(shouldAutoPlay), @(shouldAutoPlay), OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (void)setPlayerWillAppearInScrollView:(void (^)(NSIndexPath * _Nonnull))playerWillAppearInScrollView {

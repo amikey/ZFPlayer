@@ -10,9 +10,19 @@
 #import "ZFTableData.h"
 #import "ZFTableViewCellLayout.h"
 
+@protocol ZFTableViewCellDelegate <NSObject>
+
+- (void)zf_playTheVideoAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
 @interface ZFTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) ZFTableViewCellLayout *layout;
+
+@property (nonatomic, copy) void(^playCallback)(void);
+
+- (void)setDelegate:(id<ZFTableViewCellDelegate>)delegate withIndexPath:(NSIndexPath *)indexPath;
 
 - (void)showMaskView;
 
