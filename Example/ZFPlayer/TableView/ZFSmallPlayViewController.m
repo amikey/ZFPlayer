@@ -53,11 +53,10 @@ static NSString *kIdentifier = @"kIdentifier";
     @weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
-            [self.tableView zf_scrollToRowAtIndexPath:indexPath];
-        } else if (self.player.isFullScreen) {
+        if (!self.player.isFullScreen) {
+            [self.player stopCurrentPlayingCell];
+            [self.controlView resetControlView];
+        } else {
             [self.player enterFullScreen:NO animated:YES];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.player stopCurrentPlayingCell];
@@ -198,7 +197,7 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    [self.player playTheIndexPath:indexPath scrollToTop:NO];
+    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
     [self.controlView resetControlView];
     ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
     [self.controlView showTitle:layout.data.title

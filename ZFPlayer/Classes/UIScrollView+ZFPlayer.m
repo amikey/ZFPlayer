@@ -62,16 +62,16 @@ static NSString *const kContentOffset = @"contentOffset";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     dispatch_async(dispatch_get_main_queue(), ^{
-         if ([keyPath isEqualToString:kContentOffset]) {
-             if ([change[@"new"] CGPointValue].y > [change[@"old"] CGPointValue].y) { // Scroll up
-                 self.scrollDerection = ZFPlayerScrollDerectionUp;
-             } else if ([change[@"new"] CGPointValue].y < [change[@"old"] CGPointValue].y) { // Scroll dwon
-                 self.scrollDerection = ZFPlayerScrollDerectionDown;
-             }
-             [self zf_scrollViewDidScroll];
-         } else {
+        if ([keyPath isEqualToString:kContentOffset]) {
+            if ([change[@"new"] CGPointValue].y > [change[@"old"] CGPointValue].y) { // Scroll up
+                self.scrollDerection = ZFPlayerScrollDerectionUp;
+            } else if ([change[@"new"] CGPointValue].y < [change[@"old"] CGPointValue].y) { // Scroll dwon
+                self.scrollDerection = ZFPlayerScrollDerectionDown;
+            }
+            [self zf_scrollViewDidScroll];
+        } else {
             [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-         }
+        }
     });
 }
 
@@ -150,9 +150,7 @@ static NSString *const kContentOffset = @"contentOffset";
     if (self.playingIndexPath) {
         UIView *cell = [self zf_getCellForIndexPath:self.playingIndexPath];
         if (!cell) {
-            if (self.stopWhileNotVisible) {
-                if (self.playerDidDisappearInScrollView) self.playerDidDisappearInScrollView(self.playingIndexPath);
-            }
+            if (self.playerDidDisappearInScrollView) self.playerDidDisappearInScrollView(self.playingIndexPath);
             return;
         }
         UIView *playerView = [cell viewWithTag:self.playerViewTag];
@@ -174,32 +172,10 @@ static NSString *const kContentOffset = @"contentOffset";
                 if (self.playerDidDisappearInScrollView) self.playerDidDisappearInScrollView(self.playingIndexPath);
             } else if (topSpacing > 0 && topSpacing < CGRectGetHeight(self.frame)) {
                 /// In visable area
-            }
-            
-            /// Bottom area
-            if (bottomSpacing >= 0) {
                 /// When the player did appeared.
                 if (self.playerDidAppearInScrollView) self.playerDidAppearInScrollView(self.playingIndexPath);
-            } else if (bottomSpacing <= -CGRectGetHeight(rect)/2 && bottomSpacing > -CGRectGetHeight(rect)) {
-                /// When the player did appeared half.
-                if (self.playerAppearHalfInScrollView) self.playerAppearHalfInScrollView(self.playingIndexPath);
-            } else if (bottomSpacing <= -CGRectGetHeight(rect)) {
-                /// When the player will appear.
-                if (self.playerWillAppearInScrollView) self.playerWillAppearInScrollView(self.playingIndexPath);
             }
         } else if (self.scrollDerection == ZFPlayerScrollDerectionDown) { /// Scroll Down
-             /// Top area
-            if (topSpacing >= 0) {
-                /// When the player did appeared.
-                if (self.playerDidAppearInScrollView) self.playerDidAppearInScrollView(self.playingIndexPath);
-            } else if (topSpacing <= -CGRectGetHeight(rect)/2 && topSpacing > -CGRectGetHeight(rect)) {
-                /// When the player did appeared half.
-                if (self.playerAppearHalfInScrollView) self.playerAppearHalfInScrollView(self.playingIndexPath);
-            } else if (topSpacing <= -CGRectGetHeight(rect)) {
-                /// When the player will appear.
-                if (self.playerWillAppearInScrollView) self.playerWillAppearInScrollView(self.playingIndexPath);
-            }
-            
             /// Bottom area
             if (bottomSpacing <= 0 && bottomSpacing > -CGRectGetHeight(rect)/2) {
                 /// When the player will disappear.
@@ -212,6 +188,8 @@ static NSString *const kContentOffset = @"contentOffset";
                 if (self.playerDidDisappearInScrollView) self.playerDidDisappearInScrollView(self.playingIndexPath);
             } else if (bottomSpacing > 0 && bottomSpacing < CGRectGetHeight(self.frame)) {
                 /// In visable area
+                /// When the player did appeared.
+                if (self.playerDidAppearInScrollView) self.playerDidAppearInScrollView(self.playingIndexPath);
             }
         }
     }
@@ -322,14 +300,6 @@ static NSString *const kContentOffset = @"contentOffset";
     return YES;
 }
 
-- (void (^)(NSIndexPath * _Nonnull))playerWillAppearInScrollView {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
-- (void (^)(NSIndexPath * _Nonnull))playerAppearHalfInScrollView {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
 - (void (^)(NSIndexPath * _Nonnull))playerDidAppearInScrollView {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -377,9 +347,9 @@ static NSString *const kContentOffset = @"contentOffset";
             [self.scrollViewKVO safelyRemoveAllObservers];
         }
         [self.scrollViewKVO safelyAddObserver:self
-                               forKeyPath:kContentOffset
-                                  options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
-                                  context:nil];
+                                   forKeyPath:kContentOffset
+                                      options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                                      context:nil];
     } else {
         [self.scrollViewKVO safelyRemoveAllObservers];
     }
@@ -399,14 +369,6 @@ static NSString *const kContentOffset = @"contentOffset";
 
 - (void)setShouldAutoPlay:(BOOL)shouldAutoPlay {
     objc_setAssociatedObject(self, @selector(shouldAutoPlay), @(shouldAutoPlay), OBJC_ASSOCIATION_ASSIGN);
-}
-
-- (void)setPlayerWillAppearInScrollView:(void (^)(NSIndexPath * _Nonnull))playerWillAppearInScrollView {
-    objc_setAssociatedObject(self, @selector(playerWillAppearInScrollView), playerWillAppearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (void)setPlayerAppearHalfInScrollView:(void (^)(NSIndexPath * _Nonnull))playerAppearHalfInScrollView {
-    objc_setAssociatedObject(self, @selector(playerAppearHalfInScrollView), playerAppearHalfInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 - (void)setPlayerDidAppearInScrollView:(void (^)(NSIndexPath * _Nonnull))playerDidAppearInScrollView {

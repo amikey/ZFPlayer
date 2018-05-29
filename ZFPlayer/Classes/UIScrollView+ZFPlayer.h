@@ -65,12 +65,6 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;
 
-/// The block invoked When the player will appear.
-@property (nonatomic, copy, nullable) void(^playerWillAppearInScrollView)(NSIndexPath *indexPath);
-
-/// The block invoked When the player did appeared half.
-@property (nonatomic, copy, nullable) void(^playerAppearHalfInScrollView)(NSIndexPath *indexPath);
-
 /// The block invoked When the player did appeared.
 @property (nonatomic, copy, nullable) void(^playerDidAppearInScrollView)(NSIndexPath *indexPath);
 

@@ -158,16 +158,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Call it when `tableView` or` collectionView` is about to appear. Because scrollview may be scrolled.
  */
-- (void)playerWillAppearInScrollView:(ZFPlayerController *)videoPlayer;
-
-/**
- Call it when `tableView` or` collectionView` is about to appear. Because scrollview may be scrolled.
- */
-- (void)playerAppearHalfInScrollView:(ZFPlayerController *)videoPlayer;
-
-/**
- Call it when `tableView` or` collectionView` is about to appear. Because scrollview may be scrolled.
- */
 - (void)playerDidAppearInScrollView:(ZFPlayerController *)videoPlayer;
 
 /**

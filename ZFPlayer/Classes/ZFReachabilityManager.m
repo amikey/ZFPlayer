@@ -31,8 +31,8 @@
 #import <netdb.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
-NSString * const ZFReachabilityDidChangeNotification = @"com.alamofire.networking.reachability.change";
-NSString * const ZFReachabilityNotificationStatusItem = @"AFNetworkingReachabilityNotificationStatusItem";
+NSString * const ZFReachabilityDidChangeNotification = @"com.ZFPlayer.reachability.change";
+NSString * const ZFReachabilityNotificationStatusItem = @"ZFNetworkingReachabilityNotificationStatusItem";
 
 typedef void (^ZFReachabilityStatusBlock)(ZFReachabilityStatus status);
 

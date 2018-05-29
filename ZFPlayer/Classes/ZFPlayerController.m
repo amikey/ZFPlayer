@@ -107,28 +107,28 @@
 - (void)playerManagerCallbcak {
     @weakify(self)
     self.currentPlayerManager.playerPlayTimeChanged = ^(id  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
-       @strongify(self)
+        @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:currentTime:totalTime:)]) {
             [self.controlView videoPlayer:self currentTime:currentTime totalTime:duration];
         }
     };
     
     self.currentPlayerManager.playerBufferTimeChanged = ^(id  _Nonnull asset, NSTimeInterval bufferTime, NSTimeInterval duration) {
-         @strongify(self)
+        @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:bufferTime:totalTime:)]) {
             [self.controlView videoPlayer:self bufferTime:bufferTime totalTime:duration];
         }
     };
     
     self.currentPlayerManager.playerPrepareToPlay = ^(id  _Nonnull asset, NSURL * _Nonnull assetURL) {
-          @strongify(self)
+        @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
             [self.controlView videoPlayer:self prepareToPlay:self.currentPlayerManager.assetURL];
         }
     };
     
     self.currentPlayerManager.playerPlayStatChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
-         @strongify(self)
+        @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
             [self.controlView videoPlayer:self playStateChanged:playState];
         }
@@ -314,7 +314,7 @@
 }
 
 - (BOOL)isMuted {
-   return self.volume == 0;
+    return self.volume == 0;
 }
 
 - (float)lastVolumeValue {
@@ -470,7 +470,7 @@
 }
 
 - (BOOL)isStatusBarHidden {
-     return self.orientationObserver.isStatusBarHidden;
+    return self.orientationObserver.isStatusBarHidden;
 }
 
 - (BOOL)isLockedScreen {
@@ -635,27 +635,13 @@
     self.scrollView.WWANAutoPlay = self.isWWANAutoPlay;
     @weakify(self)
     scrollView.enableDirection = YES;
-    scrollView.playerWillAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        @strongify(self)
-        if ([self.controlView respondsToSelector:@selector(playerWillAppearInScrollView:)]) {
-            [self.controlView playerWillAppearInScrollView:self];
-        }
-        if (!self.stopWhileNotVisible) {
-            [self addPlayerViewToCell];
-        }
-    };
-    
-    scrollView.playerAppearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
-        @strongify(self)
-        if ([self.controlView respondsToSelector:@selector(playerAppearHalfInScrollView:)]) {
-            [self.controlView playerAppearHalfInScrollView:self];
-        }
-    };
-    
     scrollView.playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
         if ([self.controlView respondsToSelector:@selector(playerDidAppearInScrollView:)]) {
             [self.controlView playerDidAppearInScrollView:self];
+        }
+        if (!self.stopWhileNotVisible) {
+            [self addPlayerViewToCell];
         }
     };
     

@@ -394,7 +394,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [self showControlViewWithAnimated:YES];
 }
 
-- (void)playerWillAppearInScrollView:(ZFPlayerController *)videoPlayer {
+- (void)playerDidAppearInScrollView:(ZFPlayerController *)videoPlayer {
     self.floatControlView.hidden = YES;
     self.portraitControlView.hidden = NO;
 }
