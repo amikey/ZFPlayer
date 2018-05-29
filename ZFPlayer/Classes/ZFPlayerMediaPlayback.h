@@ -31,9 +31,6 @@ typedef NS_ENUM(NSUInteger, ZFPlayerPlaybackState) {
     ZFPlayerPlayStateUnknown = 0,
     ZFPlayerPlayStatePlaying,
     ZFPlayerPlayStatePaused,
-    ZFPlayerStateInterrupted,
-    ZFPlayerStateSeekingForward,
-    ZFPlayerStateSeekingBackward,
     ZFPlayerPlayStatePlayFailed,
     ZFPlayerPlayStatePlayStopped
 };
@@ -134,6 +131,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 
 /// Prepares the current queue for playback, interrupting any active (non-mixible) audio sessions.
 - (void)prepareToPlay;
+
+/// Reload player.
+- (void)reloadPlayer;
 
 /// Play playback.
 - (void)play;

@@ -54,8 +54,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 @property (nonatomic, strong) UIImageView             *fastImageView;
 /// 加载失败按钮
 @property (nonatomic, strong) UIButton                *failBtn;
-/// 重播按钮
-@property (nonatomic, strong) UIButton                *repeatBtn;
 /** 底部播放进度 */
 @property (nonatomic, strong) ZFSliderView            *bottomPgrogress;
 /// 封面图
@@ -108,15 +106,10 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.floatControlView.frame = self.bounds;
     self.coverImageView.frame = self.bounds;
 
-    min_w = 45;
-    min_h = 45;
+    min_w = 44;
+    min_h = 44;
     self.activity.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.activity.center = self.center;
-    
-    min_w = 100;
-    min_h = 100;
-    self.repeatBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
-    self.repeatBtn.center = self.center;
     
     min_w = 150;
     min_h = 30;
@@ -175,7 +168,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [self addSubview:self.floatControlView];
     
     [self addSubview:self.activity];
-    [self addSubview:self.repeatBtn];
     [self addSubview:self.failBtn];
     
     [self addSubview:self.fastView];
@@ -246,13 +238,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.bottomPgrogress.value = 0;
     self.bottomPgrogress.bufferValue = 0;
     self.floatControlView.hidden = YES;
-    if (self.player.isFullScreen) {
-        self.portraitControlView.hidden = YES;
-        self.landScapeControlView.hidden = NO;
-    } else {
-        self.portraitControlView.hidden = NO;
-        self.landScapeControlView.hidden = YES;
-    }
+    self.failBtn.hidden = YES;
+    self.portraitControlView.hidden = self.player.isFullScreen;
+    self.landScapeControlView.hidden = !self.player.isFullScreen;
 }
 
 #pragma mark - 手势
@@ -272,6 +260,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         [self hideControlViewWithAnimated:YES];
     } else {
         [self showControlViewWithAnimated:YES];
+    }
+    if (self.player.isSmallFloatViewShow && !self.player.isFullScreen) {
+        [self.player enterFullScreen:YES animated:YES];
     }
 }
 
@@ -346,6 +337,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     } else if (state == ZFPlayerPlayStatePaused) {
         [self.portraitControlView playBtnSelectedState:NO];
         [self.landScapeControlView playBtnSelectedState:NO];
+    } else if (state == ZFPlayerPlayStatePlayFailed) {
+        self.failBtn.hidden = NO;
+        [self.activity stopAnimating];
     }
 }
 
@@ -377,11 +371,15 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer orientationWillChange:(ZFOrientationObserver *)observer {
     self.portraitControlView.hidden = observer.isFullScreen;
     self.landScapeControlView.hidden = !observer.isFullScreen;
-    if (self.controlViewAppeared) {
-        [self showControlViewWithAnimated:YES];
-    } else {
-        [self hideControlViewWithAnimated:YES];
+    if (videoPlayer.isSmallFloatViewShow) {
+        self.floatControlView.hidden = observer.isFullScreen;
+        self.portraitControlView.hidden = YES;
     }
+    [self hideControlViewWithAnimated:NO];
+}
+
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer orientationDidChanged:(ZFOrientationObserver *)observer {
+     [self hideControlViewWithAnimated:NO];
 }
 
 - (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
@@ -427,6 +425,16 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 /** 隐藏快进视图 */
 - (void)hideFastView {
     self.fastView.hidden = YES;
+}
+
+- (void)failBtnClick:(UIButton *)sender {
+    sender.hidden = NO;
+    [self.player.currentPlayerManager reloadPlayer];
+}
+
+- (void)replayBtnClick:(UIButton *)sender {
+    sender.hidden = NO;
+    [self.player.currentPlayerManager replay];
 }
 
 #pragma mark - getter
@@ -518,21 +526,13 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     if (!_failBtn) {
         _failBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         [_failBtn setTitle:@"加载失败,点击重试" forState:UIControlStateNormal];
+        [_failBtn addTarget:self action:@selector(failBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_failBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _failBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
         _failBtn.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
         _failBtn.hidden = YES;
     }
     return _failBtn;
-}
-
-- (UIButton *)repeatBtn {
-    if (!_repeatBtn) {
-        _repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_repeatBtn setImage:ZFPlayer_Image(@"ZFPlayer_repeat_video") forState:UIControlStateNormal];
-        _repeatBtn.hidden = YES;
-    }
-    return _repeatBtn;
 }
 
 - (ZFSliderView *)bottomPgrogress {

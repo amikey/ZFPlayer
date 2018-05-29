@@ -94,16 +94,16 @@
     CGFloat min_view_w = self.bounds.size.width;
     CGFloat min_view_h = self.bounds.size.height;
     
-    CGFloat min_margin = 9; // label左右的间距
+    CGFloat min_margin = 9; 
     
     min_x = 0;
     min_y = 0;
     min_w = min_view_w;
-    min_h = 60;
+    min_h = 80;
     self.topToolView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
-    min_x = iPhoneX ? 44: 15;
-    min_y = 20;
+    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: 15;
+    min_y = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 15: (iPhoneX?44:20);
     min_w = 40;
     min_h = 40;
     self.backBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
@@ -121,7 +121,7 @@
     min_w = min_view_w;
     self.bottomToolView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
-    min_x = iPhoneX ? 44: 10;
+    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: 10;
     min_y = 5;
     min_w = 30;
     min_h = 30;
@@ -135,7 +135,7 @@
     self.currentTimeLabel.centerY = self.playOrPauseBtn.centerY;
     
     min_w = 50;
-    min_x = self.bottomToolView.width - min_w - (iPhoneX ? 44: min_margin);
+    min_x = self.bottomToolView.width - min_w - ((iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: min_margin);
     min_y = 0;
     min_h = 30;
     self.totalTimeLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
@@ -148,7 +148,7 @@
     self.slider.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.slider.centerY = self.playOrPauseBtn.centerY;
     
-    min_x = iPhoneX ? 50: 15;
+    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 50: 15;
     min_y = 0;
     min_w = 32;
     min_h = 32;

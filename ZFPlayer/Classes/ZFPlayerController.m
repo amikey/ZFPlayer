@@ -181,9 +181,11 @@
                 self.pauseByUser = NO;
             }
         };
-        
-        _notification.volumeChanged = ^(float volume) {
-            
+        _notification.oldDeviceUnavailable = ^(ZFPlayerNotification * _Nonnull registrar) {
+            @strongify(self)
+            if (self.currentPlayerManager.isPlaying) {
+                [self.currentPlayerManager play];
+            }
         };
     }
     return _notification;
@@ -260,10 +262,15 @@
     [self.notification removeNotification];
     [self.orientationObserver removeDeviceOrientationObserver];
     [self.currentPlayerManager stop];
+    [self.currentPlayerManager.view removeFromSuperview];
 }
 
 - (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)manager {
-    if (manager.isPlaying) [self stop];
+    if (manager.isPlaying) {
+        [self.notification removeNotification];
+        [self.orientationObserver removeDeviceOrientationObserver];
+        [self.currentPlayerManager stop];
+    }
     self.currentPlayerManager = manager;
     [self layoutPlayerSubViews];
     [self.currentPlayerManager prepareToPlay];
@@ -784,7 +791,7 @@
 - (void)stopCurrentPlayingCell {
     if (self.scrollView.playingIndexPath) {
         [self stop];
-        [self.currentPlayerManager.view removeFromSuperview];
+        self.isSmallFloatViewShow = NO;
         self.scrollView.playingIndexPath = nil;
         if (self.smallFloatView) self.smallFloatView.hidden = YES;
     }

@@ -24,7 +24,6 @@
 
 #import "ZFAVPlayerManager.h"
 #import "ZFKVOController.h"
-#import "ZFAVPlayerResourceSupport.h"
 #import "ZFPlayerView.h"
 #import <ZFPlayer/ZFPlayer.h>
 /*!
@@ -116,7 +115,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
 @property (nonatomic, strong, readonly) AVPlayerItem *playerItem;
 @property (nonatomic, strong, readonly) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
-@property (nonatomic, strong) ZFAVPlayerResourceSupport *assetLoader;
 
 @end
 
@@ -160,6 +158,10 @@ static NSString *const kPresentationSize         = @"presentationSize";
     self.loadState = ZFPlayerLoadStatePrepare;
     if (_playerPrepareToPlay) _playerPrepareToPlay(self, self.assetURL);
     if (self.shouldAutoPlay) [self play];
+}
+
+- (void)reloadPlayer {
+    [self prepareToPlay];
 }
 
 - (void)play {
@@ -258,12 +260,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 - (void)initializePlayer {
-    if ([self.assetURL isFileURL]) {
-        _asset = [AVURLAsset assetWithURL:self.assetURL];
-    } else {
-        self.assetLoader = [[ZFAVPlayerResourceSupport alloc] initWithURL:_assetURL];
-        _asset = [self.assetLoader urlAsset:nil queue:dispatch_get_main_queue()];
-    }
+    _asset = [AVURLAsset assetWithURL:self.assetURL];
     _playerItem = [AVPlayerItem playerItemWithAsset:_asset automaticallyLoadedAssetKeys:@[@"duration"]];
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
     _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;

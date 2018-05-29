@@ -10,6 +10,7 @@
 #import <ZFPlayer/ZFPlayer.h>
 #import "ZFAVPlayerManager.h"
 #import "ZFPlayerControlView.h"
+#import <KTVHTTPCache/KTVHTTPCache.h>
 
 @interface ZFKeyboardViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -36,7 +37,9 @@
         [weakSelf.textField resignFirstResponder];
         [weakSelf setNeedsStatusBarAppearanceUpdate];
     };
-    playerManager.assetURL = [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4"];
+    NSString *URLString = [@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
+    playerManager.assetURL = [NSURL URLWithString:proxyURLString];
 }
 
 - (void)viewWillLayoutSubviews {

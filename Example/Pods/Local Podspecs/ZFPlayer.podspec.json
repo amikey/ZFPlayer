@@ -2,7 +2,7 @@
   "name": "ZFPlayer",
   "version": "3.0.0",
   "summary": "A good player made by renzifeng",
-  "description": "TODO: Add long description of the pod here.",
+  "description": "support the vertical, horizontal screen(lock screen direction). Support adjust volume, brigtness and video progress",
   "homepage": "https://github.com/renzifeng/ZFPlayer",
   "license": {
     "type": "MIT",
@@ -15,6 +15,7 @@
     "git": "https://github.com/renzifeng/ZFPlayer.git",
     "tag": "3.0.0"
   },
+  "social_media_url": "http://weibo.com/zifeng1300",
   "platforms": {
     "ios": "7.0"
   },
@@ -24,5 +25,6 @@
     "UIKit",
     "MediaPlayer",
     "AVFoundation"
-  ]
+  ],
+  "requires_arc": true
 }

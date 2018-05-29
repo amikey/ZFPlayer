@@ -12,6 +12,7 @@
 #import "ZFPlayerControlView.h"
 #import "ZFTableData.h"
 #import "ZFTableViewCellLayout.h"
+#import <KTVHTTPCache/KTVHTTPCache.h>
 
 static NSString *kIdentifier = @"kIdentifier";
 
@@ -50,6 +51,13 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.assetURLs = self.urls;
     
     @weakify(self)
+    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        @strongify(self)
+        [self.view endEditing:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
+        self.tableView.scrollsToTop = !isFullScreen;
+    };
+    
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
         if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
@@ -80,12 +88,6 @@ static NSString *kIdentifier = @"kIdentifier";
     }];
     ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.tableView.shouldPlayIndexPath];
     [cell hideMaskView];
-    
-    __weak typeof(self) weakSelf = self;
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        [weakSelf.view endEditing:YES];
-        [weakSelf setNeedsStatusBarAppearanceUpdate];
-    };
 }
 
 - (void)requestData {
@@ -101,7 +103,9 @@ static NSString *kIdentifier = @"kIdentifier";
         [data setValuesForKeysWithDictionary:dataDic];
         ZFTableViewCellLayout *layout = [[ZFTableViewCellLayout alloc] initWithData:data];
         [self.dataSource addObject:layout];
-        NSURL *url = [NSURL URLWithString:data.video_url];
+        NSString *URLString = [data.video_url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
+        NSURL *url = [NSURL URLWithString:proxyURLString];
         [self.urls addObject:url];
     }
 }

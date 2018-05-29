@@ -12,6 +12,7 @@
 #import "ZFAVPlayerManager.h"
 #import "ZFPlayerControlView.h"
 #import "ZFTableData.h"
+#import <KTVHTTPCache/KTVHTTPCache.h>
 
 static NSString *kIdentifier = @"kIdentifier";
 
@@ -65,14 +66,12 @@ static NSString *kIdentifier = @"kIdentifier";
         }
     };
     
-//    /// 以下设置滑出屏幕后不停止播放
-//    self.player.stopWhileNotVisible = NO;
-//    CGFloat margin = 20;
-//    CGFloat w = ZFPlayer_ScreenWidth/2;
-//    CGFloat h = w * 9/16;
-//    CGFloat x = ZFPlayer_ScreenWidth - w - margin;
-//    CGFloat y = ZFPlayer_ScreenHeight - h - margin;
-//    self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
+    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        @strongify(self)
+        [self.view endEditing:YES];
+        [self setNeedsStatusBarAppearanceUpdate];
+        self.tableView.scrollsToTop = !isFullScreen;
+    };
 }
 
 - (void)viewWillLayoutSubviews {
@@ -89,11 +88,6 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
         [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
     }];
-    __weak typeof(self) weakSelf = self;
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        [weakSelf.view endEditing:YES];
-        [weakSelf setNeedsStatusBarAppearanceUpdate];
-    };
 }
 
 - (void)requestData {
@@ -109,7 +103,9 @@ static NSString *kIdentifier = @"kIdentifier";
         [data setValuesForKeysWithDictionary:dataDic];
         ZFTableViewCellLayout *layout = [[ZFTableViewCellLayout alloc] initWithData:data];
         [self.dataSource addObject:layout];
-        NSURL *url = [NSURL URLWithString:data.video_url];
+        NSString *URLString = [data.video_url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
+        NSURL *url = [NSURL URLWithString:proxyURLString];
         [self.urls addObject:url];
     }
 }

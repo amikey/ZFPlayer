@@ -229,6 +229,7 @@
     self.backgroundColor             = [UIColor clearColor];
     self.playOrPauseBtn.selected     = YES;
     self.backBtn.alpha               = 1;
+    self.titleLabel.text             = @"";
 }
 
 - (void)showControlView {

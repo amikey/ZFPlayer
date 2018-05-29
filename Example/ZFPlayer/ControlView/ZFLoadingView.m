@@ -46,6 +46,7 @@
     self.duration = 1;
     self.lineWidth = 1;
     self.lineColor = [UIColor whiteColor];
+    self.userInteractionEnabled = NO;
 }
 
 - (void)layoutSubviews {

@@ -33,82 +33,79 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ZFPlayerMediaControl <NSObject>
 
-@required
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL;
-
-@optional
-
 #pragma mark - Playback state
 
-/// Playback state
+/// When the player prepare to play the video.
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL;
+
+/// When th player playback state changed.
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer playStateChanged:(ZFPlayerPlaybackState)state;
 
-/// Loading state
+/// When th player loading state changed.
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state;
 
 #pragma mark - progress
 
 /**
- Call it when the playback changed
+ When the playback changed.
  
- @param videoPlayer the player
- @param currentTime the current play time
- @param totalTime the video total time
+ @param videoPlayer the player.
+ @param currentTime the current play time.
+ @param totalTime the video total time.
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer
         currentTime:(NSTimeInterval)currentTime
           totalTime:(NSTimeInterval)totalTime;
 
 /**
- Call it When buffer progress changed.
+ When buffer progress changed.
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer
          bufferTime:(NSTimeInterval)bufferTime
           totalTime:(NSTimeInterval)totalTime;
 
 /**
- Call it When you are dragging to change the video progress.
+ When you are dragging to change the video progress.
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer
        draggingTime:(NSTimeInterval)seekTime
           totalTime:(NSTimeInterval)totalTime;
 
 /**
- Call it when play end.
+ When play end.
  */
 - (void)videoPlayerPlayEnd:(ZFPlayerController *)videoPlayer;
 
 #pragma mark - lock screen
 
 /**
- Call it when set videoPlayer.lockedScreen.
+ When set `videoPlayer.lockedScreen`.
  */
 - (void)lockedVideoPlayer:(ZFPlayerController *)videoPlayer lockedScreen:(BOOL)locked;
 
 #pragma mark - Screen rotation
 
 /**
- Call it when the fullScreen maode will changed.
+ When the fullScreen maode will changed.
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer orientationWillChange:(ZFOrientationObserver *)observer;
 
 /**
- Call it when the fullScreen maode did changed.
+ When the fullScreen maode did changed.
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer orientationDidChanged:(ZFOrientationObserver *)observer;
 
 #pragma mark - The network changed
 
 /**
- Call when the network changed
+ When the network changed
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer reachabilityChanged:(ZFReachabilityStatus)status;
 
 #pragma mark - Gesture
 
 /**
- Call when the gesture condition
+ When the gesture condition
  */
 - (BOOL)gestureTriggerCondition:(ZFPlayerGestureControl *)gestureControl
                     gestureType:(ZFPlayerGestureType)gestureType
@@ -116,24 +113,24 @@ NS_ASSUME_NONNULL_BEGIN
                           touch:(UITouch *)touch;
 
 /**
- Call when the gesture single tapped
+ When the gesture single tapped
  */
 - (void)gestureSingleTapped:(ZFPlayerGestureControl *)gestureControl;
 
 /**
- Call when the gesture double tapped
+ When the gesture double tapped
  */
 - (void)gestureDoubleTapped:(ZFPlayerGestureControl *)gestureControl;
 
 /**
- Call when the gesture begin panGesture
+ When the gesture begin panGesture
  */
 - (void)gestureBeganPan:(ZFPlayerGestureControl *)gestureControl
            panDirection:(ZFPanDirection)direction
             panLocation:(ZFPanLocation)location;
 
 /**
- Call when the gesture paning
+ When the gesture paning
  */
 - (void)gestureChangedPan:(ZFPlayerGestureControl *)gestureControl
              panDirection:(ZFPanDirection)direction
@@ -141,14 +138,14 @@ NS_ASSUME_NONNULL_BEGIN
              withVelocity:(CGPoint)velocity;
 
 /**
- Call when the end panGesture
+ When the end panGesture
  */
 - (void)gestureEndedPan:(ZFPlayerGestureControl *)gestureControl
            panDirection:(ZFPanDirection)direction
             panLocation:(ZFPanLocation)location;
 
 /**
- Call when the pinchGesture changed
+ When the pinchGesture changed
  */
 - (void)gesturePinched:(ZFPlayerGestureControl *)gestureControl
                  scale:(float)scale;
@@ -156,22 +153,22 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - scrollview
 
 /**
- Call it when `tableView` or` collectionView` is about to appear. Because scrollview may be scrolled.
+ When `tableView` or` collectionView` is about to appear. Because scrollview may be scrolled.
  */
 - (void)playerDidAppearInScrollView:(ZFPlayerController *)videoPlayer;
 
 /**
- Call it when `tableView` or` collectionView` is about to disappear. Because scrollview may be scrolled.
+ When `tableView` or` collectionView` is about to disappear. Because scrollview may be scrolled.
  */
 - (void)playerWillDisappearInScrollView:(ZFPlayerController *)videoPlayer;
 
 /**
- Call it when `tableView` or` collectionView` is about to disappear. Because scrollview may be scrolled.
+ When `tableView` or` collectionView` is about to disappear. Because scrollview may be scrolled.
  */
 - (void)playerDisappearHalfInScrollView:(ZFPlayerController *)videoPlayer;
 
 /**
- Call it when `tableView` or` collectionView` is about to disappear. Because scrollview may be scrolled.
+ When `tableView` or` collectionView` is about to disappear. Because scrollview may be scrolled.
  */
 - (void)playerDidDisappearInScrollView:(ZFPlayerController *)videoPlayer;
 

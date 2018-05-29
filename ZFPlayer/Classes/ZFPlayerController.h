@@ -128,6 +128,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Play the index of url ,while the `assetURLs` is not NULL.
 - (void)playTheIndex:(NSInteger)index;
 
+/// Player stop and playerView remove from super view,remove other notification.
+- (void)stop;
+
 /*!
  @method           replaceCurrentPlayerManager:
  @abstract         Replaces the player's current playeranager with the specified player item.
