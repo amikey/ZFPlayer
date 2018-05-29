@@ -258,8 +258,12 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 - (void)initializePlayer {
-    self.assetLoader = [[ZFAVPlayerResourceSupport alloc] initWithURL:_assetURL];
-    _asset = [self.assetLoader urlAsset:nil queue:dispatch_get_main_queue()];
+    if ([self.assetURL isFileURL]) {
+        _asset = [AVURLAsset assetWithURL:self.assetURL];
+    } else {
+        self.assetLoader = [[ZFAVPlayerResourceSupport alloc] initWithURL:_assetURL];
+        _asset = [self.assetLoader urlAsset:nil queue:dispatch_get_main_queue()];
+    }
     _playerItem = [AVPlayerItem playerItemWithAsset:_asset automaticallyLoadedAssetKeys:@[@"duration"]];
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
     _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
