@@ -39,9 +39,8 @@
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
     playerManager.shouldAutoPlay = YES;
     /// 播放器相关
-    self.player = [ZFPlayerController playerWithPlayerManager:playerManager];
+    self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
-    self.player.containerView = self.containerView;
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
@@ -54,9 +53,6 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.player stop];
         });
-//        [self.controlView resetControlView];
-//        [self.controlView showTitle:@"视频标题" coverURLString:@"http://imgsrc.baidu.com/forum/eWH%3D240%2C176/sign=183252ee8bd6277ffb784f351a0c2f1c/5d6034a85edf8db15420ba310523dd54564e745d.jpg" fullScreenMode:ZFFullScreenModeLandscape];
-//        [self.player.currentPlayerManager replay];
     };
     NSString *URLString = [@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];

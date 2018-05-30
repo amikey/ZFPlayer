@@ -28,23 +28,23 @@
 #import "ZFUtilities.h"
 
 @interface ZFPortraitControlView () <ZFSliderViewDelegate>
-/** 返回按钮 */
+/// 返回按钮
 @property (nonatomic, strong) UIButton *backBtn;
-/** 底部工具栏 */
+/// 底部工具栏
 @property (nonatomic, strong) UIView *bottomToolView;
 /// 顶部工具栏
 @property (nonatomic, strong) UIView *topToolView;
-
+/// 标题
 @property (nonatomic, strong) UILabel *titleLabel;
-/** 播放或暂停按钮 */
+/// 播放或暂停按钮
 @property (nonatomic, strong) UIButton *playOrPauseBtn;
-/** 播放的当前时间label */
+/// 播放的当前时间label
 @property (nonatomic, strong) UILabel *currentTimeLabel;
-/** 滑杆 */
+/// 滑杆
 @property (nonatomic, strong) ZFSliderView *slider;
-/** 视频总时间 */
+/// 视频总时间
 @property (nonatomic, strong) UILabel *totalTimeLabel;
-/** 全屏按钮 */
+/// 全屏按钮
 @property (nonatomic, strong) UIButton *fullScreenBtn;
 
 @property (nonatomic, assign) double durationTime;
@@ -289,9 +289,6 @@
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime totalTime:(NSTimeInterval)totalTime {
     self.slider.bufferValue = videoPlayer.bufferProgress;
-}
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer seekTime:(NSTimeInterval)seekTime totalTime:(NSTimeInterval)totalTime completionHandler:(void (^ _Nullable)(BOOL))completionHandler {
 }
 
 - (void)showTitle:(NSString *)title fullScreenMode:(ZFFullScreenMode)fullScreenMode {

@@ -53,8 +53,8 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// The scrollView player should auto player,default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;
 
-/// The view tag that the player displays.
-@property (nonatomic) NSInteger playerViewTag;
+/// The view tag that the player display in scrollView.
+@property (nonatomic) NSInteger containerViewTag;
 
 /// Is the video playing.
 @property (nonatomic, readonly, getter=isPlaying) BOOL playing;

@@ -34,11 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPlayerController : NSObject
 
-/// To see the video frames must set the contrainerView.
-@property (nonatomic, strong) UIView *containerView;
+/// The video contrainerView in normal model.
+@property (nonatomic, readonly) UIView *containerView;
 
 /// The currentPlayerManager must follow `ZFPlayerMediaPlayback` protocol.
-@property (nonatomic, strong, readonly) id<ZFPlayerMediaPlayback> currentPlayerManager;
+@property (nonatomic, readonly) id<ZFPlayerMediaPlayback> currentPlayerManager;
 
 /// The custom controlView must follow `ZFPlayerMediaControl` protocol.
 @property (nonatomic, strong) UIView<ZFPlayerMediaControl> *controlView;
@@ -47,35 +47,39 @@ NS_ASSUME_NONNULL_BEGIN
  @method            playerWithPlayerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
  @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             containerView to see the video frames must set the contrainerView.
  @result            An instance of ZFPlayerController.
  */
-+ (instancetype)playerWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager;
++ (instancetype)playerWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(UIView *)containerView;
 
 /*!
  @method            playerWithPlayerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
  @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             containerView to see the video frames must set the contrainerView.
  @result            An instance of ZFPlayerController.
  */
-- (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager;
+- (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(UIView *)containerView;
 
 /*!
  @method            playerWithScrollView:playerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
  @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             containerViewTag to see the video at scrollView must set the contrainerViewTag.
  @result            An instance of ZFPlayerController.
  */
-+ (instancetype)playerWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager;
++ (instancetype)playerWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag;
 
 /*!
  @method            playerWithScrollView:playerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
  @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             containerViewTag to see the video at scrollView must set the contrainerViewTag.
  @result            An instance of ZFPlayerController.
  */
-- (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager;
+- (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag;
 
 @end
 
@@ -84,7 +88,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSTimeInterval currentTime;
 @property (nonatomic, readonly) NSTimeInterval totalTime;
 @property (nonatomic, readonly) NSTimeInterval bufferTime;
-@property (nonatomic, readonly) NSTimeInterval seekTime;
 @property (nonatomic, readonly) float progress;
 @property (nonatomic, readonly) float bufferProgress;
 
@@ -206,8 +209,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The indexPath is playing.
 @property (nonatomic, nullable) NSIndexPath *playingIndexPath;
 
-/// The view tag that the player displays.
-@property (nonatomic) NSInteger playerViewTag;
+/// The view tag that the player display in scrollView.
+@property (nonatomic) NSInteger containerViewTag;
 
 /// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;

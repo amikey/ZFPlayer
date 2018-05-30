@@ -46,9 +46,8 @@ static NSString *kIdentifier = @"kIdentifier";
     self.playerManager.shouldAutoPlay = YES;
     
     /// player
-    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager];
+    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
-    self.player.playerViewTag = 100;
     self.player.assetURLs = self.urls;
     
     @weakify(self)

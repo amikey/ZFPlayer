@@ -126,7 +126,7 @@ static NSString *const kContentOffset = @"contentOffset";
     }
     
     [cellsArray enumerateObjectsUsingBlock:^(UIView *cell, NSUInteger idx, BOOL * _Nonnull stop) {
-        UIView *playerView = [cell viewWithTag:self.playerViewTag];
+        UIView *playerView = [cell viewWithTag:self.containerViewTag];
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
         CGRect rect = [self convertRect:rect1 toView:self.superview];
         CGFloat topSpacing = rect.origin.y - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
@@ -153,7 +153,7 @@ static NSString *const kContentOffset = @"contentOffset";
             if (self.playerDidDisappearInScrollView) self.playerDidDisappearInScrollView(self.playingIndexPath);
             return;
         }
-        UIView *playerView = [cell viewWithTag:self.playerViewTag];
+        UIView *playerView = [cell viewWithTag:self.containerViewTag];
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
         CGRect rect = [self convertRect:rect1 toView:self.superview];
         CGFloat topSpacing = rect.origin.y - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
@@ -265,7 +265,7 @@ static NSString *const kContentOffset = @"contentOffset";
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (NSInteger)playerViewTag {
+- (NSInteger)containerViewTag {
     return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
 
@@ -330,8 +330,8 @@ static NSString *const kContentOffset = @"contentOffset";
     objc_setAssociatedObject(self, @selector(shouldPlayIndexPath), shouldPlayIndexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setPlayerViewTag:(NSInteger)playerViewTag {
-    objc_setAssociatedObject(self, @selector(playerViewTag), @(playerViewTag), OBJC_ASSOCIATION_ASSIGN);
+- (void)setContainerViewTag:(NSInteger)containerViewTag {
+    objc_setAssociatedObject(self, @selector(containerViewTag), @(containerViewTag), OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (void)setScrollDerection:(ZFPlayerScrollDerection)scrollDerection {

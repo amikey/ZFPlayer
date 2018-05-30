@@ -29,9 +29,8 @@
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
     playerManager.shouldAutoPlay = YES;
     /// 播放器相关
-    self.player = [ZFPlayerController playerWithPlayerManager:playerManager];
+    self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
-    self.player.containerView = self.containerView;
     __weak typeof(self) weakSelf = self;
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         [weakSelf.textField resignFirstResponder];

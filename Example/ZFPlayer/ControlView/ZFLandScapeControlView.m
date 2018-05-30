@@ -49,7 +49,7 @@
 @property (nonatomic, strong) UILabel *totalTimeLabel;
 /// 锁定屏幕按钮
 @property (nonatomic, strong) UIButton *lockBtn;
-///
+
 @property (nonatomic, assign) double durationTime;
 
 @property (nonatomic, weak) ZFPlayerController *player;
@@ -66,7 +66,6 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        // 添加子控件
         [self addSubview:self.topToolView];
         [self.topToolView addSubview:self.backBtn];
         [self.topToolView addSubview:self.titleLabel];
@@ -253,10 +252,6 @@
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime totalTime:(NSTimeInterval)totalTime {
     self.slider.bufferValue = videoPlayer.bufferProgress;
-}
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer seekTime:(NSTimeInterval)seekTime totalTime:(NSTimeInterval)totalTime completionHandler:(void (^ _Nullable)(BOOL))completionHandler {
-    //    self.slider.value = seekTime
 }
 
 - (void)showTitle:(NSString *)title fullScreenMode:(ZFFullScreenMode)fullScreenMode {

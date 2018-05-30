@@ -158,9 +158,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [self cancelAutoFadeOutControlView];
 }
 
-/**
- *  添加所有子控件
- */
+/// 添加所有子控件
 - (void)addAllSubViews {
     [self addSubview:self.coverImageView];
     [self addSubview:self.portraitControlView];
@@ -190,9 +188,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ZFPlayerAnimationTimeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(),self.afterBlock);
 }
 
-/**
- *  取消延时隐藏controlView的方法
- */
+/// 取消延时隐藏controlView的方法
 - (void)cancelAutoFadeOutControlView {
     if (self.afterBlock) {
         dispatch_block_cancel(self.afterBlock);
@@ -230,7 +226,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }];
 }
 
-#pragma mark - ZFPlayerControlViewDelegate
+#pragma mark - Public Method
 
 - (void)resetControlView {
     [self.portraitControlView resetControlView];
@@ -243,8 +239,15 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.landScapeControlView.hidden = !self.player.isFullScreen;
 }
 
-#pragma mark - 手势
+- (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
+    [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
+    [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
+    [self.coverImageView setImageWithURLString:coverUrl placeholder:ZFPlayer_Image(@"ZFPlayer_loading_bgView")];
+}
 
+#pragma mark - ZFPlayerControlViewDelegate
+
+/// 手势
 - (BOOL)gestureTriggerCondition:(ZFPlayerGestureControl *)gestureControl gestureType:(ZFPlayerGestureType)gestureType gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer touch:(nonnull UITouch *)touch {
     CGPoint point = [touch locationInView:self];
     if (self.player.isFullScreen) {
@@ -321,8 +324,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
-#pragma mark - 播放之前/状态
-
+/// 播放之前/状态
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL {
     [self hideControlViewWithAnimated:NO];
     self.player = videoPlayer;
@@ -382,29 +384,25 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
      [self hideControlViewWithAnimated:NO];
 }
 
-- (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
-    [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
-    [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
-    [self.coverImageView setImageWithURLString:coverUrl placeholder:ZFPlayer_Image(@"ZFPlayer_loading_bgView")];
-}
-
 - (void)lockedVideoPlayer:(ZFPlayerController *)videoPlayer lockedScreen:(BOOL)locked {
     [self showControlViewWithAnimated:YES];
 }
 
 - (void)playerDidAppearInScrollView:(ZFPlayerController *)videoPlayer {
-    self.floatControlView.hidden = YES;
-    self.portraitControlView.hidden = NO;
+    if (!self.player.stopWhileNotVisible) {
+        self.floatControlView.hidden = YES;
+        self.portraitControlView.hidden = NO;
+    }
 }
 
 - (void)playerDidDisappearInScrollView:(ZFPlayerController *)videoPlayer {
-    self.floatControlView.hidden = NO;
-    self.portraitControlView.hidden = YES;
+    if (!self.player.stopWhileNotVisible) {
+        self.floatControlView.hidden = NO;
+        self.portraitControlView.hidden = YES;
+    }
 }
 
 #pragma mark - Private Method
-
-#pragma mark -
 
 - (void)sliderValueChangingValue:(CGFloat)value isForward:(BOOL)forward {
     self.fastProgressView.value = value;
