@@ -9,7 +9,7 @@
 #import "ZFSmallPlayViewController.h"
 #import "ZFTableViewCell.h"
 #import <ZFPlayer/ZFPlayer.h>
-#import "ZFAVPlayerManager.h"
+#import <ZFPlayer/ZFAVPlayerManager.h>
 #import "ZFPlayerControlView.h"
 #import "ZFTableData.h"
 #import <KTVHTTPCache/KTVHTTPCache.h>
@@ -39,7 +39,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     self.view.backgroundColor = [UIColor redColor];
     [self requestData];
-    self.navigationItem.title = @"小窗播放";
+    self.navigationItem.title = @"Small window to play";
     
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];

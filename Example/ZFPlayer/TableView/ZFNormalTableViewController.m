@@ -39,7 +39,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     self.view.backgroundColor = [UIColor redColor];
     [self requestData];
-    self.navigationItem.title = @"自动播放";
+    self.navigationItem.title = @"Automic to play";
     
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];

@@ -37,16 +37,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// The video contrainerView in normal model.
 @property (nonatomic, readonly) UIView *containerView;
 
-/// The currentPlayerManager must follow `ZFPlayerMediaPlayback` protocol.
+/// The currentPlayerManager must conform `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic, readonly) id<ZFPlayerMediaPlayback> currentPlayerManager;
 
-/// The custom controlView must follow `ZFPlayerMediaControl` protocol.
+/// The custom controlView must conform `ZFPlayerMediaControl` protocol.
 @property (nonatomic, strong) UIView<ZFPlayerMediaControl> *controlView;
 
 /*!
  @method            playerWithPlayerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerView to see the video frames must set the contrainerView.
  @result            An instance of ZFPlayerController.
  */
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @method            playerWithPlayerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerView to see the video frames must set the contrainerView.
  @result            An instance of ZFPlayerController.
  */
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  @method            playerWithScrollView:playerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerViewTag to see the video at scrollView must set the contrainerViewTag.
  @result            An instance of ZFPlayerController.
  */
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
  @method            playerWithScrollView:playerManager:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
- @param             playerManager must follow `ZFPlayerMediaPlayback` protocol.
+ @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerViewTag to see the video at scrollView must set the contrainerViewTag.
  @result            An instance of ZFPlayerController.
  */
@@ -137,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @method           replaceCurrentPlayerManager:
  @abstract         Replaces the player's current playeranager with the specified player item.
- @param            manager must follow `ZFPlayerMediaPlayback` protocol
+ @param            manager must conform `ZFPlayerMediaPlayback` protocol
  @discussion       The playerManager that will become the player's current playeranager.
  */
 - (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)manager;

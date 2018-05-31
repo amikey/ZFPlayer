@@ -1,5 +1,5 @@
 //
-//  ZFLandScapeControlView.h
+//  ZFPortraitControlView.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,10 +22,13 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
-#import "ZFUtilities.h"
+#else
+#import "ZFPlayer.h"
+#endif
 
-@interface ZFLandScapeControlView : UIView
+@interface ZFPortraitControlView : UIView 
 
 @property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);
 @property (nonatomic, copy, nullable) void(^sliderValueChanged)(CGFloat value);
@@ -40,7 +43,7 @@
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime;
 
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime totalTime:(NSTimeInterval)totalTime;
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime;
 
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch;
 
@@ -50,5 +53,6 @@
 - (void)playOrPause;
 
 - (void)playBtnSelectedState:(BOOL)selected;
+
 
 @end

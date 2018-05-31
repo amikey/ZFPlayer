@@ -287,7 +287,7 @@
     }
 }
 
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime totalTime:(NSTimeInterval)totalTime {
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime {
     self.slider.bufferValue = videoPlayer.bufferProgress;
 }
 

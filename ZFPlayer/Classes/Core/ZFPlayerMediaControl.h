@@ -61,8 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  When buffer progress changed.
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer
-         bufferTime:(NSTimeInterval)bufferTime
-          totalTime:(NSTimeInterval)totalTime;
+         bufferTime:(NSTimeInterval)bufferTime;
 
 /**
  When you are dragging to change the video progress.

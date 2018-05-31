@@ -23,9 +23,9 @@
 // THE SOFTWARE.
 
 #import "ZFAVPlayerManager.h"
-#import "ZFKVOController.h"
-#import "ZFPlayerView.h"
-#import <ZFPlayer/ZFPlayer.h>
+#import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+
 /*!
  *  Refresh interval for timed observations of AVPlayer
  */
@@ -288,6 +288,30 @@ static NSString *const kPresentationSize         = @"presentationSize";
     }
 }
 
+/**
+ *  缓冲较差时候回调这里
+ */
+- (void)bufferingSomeSecond {
+    // playbackBufferEmpty会反复进入，因此在bufferingOneSecond延时播放执行完之前再调用bufferingSomeSecond都忽略
+    __block BOOL isBuffering = NO;
+    if (isBuffering) return;
+    isBuffering = YES;
+    
+    // 需要先暂停一小会之后再播放，否则网络状况不好的时候时间在走，声音播放不出来
+    [self.player pause];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 如果此时用户已经暂停了，则不再需要开启播放了
+        if (!self.isPlaying) {
+            isBuffering = NO;
+            return;
+        }
+        [self play];
+        // 如果执行了play还是没有播放则说明还没有缓存好，则再次缓存一段时间
+        isBuffering = NO;
+        if (!self.playerItem.isPlaybackLikelyToKeepUp) { [self bufferingSomeSecond]; }
+    });
+}
+
 - (void)itemObserving {
     [_playerItemKVO safelyRemoveAllObservers];
     _playerItemKVO = [[ZFKVOController alloc] initWithTarget:_playerItem];
@@ -348,6 +372,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
              // When the buffer is empty
              if (self.playerItem.playbackBufferEmpty) {
                  self.loadState = ZFPlayerLoadStateStalled;
+                 [self bufferingSomeSecond];
              }
          } else if ([keyPath isEqualToString:kPlaybackLikelyToKeepUp]) {
              // When the buffer is good
@@ -356,10 +381,9 @@ static NSString *const kPresentationSize         = @"presentationSize";
              }
          } else if ([keyPath isEqualToString:kLoadedTimeRanges]) {
              NSTimeInterval bufferTime = [self availableDuration];
-             self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
              self->_bufferTime = bufferTime;
              if (self.playerBufferTimeChanged) {
-                 self.playerBufferTimeChanged(self, bufferTime, self->_totalTime);
+                 self.playerBufferTimeChanged(self, bufferTime);
              }
          } else if ([keyPath isEqualToString:kPresentationSize]) {
              self->_presentationSize = self.playerItem.presentationSize;

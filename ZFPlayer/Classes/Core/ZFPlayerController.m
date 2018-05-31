@@ -39,6 +39,9 @@
 @property (nonatomic, strong, nullable) UIScrollView *scrollView;
 @property (nonatomic, assign, getter=isPauseByUser) BOOL pauseByUser;
 @property (nonatomic, strong) UISlider *volumeViewSlider;
+@property (nonatomic, assign) NSTimeInterval currentTime;
+@property (nonatomic, assign) NSTimeInterval totalTime;
+@property (nonatomic, assign) NSTimeInterval bufferTime;
 
 @end
 
@@ -111,25 +114,24 @@
 
 - (void)playerManagerCallbcak {
     @weakify(self)
-    self.currentPlayerManager.playerPlayTimeChanged = ^(id  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
+    self.currentPlayerManager.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         @strongify(self)
-        objc_setAssociatedObject(self, @selector(currentTime), @(currentTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        objc_setAssociatedObject(self, @selector(totalTime), @(duration), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        self.currentTime = currentTime;
+        self.totalTime = duration;
         if ([self.controlView respondsToSelector:@selector(videoPlayer:currentTime:totalTime:)]) {
             [self.controlView videoPlayer:self currentTime:currentTime totalTime:duration];
         }
     };
     
-    self.currentPlayerManager.playerBufferTimeChanged = ^(id  _Nonnull asset, NSTimeInterval bufferTime, NSTimeInterval duration) {
+    self.currentPlayerManager.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval bufferTime) {
         @strongify(self)
-        objc_setAssociatedObject(self, @selector(bufferTime), @(bufferTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        objc_setAssociatedObject(self, @selector(totalTime), @(duration), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        if ([self.controlView respondsToSelector:@selector(videoPlayer:bufferTime:totalTime:)]) {
-            [self.controlView videoPlayer:self bufferTime:bufferTime totalTime:duration];
+        self.bufferTime = bufferTime;
+        if ([self.controlView respondsToSelector:@selector(videoPlayer:bufferTime:)]) {
+            [self.controlView videoPlayer:self bufferTime:bufferTime];
         }
     };
     
-    self.currentPlayerManager.playerPrepareToPlay = ^(id  _Nonnull asset, NSURL * _Nonnull assetURL) {
+    self.currentPlayerManager.playerPrepareToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
             [self.controlView videoPlayer:self prepareToPlay:self.currentPlayerManager.assetURL];
@@ -232,18 +234,6 @@
 @end
 
 @implementation ZFPlayerController (ZFPlayerTimeControl)
-
-- (NSTimeInterval)currentTime {
-    return [objc_getAssociatedObject(self, _cmd) doubleValue];
-}
-
-- (NSTimeInterval)totalTime {
-    return [objc_getAssociatedObject(self, _cmd) doubleValue];
-}
-
-- (NSTimeInterval)bufferTime {
-    return [objc_getAssociatedObject(self, _cmd) doubleValue];
-}
 
 - (float)progress {
     if (self.totalTime == 0) return 0;

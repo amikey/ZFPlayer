@@ -2,7 +2,6 @@
   "name": "ZFPlayer",
   "version": "3.0.0",
   "summary": "A good player made by renzifeng",
-  "description": "support the vertical, horizontal screen(lock screen direction). Support adjust volume, brigtness and video progress",
   "homepage": "https://github.com/renzifeng/ZFPlayer",
   "license": {
     "type": "MIT",
@@ -19,12 +18,38 @@
   "platforms": {
     "ios": "7.0"
   },
-  "source_files": "ZFPlayer/Classes/**/*",
-  "public_header_files": "Pod/Classes/**/*.h",
-  "frameworks": [
-    "UIKit",
-    "MediaPlayer",
-    "AVFoundation"
-  ],
-  "requires_arc": true
+  "requires_arc": true,
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "ZFPlayer/Classes/Core/**/*",
+      "public_header_files": "ZFPlayer/Classes/Core/**/*.h",
+      "frameworks": [
+        "UIKit",
+        "MediaPlayer",
+        "AVFoundation"
+      ]
+    },
+    {
+      "name": "AVPlayer",
+      "source_files": "ZFPlayer/Classes/AVPlayer/**/*",
+      "public_header_files": "ZFPlayer/Classes/AVPlayer/**/*.h",
+      "dependencies": {
+        "ZFPlayer/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "ControlView",
+      "source_files": "ZFPlayer/Classes/ControlView/**/*",
+      "public_header_files": "ZFPlayer/Classes/ControlView/**/*.h",
+      "resources": "ZFPlayer/Classes/ControlView/ZFPlayer.bundle",
+      "dependencies": {
+        "ZFPlayer/Core": [
+
+        ]
+      }
+    }
+  ]
 }

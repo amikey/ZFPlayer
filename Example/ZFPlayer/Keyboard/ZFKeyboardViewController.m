@@ -36,7 +36,7 @@
         [weakSelf.textField resignFirstResponder];
         [weakSelf setNeedsStatusBarAppearanceUpdate];
     };
-    NSString *URLString = [@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *URLString = [@"http://tb-video.bdstatic.com/videocp/12045395_f9f87b84aaf4ff1fee62742f2d39687f.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     playerManager.assetURL = [NSURL URLWithString:proxyURLString];
 }

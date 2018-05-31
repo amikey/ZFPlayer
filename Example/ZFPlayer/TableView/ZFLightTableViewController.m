@@ -9,6 +9,7 @@
 #import "ZFLightTableViewController.h"
 #import "ZFTableViewCell.h"
 #import <ZFPlayer/ZFPlayer.h>
+#import <ZFPlayer/ZFAVPlayerManager.h>
 #import "ZFPlayerControlView.h"
 #import "ZFTableData.h"
 #import "ZFTableViewCellLayout.h"
@@ -21,7 +22,6 @@ static NSString *kIdentifier = @"kIdentifier";
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
-
 @property (nonatomic, strong) ZFAVPlayerManager *playerManager;
 
 @property (nonatomic, assign) NSInteger count;
@@ -39,7 +39,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     self.view.backgroundColor = [UIColor redColor];
     [self requestData];
-    self.navigationItem.title = @"列表播放";
+    self.navigationItem.title = @"Light and dark to play";
     
     self.playerManager = [[ZFAVPlayerManager alloc] init];
     self.playerManager.shouldAutoPlay = YES;

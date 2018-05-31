@@ -10,33 +10,34 @@ Pod::Spec.new do |s|
   s.name             = 'ZFPlayer'
   s.version          = '3.0.0'
   s.summary          = 'A good player made by renzifeng'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
-  s.description      = <<-DESC
-  support the vertical, horizontal screen(lock screen direction). Support adjust volume, brigtness and video progress
-  DESC
-
   s.homepage         = 'https://github.com/renzifeng/ZFPlayer'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.screenshots      = 'https://upload-images.jianshu.io/upload_images/635942-b7498fe39e788604.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', 'https://upload-images.jianshu.io/upload_images/635942-1ba16bde9d12acbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'renzifeng' => 'zifeng1300@gmail.com' }
   s.source           = { :git => 'https://github.com/renzifeng/ZFPlayer.git', :tag => s.version.to_s }
   s.social_media_url = 'http://weibo.com/zifeng1300'
-
   s.ios.deployment_target = '7.0'
-
-  s.source_files = 'ZFPlayer/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'ZFPlayer' => ['ZFPlayer/Assets/*.png']
-  # }
-
-  s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'MediaPlayer', 'AVFoundation'
   s.requires_arc = true
+
+  # s.default_subspec = 'Core'
+  
+  s.subspec 'Core' do |core|
+      core.source_files = 'ZFPlayer/Classes/Core/**/*'
+      core.public_header_files = 'ZFPlayer/Classes/Core/**/*.h'
+      core.frameworks = 'UIKit', 'MediaPlayer', 'AVFoundation'
+  end
+  
+  s.subspec 'AVPlayer' do |avPlayer|
+      avPlayer.source_files = 'ZFPlayer/Classes/AVPlayer/**/*'
+      avPlayer.public_header_files = 'ZFPlayer/Classes/AVPlayer/**/*.h'
+      avPlayer.dependency 'ZFPlayer/Core'
+  end
+  
+  s.subspec 'ControlView' do |controlView|
+      controlView.source_files = 'ZFPlayer/Classes/ControlView/**/*'
+      controlView.public_header_files = 'ZFPlayer/Classes/ControlView/**/*.h'
+      controlView.resource = 'ZFPlayer/Classes/ControlView/ZFPlayer.bundle'
+      controlView.dependency 'ZFPlayer/Core'
+  end
+
 end

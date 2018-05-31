@@ -8,7 +8,7 @@
 
 #import "ZFNoramlViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
-#import "ZFAVPlayerManager.h"
+#import <ZFPlayer/ZFAVPlayerManager.h>
 #import "ZFPlayerControlView.h"
 #import <KTVHTTPCache/KTVHTTPCache.h>
 
@@ -29,6 +29,7 @@
 }
 
 - (IBAction)changeVideo:(UIButton *)sender {
+    [self.controlView resetControlView];
     NSString *URLString = [@"https://ylmtst.yejingying.com/asset/video/20180525184959_mW8WVQVd.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     self.player.currentPlayerManager.assetURL = [NSURL URLWithString:proxyURLString];
@@ -54,7 +55,7 @@
             [self.player stop];
         });
     };
-    NSString *URLString = [@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *URLString = [@"http://tb-video.bdstatic.com/videocp/12045395_f9f87b84aaf4ff1fee62742f2d39687f.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     playerManager.assetURL = [NSURL URLWithString:proxyURLString];
 }

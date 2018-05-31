@@ -79,5 +79,5 @@ FOUNDATION_EXPORT const unsigned char ZFPlayerVersionString[];
 #import "ZFPlayerMediaPlayback.h"
 #import "ZFPlayerMediaControl.h"
 #import "ZFOrientationObserver.h"
+#import "ZFKVOController.h"
 #import "UIScrollView+ZFPlayer.h"
-#import "ZFAVPlayerManager.h"

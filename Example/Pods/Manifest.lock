@@ -2,9 +2,17 @@ PODS:
   - CocoaAsyncSocket (7.6.3)
   - KTVCocoaHTTPServer (1.0.0):
     - CocoaAsyncSocket
-  - KTVHTTPCache (1.1.0):
+  - KTVHTTPCache (1.1.1):
     - KTVCocoaHTTPServer
-  - ZFPlayer (3.0.0)
+  - ZFPlayer (3.0.0):
+    - ZFPlayer/AVPlayer (= 3.0.0)
+    - ZFPlayer/ControlView (= 3.0.0)
+    - ZFPlayer/Core (= 3.0.0)
+  - ZFPlayer/AVPlayer (3.0.0):
+    - ZFPlayer/Core
+  - ZFPlayer/ControlView (3.0.0):
+    - ZFPlayer/Core
+  - ZFPlayer/Core (3.0.0)
 
 DEPENDENCIES:
   - KTVHTTPCache
@@ -17,9 +25,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
-  KTVHTTPCache: a227d01fb4d9f339fe63517faa682c897fd4119f
-  ZFPlayer: bee875709e6ae56a49da762dbc4388cd4524fabf
+  KTVHTTPCache: 71e3c492155d4f1bfad5d1750786efc4c5066d33
+  ZFPlayer: b889d93c654e734c7490769e09f82b052b650f56
 
-PODFILE CHECKSUM: 21ac91067e3cba88f485b51986bcc41cac9e39eb
+PODFILE CHECKSUM: e80b42ae80223bab258679daa61f14cff3f4889c
 
 COCOAPODS: 1.3.1

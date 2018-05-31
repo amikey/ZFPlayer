@@ -11,9 +11,9 @@
 <a href="http://weibo.com/zifeng1300"><img src="https://img.shields.io/badge/weibo-@%E4%BB%BB%E5%AD%90%E4%B8%B0-yellow.svg?style=flat"></a>
 </p>
 
-Before this, you used ZFPlayer, are you worried about encapsulating avplayer instead of using or modifying the source code to support other players, the control layer is not easy to customize, and so on? In order to solve these problems, I have wrote this player joke, for player SDK you can follow the `ZFPlayerMediaPlayback` protocol, for control view you can follow the `ZFPlayerMediaControl` protocol, can achieve the custom player and custom control layer.
+Before this, you used ZFPlayer, are you worried about encapsulating avplayer instead of using or modifying the source code to support other players, the control layer is not easy to customize, and so on? In order to solve these problems, I have wrote this player template, for player SDK you can conform the `ZFPlayerMediaPlayback` protocol, for control view you can conform the `ZFPlayerMediaControl` protocol, can custom the player and control view.
 
-在此之前你使用ZFPlayer，是不是在烦恼封装的是avplayer而放弃使用或者修改源码来支持其他播放器，控制层不好自定义等等问题。为了解决这些问题，我特意写了这个播放器壳子，播放器SDK只要遵守`ZFPlayerMediaPlayback`协议，控制层只要遵守`ZFPlayerMediaControl`协议，完全可以实现自定义播放器和自定义控制层。
+在此之前你使用ZFPlayer，是不是在烦恼封装的是avplayer而放弃使用或者修改源码来支持其他播放器，控制层不好自定义等等问题。为了解决这些问题，我特意写了这个播放器壳子，播放器SDK只要遵守`ZFPlayerMediaPlayback`协议，控制层只要遵守`ZFPlayerMediaControl`协议，可以实现自定义播放器和控制层。
 
 ![ZFPlayer.png](https://upload-images.jianshu.io/upload_images/635942-7f0c5bb8b22f0b27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -39,37 +39,30 @@ Main classes, two initialization methods, normal mode initialization and list st
 Normal style initialization 
 
 ```objc
-ZFPlayerController *player = [ZFPlayerController playerWithPlayerManager:playerManager];
-ZFPlayerController *player = [[ZFPlayerController alloc] initwithPlayerManager:playerManager];
+ZFPlayerController *player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:containerView];
+ZFPlayerController *player = [[ZFPlayerController alloc] initwithPlayerManager:playerManager containerView:containerView];
 ```
 
 List style initialization
 
 ```objc
-ZFPlayerController *player = [ZFPlayerController playerWithScrollView:tableView playerManager:playerManager];
-ZFPlayerController *player = [ZFPlayerController alloc] initWithScrollView:tableView playerManager:playerManager];
+ZFPlayerController *player = [ZFPlayerController playerWithScrollView:tableView playerManager:playerManager containerViewTag:containerViewTag];
+ZFPlayerController *player = [ZFPlayerController alloc] initWithScrollView:tableView playerManager:playerManager containerViewTag:containerViewTag];
 ```
 
 #### ZFPlayerMediaPlayback
-For the playerMnager,you must follow `ZFPlayerMediaPlayback` protocol and custom playermanager supports any player SDK，such as `AVPlayer`,`ijkplayer`,`vlc`,`PLPlayerKit`,`KSYMediaPlayer`and so on，you can reference the `ZFAVPlayerManager`class.
+For the playerMnager,you must conform `ZFPlayerMediaPlayback` protocol,custom playermanager can supports any player SDK，such as `AVPlayer`,`MPMoviePlayerController`,`ijkplayer`,`vlc`,`PLPlayerKit`,`KSYMediaPlayer`and so on，you can reference the `ZFAVPlayerManager`class.
 
 ```objc
 Class<ZFPlayerMediaPlayback> *playerManager = ...;
 ```
 
 #### ZFPlayerMediaControl
-This class is used to display the control layer, and you must follow the ZFPlayerMediaControl protocol, you can reference the `ZFPlayerControlView` class.
-
+This class is used to display the control layer, and you must conform the ZFPlayerMediaControl protocol, you can reference the `ZFPlayerControlView` class.
 
 ```objc
 UIView<ZFPlayerMediaControl> *controlView = ...;
 player.controlView = controlView;
-```
-#### ContainerView
-To see the video, you have to make a container view of the player, which is the same as the player view frame.
-
-```objc
-player.containerView = <your custom player container view>
 ```
 
 ## Usage
@@ -77,29 +70,27 @@ player.containerView = <your custom player container view>
 #### Normal Style
 
 ```objc
-/// playerManager
-ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+/// Your custom playerManager must conform `ZFPlayerMediaPlayback` protocol.
+Class<ZFPlayerMediaPlayback> *playerManager = ...;
 playerManager.shouldAutoPlay = YES;
 
 /// playerController
-self.player = [ZFPlayerController playerWithPlayerManager:playerManager];
-self.player.controlView = self.controlView;
-self.player.containerView = self.containerView;
+ZFPlayerController *player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
+player.controlView = controlView<ZFPlayerMediaControl>;
 playerManager.assetURL = [NSURL URLWithString:...];
 ```
 
 #### List style
 
 ```objc
-/// playerManager
-self.playerManager = [[ZFAVPlayerManager alloc] init];
-self.playerManager.shouldAutoPlay = YES;
+/// Your custom playerManager must conform `ZFPlayerMediaPlayback` protocol.
+Class<ZFPlayerMediaPlayback> *playerManager = ...;
+playerManager.shouldAutoPlay = YES;
 
 /// playerController
-self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager];
-self.player.controlView = self.controlView;
-self.player.playerViewTag = 100;
-self.player.assetURLs = self.urls;
+ZFPlayerController *player = [ZFPlayerController playerWithScrollView:tableView playerManager:playerManager containerViewTag:tag<NSInteger>];
+player.controlView = controlView<ZFPlayerMediaControl>;
+self.player.assetURLs = array<NSURL *>;
 ```
 
 ## Author
@@ -107,7 +98,7 @@ self.player.assetURLs = self.urls;
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
 - QQ: 459643690
-- QQ Group: 213375947（付费群）
+- QQ Group: 213375947（付费群,帮忙解答问题）
 
 ## License
 

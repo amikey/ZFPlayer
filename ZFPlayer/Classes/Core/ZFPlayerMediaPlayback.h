@@ -112,19 +112,19 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 @property (nonatomic, readonly) ZFPlayerLoadState loadState;
 
 /// The block invoked when the player is Ready to play.
-@property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id asset, NSURL *assetURL);
+@property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 
 /// The block invoked when the player play progress changed.
-@property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id asset, NSTimeInterval currentTime, NSTimeInterval duration);
+@property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id<ZFPlayerMediaPlayback>  asset, NSTimeInterval currentTime, NSTimeInterval duration);
 
 /// The block invoked when the player play buffer changed.
-@property (nonatomic, copy, nullable) void(^playerBufferTimeChanged)(id asset, NSTimeInterval bufferTime, NSTimeInterval duration);
+@property (nonatomic, copy, nullable) void(^playerBufferTimeChanged)(id<ZFPlayerMediaPlayback>  asset, NSTimeInterval bufferTime);
 
 /// The block invoked when the player playback state changed.
-@property (nonatomic, copy, nullable) void(^playerPlayStatChanged)(id asset, ZFPlayerPlaybackState playState);
+@property (nonatomic, copy, nullable) void(^playerPlayStatChanged)(id<ZFPlayerMediaPlayback>  asset, ZFPlayerPlaybackState playState);
 
 /// The block invoked when the player load state changed.
-@property (nonatomic, copy, nullable) void(^playerLoadStatChanged)(id asset, ZFPlayerLoadState loadState);
+@property (nonatomic, copy, nullable) void(^playerLoadStatChanged)(id<ZFPlayerMediaPlayback>  asset, ZFPlayerLoadState loadState);
 
 /// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id asset);

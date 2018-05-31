@@ -158,7 +158,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [self cancelAutoFadeOutControlView];
 }
 
-/// 添加所有子控件
+///添加所有子控件
 - (void)addAllSubViews {
     [self addSubview:self.coverImageView];
     [self addSubview:self.portraitControlView];
@@ -364,9 +364,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.bottomPgrogress.value = videoPlayer.progress;
 }
 
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime totalTime:(NSTimeInterval)totalTime {
-    [self.portraitControlView videoPlayer:videoPlayer bufferTime:bufferTime totalTime:totalTime];
-    [self.landScapeControlView videoPlayer:videoPlayer bufferTime:bufferTime totalTime:totalTime];
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime {
+    [self.portraitControlView videoPlayer:videoPlayer bufferTime:bufferTime];
+    [self.landScapeControlView videoPlayer:videoPlayer bufferTime:bufferTime];
     self.bottomPgrogress.bufferValue = videoPlayer.bufferProgress;
 }
 

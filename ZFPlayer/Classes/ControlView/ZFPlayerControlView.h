@@ -1,5 +1,5 @@
 //
-//  ZFPortraitControlView.h
+//  ZFPlayerControlView.h
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //
@@ -22,33 +22,23 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "ZFPortraitControlView.h"
+#import "ZFLandScapeControlView.h"
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
+#else
+#import "ZFPlayer.h"
+#endif
 
-@interface ZFPortraitControlView : UIView 
+@interface ZFPlayerControlView : UIView <ZFPlayerMediaControl>
 
-@property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);
-@property (nonatomic, copy, nullable) void(^sliderValueChanged)(CGFloat value);
+/// 竖屏控制层的View
+@property (nonatomic, strong, readonly) ZFPortraitControlView *portraitControlView;
+/// 横屏控制层的View
+@property (nonatomic, strong, readonly) ZFLandScapeControlView *landScapeControlView;
+
+- (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode;
 
 - (void)resetControlView;
-
-- (void)showControlView;
-
-- (void)hideControlView;
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL;
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime;
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime totalTime:(NSTimeInterval)totalTime;
-
-- (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch;
-
-- (void)showTitle:(NSString *_Nullable)title fullScreenMode:(ZFFullScreenMode)fullScreenMode;
-
-/// 根据当前播放状态取反
-- (void)playOrPause;
-
-- (void)playBtnSelectedState:(BOOL)selected;
-
 
 @end
