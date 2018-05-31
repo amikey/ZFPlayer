@@ -24,6 +24,7 @@
 #import <UIKit/UIKit.h>
 #import <ZFPlayer/ZFPlayer.h>
 #import "ZFUtilities.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFLandScapeControlView : UIView
 
@@ -52,3 +53,5 @@
 - (void)playBtnSelectedState:(BOOL)selected;
 
 @end
+
+NS_ASSUME_NONNULL_END

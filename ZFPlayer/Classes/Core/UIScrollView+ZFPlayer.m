@@ -60,7 +60,7 @@ static NSString *const kContentOffset = @"contentOffset";
     [self.scrollViewKVO safelyRemoveAllObservers];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([keyPath isEqualToString:kContentOffset]) {
             if ([change[@"new"] CGPointValue].y > [change[@"old"] CGPointValue].y) { // Scroll up

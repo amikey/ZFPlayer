@@ -27,6 +27,7 @@
 #else
 #import "ZFPlayer.h"
 #endif
+NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPortraitControlView : UIView 
 
@@ -54,5 +55,6 @@
 
 - (void)playBtnSelectedState:(BOOL)selected;
 
-
 @end
+
+NS_ASSUME_NONNULL_END
