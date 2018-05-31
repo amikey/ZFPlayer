@@ -7,7 +7,7 @@
 //
 
 #import "ZFTableViewCell.h"
-#import "UIImageView+ZFCache.h"
+#import <ZFPlayer/UIImageView+ZFCache.h>
 #import "UIView+ZFFrame.h"
 
 @interface ZFTableViewCell ()

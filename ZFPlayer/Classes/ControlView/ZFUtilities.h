@@ -43,5 +43,7 @@
 
 + (NSString *)convertTimeSecond:(NSInteger)timeSecond;
 
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
+
 @end
 

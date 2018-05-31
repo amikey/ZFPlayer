@@ -75,6 +75,8 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 @property (nonatomic, strong) ZFVolumeBrightnessView *volumeBrightnessView;
 
+@property (nonatomic, strong) UIImage *placeholderImage;
+
 @end
 
 @implementation ZFPlayerControlView
@@ -240,9 +242,11 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 }
 
 - (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
+    [self layoutIfNeeded];
+    [self setNeedsDisplay];
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
-    [self.coverImageView setImageWithURLString:coverUrl placeholder:ZFPlayer_Image(@"ZFPlayer_loading_bgView")];
+    [self.coverImageView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
 }
 
 #pragma mark - ZFPlayerControlViewDelegate
@@ -573,6 +577,13 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         _volumeBrightnessView = [[ZFVolumeBrightnessView alloc] init];
     }
     return _volumeBrightnessView;
+}
+
+- (UIImage *)placeholderImage {
+    if (!_placeholderImage) {
+        _placeholderImage = [ZFUtilities imageWithColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1] size:CGSizeMake(1, 1)];
+    }
+    return _placeholderImage;
 }
 
 @end

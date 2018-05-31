@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
   s.requires_arc = true
 
-  # s.default_subspec = 'Core'
+  s.default_subspec = 'Core'
   
   s.subspec 'Core' do |core|
       core.source_files = 'ZFPlayer/Classes/Core/**/*'
@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'ControlView' do |controlView|
-      controlView.source_files = 'ZFPlayer/Classes/ControlView/**/*'
+      controlView.source_files = 'ZFPlayer/Classes/ControlView/**/*.{h,m}'
       controlView.public_header_files = 'ZFPlayer/Classes/ControlView/**/*.h'
       controlView.resource = 'ZFPlayer/Classes/ControlView/ZFPlayer.bundle'
       controlView.dependency 'ZFPlayer/Core'

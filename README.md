@@ -24,11 +24,22 @@ Before this, you used ZFPlayer, are you worried about encapsulating avplayer ins
 
 ## Installation
 
-ZFPlayer is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+ZFPlayer is available through [CocoaPods](https://cocoapods.org). To install it,use player template simply add the following line to your Podfile:
 
 ```objc
 pod 'ZFPlayer', '~> 3.0.0'
+```
+
+Use AVPlayer simply add the following line to your Podfile:
+
+```objc
+pod 'ZFPlayer/AVPlayer', '~> 3.0.0'
+```
+
+Use default controlView simply add the following line to your Podfile:
+
+```objc
+pod 'ZFPlayer/ControlView', '~> 3.0.0'
 ```
 
 ## Usage introduce
