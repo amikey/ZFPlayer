@@ -1,0 +1,1917 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0089C9A575918D1C844BBD78792AF007 /* KTVHCDataCacheItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EE1C2658DEE72D212F2CF8F7B42838C /* KTVHCDataCacheItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		00C21FA1C33BCF6493C5EF07F8FD1037 /* KTVHCHTTPRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = D98651CBCFD5712B357287403F545713 /* KTVHCHTTPRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		012C5290928B64DCEB5541BCCB0F361E /* DDData.h in Headers */ = {isa = PBXBuildFile; fileRef = 858C079887BB9B5B13FC6D918B55A58E /* DDData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		01546AF46FDAF2D0864A83953024DB52 /* KTVHCDataCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191A0B922F751EB6F0B7CDDDACBDD5D /* KTVHCDataCacheItem.m */; };
+		056CB96C9ACF69840693624122C3F4D4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */; };
+		05745F778B16C81647E8DC40FC98B468 /* ZFAVPlayerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 41DCC42FA063D2CBD82893F11CC08418 /* ZFAVPlayerManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		06765780B09D13CFF23DA1E4342A869D /* KTVHCDataSourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = A10F3EB5B5210B7E0111B19AD3645323 /* KTVHCDataSourceManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A9C8825FEF31DFB6067F8E3B8FA56DD /* KTVHCDataSourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 021E1943E448ABECA6306FBC10844AFA /* KTVHCDataSourceManager.m */; };
+		0ADE3F372A111228B020ED99DCB255D0 /* Pods-ZFPlayer_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E923D6F2DE26172F2613449A58B0E0 /* Pods-ZFPlayer_Example-dummy.m */; };
+		0CDC5FF737EECFA30FCFB6AA32FB5B73 /* UIScrollView+ZFPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1614D94E5615AAF5355F342277AD9D /* UIScrollView+ZFPlayer.m */; };
+		1073734A8FEA26FC6012C7291C17E1C2 /* KTVHCDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 658CAA196A3FDE308F73B7603F30454B /* KTVHCDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		116D2520C437E7E3ED343239C6D3A7D3 /* KTVHCHTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DD63C4861F093F2A5A1126B7AD6DBE6 /* KTVHCHTTPResponse.m */; };
+		1298143C7B3AF4B5BE2033DD48AD33DE /* HTTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC483A30F63FFC441AF0F15E21913A7B /* HTTPMessage.m */; };
+		14EF6A8398FAC79D4AD58495C288EF87 /* KTVHCDataUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E40F5A3CF250389EAAC8759F899A73F /* KTVHCDataUnit.m */; };
+		1559F953E61E0D7501CD4A0E3A37B33A /* KTVHCHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FD21F59717FD29DE170A649FE3C7FCBC /* KTVHCHTTPServer.m */; };
+		18C40E1F2D1ECB918F16AE37E4EBCFD5 /* HTTPRedirectResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1713CC0B581F703F92373A274CCB36 /* HTTPRedirectResponse.m */; };
+		18DFBDF0C39FCFC9944C6F59CDC802B6 /* HTTPFileResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B6480C7A4EBD9141118F11B26F84CCF /* HTTPFileResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1AD0521AE6D4A18DB8EA670D969C2B53 /* KTVHCDataUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = CF23C306A834D2940CDAA4F9A0325E6E /* KTVHCDataUnit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1B6687F6AA64D272A61718DC7129CC59 /* KTVHCDataSourceQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BD8524D1E19E848F7926DA56A892ABB /* KTVHCDataSourceQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1EF13C1E703A0D5409AF4573948B4F05 /* HTTPAsyncFileResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = A6EB8F31AFF83B4A9B403B2A12DDB504 /* HTTPAsyncFileResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		24FDC60C1E39BC812819FB96E7BA510E /* ZFPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 663E64EED2A2551A274084603B594A87 /* ZFPlayerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		265CC7BA0E7BF8B590B1849C8600C555 /* MultipartMessageHeaderField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF50BEC27B10C98E0852AF5820669A5 /* MultipartMessageHeaderField.m */; };
+		265CCD61FEC5CE4FCE666BF07B6FF343 /* ZFVolumeBrightnessView.h in Headers */ = {isa = PBXBuildFile; fileRef = ABDB6CC2C86841A19C8A46FF5AEE5C83 /* ZFVolumeBrightnessView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		272317BB42CC47EDB1C12B7DF7F6C6B8 /* KTVHCHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AB28CE0F192032210A5E2776060B371 /* KTVHCHTTPServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27CA841E49A7F490E364A5A3C4557A48 /* KTVHCDataResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B0676E74F86D69536A270851F12044B /* KTVHCDataResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27F60D177DDA0E23DC61270EBEEAA41A /* UIImageView+ZFCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 556DAAB1406CC33B261226EFEF78E8D1 /* UIImageView+ZFCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		28CE8478974667B1DE4398E1DF3EC12E /* ZFOrientationObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 361C07FECF29DE1F48A35246C5E5FE75 /* ZFOrientationObserver.m */; };
+		29173EF1FF532C2841AB287352520AF6 /* ZFSmallFloatControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = B60702F6366D7BF7A4BC2E8971B8F034 /* ZFSmallFloatControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		294CC57AAAC59D43EBFE3297D06276D7 /* ZFLandScapeControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF9E3A17E79B455491B738612AD782B /* ZFLandScapeControlView.m */; };
+		2AB27FD007A4AE077AF831DD06B92854 /* MultipartMessageHeaderField.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1D8F8DF9EE2B9A7C54B8D95C1126C1 /* MultipartMessageHeaderField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2ADB111F6B13280E1CF6F45FDA6DFC96 /* MultipartMessageHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = D7384F87AB9B5697CA8815FED16D48AC /* MultipartMessageHeader.m */; };
+		2C1D4668846ACCAFC220A3535BC129F8 /* KTVHCDataFileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE0A9D8D207B2A63EBB28546E817D67 /* KTVHCDataFileSource.m */; };
+		2CCAD4AC5F6D98F52FA07574899A0710 /* KTVCocoaHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C77324D2E4BFFD939345B2B28DF46B5 /* KTVCocoaHTTPServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D91D8E2F8C8238ADE25B435C389EB59 /* KTVHCHTTPHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C8F02A048F4F4533F6811F2675B3D3 /* KTVHCHTTPHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2DA587EB4F0DCEA7C5FB1024ED6A0C09 /* ZFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF168FFB0729E17A091EF978B1C622F /* ZFUtilities.m */; };
+		2DAA98C8614A6DED26CE8712531AE1FC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */; };
+		2DEF35D055158193BEDB2E25C3BA9D04 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */; };
+		2E11C213DBA25F207BF4CA4E089B8ABE /* ZFVolumeBrightnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A10EF400DE953507DC4339A652CE40 /* ZFVolumeBrightnessView.m */; };
+		2F8737598B1EAC1C946294A0049B3F7C /* ZFFloatView.m in Sources */ = {isa = PBXBuildFile; fileRef = A166C36D8056330E6BBC305A058F2E40 /* ZFFloatView.m */; };
+		2F8A3D8CF2ECA60564F0209B0E116516 /* KTVHCDataStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = C13D58B1BEAD4FA8D8442FC9DF4CE78E /* KTVHCDataStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2FEA062DF0D93D183FE83288C74175A8 /* ZFAVPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A2D77CF1FA86A6CB5C6B826B528BD6 /* ZFAVPlayerManager.m */; };
+		303A74C35BF9ED9DDCCB46855385CD89 /* ZFPlayerNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D70BC1FEB99AFCFC1119A99B5DEB39 /* ZFPlayerNotification.m */; };
+		307C897BCE32DACC45085EB13EB57F39 /* DDNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 9866A43EE8FAB10DB2AD54722CA2F65E /* DDNumber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30B44451CB081F413E5272A8ADBC830A /* UIImageView+ZFCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 77DE64A244E7E9154D959D8F8BDDEBA3 /* UIImageView+ZFCache.m */; };
+		328AC1F0DDB25ECAE376799A9215A742 /* KTVHCDataCacheItemZone.m in Sources */ = {isa = PBXBuildFile; fileRef = D23163A0DD3CF8B136A2BAB30DF0975F /* KTVHCDataCacheItemZone.m */; };
+		3457DAF97B4BA3207B955C7E46FD0697 /* KTVHCDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CA1F0CA054D353B282085ADCBCCE1AB /* KTVHCDataRequest.m */; };
+		37C5BDB1CFB5AE02DBD4EAC4EA9ACF34 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E71ABB16EE2E320BC1F0C8D7A446F401 /* CocoaAsyncSocket.framework */; };
+		3B5DA57238345323C3BA490BAFC349E0 /* ZFKVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = C79F60E916DD888DFCEF1D3FA9600EBB /* ZFKVOController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3B70A3E74AC759D729FD361762A48CB7 /* KTVHCDataFileSource.h in Headers */ = {isa = PBXBuildFile; fileRef = A1EE6B94FF6CEA396D43F2DAED39DD96 /* KTVHCDataFileSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3F9C663EE309D36403C1498188479674 /* KTVHTTPCacheImp.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D82FFB5F710DD98590539EBEF230A29 /* KTVHTTPCacheImp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4084719F603E768FBA41815960DFA840 /* KTVHCDataNetworkSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C9306D25592DCCF8067E1A902BA2D443 /* KTVHCDataNetworkSource.m */; };
+		40C6ABC9F53E77E5FF3FDA492542E2D9 /* KTVHCHTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DC0E4CDC50076DC6079A7E5D01484FA /* KTVHCHTTPResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		41ACAF526B3D4E3C033379E98D5FC91B /* KTVHCPathTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 567CBFE9F8CFB3A8CFF50116B5A8D4A6 /* KTVHCPathTools.m */; };
+		42B70E426A4222F185FFD8689E28831A /* Pods-ZFPlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0136CBB2CFBE8021CACE3EDF21484EF6 /* Pods-ZFPlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4386559EA1A6618ECAF93D6E8F4D8EDF /* KTVHCDataReader.m in Sources */ = {isa = PBXBuildFile; fileRef = E43AB3178A0BEAEA514235E1EF8EFBDE /* KTVHCDataReader.m */; };
+		43872EE26FC527B6AE8864EA11ACE59C /* KTVHCDataUnitItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FCFE2547154BEDCBC902E8FCDD18B /* KTVHCDataUnitItem.m */; };
+		482B1F338B28DDA108FB88E0BD54DC00 /* HTTPAsyncFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2B93684BB123BB6CA576B1000ED3F /* HTTPAsyncFileResponse.m */; };
+		4B4AD285E35EA217F6ADF255F318400B /* KTVHCDataReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A502B3780DF2BD3723BFD2D89101080 /* KTVHCDataReader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4C5E648AF392C6F17D3D57B1D5656349 /* KTVHCDataUnitQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B940BB942700AFEFE94E1BB113931B /* KTVHCDataUnitQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4D72CD517335DBC124CE9D8B832DA0EB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A725831C8E499E44C0E8E9DAEDB403 /* UIKit.framework */; };
+		50230743B0F1F5F0C3743B1F527BE416 /* KTVHCHTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 434F9E9607EFE4C2239B29DFB0D1AF18 /* KTVHCHTTPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5099589663C29B5645CCE99CEEA679F7 /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F01C9282582CC4681D195424DD007B /* DDNumber.m */; };
+		56CB0C83FCDD8D2BECC420E455BF00E2 /* KTVHCPathTools.h in Headers */ = {isa = PBXBuildFile; fileRef = C03A11B8E4E3E76E014A3F3B541FFAA1 /* KTVHCPathTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5719864DBA2ACC2E6E1A8BA60BC049E7 /* HTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 090FF3EB12E327C98CA43C4DEB0A5C54 /* HTTPResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		57D3D2AAE5D38764507C174C7D4E3443 /* KTVHCError.h in Headers */ = {isa = PBXBuildFile; fileRef = 23975E3431013139C9FFB05FE0ADADB2 /* KTVHCError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5B6E63DC2B44EA8F080DA9B994130E79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */; };
+		5CF8E850783E28C7F222BC4BB38ED0EB /* ZFSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 526307BEA421E0646E4F159F48213FED /* ZFSliderView.m */; };
+		5ED3471B33A298D459F4EB79AFEEED6A /* ZFPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 60440932630FF780C9CFB4B61D1CD4C1 /* ZFPlayer-dummy.m */; };
+		5EDC39FAF0EB545C68B38A9F09156E79 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E71ABB16EE2E320BC1F0C8D7A446F401 /* CocoaAsyncSocket.framework */; };
+		61CB7CC2F29FB1E5A5E2E4A2CB1C4BB3 /* KTVHCError.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EF7CF951A9318EA2B13D11BA821844 /* KTVHCError.m */; };
+		620E156B741B99A4A1AE21480ED8F8E0 /* HTTPDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6A6D367376A21A5216622635A2170 /* HTTPDataResponse.m */; };
+		62BD861E41746BD441B509FB7FD5F758 /* ZFPlayerControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B836FC12C1F554996938885F90FD436 /* ZFPlayerControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6768F233614AFF8ADF4D6E5C9112345F /* HTTPRedirectResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 4627AF666F4A36D8C575415EAA537273 /* HTTPRedirectResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		677D49D7A6D45A93EAEA10532449498A /* KTVHTTPCacheImp.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EFD473E61BBA593E7A14B8DCA61E1E /* KTVHTTPCacheImp.m */; };
+		68265CE2D9D9410AA533625AF10BE0BC /* KTVHCDataSourceProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BC11E9472A8FE003C2F3719A3C2D173 /* KTVHCDataSourceProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		68967155D9544006D86A6FCD4BD4C346 /* WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = AC41FF61FFCF578F434B911938EBF98C /* WebSocket.m */; };
+		691274D15CD19B39278B60C4E85D4CC9 /* HTTPLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = C27DC747FBDDEEE3207775894B62F884 /* HTTPLogging.m */; };
+		69E2DF22454DB7ED14D81D0D5DA694AA /* ZFLoadingView.h in Headers */ = {isa = PBXBuildFile; fileRef = E8C314BFBF93429D87607406244426C0 /* ZFLoadingView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6AFCC989313864CA30673D217EC49803 /* KTVHCDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369716CE49CFF9F41AE3F67F26D852D /* KTVHCDataResponse.m */; };
+		6E83D7E7F052EA4AE102601E7D5CF8DF /* UIView+ZFFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C06E02071209E7FB200A53142D6FA53 /* UIView+ZFFrame.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7084622A6F65984CE3E9B0194C185567 /* ZFReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA066D5409FAEC6013C4AA1DCC5BEFE /* ZFReachabilityManager.m */; };
+		70D501C289218174D96645573815152D /* KTVHCRange.h in Headers */ = {isa = PBXBuildFile; fileRef = CB8CAEF5CEBC1005326739FE91C7D6E7 /* KTVHCRange.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7186F2F5366FD1F049E400BFEE76873A /* KTVHCDataPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8392FBB829F106023D817BAF0F8461A1 /* KTVHCDataPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		71F6EE7329A5FCC723EB91F6499796B9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A725831C8E499E44C0E8E9DAEDB403 /* UIKit.framework */; };
+		72BEA3F7E9972842AE3521E58775A7BC /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 412FA5B20E07C1878726B08CEFA16770 /* HTTPServer.m */; };
+		73C4F3C9B4DCD69287CFD9A5993DB6BB /* KTVHCLog.h in Headers */ = {isa = PBXBuildFile; fileRef = C5F6FC8ED93911A7E19855DCB4F46F48 /* KTVHCLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74349571B467C3E1366BF37362F75ADC /* HTTPErrorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C358050DC6DAF324EF0DFAB97CC34E8A /* HTTPErrorResponse.m */; };
+		74629AD3DAC9AFD032DF66B04DCDA351 /* ZFPlayerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 87C41CE49D6928877EA26CAD4ABBF2AE /* ZFPlayerControlView.m */; };
+		74B5BC889F52D05C88A33E1323F45655 /* ZFPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0EDBFADEA828FF20CEB3AA6276702E05 /* ZFPlayer.bundle */; };
+		75F1B7490ACCFA45C5080F8BB5090FD1 /* KTVCocoaHTTPServer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AD37D189366B7DADF523BFC010E1A910 /* KTVCocoaHTTPServer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		760127CC4E7F945B12C05E055A624664 /* UIScrollView+ZFPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B53C422C12311833800B60E57F051C9 /* UIScrollView+ZFPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C0D8C24D6C3666F463A2A7BB931281E /* Pods-ZFPlayer_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B2335F996302A008A6D8FB1441F9F3F9 /* Pods-ZFPlayer_Tests-dummy.m */; };
+		7DDA3859E384D259F0FEDF1A09718F16 /* ZFLandScapeControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = 450D143D8BDC674D265E6B9ECC081429 /* ZFLandScapeControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7E4F0161B4D135DA3A0763619A56C2F5 /* CocoaAsyncSocket-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B06BB7C24BBA365FDB208839707DB46 /* CocoaAsyncSocket-dummy.m */; };
+		7EC83920A9341E454990C1B7C0D4760F /* HTTPDynamicFileResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 61674FAAE980E6E1EC0789AEC7CA6831 /* HTTPDynamicFileResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		80F5842FD1CF17229C663FF397399D0B /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A2721638E71A1818B7A6894F91AEBA /* HTTPConnection.m */; };
+		81185768F373EF1C654A908A115E2684 /* ZFPlayerMediaPlayback.h in Headers */ = {isa = PBXBuildFile; fileRef = 487451709C1417DF9BDFDC7C398B6935 /* ZFPlayerMediaPlayback.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		818C5196106CCBF2C14D28FE2BDFBD68 /* MultipartFormDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8609D2104C84A26CC3CA4C3BE2B641C1 /* MultipartFormDataParser.m */; };
+		83475217B4C69C330DBFA2E2466718CA /* KTVHCHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FD63C08D598F2B15B59073E4CE818BF /* KTVHCHTTPConnection.m */; };
+		840FEB17D6B282BA781C1320101E4C31 /* KTVHCDataStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F71F45A4855A73304C7C0272CF13DFC /* KTVHCDataStorage.m */; };
+		8480493AEC1C7AF1B5C0E0BF2F70FB44 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D0A0CAEDC1F8B6CD4AFB7ACEEBA1E8F /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		86DFDE656A3E474E174FF926B7FEB6FB /* MultipartFormDataParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 57B6D01CAF038724A2CB9CE1C1053C66 /* MultipartFormDataParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		87472B25CF78656B84414EFBCCCEB71D /* ZFPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = A41925BA87F1D8696D0A904736AECC2C /* ZFPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		87CEB0850791FA7B2A43555644AE5701 /* ZFUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 134743089079D737335E0FE3F75FA926 /* ZFUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		892D0285E442124B45FD6F2EAB94B3B0 /* KTVHCDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 6276CBB46946F964D6C8AD118C45E6D6 /* KTVHCDownload.m */; };
+		89E681B860A678B21A1ABA015A489B50 /* KTVHCDataUnitQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A8601993A4801A855024D088E8C0944E /* KTVHCDataUnitQueue.m */; };
+		8CBA0C0FC9B296BD7FAF33AB23209091 /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CB684AB999038DD8686406551EF67E43 /* HTTPConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8CEDD08B88CBB4E6F2A5EBEF9D6D16E8 /* KTVHCDataNetworkSource.h in Headers */ = {isa = PBXBuildFile; fileRef = DED4E9B73577EC75F53EEB0B2DF7951E /* KTVHCDataNetworkSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EE06B977D84CFB09B38B2C9C197A6D1 /* ZFFloatView.h in Headers */ = {isa = PBXBuildFile; fileRef = ACC205195DA9A860EEC03F6FE7E0BE5D /* ZFFloatView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		922133D60F3A600CDFB1092645E3372A /* KTVHTTPCache-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F129A6A8F8F46E6F02ED843EE529B7 /* KTVHTTPCache-dummy.m */; };
+		92E4571C4BBB742C4E3338F945B2785E /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5049F8BB2197F21C5605D5B5844001 /* DDRange.m */; };
+		9389160595D1A6B5A04B7E40AAD0576C /* ZFPortraitControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FF8AF1AE8251B07C95FADE6DA12911 /* ZFPortraitControlView.m */; };
+		939BDF5612A9B21A7773F2E37073E940 /* ZFPlayerGestureControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 657A67E96467EB8E82B46E8AA82E3BBF /* ZFPlayerGestureControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		93C446D26DD2335605DB601CEC6F8CD2 /* ZFSliderView.h in Headers */ = {isa = PBXBuildFile; fileRef = 81B303D2A8D5604ED46F6D72E0FCEA7E /* ZFSliderView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		955CACFF2DE67AB0162AAFCEDBF13A1B /* MultipartMessageHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 81BD03E6C236E04592A815EF8A6198FC /* MultipartMessageHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96766BE50AFDF220943F2805985B2AEB /* HTTPAuthenticationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = AE068604D98501C55337D8AAF0462E1D /* HTTPAuthenticationRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9CA3F8BB0737A7074099CCF8D05F2CCD /* KTVHCHTTPURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 5CD043E0A74BBA20702F8CD078171BE2 /* KTVHCHTTPURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D92E590E6AEBD651A453609709C76D7 /* HTTPErrorResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = B4E87AF8F3D169A0842C191A2F5E8244 /* HTTPErrorResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A1921C804A39019A65F7D58281AE65FC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 648114B25BCA5BD04DD1A401127794F6 /* MediaPlayer.framework */; };
+		A2EF1DE99607CEB84F6D26AE8E0A1C9F /* ZFPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C42743ED564D6FFC1557629BB31E59C /* ZFPlayer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A362E3D04F055DF75009C845F6CB1AAA /* KTVCocoaHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C0603BA676C7704FF919B8DDD855C4 /* KTVCocoaHTTPServer.framework */; };
+		A4E3AAA45B0010E8E5ED96555E237425 /* HTTPAuthenticationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4767E77E969A4D8FC280DFCB923A7B6D /* HTTPAuthenticationRequest.m */; };
+		A630982B9BBA17ABFCF5DEE10F51059D /* ZFLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF7A02DED3E2013AC75D2C1E0915585D /* ZFLoadingView.m */; };
+		A6E2526457F7AAF759B59A4419382301 /* ZFPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 77D145BC6D4B02A5E0A575645C7E7A63 /* ZFPlayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A882891E5A89CADF96C2CA79606409CA /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 88C5726E4618ACC46E95DC6A2F310428 /* GCDAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AA4F7CAD32A4FE2B216258E705D72437 /* KTVHCRange.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF59B18FC09686B1825282B1671EBC3 /* KTVHCRange.m */; };
+		AB0C53F48D985B5556983D76AAECDC49 /* HTTPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = AE28DBA886FB1C126E55C430995B4335 /* HTTPFileResponse.m */; };
+		AC7DC2A21843CD99040DCD79FF3BE91B /* GCDAsyncUdpSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C46B0DF0A5EA1354799DF0A8E62670C /* GCDAsyncUdpSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AEE9644DA0EFCF945438E125BA4F0724 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B1BA73DF22F2F1DBAD31F3AFE11FBD /* GCDAsyncUdpSocket.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		B1EAE59E484CF1E7B055699E0CFCDE5A /* ZFKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040A393133CAFCF170EFF0488FAD2DE5 /* ZFKVOController.m */; };
+		B2F2C31AD33B691400BC55D1B9E0B559 /* ZFSmallFloatControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = E53E6E5EC713D6B13B0145A8F9C3FF08 /* ZFSmallFloatControlView.m */; };
+		B533FE8B74D8E799FD0606DA8E877A4D /* HTTPDataResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 333D2902F9214EFBF6078313BC702885 /* HTTPDataResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B688B80E8B12B7F6988B29DC592DA94D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229CF89BACC6607EB44AF4939593157B /* Security.framework */; };
+		B811FF1C7DE8B641696F293504039045 /* KTVHCURLTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8920BA41609AC840520707A63E395B75 /* KTVHCURLTools.m */; };
+		B92ADC23F44095E5416A1C55948786BB /* ZFPlayerGestureControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D25D668B901160F397737C5BE9FA4A /* ZFPlayerGestureControl.m */; };
+		BDA2563053A66BCE141CAB6447C422E0 /* KTVHCURLTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 76AEE7C89101E1A44136BC970483B91C /* KTVHCURLTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C30D79A223F72937D0515447D5D630D3 /* ZFPortraitControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = FA4687F8CE9EE0075C982ED7AD22718D /* ZFPortraitControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C370383834C1A67CB26FA9174DBD806A /* HTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = DE9CAAC2FC89E5D9ECFB5DD2A115918E /* HTTPServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C6451FDEC7CF7E0EF967D56CC1C5AF26 /* KTVHCHTTPURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FD6688B465677996B2E1491AEC576B /* KTVHCHTTPURL.m */; };
+		C7643D92551230C8584FD40B8B1BF5E7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39738C613183878EC12E1B23770F81AD /* AVFoundation.framework */; };
+		C8F5F80B597A16BCECB84CF703B067A9 /* HTTPLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E4149147BDBE9CA21BBC3E49811F239 /* HTTPLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CA3C54F7663A03C3887F23D99C9D2516 /* KTVHCDataUnitPool.m in Sources */ = {isa = PBXBuildFile; fileRef = F800EBD5A6B150D4F63166F86F0CCD8F /* KTVHCDataUnitPool.m */; };
+		CA3F7D8C5252CE36B096D656B40B749E /* KTVHCDataRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = C9F2964D9E8D5DD4E80015959C912604 /* KTVHCDataRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CA707EFD94E7424DABF40647C9A69755 /* UIViewController+ZFPlayerRotation.h in Headers */ = {isa = PBXBuildFile; fileRef = DB9FE46508B87FE263658B8D9A935B67 /* UIViewController+ZFPlayerRotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBF306B7E46AC6E78D1E0CDF836DCABA /* UIView+ZFFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = D18F26DD4EC23F82701BC924BFA146C8 /* UIView+ZFFrame.m */; };
+		CC51914EF49856289A5AB698A38C5DE1 /* KTVHTTPCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C03969648CB84A8C426F67D1F14D657 /* KTVHTTPCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D01B2EBC1AB52980422F5A831BBCE3F4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96D80A5F1975DED70A5052F774C25ADB /* CFNetwork.framework */; };
+		D41BAD90F06A95EE2397270448DFFDBB /* ZFOrientationObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C41917A99EC8B20905654FA1A7203D3 /* ZFOrientationObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7A0F72131DD5D3D6E8DCD4B6CB17EFF /* KTVHCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C1B2D5B940B619C8CCBD3F64138DA2E /* KTVHCLog.m */; };
+		D81EAEB01ED4CDEC5F60EB9F12107588 /* KTVHCCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = A55DF66432680A1B176EBC8DFECBD230 /* KTVHCCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D88407414F2EFCEAAC35280777C93321 /* KTVHCHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DD3F9DF6138E9BCB90C2071575D4EB2 /* KTVHCHTTPRequest.m */; };
+		D916CBF4DBBB6B8DE5453BE494A56EE2 /* KTVHCDataSourceQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D2546237F8D805777D2D45396BB4F49C /* KTVHCDataSourceQueue.m */; };
+		D9C6AE4FF79D618F300CDE4F5140613D /* ZFPlayerNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = FABA1AC4D2CD360982E021D787FD3DA8 /* ZFPlayerNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DB52628076290695A07D736FAA986C35 /* ZFPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = B25ECF162ED484727D50FF3C7286B2F3 /* ZFPlayerController.m */; };
+		DC5CD5FB3998539B67E01568A0C70EF6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */; };
+		DD60B5EA192D9B6F0D8C95BCE325EBAB /* KTVHCDataCacheItemZone.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7FF6481C139DCACBB380B833F69295 /* KTVHCDataCacheItemZone.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DE0AD3E5682904343BB2CD45F788F70C /* WebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 778C7D7A839587269A87F69E0C0A69B9 /* WebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E38D11FF54039164E67DADB98F34F2F7 /* KTVHCDataCallback.h in Headers */ = {isa = PBXBuildFile; fileRef = 61621AF0A72D4AEBC0D6F14047D9CFDA /* KTVHCDataCallback.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E421449755D07AA8B3AA564C3E3A758B /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47D5D8693B377B7E66CA2B225C0CCD92 /* ZFPlayerView.m */; };
+		E4230DB0D114C94B081018C1AC1E9972 /* CocoaAsyncSocket-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A967AAC97D54B1DF204A810B8122C345 /* CocoaAsyncSocket-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E538DEB8FB68D67DBCAC597267EAE42D /* DDRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DBA21711B9B465643A13FD3D073E67E /* DDRange.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E57B8E7BBB0594C3851967EF6E1D5C4A /* KTVHTTPCache-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A2448CCF690D2E61A7C5722A9281E4 /* KTVHTTPCache-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6308867E6812C931F04F7C1764FC2EF /* KTVHCHTTPPingResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C83441C4257B0F88EDDF4A5F0515D21 /* KTVHCHTTPPingResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6AFB73F33C79AFA6D4987B9E40B085E /* KTVHCHTTPPingResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDED0CB02832960827F4D66722C6124 /* KTVHCHTTPPingResponse.m */; };
+		E6BDE0E533F3E6EC13CA5379FA2D16A9 /* ZFPlayerMediaControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ADF8CA779219038ADEC61FD3B3AF66F /* ZFPlayerMediaControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E73D88EAED6F530BD280338EE75701DE /* ZFReachabilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A2647B3F27C26DFF56DE09C313AA952 /* ZFReachabilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9CC7D9A45510A1CC3447B86E2032849 /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 027C4246F1D1C6D3A2708485C59E4C58 /* DDData.m */; };
+		EF1C27862CFBB4B301CF1F479851501B /* HTTPDynamicFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B68C4E9B93DFBAAB22445E0FA0D1767 /* HTTPDynamicFileResponse.m */; };
+		F32A3A6CBB9D2357FF8DDC47B0938AA0 /* KTVCocoaHTTPServer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741FF7353CC343B6340099008471C91 /* KTVCocoaHTTPServer-dummy.m */; };
+		F41E4806D4E985B00785785688B99AA5 /* UIViewController+ZFPlayerRotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52337A29674CE32BCCD49204BA1458CC /* UIViewController+ZFPlayerRotation.m */; };
+		F43E06EF050FA6780622605AB936D15B /* HTTPMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = CBEBE339EC14FCC2FE49D3010296F787 /* HTTPMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F7137A133B8526306A8187DED64E95E1 /* KTVHCDataUnitItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B183388FB9E041EE5E31E54D55CC820 /* KTVHCDataUnitItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F78B742B192D4EEE2DD36916CF27548C /* KTVHCDataUnitPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DF5C3D3720BA70EA0D24F0377EA58C2 /* KTVHCDataUnitPool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F83AF5EF307A926EDB5DBE16068831C6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */; };
+		FB094AE8B9E9FA679BFD880FB5D3E44F /* Pods-ZFPlayer_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 99A05A0629A97415E49A74A3BFFF0F52 /* Pods-ZFPlayer_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE78AA4B297E5E8097D5ABCEB3EE69A0 /* KTVHCDataCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = BB07303E6D465C9E634FA535210B21D9 /* KTVHCDataCallback.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6BFEA28ECF5FB850C1D0966A59CEDA1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C77CE399CB45172DADC477F198D2AA29;
+			remoteInfo = KTVCocoaHTTPServer;
+		};
+		80088DE6C653366D663F5166BEE146F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC0D2D2B4EE7C873431AB3502859CA60;
+			remoteInfo = CocoaAsyncSocket;
+		};
+		816AA38701D5944E13E9718D5971722C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C77CE399CB45172DADC477F198D2AA29;
+			remoteInfo = KTVCocoaHTTPServer;
+		};
+		D743784A788CCA92209143C5CB6C938D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC0D2D2B4EE7C873431AB3502859CA60;
+			remoteInfo = CocoaAsyncSocket;
+		};
+		E99E934EACACD62E3634C6D2B300DC45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A52394513B0AA9250B8D4718B8664977;
+			remoteInfo = ZFPlayer;
+		};
+		EC21320CBFC4B8C285A446628E46CD31 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5128502CCE684EA86B17B0BA8BD56DDC;
+			remoteInfo = KTVHTTPCache;
+		};
+		FD5BBB779BE76777253140445BF5CC72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC0D2D2B4EE7C873431AB3502859CA60;
+			remoteInfo = CocoaAsyncSocket;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0136CBB2CFBE8021CACE3EDF21484EF6 /* Pods-ZFPlayer_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-ZFPlayer_Tests-umbrella.h"; sourceTree = "<group>"; };
+		021E1943E448ABECA6306FBC10844AFA /* KTVHCDataSourceManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataSourceManager.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataSourceManager.m; sourceTree = "<group>"; };
+		027C4246F1D1C6D3A2708485C59E4C58 /* DDData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDData.m; path = KTVCocoaHTTPServer/Classes/Categories/DDData.m; sourceTree = "<group>"; };
+		040A393133CAFCF170EFF0488FAD2DE5 /* ZFKVOController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFKVOController.m; path = ZFPlayer/Classes/Core/ZFKVOController.m; sourceTree = "<group>"; };
+		04C5B566AA9C877BBC786958933C12FB /* ZFPlayer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZFPlayer-prefix.pch"; sourceTree = "<group>"; };
+		072A84F425ADDE8088489472B216E0EE /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		090FF3EB12E327C98CA43C4DEB0A5C54 /* HTTPResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPResponse.h; path = KTVCocoaHTTPServer/Classes/HTTPResponse.h; sourceTree = "<group>"; };
+		0BC11E9472A8FE003C2F3719A3C2D173 /* KTVHCDataSourceProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataSourceProtocol.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataSourceProtocol.h; sourceTree = "<group>"; };
+		0C3FEA464317F893236081D370F25B56 /* Pods-ZFPlayer_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ZFPlayer_Example.release.xcconfig"; sourceTree = "<group>"; };
+		0D0A0CAEDC1F8B6CD4AFB7ACEEBA1E8F /* GCDAsyncSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = Source/GCD/GCDAsyncSocket.m; sourceTree = "<group>"; };
+		0E40F5A3CF250389EAAC8759F899A73F /* KTVHCDataUnit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataUnit.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnit.m; sourceTree = "<group>"; };
+		0EDBFADEA828FF20CEB3AA6276702E05 /* ZFPlayer.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = ZFPlayer.bundle; path = ZFPlayer/Classes/ControlView/ZFPlayer.bundle; sourceTree = "<group>"; };
+		0F71F45A4855A73304C7C0272CF13DFC /* KTVHCDataStorage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataStorage.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataStorage.m; sourceTree = "<group>"; };
+		12D25D668B901160F397737C5BE9FA4A /* ZFPlayerGestureControl.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFPlayerGestureControl.m; path = ZFPlayer/Classes/Core/ZFPlayerGestureControl.m; sourceTree = "<group>"; };
+		134743089079D737335E0FE3F75FA926 /* ZFUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFUtilities.h; path = ZFPlayer/Classes/ControlView/ZFUtilities.h; sourceTree = "<group>"; };
+		14A2721638E71A1818B7A6894F91AEBA /* HTTPConnection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPConnection.m; path = KTVCocoaHTTPServer/Classes/HTTPConnection.m; sourceTree = "<group>"; };
+		17E923D6F2DE26172F2613449A58B0E0 /* Pods-ZFPlayer_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ZFPlayer_Example-dummy.m"; sourceTree = "<group>"; };
+		18B940BB942700AFEFE94E1BB113931B /* KTVHCDataUnitQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataUnitQueue.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnitQueue.h; sourceTree = "<group>"; };
+		191BE710E5EFB6FE7D3E2A06D5D3A708 /* KTVCocoaHTTPServer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = KTVCocoaHTTPServer.modulemap; sourceTree = "<group>"; };
+		1ADF8CA779219038ADEC61FD3B3AF66F /* ZFPlayerMediaControl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayerMediaControl.h; path = ZFPlayer/Classes/Core/ZFPlayerMediaControl.h; sourceTree = "<group>"; };
+		1B183388FB9E041EE5E31E54D55CC820 /* KTVHCDataUnitItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataUnitItem.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnitItem.h; sourceTree = "<group>"; };
+		1B68C4E9B93DFBAAB22445E0FA0D1767 /* HTTPDynamicFileResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPDynamicFileResponse.m; path = KTVCocoaHTTPServer/Classes/Responses/HTTPDynamicFileResponse.m; sourceTree = "<group>"; };
+		1C46B0DF0A5EA1354799DF0A8E62670C /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDAsyncUdpSocket.h; path = Source/GCD/GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		1CA1F0CA054D353B282085ADCBCCE1AB /* KTVHCDataRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataRequest.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataRequest.m; sourceTree = "<group>"; };
+		1E7EDBCFEEDBF4149FB977A81FEBD119 /* Pods-ZFPlayer_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ZFPlayer_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		1ED92D563CADDC494C71D1EF785A77AA /* Pods-ZFPlayer_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ZFPlayer_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		1FD63C08D598F2B15B59073E4CE818BF /* KTVHCHTTPConnection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCHTTPConnection.m; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPConnection.m; sourceTree = "<group>"; };
+		229CF89BACC6607EB44AF4939593157B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		23975E3431013139C9FFB05FE0ADADB2 /* KTVHCError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCError.h; path = KTVHTTPCache/Classes/KTVHCCommon/KTVHCError.h; sourceTree = "<group>"; };
+		25B1BA73DF22F2F1DBAD31F3AFE11FBD /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncUdpSocket.m; path = Source/GCD/GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		273DC09AB0C70DEEF3B6B592EA6FA336 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28C8F02A048F4F4533F6811F2675B3D3 /* KTVHCHTTPHeader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCHTTPHeader.h; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPHeader.h; sourceTree = "<group>"; };
+		29E6A6D367376A21A5216622635A2170 /* HTTPDataResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPDataResponse.m; path = KTVCocoaHTTPServer/Classes/Responses/HTTPDataResponse.m; sourceTree = "<group>"; };
+		2AFF6AB46A2601C9DA7CDDF2600E68A9 /* Pods-ZFPlayer_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ZFPlayer_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		2B836FC12C1F554996938885F90FD436 /* ZFPlayerControlView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayerControlView.h; path = ZFPlayer/Classes/ControlView/ZFPlayerControlView.h; sourceTree = "<group>"; };
+		2BA066D5409FAEC6013C4AA1DCC5BEFE /* ZFReachabilityManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFReachabilityManager.m; path = ZFPlayer/Classes/Core/ZFReachabilityManager.m; sourceTree = "<group>"; };
+		2BF50BEC27B10C98E0852AF5820669A5 /* MultipartMessageHeaderField.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MultipartMessageHeaderField.m; path = KTVCocoaHTTPServer/Classes/Mime/MultipartMessageHeaderField.m; sourceTree = "<group>"; };
+		2C03969648CB84A8C426F67D1F14D657 /* KTVHTTPCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHTTPCache.h; path = KTVHTTPCache/KTVHTTPCache.h; sourceTree = "<group>"; };
+		2DC0E4CDC50076DC6079A7E5D01484FA /* KTVHCHTTPResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCHTTPResponse.h; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPResponse.h; sourceTree = "<group>"; };
+		31A725831C8E499E44C0E8E9DAEDB403 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		333D2902F9214EFBF6078313BC702885 /* HTTPDataResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPDataResponse.h; path = KTVCocoaHTTPServer/Classes/Responses/HTTPDataResponse.h; sourceTree = "<group>"; };
+		361C07FECF29DE1F48A35246C5E5FE75 /* ZFOrientationObserver.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFOrientationObserver.m; path = ZFPlayer/Classes/Core/ZFOrientationObserver.m; sourceTree = "<group>"; };
+		36C116CA53C94A333F85BDECA83C6D2A /* Pods-ZFPlayer_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ZFPlayer_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		3741FF7353CC343B6340099008471C91 /* KTVCocoaHTTPServer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "KTVCocoaHTTPServer-dummy.m"; sourceTree = "<group>"; };
+		39738C613183878EC12E1B23770F81AD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		3A5049F8BB2197F21C5605D5B5844001 /* DDRange.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDRange.m; path = KTVCocoaHTTPServer/Classes/Categories/DDRange.m; sourceTree = "<group>"; };
+		3B06BB7C24BBA365FDB208839707DB46 /* CocoaAsyncSocket-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CocoaAsyncSocket-dummy.m"; sourceTree = "<group>"; };
+		3C83441C4257B0F88EDDF4A5F0515D21 /* KTVHCHTTPPingResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCHTTPPingResponse.h; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPPingResponse.h; sourceTree = "<group>"; };
+		3FDED0CB02832960827F4D66722C6124 /* KTVHCHTTPPingResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCHTTPPingResponse.m; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPPingResponse.m; sourceTree = "<group>"; };
+		412FA5B20E07C1878726B08CEFA16770 /* HTTPServer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPServer.m; path = KTVCocoaHTTPServer/Classes/HTTPServer.m; sourceTree = "<group>"; };
+		4133FC5235173E5159749F239C58CD58 /* KTVHTTPCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KTVHTTPCache.framework; path = KTVHTTPCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4191A0B922F751EB6F0B7CDDDACBDD5D /* KTVHCDataCacheItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataCacheItem.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItem.m; sourceTree = "<group>"; };
+		41DCC42FA063D2CBD82893F11CC08418 /* ZFAVPlayerManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFAVPlayerManager.h; path = ZFPlayer/Classes/AVPlayer/ZFAVPlayerManager.h; sourceTree = "<group>"; };
+		434F9E9607EFE4C2239B29DFB0D1AF18 /* KTVHCHTTPConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCHTTPConnection.h; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPConnection.h; sourceTree = "<group>"; };
+		43C0603BA676C7704FF919B8DDD855C4 /* KTVCocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KTVCocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		450D143D8BDC674D265E6B9ECC081429 /* ZFLandScapeControlView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFLandScapeControlView.h; path = ZFPlayer/Classes/ControlView/ZFLandScapeControlView.h; sourceTree = "<group>"; };
+		45EF7CF951A9318EA2B13D11BA821844 /* KTVHCError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCError.m; path = KTVHTTPCache/Classes/KTVHCCommon/KTVHCError.m; sourceTree = "<group>"; };
+		4627AF666F4A36D8C575415EAA537273 /* HTTPRedirectResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPRedirectResponse.h; path = KTVCocoaHTTPServer/Classes/Responses/HTTPRedirectResponse.h; sourceTree = "<group>"; };
+		469A26AFFFE528793BDFAB61608A4AFC /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4767E77E969A4D8FC280DFCB923A7B6D /* HTTPAuthenticationRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPAuthenticationRequest.m; path = KTVCocoaHTTPServer/Classes/HTTPAuthenticationRequest.m; sourceTree = "<group>"; };
+		47D5D8693B377B7E66CA2B225C0CCD92 /* ZFPlayerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFPlayerView.m; path = ZFPlayer/Classes/Core/ZFPlayerView.m; sourceTree = "<group>"; };
+		487451709C1417DF9BDFDC7C398B6935 /* ZFPlayerMediaPlayback.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayerMediaPlayback.h; path = ZFPlayer/Classes/Core/ZFPlayerMediaPlayback.h; sourceTree = "<group>"; };
+		4B0676E74F86D69536A270851F12044B /* KTVHCDataResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataResponse.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataResponse.h; sourceTree = "<group>"; };
+		4C1B2D5B940B619C8CCBD3F64138DA2E /* KTVHCLog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCLog.m; path = KTVHTTPCache/Classes/KTVHCCommon/KTVHCLog.m; sourceTree = "<group>"; };
+		4CB4E28A13F4C14C8AA6D4EC042B40A2 /* KTVCocoaHTTPServer.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KTVCocoaHTTPServer.xcconfig; sourceTree = "<group>"; };
+		4D2C9E55457C6C00B7FB9852E5819FFE /* Pods-ZFPlayer_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-ZFPlayer_Example.modulemap"; sourceTree = "<group>"; };
+		4D82FFB5F710DD98590539EBEF230A29 /* KTVHTTPCacheImp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHTTPCacheImp.h; path = KTVHTTPCache/Classes/KTVHTTPCacheImp.h; sourceTree = "<group>"; };
+		4DF5C3D3720BA70EA0D24F0377EA58C2 /* KTVHCDataUnitPool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataUnitPool.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnitPool.h; sourceTree = "<group>"; };
+		4EE1C2658DEE72D212F2CF8F7B42838C /* KTVHCDataCacheItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataCacheItem.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItem.h; sourceTree = "<group>"; };
+		52337A29674CE32BCCD49204BA1458CC /* UIViewController+ZFPlayerRotation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+ZFPlayerRotation.m"; path = "ZFPlayer/Classes/Core/UIViewController+ZFPlayerRotation.m"; sourceTree = "<group>"; };
+		526307BEA421E0646E4F159F48213FED /* ZFSliderView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFSliderView.m; path = ZFPlayer/Classes/ControlView/ZFSliderView.m; sourceTree = "<group>"; };
+		555288A5626156C5AA5C3079160EA6D6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		556DAAB1406CC33B261226EFEF78E8D1 /* UIImageView+ZFCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+ZFCache.h"; path = "ZFPlayer/Classes/ControlView/UIImageView+ZFCache.h"; sourceTree = "<group>"; };
+		567CBFE9F8CFB3A8CFF50116B5A8D4A6 /* KTVHCPathTools.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCPathTools.m; path = KTVHTTPCache/Classes/KTVHCTools/KTVHCPathTools.m; sourceTree = "<group>"; };
+		57B6D01CAF038724A2CB9CE1C1053C66 /* MultipartFormDataParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MultipartFormDataParser.h; path = KTVCocoaHTTPServer/Classes/Mime/MultipartFormDataParser.h; sourceTree = "<group>"; };
+		59D70BC1FEB99AFCFC1119A99B5DEB39 /* ZFPlayerNotification.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFPlayerNotification.m; path = ZFPlayer/Classes/Core/ZFPlayerNotification.m; sourceTree = "<group>"; };
+		5AB28CE0F192032210A5E2776060B371 /* KTVHCHTTPServer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCHTTPServer.h; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPServer.h; sourceTree = "<group>"; };
+		5ACED1E13BF56787CE5ACCA7C4A59A31 /* ZFPlayer.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = ZFPlayer.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5B1D8F8DF9EE2B9A7C54B8D95C1126C1 /* MultipartMessageHeaderField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MultipartMessageHeaderField.h; path = KTVCocoaHTTPServer/Classes/Mime/MultipartMessageHeaderField.h; sourceTree = "<group>"; };
+		5BC95630A500FB87C9F4976F16457E9F /* CocoaAsyncSocket-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CocoaAsyncSocket-prefix.pch"; sourceTree = "<group>"; };
+		5CD043E0A74BBA20702F8CD078171BE2 /* KTVHCHTTPURL.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCHTTPURL.h; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPURL.h; sourceTree = "<group>"; };
+		5CF168FFB0729E17A091EF978B1C622F /* ZFUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFUtilities.m; path = ZFPlayer/Classes/ControlView/ZFUtilities.m; sourceTree = "<group>"; };
+		5DBA21711B9B465643A13FD3D073E67E /* DDRange.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDRange.h; path = KTVCocoaHTTPServer/Classes/Categories/DDRange.h; sourceTree = "<group>"; };
+		5DD3F9DF6138E9BCB90C2071575D4EB2 /* KTVHCHTTPRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCHTTPRequest.m; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPRequest.m; sourceTree = "<group>"; };
+		60440932630FF780C9CFB4B61D1CD4C1 /* ZFPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ZFPlayer-dummy.m"; sourceTree = "<group>"; };
+		61621AF0A72D4AEBC0D6F14047D9CFDA /* KTVHCDataCallback.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataCallback.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCallback.h; sourceTree = "<group>"; };
+		61674FAAE980E6E1EC0789AEC7CA6831 /* HTTPDynamicFileResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPDynamicFileResponse.h; path = KTVCocoaHTTPServer/Classes/Responses/HTTPDynamicFileResponse.h; sourceTree = "<group>"; };
+		6276CBB46946F964D6C8AD118C45E6D6 /* KTVHCDownload.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDownload.m; path = KTVHTTPCache/Classes/KTVHCDownload/KTVHCDownload.m; sourceTree = "<group>"; };
+		63F129A6A8F8F46E6F02ED843EE529B7 /* KTVHTTPCache-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "KTVHTTPCache-dummy.m"; sourceTree = "<group>"; };
+		648114B25BCA5BD04DD1A401127794F6 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
+		64A2D77CF1FA86A6CB5C6B826B528BD6 /* ZFAVPlayerManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFAVPlayerManager.m; path = ZFPlayer/Classes/AVPlayer/ZFAVPlayerManager.m; sourceTree = "<group>"; };
+		657A67E96467EB8E82B46E8AA82E3BBF /* ZFPlayerGestureControl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayerGestureControl.h; path = ZFPlayer/Classes/Core/ZFPlayerGestureControl.h; sourceTree = "<group>"; };
+		658CAA196A3FDE308F73B7603F30454B /* KTVHCDownload.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDownload.h; path = KTVHTTPCache/Classes/KTVHCDownload/KTVHCDownload.h; sourceTree = "<group>"; };
+		663E64EED2A2551A274084603B594A87 /* ZFPlayerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayerView.h; path = ZFPlayer/Classes/Core/ZFPlayerView.h; sourceTree = "<group>"; };
+		689FCFE2547154BEDCBC902E8FCDD18B /* KTVHCDataUnitItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataUnitItem.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnitItem.m; sourceTree = "<group>"; };
+		6B7FF6481C139DCACBB380B833F69295 /* KTVHCDataCacheItemZone.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataCacheItemZone.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItemZone.h; sourceTree = "<group>"; };
+		6DF21733721CFF268FD6AA33D03AD1F3 /* KTVCocoaHTTPServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KTVCocoaHTTPServer.framework; path = KTVCocoaHTTPServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70942E3E2DF0D3CDD0EE40F43332307A /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CocoaAsyncSocket.framework; path = CocoaAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		72FF8AF1AE8251B07C95FADE6DA12911 /* ZFPortraitControlView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFPortraitControlView.m; path = ZFPlayer/Classes/ControlView/ZFPortraitControlView.m; sourceTree = "<group>"; };
+		756D6018C11ED6D1A01AD94DC81AD4CB /* Pods-ZFPlayer_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ZFPlayer_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		76AEE7C89101E1A44136BC970483B91C /* KTVHCURLTools.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCURLTools.h; path = KTVHTTPCache/Classes/KTVHCTools/KTVHCURLTools.h; sourceTree = "<group>"; };
+		778C7D7A839587269A87F69E0C0A69B9 /* WebSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WebSocket.h; path = KTVCocoaHTTPServer/Classes/WebSocket.h; sourceTree = "<group>"; };
+		77D145BC6D4B02A5E0A575645C7E7A63 /* ZFPlayerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayerController.h; path = ZFPlayer/Classes/Core/ZFPlayerController.h; sourceTree = "<group>"; };
+		77DE64A244E7E9154D959D8F8BDDEBA3 /* UIImageView+ZFCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+ZFCache.m"; path = "ZFPlayer/Classes/ControlView/UIImageView+ZFCache.m"; sourceTree = "<group>"; };
+		7A2647B3F27C26DFF56DE09C313AA952 /* ZFReachabilityManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFReachabilityManager.h; path = ZFPlayer/Classes/Core/ZFReachabilityManager.h; sourceTree = "<group>"; };
+		7B6480C7A4EBD9141118F11B26F84CCF /* HTTPFileResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPFileResponse.h; path = KTVCocoaHTTPServer/Classes/Responses/HTTPFileResponse.h; sourceTree = "<group>"; };
+		7C77324D2E4BFFD939345B2B28DF46B5 /* KTVCocoaHTTPServer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVCocoaHTTPServer.h; path = KTVCocoaHTTPServer/KTVCocoaHTTPServer.h; sourceTree = "<group>"; };
+		7DD63C4861F093F2A5A1126B7AD6DBE6 /* KTVHCHTTPResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCHTTPResponse.m; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPResponse.m; sourceTree = "<group>"; };
+		7EDBD7075FD312857495D6675504F16F /* ZFPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ZFPlayer.modulemap; sourceTree = "<group>"; };
+		80EFD473E61BBA593E7A14B8DCA61E1E /* KTVHTTPCacheImp.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHTTPCacheImp.m; path = KTVHTTPCache/Classes/KTVHTTPCacheImp.m; sourceTree = "<group>"; };
+		81B303D2A8D5604ED46F6D72E0FCEA7E /* ZFSliderView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFSliderView.h; path = ZFPlayer/Classes/ControlView/ZFSliderView.h; sourceTree = "<group>"; };
+		81BD03E6C236E04592A815EF8A6198FC /* MultipartMessageHeader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MultipartMessageHeader.h; path = KTVCocoaHTTPServer/Classes/Mime/MultipartMessageHeader.h; sourceTree = "<group>"; };
+		8369716CE49CFF9F41AE3F67F26D852D /* KTVHCDataResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataResponse.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataResponse.m; sourceTree = "<group>"; };
+		838C988928C0525CAF901357C7B90412 /* Pods-ZFPlayer_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ZFPlayer_Example-frameworks.sh"; sourceTree = "<group>"; };
+		8392FBB829F106023D817BAF0F8461A1 /* KTVHCDataPrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataPrivate.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataPrivate.h; sourceTree = "<group>"; };
+		858C079887BB9B5B13FC6D918B55A58E /* DDData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDData.h; path = KTVCocoaHTTPServer/Classes/Categories/DDData.h; sourceTree = "<group>"; };
+		8609D2104C84A26CC3CA4C3BE2B641C1 /* MultipartFormDataParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MultipartFormDataParser.m; path = KTVCocoaHTTPServer/Classes/Mime/MultipartFormDataParser.m; sourceTree = "<group>"; };
+		87C41CE49D6928877EA26CAD4ABBF2AE /* ZFPlayerControlView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFPlayerControlView.m; path = ZFPlayer/Classes/ControlView/ZFPlayerControlView.m; sourceTree = "<group>"; };
+		88C5726E4618ACC46E95DC6A2F310428 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = Source/GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
+		8920BA41609AC840520707A63E395B75 /* KTVHCURLTools.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCURLTools.m; path = KTVHTTPCache/Classes/KTVHCTools/KTVHCURLTools.m; sourceTree = "<group>"; };
+		8B53C422C12311833800B60E57F051C9 /* UIScrollView+ZFPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+ZFPlayer.h"; path = "ZFPlayer/Classes/Core/UIScrollView+ZFPlayer.h"; sourceTree = "<group>"; };
+		8C41917A99EC8B20905654FA1A7203D3 /* ZFOrientationObserver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFOrientationObserver.h; path = ZFPlayer/Classes/Core/ZFOrientationObserver.h; sourceTree = "<group>"; };
+		8E4149147BDBE9CA21BBC3E49811F239 /* HTTPLogging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPLogging.h; path = KTVCocoaHTTPServer/Classes/HTTPLogging.h; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		96D80A5F1975DED70A5052F774C25ADB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		96FD6688B465677996B2E1491AEC576B /* KTVHCHTTPURL.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCHTTPURL.m; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPURL.m; sourceTree = "<group>"; };
+		9866A43EE8FAB10DB2AD54722CA2F65E /* DDNumber.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDNumber.h; path = KTVCocoaHTTPServer/Classes/Categories/DDNumber.h; sourceTree = "<group>"; };
+		99A05A0629A97415E49A74A3BFFF0F52 /* Pods-ZFPlayer_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-ZFPlayer_Example-umbrella.h"; sourceTree = "<group>"; };
+		9A502B3780DF2BD3723BFD2D89101080 /* KTVHCDataReader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataReader.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataReader.h; sourceTree = "<group>"; };
+		9BD8524D1E19E848F7926DA56A892ABB /* KTVHCDataSourceQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataSourceQueue.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataSourceQueue.h; sourceTree = "<group>"; };
+		9C06E02071209E7FB200A53142D6FA53 /* UIView+ZFFrame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+ZFFrame.h"; path = "ZFPlayer/Classes/ControlView/UIView+ZFFrame.h"; sourceTree = "<group>"; };
+		9C1614D94E5615AAF5355F342277AD9D /* UIScrollView+ZFPlayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+ZFPlayer.m"; path = "ZFPlayer/Classes/Core/UIScrollView+ZFPlayer.m"; sourceTree = "<group>"; };
+		9C42743ED564D6FFC1557629BB31E59C /* ZFPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZFPlayer-umbrella.h"; sourceTree = "<group>"; };
+		A10F3EB5B5210B7E0111B19AD3645323 /* KTVHCDataSourceManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataSourceManager.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataSourceManager.h; sourceTree = "<group>"; };
+		A166C36D8056330E6BBC305A058F2E40 /* ZFFloatView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFFloatView.m; path = ZFPlayer/Classes/Core/ZFFloatView.m; sourceTree = "<group>"; };
+		A1EE6B94FF6CEA396D43F2DAED39DD96 /* KTVHCDataFileSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataFileSource.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataFileSource.h; sourceTree = "<group>"; };
+		A41925BA87F1D8696D0A904736AECC2C /* ZFPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayer.h; path = ZFPlayer/Classes/Core/ZFPlayer.h; sourceTree = "<group>"; };
+		A55DF66432680A1B176EBC8DFECBD230 /* KTVHCCommon.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCCommon.h; path = KTVHTTPCache/Classes/KTVHCCommon/KTVHCCommon.h; sourceTree = "<group>"; };
+		A62AF74DBBE677DD94DC6B7D7431A241 /* KTVHTTPCache.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = KTVHTTPCache.modulemap; sourceTree = "<group>"; };
+		A6EB8F31AFF83B4A9B403B2A12DDB504 /* HTTPAsyncFileResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPAsyncFileResponse.h; path = KTVCocoaHTTPServer/Classes/Responses/HTTPAsyncFileResponse.h; sourceTree = "<group>"; };
+		A8601993A4801A855024D088E8C0944E /* KTVHCDataUnitQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataUnitQueue.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnitQueue.m; sourceTree = "<group>"; };
+		A8A2448CCF690D2E61A7C5722A9281E4 /* KTVHTTPCache-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KTVHTTPCache-umbrella.h"; sourceTree = "<group>"; };
+		A967AAC97D54B1DF204A810B8122C345 /* CocoaAsyncSocket-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CocoaAsyncSocket-umbrella.h"; sourceTree = "<group>"; };
+		AA67F72534D40FDDAE7080FF19C031E8 /* Pods-ZFPlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ZFPlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		ABDB6CC2C86841A19C8A46FF5AEE5C83 /* ZFVolumeBrightnessView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFVolumeBrightnessView.h; path = ZFPlayer/Classes/ControlView/ZFVolumeBrightnessView.h; sourceTree = "<group>"; };
+		AC41FF61FFCF578F434B911938EBF98C /* WebSocket.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = WebSocket.m; path = KTVCocoaHTTPServer/Classes/WebSocket.m; sourceTree = "<group>"; };
+		ACC205195DA9A860EEC03F6FE7E0BE5D /* ZFFloatView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFFloatView.h; path = ZFPlayer/Classes/Core/ZFFloatView.h; sourceTree = "<group>"; };
+		AD37D189366B7DADF523BFC010E1A910 /* KTVCocoaHTTPServer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KTVCocoaHTTPServer-umbrella.h"; sourceTree = "<group>"; };
+		ADF59B18FC09686B1825282B1671EBC3 /* KTVHCRange.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCRange.m; path = KTVHTTPCache/Classes/KTVHCCommon/KTVHCRange.m; sourceTree = "<group>"; };
+		AE068604D98501C55337D8AAF0462E1D /* HTTPAuthenticationRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPAuthenticationRequest.h; path = KTVCocoaHTTPServer/Classes/HTTPAuthenticationRequest.h; sourceTree = "<group>"; };
+		AE28DBA886FB1C126E55C430995B4335 /* HTTPFileResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPFileResponse.m; path = KTVCocoaHTTPServer/Classes/Responses/HTTPFileResponse.m; sourceTree = "<group>"; };
+		B2335F996302A008A6D8FB1441F9F3F9 /* Pods-ZFPlayer_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ZFPlayer_Tests-dummy.m"; sourceTree = "<group>"; };
+		B25ECF162ED484727D50FF3C7286B2F3 /* ZFPlayerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFPlayerController.m; path = ZFPlayer/Classes/Core/ZFPlayerController.m; sourceTree = "<group>"; };
+		B4E87AF8F3D169A0842C191A2F5E8244 /* HTTPErrorResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPErrorResponse.h; path = KTVCocoaHTTPServer/Classes/Responses/HTTPErrorResponse.h; sourceTree = "<group>"; };
+		B5DE41405818AA3B993CF40FE0E9137D /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		B60702F6366D7BF7A4BC2E8971B8F034 /* ZFSmallFloatControlView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFSmallFloatControlView.h; path = ZFPlayer/Classes/ControlView/ZFSmallFloatControlView.h; sourceTree = "<group>"; };
+		B95F35ABCEE36D1F364B6F95A5F12A97 /* Pods-ZFPlayer_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ZFPlayer_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		BB07303E6D465C9E634FA535210B21D9 /* KTVHCDataCallback.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataCallback.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCallback.m; sourceTree = "<group>"; };
+		BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		BEE0A9D8D207B2A63EBB28546E817D67 /* KTVHCDataFileSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataFileSource.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataFileSource.m; sourceTree = "<group>"; };
+		BF93AD660ACB1CC07CF3DFFA7BF1BD64 /* Pods_ZFPlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_ZFPlayer_Tests.framework; path = "Pods-ZFPlayer_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03A11B8E4E3E76E014A3F3B541FFAA1 /* KTVHCPathTools.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCPathTools.h; path = KTVHTTPCache/Classes/KTVHCTools/KTVHCPathTools.h; sourceTree = "<group>"; };
+		C0837B42F9F487AD47CCF5EAA9BE7075 /* CocoaAsyncSocket.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CocoaAsyncSocket.modulemap; sourceTree = "<group>"; };
+		C13D58B1BEAD4FA8D8442FC9DF4CE78E /* KTVHCDataStorage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataStorage.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataStorage.h; sourceTree = "<group>"; };
+		C27DC747FBDDEEE3207775894B62F884 /* HTTPLogging.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPLogging.m; path = KTVCocoaHTTPServer/Classes/HTTPLogging.m; sourceTree = "<group>"; };
+		C2AD0EDAA25AE2648A9ACBF774818951 /* Pods_ZFPlayer_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_ZFPlayer_Example.framework; path = "Pods-ZFPlayer_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C300D3C18806EA2E5DA9BC0842F32636 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C358050DC6DAF324EF0DFAB97CC34E8A /* HTTPErrorResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPErrorResponse.m; path = KTVCocoaHTTPServer/Classes/Responses/HTTPErrorResponse.m; sourceTree = "<group>"; };
+		C5A5D27224269C003606FD5AF96B49C8 /* KTVHTTPCache-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KTVHTTPCache-prefix.pch"; sourceTree = "<group>"; };
+		C5F6FC8ED93911A7E19855DCB4F46F48 /* KTVHCLog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCLog.h; path = KTVHTTPCache/Classes/KTVHCCommon/KTVHCLog.h; sourceTree = "<group>"; };
+		C79F60E916DD888DFCEF1D3FA9600EBB /* ZFKVOController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFKVOController.h; path = ZFPlayer/Classes/Core/ZFKVOController.h; sourceTree = "<group>"; };
+		C8A10EF400DE953507DC4339A652CE40 /* ZFVolumeBrightnessView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFVolumeBrightnessView.m; path = ZFPlayer/Classes/ControlView/ZFVolumeBrightnessView.m; sourceTree = "<group>"; };
+		C9306D25592DCCF8067E1A902BA2D443 /* KTVHCDataNetworkSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataNetworkSource.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataNetworkSource.m; sourceTree = "<group>"; };
+		C9F2964D9E8D5DD4E80015959C912604 /* KTVHCDataRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataRequest.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataRequest.h; sourceTree = "<group>"; };
+		CB684AB999038DD8686406551EF67E43 /* HTTPConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPConnection.h; path = KTVCocoaHTTPServer/Classes/HTTPConnection.h; sourceTree = "<group>"; };
+		CB8CAEF5CEBC1005326739FE91C7D6E7 /* KTVHCRange.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCRange.h; path = KTVHTTPCache/Classes/KTVHCCommon/KTVHCRange.h; sourceTree = "<group>"; };
+		CBEBE339EC14FCC2FE49D3010296F787 /* HTTPMessage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPMessage.h; path = KTVCocoaHTTPServer/Classes/HTTPMessage.h; sourceTree = "<group>"; };
+		CC483A30F63FFC441AF0F15E21913A7B /* HTTPMessage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPMessage.m; path = KTVCocoaHTTPServer/Classes/HTTPMessage.m; sourceTree = "<group>"; };
+		CDA2B93684BB123BB6CA576B1000ED3F /* HTTPAsyncFileResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPAsyncFileResponse.m; path = KTVCocoaHTTPServer/Classes/Responses/HTTPAsyncFileResponse.m; sourceTree = "<group>"; };
+		CE1713CC0B581F703F92373A274CCB36 /* HTTPRedirectResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HTTPRedirectResponse.m; path = KTVCocoaHTTPServer/Classes/Responses/HTTPRedirectResponse.m; sourceTree = "<group>"; };
+		CEF9E3A17E79B455491B738612AD782B /* ZFLandScapeControlView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFLandScapeControlView.m; path = ZFPlayer/Classes/ControlView/ZFLandScapeControlView.m; sourceTree = "<group>"; };
+		CF23C306A834D2940CDAA4F9A0325E6E /* KTVHCDataUnit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataUnit.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnit.h; sourceTree = "<group>"; };
+		D18F26DD4EC23F82701BC924BFA146C8 /* UIView+ZFFrame.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+ZFFrame.m"; path = "ZFPlayer/Classes/ControlView/UIView+ZFFrame.m"; sourceTree = "<group>"; };
+		D23163A0DD3CF8B136A2BAB30DF0975F /* KTVHCDataCacheItemZone.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataCacheItemZone.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataCacheItemZone.m; sourceTree = "<group>"; };
+		D2546237F8D805777D2D45396BB4F49C /* KTVHCDataSourceQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataSourceQueue.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataSourceQueue.m; sourceTree = "<group>"; };
+		D7384F87AB9B5697CA8815FED16D48AC /* MultipartMessageHeader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MultipartMessageHeader.m; path = KTVCocoaHTTPServer/Classes/Mime/MultipartMessageHeader.m; sourceTree = "<group>"; };
+		D98651CBCFD5712B357287403F545713 /* KTVHCHTTPRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCHTTPRequest.h; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPRequest.h; sourceTree = "<group>"; };
+		DB9FE46508B87FE263658B8D9A935B67 /* UIViewController+ZFPlayerRotation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+ZFPlayerRotation.h"; path = "ZFPlayer/Classes/Core/UIViewController+ZFPlayerRotation.h"; sourceTree = "<group>"; };
+		DE9CAAC2FC89E5D9ECFB5DD2A115918E /* HTTPServer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HTTPServer.h; path = KTVCocoaHTTPServer/Classes/HTTPServer.h; sourceTree = "<group>"; };
+		DEB208F5DE439C195BF85311E4AA129A /* ZFPlayer.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZFPlayer.xcconfig; sourceTree = "<group>"; };
+		DED4E9B73577EC75F53EEB0B2DF7951E /* KTVHCDataNetworkSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KTVHCDataNetworkSource.h; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataNetworkSource.h; sourceTree = "<group>"; };
+		E087637138733F26ECAEDA06A1E4C807 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E43AB3178A0BEAEA514235E1EF8EFBDE /* KTVHCDataReader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataReader.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataReader.m; sourceTree = "<group>"; };
+		E50444D7AF8C7C8F8FA8025066ED564C /* Pods-ZFPlayer_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ZFPlayer_Example-resources.sh"; sourceTree = "<group>"; };
+		E53E6E5EC713D6B13B0145A8F9C3FF08 /* ZFSmallFloatControlView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFSmallFloatControlView.m; path = ZFPlayer/Classes/ControlView/ZFSmallFloatControlView.m; sourceTree = "<group>"; };
+		E58A4270137F2C85FD5F71C0D87DA470 /* KTVHTTPCache.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KTVHTTPCache.xcconfig; sourceTree = "<group>"; };
+		E5ACCDC9A8CF90DFC17465202099420B /* KTVCocoaHTTPServer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KTVCocoaHTTPServer-prefix.pch"; sourceTree = "<group>"; };
+		E71ABB16EE2E320BC1F0C8D7A446F401 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CocoaAsyncSocket.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E746410C09884C368EB11AB2228E699F /* Pods-ZFPlayer_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-ZFPlayer_Tests.modulemap"; sourceTree = "<group>"; };
+		E8C314BFBF93429D87607406244426C0 /* ZFLoadingView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFLoadingView.h; path = ZFPlayer/Classes/ControlView/ZFLoadingView.h; sourceTree = "<group>"; };
+		EF7A02DED3E2013AC75D2C1E0915585D /* ZFLoadingView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ZFLoadingView.m; path = ZFPlayer/Classes/ControlView/ZFLoadingView.m; sourceTree = "<group>"; };
+		F026FBADFDAD80B89F8A806968DF1A9C /* Pods-ZFPlayer_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ZFPlayer_Tests-resources.sh"; sourceTree = "<group>"; };
+		F22D92E8CCA6E35A607DC4B3379194A4 /* CocoaAsyncSocket.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CocoaAsyncSocket.xcconfig; sourceTree = "<group>"; };
+		F7F01C9282582CC4681D195424DD007B /* DDNumber.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDNumber.m; path = KTVCocoaHTTPServer/Classes/Categories/DDNumber.m; sourceTree = "<group>"; };
+		F800EBD5A6B150D4F63166F86F0CCD8F /* KTVHCDataUnitPool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCDataUnitPool.m; path = KTVHTTPCache/Classes/KTVHCDataStorage/KTVHCDataUnitPool.m; sourceTree = "<group>"; };
+		F8A9334AD5F31A5293FF7ABD32434EB1 /* Pods-ZFPlayer_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ZFPlayer_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		FA4687F8CE9EE0075C982ED7AD22718D /* ZFPortraitControlView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPortraitControlView.h; path = ZFPlayer/Classes/ControlView/ZFPortraitControlView.h; sourceTree = "<group>"; };
+		FABA1AC4D2CD360982E021D787FD3DA8 /* ZFPlayerNotification.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZFPlayerNotification.h; path = ZFPlayer/Classes/Core/ZFPlayerNotification.h; sourceTree = "<group>"; };
+		FB32F2788175A5F5A99C52E52754F61E /* ZFPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ZFPlayer.framework; path = ZFPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC1E2A5D28E3E3860CFB1ADD5A57E94E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		FD21F59717FD29DE170A649FE3C7FCBC /* KTVHCHTTPServer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = KTVHCHTTPServer.m; path = KTVHTTPCache/Classes/KTVHCHTTPServer/KTVHCHTTPServer.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		56D7BA4F06DCC75D7A1EC898A143A455 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F83AF5EF307A926EDB5DBE16068831C6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A98F1C3F1591425736F3D3A5D0035C7F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5EDC39FAF0EB545C68B38A9F09156E79 /* CocoaAsyncSocket.framework in Frameworks */,
+				2DEF35D055158193BEDB2E25C3BA9D04 /* Foundation.framework in Frameworks */,
+				A362E3D04F055DF75009C845F6CB1AAA /* KTVCocoaHTTPServer.framework in Frameworks */,
+				71F6EE7329A5FCC723EB91F6499796B9 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B01F7260F2E681A1964C55B5FB0BFCC7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37C5BDB1CFB5AE02DBD4EAC4EA9ACF34 /* CocoaAsyncSocket.framework in Frameworks */,
+				DC5CD5FB3998539B67E01568A0C70EF6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1C2C126168B038B9B15BF2A4C96FDDC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D01B2EBC1AB52980422F5A831BBCE3F4 /* CFNetwork.framework in Frameworks */,
+				2DAA98C8614A6DED26CE8712531AE1FC /* Foundation.framework in Frameworks */,
+				B688B80E8B12B7F6988B29DC592DA94D /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0C5A00C0B274170C1B4BA35BD010043 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				056CB96C9ACF69840693624122C3F4D4 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F035FA0DC8B20971F5ABF0BBA1A14C9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7643D92551230C8584FD40B8B1BF5E7 /* AVFoundation.framework in Frameworks */,
+				5B6E63DC2B44EA8F080DA9B994130E79 /* Foundation.framework in Frameworks */,
+				A1921C804A39019A65F7D58281AE65FC /* MediaPlayer.framework in Frameworks */,
+				4D72CD517335DBC124CE9D8B832DA0EB /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		044DB4F37FDE282EE118DCE43F47E8E1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				8B53C422C12311833800B60E57F051C9 /* UIScrollView+ZFPlayer.h */,
+				9C1614D94E5615AAF5355F342277AD9D /* UIScrollView+ZFPlayer.m */,
+				DB9FE46508B87FE263658B8D9A935B67 /* UIViewController+ZFPlayerRotation.h */,
+				52337A29674CE32BCCD49204BA1458CC /* UIViewController+ZFPlayerRotation.m */,
+				ACC205195DA9A860EEC03F6FE7E0BE5D /* ZFFloatView.h */,
+				A166C36D8056330E6BBC305A058F2E40 /* ZFFloatView.m */,
+				C79F60E916DD888DFCEF1D3FA9600EBB /* ZFKVOController.h */,
+				040A393133CAFCF170EFF0488FAD2DE5 /* ZFKVOController.m */,
+				8C41917A99EC8B20905654FA1A7203D3 /* ZFOrientationObserver.h */,
+				361C07FECF29DE1F48A35246C5E5FE75 /* ZFOrientationObserver.m */,
+				A41925BA87F1D8696D0A904736AECC2C /* ZFPlayer.h */,
+				77D145BC6D4B02A5E0A575645C7E7A63 /* ZFPlayerController.h */,
+				B25ECF162ED484727D50FF3C7286B2F3 /* ZFPlayerController.m */,
+				657A67E96467EB8E82B46E8AA82E3BBF /* ZFPlayerGestureControl.h */,
+				12D25D668B901160F397737C5BE9FA4A /* ZFPlayerGestureControl.m */,
+				1ADF8CA779219038ADEC61FD3B3AF66F /* ZFPlayerMediaControl.h */,
+				487451709C1417DF9BDFDC7C398B6935 /* ZFPlayerMediaPlayback.h */,
+				FABA1AC4D2CD360982E021D787FD3DA8 /* ZFPlayerNotification.h */,
+				59D70BC1FEB99AFCFC1119A99B5DEB39 /* ZFPlayerNotification.m */,
+				663E64EED2A2551A274084603B594A87 /* ZFPlayerView.h */,
+				47D5D8693B377B7E66CA2B225C0CCD92 /* ZFPlayerView.m */,
+				7A2647B3F27C26DFF56DE09C313AA952 /* ZFReachabilityManager.h */,
+				2BA066D5409FAEC6013C4AA1DCC5BEFE /* ZFReachabilityManager.m */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		12BB24D4386A7EC197F63FC959B4203A /* ZFPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				FDEFAD6299CEEC8935A705BAB36B6322 /* AVPlayer */,
+				83770F3385DC22951C342092FC2E1989 /* ControlView */,
+				044DB4F37FDE282EE118DCE43F47E8E1 /* Core */,
+				3848B1567363F7F1E37AA41D3675FC65 /* Pod */,
+				544A75104181EF0108D5BF068F5FD8ED /* Support Files */,
+			);
+			name = ZFPlayer;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		3848B1567363F7F1E37AA41D3675FC65 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				B5DE41405818AA3B993CF40FE0E9137D /* LICENSE */,
+				FC1E2A5D28E3E3860CFB1ADD5A57E94E /* README.md */,
+				5ACED1E13BF56787CE5ACCA7C4A59A31 /* ZFPlayer.podspec */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		4A6F60C48BEF88C6F69EA7FDFA47DA99 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F96868F87E5CBC2A63565F45D0BE381A /* Pods-ZFPlayer_Example */,
+				C1E9D25335469174723C892180B20492 /* Pods-ZFPlayer_Tests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		4CC9349FA9AA27C8CCFBC5678835331E /* KTVHTTPCache */ = {
+			isa = PBXGroup;
+			children = (
+				A55DF66432680A1B176EBC8DFECBD230 /* KTVHCCommon.h */,
+				4EE1C2658DEE72D212F2CF8F7B42838C /* KTVHCDataCacheItem.h */,
+				4191A0B922F751EB6F0B7CDDDACBDD5D /* KTVHCDataCacheItem.m */,
+				6B7FF6481C139DCACBB380B833F69295 /* KTVHCDataCacheItemZone.h */,
+				D23163A0DD3CF8B136A2BAB30DF0975F /* KTVHCDataCacheItemZone.m */,
+				61621AF0A72D4AEBC0D6F14047D9CFDA /* KTVHCDataCallback.h */,
+				BB07303E6D465C9E634FA535210B21D9 /* KTVHCDataCallback.m */,
+				A1EE6B94FF6CEA396D43F2DAED39DD96 /* KTVHCDataFileSource.h */,
+				BEE0A9D8D207B2A63EBB28546E817D67 /* KTVHCDataFileSource.m */,
+				DED4E9B73577EC75F53EEB0B2DF7951E /* KTVHCDataNetworkSource.h */,
+				C9306D25592DCCF8067E1A902BA2D443 /* KTVHCDataNetworkSource.m */,
+				8392FBB829F106023D817BAF0F8461A1 /* KTVHCDataPrivate.h */,
+				9A502B3780DF2BD3723BFD2D89101080 /* KTVHCDataReader.h */,
+				E43AB3178A0BEAEA514235E1EF8EFBDE /* KTVHCDataReader.m */,
+				C9F2964D9E8D5DD4E80015959C912604 /* KTVHCDataRequest.h */,
+				1CA1F0CA054D353B282085ADCBCCE1AB /* KTVHCDataRequest.m */,
+				4B0676E74F86D69536A270851F12044B /* KTVHCDataResponse.h */,
+				8369716CE49CFF9F41AE3F67F26D852D /* KTVHCDataResponse.m */,
+				A10F3EB5B5210B7E0111B19AD3645323 /* KTVHCDataSourceManager.h */,
+				021E1943E448ABECA6306FBC10844AFA /* KTVHCDataSourceManager.m */,
+				0BC11E9472A8FE003C2F3719A3C2D173 /* KTVHCDataSourceProtocol.h */,
+				9BD8524D1E19E848F7926DA56A892ABB /* KTVHCDataSourceQueue.h */,
+				D2546237F8D805777D2D45396BB4F49C /* KTVHCDataSourceQueue.m */,
+				C13D58B1BEAD4FA8D8442FC9DF4CE78E /* KTVHCDataStorage.h */,
+				0F71F45A4855A73304C7C0272CF13DFC /* KTVHCDataStorage.m */,
+				CF23C306A834D2940CDAA4F9A0325E6E /* KTVHCDataUnit.h */,
+				0E40F5A3CF250389EAAC8759F899A73F /* KTVHCDataUnit.m */,
+				1B183388FB9E041EE5E31E54D55CC820 /* KTVHCDataUnitItem.h */,
+				689FCFE2547154BEDCBC902E8FCDD18B /* KTVHCDataUnitItem.m */,
+				4DF5C3D3720BA70EA0D24F0377EA58C2 /* KTVHCDataUnitPool.h */,
+				F800EBD5A6B150D4F63166F86F0CCD8F /* KTVHCDataUnitPool.m */,
+				18B940BB942700AFEFE94E1BB113931B /* KTVHCDataUnitQueue.h */,
+				A8601993A4801A855024D088E8C0944E /* KTVHCDataUnitQueue.m */,
+				658CAA196A3FDE308F73B7603F30454B /* KTVHCDownload.h */,
+				6276CBB46946F964D6C8AD118C45E6D6 /* KTVHCDownload.m */,
+				23975E3431013139C9FFB05FE0ADADB2 /* KTVHCError.h */,
+				45EF7CF951A9318EA2B13D11BA821844 /* KTVHCError.m */,
+				434F9E9607EFE4C2239B29DFB0D1AF18 /* KTVHCHTTPConnection.h */,
+				1FD63C08D598F2B15B59073E4CE818BF /* KTVHCHTTPConnection.m */,
+				28C8F02A048F4F4533F6811F2675B3D3 /* KTVHCHTTPHeader.h */,
+				3C83441C4257B0F88EDDF4A5F0515D21 /* KTVHCHTTPPingResponse.h */,
+				3FDED0CB02832960827F4D66722C6124 /* KTVHCHTTPPingResponse.m */,
+				D98651CBCFD5712B357287403F545713 /* KTVHCHTTPRequest.h */,
+				5DD3F9DF6138E9BCB90C2071575D4EB2 /* KTVHCHTTPRequest.m */,
+				2DC0E4CDC50076DC6079A7E5D01484FA /* KTVHCHTTPResponse.h */,
+				7DD63C4861F093F2A5A1126B7AD6DBE6 /* KTVHCHTTPResponse.m */,
+				5AB28CE0F192032210A5E2776060B371 /* KTVHCHTTPServer.h */,
+				FD21F59717FD29DE170A649FE3C7FCBC /* KTVHCHTTPServer.m */,
+				5CD043E0A74BBA20702F8CD078171BE2 /* KTVHCHTTPURL.h */,
+				96FD6688B465677996B2E1491AEC576B /* KTVHCHTTPURL.m */,
+				C5F6FC8ED93911A7E19855DCB4F46F48 /* KTVHCLog.h */,
+				4C1B2D5B940B619C8CCBD3F64138DA2E /* KTVHCLog.m */,
+				C03A11B8E4E3E76E014A3F3B541FFAA1 /* KTVHCPathTools.h */,
+				567CBFE9F8CFB3A8CFF50116B5A8D4A6 /* KTVHCPathTools.m */,
+				CB8CAEF5CEBC1005326739FE91C7D6E7 /* KTVHCRange.h */,
+				ADF59B18FC09686B1825282B1671EBC3 /* KTVHCRange.m */,
+				76AEE7C89101E1A44136BC970483B91C /* KTVHCURLTools.h */,
+				8920BA41609AC840520707A63E395B75 /* KTVHCURLTools.m */,
+				2C03969648CB84A8C426F67D1F14D657 /* KTVHTTPCache.h */,
+				4D82FFB5F710DD98590539EBEF230A29 /* KTVHTTPCacheImp.h */,
+				80EFD473E61BBA593E7A14B8DCA61E1E /* KTVHTTPCacheImp.m */,
+				9DADD46A385E66D29573B81DE9D03FDD /* Support Files */,
+			);
+			name = KTVHTTPCache;
+			path = KTVHTTPCache;
+			sourceTree = "<group>";
+		};
+		544A75104181EF0108D5BF068F5FD8ED /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C300D3C18806EA2E5DA9BC0842F32636 /* Info.plist */,
+				7EDBD7075FD312857495D6675504F16F /* ZFPlayer.modulemap */,
+				DEB208F5DE439C195BF85311E4AA129A /* ZFPlayer.xcconfig */,
+				60440932630FF780C9CFB4B61D1CD4C1 /* ZFPlayer-dummy.m */,
+				04C5B566AA9C877BBC786958933C12FB /* ZFPlayer-prefix.pch */,
+				9C42743ED564D6FFC1557629BB31E59C /* ZFPlayer-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/ZFPlayer";
+			sourceTree = "<group>";
+		};
+		6B050B88579CC876A5985C07DFD769EC /* CocoaAsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				88C5726E4618ACC46E95DC6A2F310428 /* GCDAsyncSocket.h */,
+				0D0A0CAEDC1F8B6CD4AFB7ACEEBA1E8F /* GCDAsyncSocket.m */,
+				1C46B0DF0A5EA1354799DF0A8E62670C /* GCDAsyncUdpSocket.h */,
+				25B1BA73DF22F2F1DBAD31F3AFE11FBD /* GCDAsyncUdpSocket.m */,
+				C247669A3670C9CC6FF248A8AD192434 /* Support Files */,
+			);
+			name = CocoaAsyncSocket;
+			path = CocoaAsyncSocket;
+			sourceTree = "<group>";
+		};
+		753B3D1B27B4D7B0C22A044F2F219D0C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6B050B88579CC876A5985C07DFD769EC /* CocoaAsyncSocket */,
+				C1991D362561F12E235F16B097840EEA /* KTVCocoaHTTPServer */,
+				4CC9349FA9AA27C8CCFBC5678835331E /* KTVHTTPCache */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				A223A4FA08BF4CAF42057C822797EAD3 /* Development Pods */,
+				80F3ADAA9DCA54EB61886176493A484C /* Frameworks */,
+				753B3D1B27B4D7B0C22A044F2F219D0C /* Pods */,
+				8BA4424A8730A1B6BFB3579D74795447 /* Products */,
+				4A6F60C48BEF88C6F69EA7FDFA47DA99 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		7DC83D30D0FAE73157301711F0B24D21 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				39738C613183878EC12E1B23770F81AD /* AVFoundation.framework */,
+				96D80A5F1975DED70A5052F774C25ADB /* CFNetwork.framework */,
+				BB8ECC1302573EC5612DA5393094A65F /* Foundation.framework */,
+				648114B25BCA5BD04DD1A401127794F6 /* MediaPlayer.framework */,
+				229CF89BACC6607EB44AF4939593157B /* Security.framework */,
+				31A725831C8E499E44C0E8E9DAEDB403 /* UIKit.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		80F3ADAA9DCA54EB61886176493A484C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E71ABB16EE2E320BC1F0C8D7A446F401 /* CocoaAsyncSocket.framework */,
+				43C0603BA676C7704FF919B8DDD855C4 /* KTVCocoaHTTPServer.framework */,
+				7DC83D30D0FAE73157301711F0B24D21 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		83770F3385DC22951C342092FC2E1989 /* ControlView */ = {
+			isa = PBXGroup;
+			children = (
+				556DAAB1406CC33B261226EFEF78E8D1 /* UIImageView+ZFCache.h */,
+				77DE64A244E7E9154D959D8F8BDDEBA3 /* UIImageView+ZFCache.m */,
+				9C06E02071209E7FB200A53142D6FA53 /* UIView+ZFFrame.h */,
+				D18F26DD4EC23F82701BC924BFA146C8 /* UIView+ZFFrame.m */,
+				450D143D8BDC674D265E6B9ECC081429 /* ZFLandScapeControlView.h */,
+				CEF9E3A17E79B455491B738612AD782B /* ZFLandScapeControlView.m */,
+				E8C314BFBF93429D87607406244426C0 /* ZFLoadingView.h */,
+				EF7A02DED3E2013AC75D2C1E0915585D /* ZFLoadingView.m */,
+				2B836FC12C1F554996938885F90FD436 /* ZFPlayerControlView.h */,
+				87C41CE49D6928877EA26CAD4ABBF2AE /* ZFPlayerControlView.m */,
+				FA4687F8CE9EE0075C982ED7AD22718D /* ZFPortraitControlView.h */,
+				72FF8AF1AE8251B07C95FADE6DA12911 /* ZFPortraitControlView.m */,
+				81B303D2A8D5604ED46F6D72E0FCEA7E /* ZFSliderView.h */,
+				526307BEA421E0646E4F159F48213FED /* ZFSliderView.m */,
+				B60702F6366D7BF7A4BC2E8971B8F034 /* ZFSmallFloatControlView.h */,
+				E53E6E5EC713D6B13B0145A8F9C3FF08 /* ZFSmallFloatControlView.m */,
+				134743089079D737335E0FE3F75FA926 /* ZFUtilities.h */,
+				5CF168FFB0729E17A091EF978B1C622F /* ZFUtilities.m */,
+				ABDB6CC2C86841A19C8A46FF5AEE5C83 /* ZFVolumeBrightnessView.h */,
+				C8A10EF400DE953507DC4339A652CE40 /* ZFVolumeBrightnessView.m */,
+				F018CDFF1D054997DB30988CC10D461F /* Resources */,
+			);
+			name = ControlView;
+			sourceTree = "<group>";
+		};
+		8A4709019D95CC7855EF6B19BC09B49B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				072A84F425ADDE8088489472B216E0EE /* Info.plist */,
+				191BE710E5EFB6FE7D3E2A06D5D3A708 /* KTVCocoaHTTPServer.modulemap */,
+				4CB4E28A13F4C14C8AA6D4EC042B40A2 /* KTVCocoaHTTPServer.xcconfig */,
+				3741FF7353CC343B6340099008471C91 /* KTVCocoaHTTPServer-dummy.m */,
+				E5ACCDC9A8CF90DFC17465202099420B /* KTVCocoaHTTPServer-prefix.pch */,
+				AD37D189366B7DADF523BFC010E1A910 /* KTVCocoaHTTPServer-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/KTVCocoaHTTPServer";
+			sourceTree = "<group>";
+		};
+		8BA4424A8730A1B6BFB3579D74795447 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				70942E3E2DF0D3CDD0EE40F43332307A /* CocoaAsyncSocket.framework */,
+				6DF21733721CFF268FD6AA33D03AD1F3 /* KTVCocoaHTTPServer.framework */,
+				4133FC5235173E5159749F239C58CD58 /* KTVHTTPCache.framework */,
+				C2AD0EDAA25AE2648A9ACBF774818951 /* Pods_ZFPlayer_Example.framework */,
+				BF93AD660ACB1CC07CF3DFFA7BF1BD64 /* Pods_ZFPlayer_Tests.framework */,
+				FB32F2788175A5F5A99C52E52754F61E /* ZFPlayer.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9DADD46A385E66D29573B81DE9D03FDD /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				273DC09AB0C70DEEF3B6B592EA6FA336 /* Info.plist */,
+				A62AF74DBBE677DD94DC6B7D7431A241 /* KTVHTTPCache.modulemap */,
+				E58A4270137F2C85FD5F71C0D87DA470 /* KTVHTTPCache.xcconfig */,
+				63F129A6A8F8F46E6F02ED843EE529B7 /* KTVHTTPCache-dummy.m */,
+				C5A5D27224269C003606FD5AF96B49C8 /* KTVHTTPCache-prefix.pch */,
+				A8A2448CCF690D2E61A7C5722A9281E4 /* KTVHTTPCache-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/KTVHTTPCache";
+			sourceTree = "<group>";
+		};
+		A223A4FA08BF4CAF42057C822797EAD3 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				12BB24D4386A7EC197F63FC959B4203A /* ZFPlayer */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		C1991D362561F12E235F16B097840EEA /* KTVCocoaHTTPServer */ = {
+			isa = PBXGroup;
+			children = (
+				858C079887BB9B5B13FC6D918B55A58E /* DDData.h */,
+				027C4246F1D1C6D3A2708485C59E4C58 /* DDData.m */,
+				9866A43EE8FAB10DB2AD54722CA2F65E /* DDNumber.h */,
+				F7F01C9282582CC4681D195424DD007B /* DDNumber.m */,
+				5DBA21711B9B465643A13FD3D073E67E /* DDRange.h */,
+				3A5049F8BB2197F21C5605D5B5844001 /* DDRange.m */,
+				A6EB8F31AFF83B4A9B403B2A12DDB504 /* HTTPAsyncFileResponse.h */,
+				CDA2B93684BB123BB6CA576B1000ED3F /* HTTPAsyncFileResponse.m */,
+				AE068604D98501C55337D8AAF0462E1D /* HTTPAuthenticationRequest.h */,
+				4767E77E969A4D8FC280DFCB923A7B6D /* HTTPAuthenticationRequest.m */,
+				CB684AB999038DD8686406551EF67E43 /* HTTPConnection.h */,
+				14A2721638E71A1818B7A6894F91AEBA /* HTTPConnection.m */,
+				333D2902F9214EFBF6078313BC702885 /* HTTPDataResponse.h */,
+				29E6A6D367376A21A5216622635A2170 /* HTTPDataResponse.m */,
+				61674FAAE980E6E1EC0789AEC7CA6831 /* HTTPDynamicFileResponse.h */,
+				1B68C4E9B93DFBAAB22445E0FA0D1767 /* HTTPDynamicFileResponse.m */,
+				B4E87AF8F3D169A0842C191A2F5E8244 /* HTTPErrorResponse.h */,
+				C358050DC6DAF324EF0DFAB97CC34E8A /* HTTPErrorResponse.m */,
+				7B6480C7A4EBD9141118F11B26F84CCF /* HTTPFileResponse.h */,
+				AE28DBA886FB1C126E55C430995B4335 /* HTTPFileResponse.m */,
+				8E4149147BDBE9CA21BBC3E49811F239 /* HTTPLogging.h */,
+				C27DC747FBDDEEE3207775894B62F884 /* HTTPLogging.m */,
+				CBEBE339EC14FCC2FE49D3010296F787 /* HTTPMessage.h */,
+				CC483A30F63FFC441AF0F15E21913A7B /* HTTPMessage.m */,
+				4627AF666F4A36D8C575415EAA537273 /* HTTPRedirectResponse.h */,
+				CE1713CC0B581F703F92373A274CCB36 /* HTTPRedirectResponse.m */,
+				090FF3EB12E327C98CA43C4DEB0A5C54 /* HTTPResponse.h */,
+				DE9CAAC2FC89E5D9ECFB5DD2A115918E /* HTTPServer.h */,
+				412FA5B20E07C1878726B08CEFA16770 /* HTTPServer.m */,
+				7C77324D2E4BFFD939345B2B28DF46B5 /* KTVCocoaHTTPServer.h */,
+				57B6D01CAF038724A2CB9CE1C1053C66 /* MultipartFormDataParser.h */,
+				8609D2104C84A26CC3CA4C3BE2B641C1 /* MultipartFormDataParser.m */,
+				81BD03E6C236E04592A815EF8A6198FC /* MultipartMessageHeader.h */,
+				D7384F87AB9B5697CA8815FED16D48AC /* MultipartMessageHeader.m */,
+				5B1D8F8DF9EE2B9A7C54B8D95C1126C1 /* MultipartMessageHeaderField.h */,
+				2BF50BEC27B10C98E0852AF5820669A5 /* MultipartMessageHeaderField.m */,
+				778C7D7A839587269A87F69E0C0A69B9 /* WebSocket.h */,
+				AC41FF61FFCF578F434B911938EBF98C /* WebSocket.m */,
+				8A4709019D95CC7855EF6B19BC09B49B /* Support Files */,
+			);
+			name = KTVCocoaHTTPServer;
+			path = KTVCocoaHTTPServer;
+			sourceTree = "<group>";
+		};
+		C1E9D25335469174723C892180B20492 /* Pods-ZFPlayer_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E087637138733F26ECAEDA06A1E4C807 /* Info.plist */,
+				E746410C09884C368EB11AB2228E699F /* Pods-ZFPlayer_Tests.modulemap */,
+				1E7EDBCFEEDBF4149FB977A81FEBD119 /* Pods-ZFPlayer_Tests-acknowledgements.markdown */,
+				F8A9334AD5F31A5293FF7ABD32434EB1 /* Pods-ZFPlayer_Tests-acknowledgements.plist */,
+				B2335F996302A008A6D8FB1441F9F3F9 /* Pods-ZFPlayer_Tests-dummy.m */,
+				B95F35ABCEE36D1F364B6F95A5F12A97 /* Pods-ZFPlayer_Tests-frameworks.sh */,
+				F026FBADFDAD80B89F8A806968DF1A9C /* Pods-ZFPlayer_Tests-resources.sh */,
+				0136CBB2CFBE8021CACE3EDF21484EF6 /* Pods-ZFPlayer_Tests-umbrella.h */,
+				36C116CA53C94A333F85BDECA83C6D2A /* Pods-ZFPlayer_Tests.debug.xcconfig */,
+				AA67F72534D40FDDAE7080FF19C031E8 /* Pods-ZFPlayer_Tests.release.xcconfig */,
+			);
+			name = "Pods-ZFPlayer_Tests";
+			path = "Target Support Files/Pods-ZFPlayer_Tests";
+			sourceTree = "<group>";
+		};
+		C247669A3670C9CC6FF248A8AD192434 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C0837B42F9F487AD47CCF5EAA9BE7075 /* CocoaAsyncSocket.modulemap */,
+				F22D92E8CCA6E35A607DC4B3379194A4 /* CocoaAsyncSocket.xcconfig */,
+				3B06BB7C24BBA365FDB208839707DB46 /* CocoaAsyncSocket-dummy.m */,
+				5BC95630A500FB87C9F4976F16457E9F /* CocoaAsyncSocket-prefix.pch */,
+				A967AAC97D54B1DF204A810B8122C345 /* CocoaAsyncSocket-umbrella.h */,
+				469A26AFFFE528793BDFAB61608A4AFC /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/CocoaAsyncSocket";
+			sourceTree = "<group>";
+		};
+		F018CDFF1D054997DB30988CC10D461F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0EDBFADEA828FF20CEB3AA6276702E05 /* ZFPlayer.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		F96868F87E5CBC2A63565F45D0BE381A /* Pods-ZFPlayer_Example */ = {
+			isa = PBXGroup;
+			children = (
+				555288A5626156C5AA5C3079160EA6D6 /* Info.plist */,
+				4D2C9E55457C6C00B7FB9852E5819FFE /* Pods-ZFPlayer_Example.modulemap */,
+				2AFF6AB46A2601C9DA7CDDF2600E68A9 /* Pods-ZFPlayer_Example-acknowledgements.markdown */,
+				756D6018C11ED6D1A01AD94DC81AD4CB /* Pods-ZFPlayer_Example-acknowledgements.plist */,
+				17E923D6F2DE26172F2613449A58B0E0 /* Pods-ZFPlayer_Example-dummy.m */,
+				838C988928C0525CAF901357C7B90412 /* Pods-ZFPlayer_Example-frameworks.sh */,
+				E50444D7AF8C7C8F8FA8025066ED564C /* Pods-ZFPlayer_Example-resources.sh */,
+				99A05A0629A97415E49A74A3BFFF0F52 /* Pods-ZFPlayer_Example-umbrella.h */,
+				1ED92D563CADDC494C71D1EF785A77AA /* Pods-ZFPlayer_Example.debug.xcconfig */,
+				0C3FEA464317F893236081D370F25B56 /* Pods-ZFPlayer_Example.release.xcconfig */,
+			);
+			name = "Pods-ZFPlayer_Example";
+			path = "Target Support Files/Pods-ZFPlayer_Example";
+			sourceTree = "<group>";
+		};
+		FDEFAD6299CEEC8935A705BAB36B6322 /* AVPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				41DCC42FA063D2CBD82893F11CC08418 /* ZFAVPlayerManager.h */,
+				64A2D77CF1FA86A6CB5C6B826B528BD6 /* ZFAVPlayerManager.m */,
+			);
+			name = AVPlayer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		066131069354C4CC132CAB645145E8F7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4230DB0D114C94B081018C1AC1E9972 /* CocoaAsyncSocket-umbrella.h in Headers */,
+				A882891E5A89CADF96C2CA79606409CA /* GCDAsyncSocket.h in Headers */,
+				AC7DC2A21843CD99040DCD79FF3BE91B /* GCDAsyncUdpSocket.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BFBF59B2C5FD753675144BCDA0F9564 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42B70E426A4222F185FFD8689E28831A /* Pods-ZFPlayer_Tests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F4D3330782F5D9349DC4FE967C742D9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D81EAEB01ED4CDEC5F60EB9F12107588 /* KTVHCCommon.h in Headers */,
+				0089C9A575918D1C844BBD78792AF007 /* KTVHCDataCacheItem.h in Headers */,
+				DD60B5EA192D9B6F0D8C95BCE325EBAB /* KTVHCDataCacheItemZone.h in Headers */,
+				E38D11FF54039164E67DADB98F34F2F7 /* KTVHCDataCallback.h in Headers */,
+				3B70A3E74AC759D729FD361762A48CB7 /* KTVHCDataFileSource.h in Headers */,
+				8CEDD08B88CBB4E6F2A5EBEF9D6D16E8 /* KTVHCDataNetworkSource.h in Headers */,
+				7186F2F5366FD1F049E400BFEE76873A /* KTVHCDataPrivate.h in Headers */,
+				4B4AD285E35EA217F6ADF255F318400B /* KTVHCDataReader.h in Headers */,
+				CA3F7D8C5252CE36B096D656B40B749E /* KTVHCDataRequest.h in Headers */,
+				27CA841E49A7F490E364A5A3C4557A48 /* KTVHCDataResponse.h in Headers */,
+				06765780B09D13CFF23DA1E4342A869D /* KTVHCDataSourceManager.h in Headers */,
+				68265CE2D9D9410AA533625AF10BE0BC /* KTVHCDataSourceProtocol.h in Headers */,
+				1B6687F6AA64D272A61718DC7129CC59 /* KTVHCDataSourceQueue.h in Headers */,
+				2F8A3D8CF2ECA60564F0209B0E116516 /* KTVHCDataStorage.h in Headers */,
+				1AD0521AE6D4A18DB8EA670D969C2B53 /* KTVHCDataUnit.h in Headers */,
+				F7137A133B8526306A8187DED64E95E1 /* KTVHCDataUnitItem.h in Headers */,
+				F78B742B192D4EEE2DD36916CF27548C /* KTVHCDataUnitPool.h in Headers */,
+				4C5E648AF392C6F17D3D57B1D5656349 /* KTVHCDataUnitQueue.h in Headers */,
+				1073734A8FEA26FC6012C7291C17E1C2 /* KTVHCDownload.h in Headers */,
+				57D3D2AAE5D38764507C174C7D4E3443 /* KTVHCError.h in Headers */,
+				50230743B0F1F5F0C3743B1F527BE416 /* KTVHCHTTPConnection.h in Headers */,
+				2D91D8E2F8C8238ADE25B435C389EB59 /* KTVHCHTTPHeader.h in Headers */,
+				E6308867E6812C931F04F7C1764FC2EF /* KTVHCHTTPPingResponse.h in Headers */,
+				00C21FA1C33BCF6493C5EF07F8FD1037 /* KTVHCHTTPRequest.h in Headers */,
+				40C6ABC9F53E77E5FF3FDA492542E2D9 /* KTVHCHTTPResponse.h in Headers */,
+				272317BB42CC47EDB1C12B7DF7F6C6B8 /* KTVHCHTTPServer.h in Headers */,
+				9CA3F8BB0737A7074099CCF8D05F2CCD /* KTVHCHTTPURL.h in Headers */,
+				73C4F3C9B4DCD69287CFD9A5993DB6BB /* KTVHCLog.h in Headers */,
+				56CB0C83FCDD8D2BECC420E455BF00E2 /* KTVHCPathTools.h in Headers */,
+				70D501C289218174D96645573815152D /* KTVHCRange.h in Headers */,
+				BDA2563053A66BCE141CAB6447C422E0 /* KTVHCURLTools.h in Headers */,
+				E57B8E7BBB0594C3851967EF6E1D5C4A /* KTVHTTPCache-umbrella.h in Headers */,
+				CC51914EF49856289A5AB698A38C5DE1 /* KTVHTTPCache.h in Headers */,
+				3F9C663EE309D36403C1498188479674 /* KTVHTTPCacheImp.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B21DC3797E12E88FA0C9DC29168146A5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				012C5290928B64DCEB5541BCCB0F361E /* DDData.h in Headers */,
+				307C897BCE32DACC45085EB13EB57F39 /* DDNumber.h in Headers */,
+				E538DEB8FB68D67DBCAC597267EAE42D /* DDRange.h in Headers */,
+				1EF13C1E703A0D5409AF4573948B4F05 /* HTTPAsyncFileResponse.h in Headers */,
+				96766BE50AFDF220943F2805985B2AEB /* HTTPAuthenticationRequest.h in Headers */,
+				8CBA0C0FC9B296BD7FAF33AB23209091 /* HTTPConnection.h in Headers */,
+				B533FE8B74D8E799FD0606DA8E877A4D /* HTTPDataResponse.h in Headers */,
+				7EC83920A9341E454990C1B7C0D4760F /* HTTPDynamicFileResponse.h in Headers */,
+				9D92E590E6AEBD651A453609709C76D7 /* HTTPErrorResponse.h in Headers */,
+				18DFBDF0C39FCFC9944C6F59CDC802B6 /* HTTPFileResponse.h in Headers */,
+				C8F5F80B597A16BCECB84CF703B067A9 /* HTTPLogging.h in Headers */,
+				F43E06EF050FA6780622605AB936D15B /* HTTPMessage.h in Headers */,
+				6768F233614AFF8ADF4D6E5C9112345F /* HTTPRedirectResponse.h in Headers */,
+				5719864DBA2ACC2E6E1A8BA60BC049E7 /* HTTPResponse.h in Headers */,
+				C370383834C1A67CB26FA9174DBD806A /* HTTPServer.h in Headers */,
+				75F1B7490ACCFA45C5080F8BB5090FD1 /* KTVCocoaHTTPServer-umbrella.h in Headers */,
+				2CCAD4AC5F6D98F52FA07574899A0710 /* KTVCocoaHTTPServer.h in Headers */,
+				86DFDE656A3E474E174FF926B7FEB6FB /* MultipartFormDataParser.h in Headers */,
+				955CACFF2DE67AB0162AAFCEDBF13A1B /* MultipartMessageHeader.h in Headers */,
+				2AB27FD007A4AE077AF831DD06B92854 /* MultipartMessageHeaderField.h in Headers */,
+				DE0AD3E5682904343BB2CD45F788F70C /* WebSocket.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E52A2F9A0DDCFF4CF5B658DF6EBFBA75 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB094AE8B9E9FA679BFD880FB5D3E44F /* Pods-ZFPlayer_Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE65B5F579469D77066C0402CCFE1D4B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27F60D177DDA0E23DC61270EBEEAA41A /* UIImageView+ZFCache.h in Headers */,
+				760127CC4E7F945B12C05E055A624664 /* UIScrollView+ZFPlayer.h in Headers */,
+				6E83D7E7F052EA4AE102601E7D5CF8DF /* UIView+ZFFrame.h in Headers */,
+				CA707EFD94E7424DABF40647C9A69755 /* UIViewController+ZFPlayerRotation.h in Headers */,
+				05745F778B16C81647E8DC40FC98B468 /* ZFAVPlayerManager.h in Headers */,
+				8EE06B977D84CFB09B38B2C9C197A6D1 /* ZFFloatView.h in Headers */,
+				3B5DA57238345323C3BA490BAFC349E0 /* ZFKVOController.h in Headers */,
+				7DDA3859E384D259F0FEDF1A09718F16 /* ZFLandScapeControlView.h in Headers */,
+				69E2DF22454DB7ED14D81D0D5DA694AA /* ZFLoadingView.h in Headers */,
+				D41BAD90F06A95EE2397270448DFFDBB /* ZFOrientationObserver.h in Headers */,
+				A2EF1DE99607CEB84F6D26AE8E0A1C9F /* ZFPlayer-umbrella.h in Headers */,
+				87472B25CF78656B84414EFBCCCEB71D /* ZFPlayer.h in Headers */,
+				A6E2526457F7AAF759B59A4419382301 /* ZFPlayerController.h in Headers */,
+				62BD861E41746BD441B509FB7FD5F758 /* ZFPlayerControlView.h in Headers */,
+				939BDF5612A9B21A7773F2E37073E940 /* ZFPlayerGestureControl.h in Headers */,
+				E6BDE0E533F3E6EC13CA5379FA2D16A9 /* ZFPlayerMediaControl.h in Headers */,
+				81185768F373EF1C654A908A115E2684 /* ZFPlayerMediaPlayback.h in Headers */,
+				D9C6AE4FF79D618F300CDE4F5140613D /* ZFPlayerNotification.h in Headers */,
+				24FDC60C1E39BC812819FB96E7BA510E /* ZFPlayerView.h in Headers */,
+				C30D79A223F72937D0515447D5D630D3 /* ZFPortraitControlView.h in Headers */,
+				E73D88EAED6F530BD280338EE75701DE /* ZFReachabilityManager.h in Headers */,
+				93C446D26DD2335605DB601CEC6F8CD2 /* ZFSliderView.h in Headers */,
+				29173EF1FF532C2841AB287352520AF6 /* ZFSmallFloatControlView.h in Headers */,
+				87CEB0850791FA7B2A43555644AE5701 /* ZFUtilities.h in Headers */,
+				265CCD61FEC5CE4FCE666BF07B6FF343 /* ZFVolumeBrightnessView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		274E7822F7047810ADEE01D152F52792 /* Pods-ZFPlayer_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EFE4DD81AD6E6131F3F72FC8E6E9318A /* Build configuration list for PBXNativeTarget "Pods-ZFPlayer_Tests" */;
+			buildPhases = (
+				099C3073030E3E0B02481D902D5ADE19 /* Sources */,
+				56D7BA4F06DCC75D7A1EC898A143A455 /* Frameworks */,
+				4BFBF59B2C5FD753675144BCDA0F9564 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-ZFPlayer_Tests";
+			productName = "Pods-ZFPlayer_Tests";
+			productReference = BF93AD660ACB1CC07CF3DFFA7BF1BD64 /* Pods_ZFPlayer_Tests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		5128502CCE684EA86B17B0BA8BD56DDC /* KTVHTTPCache */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7ED8D9D9F2DE0AA3DD77E088EB54D916 /* Build configuration list for PBXNativeTarget "KTVHTTPCache" */;
+			buildPhases = (
+				6A6EB062DBC62659CC143AD024C272B2 /* Sources */,
+				A98F1C3F1591425736F3D3A5D0035C7F /* Frameworks */,
+				9F4D3330782F5D9349DC4FE967C742D9 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				23D368F3AC56583DBBEE9D54E8738FB9 /* PBXTargetDependency */,
+				E81CCC91790CA1B044E573737159F693 /* PBXTargetDependency */,
+			);
+			name = KTVHTTPCache;
+			productName = KTVHTTPCache;
+			productReference = 4133FC5235173E5159749F239C58CD58 /* KTVHTTPCache.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		A52394513B0AA9250B8D4718B8664977 /* ZFPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76CD6295FD90F8BE4F322301F2740FE3 /* Build configuration list for PBXNativeTarget "ZFPlayer" */;
+			buildPhases = (
+				FE8C05B63A5299E66416881CD7069657 /* Sources */,
+				F035FA0DC8B20971F5ABF0BBA1A14C9C /* Frameworks */,
+				FE65B5F579469D77066C0402CCFE1D4B /* Headers */,
+				8950FD9F2B64852436466074522B8EB6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZFPlayer;
+			productName = ZFPlayer;
+			productReference = FB32F2788175A5F5A99C52E52754F61E /* ZFPlayer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		AC0D2D2B4EE7C873431AB3502859CA60 /* CocoaAsyncSocket */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2A03B912F777B2BFB05E7B9E903B15F /* Build configuration list for PBXNativeTarget "CocoaAsyncSocket" */;
+			buildPhases = (
+				FD452A203117FF8DFA26B0711D439093 /* Sources */,
+				D1C2C126168B038B9B15BF2A4C96FDDC /* Frameworks */,
+				066131069354C4CC132CAB645145E8F7 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CocoaAsyncSocket;
+			productName = CocoaAsyncSocket;
+			productReference = 70942E3E2DF0D3CDD0EE40F43332307A /* CocoaAsyncSocket.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C77CE399CB45172DADC477F198D2AA29 /* KTVCocoaHTTPServer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F36EB91CB4553C689FF8C1A11EB9289B /* Build configuration list for PBXNativeTarget "KTVCocoaHTTPServer" */;
+			buildPhases = (
+				5BF61DB8431CDC8C89ABD83EA3482E1D /* Sources */,
+				B01F7260F2E681A1964C55B5FB0BFCC7 /* Frameworks */,
+				B21DC3797E12E88FA0C9DC29168146A5 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				585DBC96D078AC370633356852974CE6 /* PBXTargetDependency */,
+			);
+			name = KTVCocoaHTTPServer;
+			productName = KTVCocoaHTTPServer;
+			productReference = 6DF21733721CFF268FD6AA33D03AD1F3 /* KTVCocoaHTTPServer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D04CA799B8F06F6BE51E1A0E1D0DA796 /* Pods-ZFPlayer_Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E216AA4B16C46CC81FEBA70C0BD1CAD3 /* Build configuration list for PBXNativeTarget "Pods-ZFPlayer_Example" */;
+			buildPhases = (
+				0C5546D126398BA5B0C7DA8A07F95E54 /* Sources */,
+				E0C5A00C0B274170C1B4BA35BD010043 /* Frameworks */,
+				E52A2F9A0DDCFF4CF5B658DF6EBFBA75 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1E45A8A1D0B5B9D6056E125CD80E9E56 /* PBXTargetDependency */,
+				82BEBAF85438C151A2A7DD5C8CAEBD93 /* PBXTargetDependency */,
+				DBBF7D9CE71925EBA62326EA3EF594AB /* PBXTargetDependency */,
+				6FE92F72D9DABEC6EC3F8BB7080100E2 /* PBXTargetDependency */,
+			);
+			name = "Pods-ZFPlayer_Example";
+			productName = "Pods-ZFPlayer_Example";
+			productReference = C2AD0EDAA25AE2648A9ACBF774818951 /* Pods_ZFPlayer_Example.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 8BA4424A8730A1B6BFB3579D74795447 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AC0D2D2B4EE7C873431AB3502859CA60 /* CocoaAsyncSocket */,
+				C77CE399CB45172DADC477F198D2AA29 /* KTVCocoaHTTPServer */,
+				5128502CCE684EA86B17B0BA8BD56DDC /* KTVHTTPCache */,
+				D04CA799B8F06F6BE51E1A0E1D0DA796 /* Pods-ZFPlayer_Example */,
+				274E7822F7047810ADEE01D152F52792 /* Pods-ZFPlayer_Tests */,
+				A52394513B0AA9250B8D4718B8664977 /* ZFPlayer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8950FD9F2B64852436466074522B8EB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74B5BC889F52D05C88A33E1323F45655 /* ZFPlayer.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		099C3073030E3E0B02481D902D5ADE19 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C0D8C24D6C3666F463A2A7BB931281E /* Pods-ZFPlayer_Tests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C5546D126398BA5B0C7DA8A07F95E54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0ADE3F372A111228B020ED99DCB255D0 /* Pods-ZFPlayer_Example-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5BF61DB8431CDC8C89ABD83EA3482E1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9CC7D9A45510A1CC3447B86E2032849 /* DDData.m in Sources */,
+				5099589663C29B5645CCE99CEEA679F7 /* DDNumber.m in Sources */,
+				92E4571C4BBB742C4E3338F945B2785E /* DDRange.m in Sources */,
+				482B1F338B28DDA108FB88E0BD54DC00 /* HTTPAsyncFileResponse.m in Sources */,
+				A4E3AAA45B0010E8E5ED96555E237425 /* HTTPAuthenticationRequest.m in Sources */,
+				80F5842FD1CF17229C663FF397399D0B /* HTTPConnection.m in Sources */,
+				620E156B741B99A4A1AE21480ED8F8E0 /* HTTPDataResponse.m in Sources */,
+				EF1C27862CFBB4B301CF1F479851501B /* HTTPDynamicFileResponse.m in Sources */,
+				74349571B467C3E1366BF37362F75ADC /* HTTPErrorResponse.m in Sources */,
+				AB0C53F48D985B5556983D76AAECDC49 /* HTTPFileResponse.m in Sources */,
+				691274D15CD19B39278B60C4E85D4CC9 /* HTTPLogging.m in Sources */,
+				1298143C7B3AF4B5BE2033DD48AD33DE /* HTTPMessage.m in Sources */,
+				18C40E1F2D1ECB918F16AE37E4EBCFD5 /* HTTPRedirectResponse.m in Sources */,
+				72BEA3F7E9972842AE3521E58775A7BC /* HTTPServer.m in Sources */,
+				F32A3A6CBB9D2357FF8DDC47B0938AA0 /* KTVCocoaHTTPServer-dummy.m in Sources */,
+				818C5196106CCBF2C14D28FE2BDFBD68 /* MultipartFormDataParser.m in Sources */,
+				2ADB111F6B13280E1CF6F45FDA6DFC96 /* MultipartMessageHeader.m in Sources */,
+				265CC7BA0E7BF8B590B1849C8600C555 /* MultipartMessageHeaderField.m in Sources */,
+				68967155D9544006D86A6FCD4BD4C346 /* WebSocket.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A6EB062DBC62659CC143AD024C272B2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01546AF46FDAF2D0864A83953024DB52 /* KTVHCDataCacheItem.m in Sources */,
+				328AC1F0DDB25ECAE376799A9215A742 /* KTVHCDataCacheItemZone.m in Sources */,
+				FE78AA4B297E5E8097D5ABCEB3EE69A0 /* KTVHCDataCallback.m in Sources */,
+				2C1D4668846ACCAFC220A3535BC129F8 /* KTVHCDataFileSource.m in Sources */,
+				4084719F603E768FBA41815960DFA840 /* KTVHCDataNetworkSource.m in Sources */,
+				4386559EA1A6618ECAF93D6E8F4D8EDF /* KTVHCDataReader.m in Sources */,
+				3457DAF97B4BA3207B955C7E46FD0697 /* KTVHCDataRequest.m in Sources */,
+				6AFCC989313864CA30673D217EC49803 /* KTVHCDataResponse.m in Sources */,
+				0A9C8825FEF31DFB6067F8E3B8FA56DD /* KTVHCDataSourceManager.m in Sources */,
+				D916CBF4DBBB6B8DE5453BE494A56EE2 /* KTVHCDataSourceQueue.m in Sources */,
+				840FEB17D6B282BA781C1320101E4C31 /* KTVHCDataStorage.m in Sources */,
+				14EF6A8398FAC79D4AD58495C288EF87 /* KTVHCDataUnit.m in Sources */,
+				43872EE26FC527B6AE8864EA11ACE59C /* KTVHCDataUnitItem.m in Sources */,
+				CA3C54F7663A03C3887F23D99C9D2516 /* KTVHCDataUnitPool.m in Sources */,
+				89E681B860A678B21A1ABA015A489B50 /* KTVHCDataUnitQueue.m in Sources */,
+				892D0285E442124B45FD6F2EAB94B3B0 /* KTVHCDownload.m in Sources */,
+				61CB7CC2F29FB1E5A5E2E4A2CB1C4BB3 /* KTVHCError.m in Sources */,
+				83475217B4C69C330DBFA2E2466718CA /* KTVHCHTTPConnection.m in Sources */,
+				E6AFB73F33C79AFA6D4987B9E40B085E /* KTVHCHTTPPingResponse.m in Sources */,
+				D88407414F2EFCEAAC35280777C93321 /* KTVHCHTTPRequest.m in Sources */,
+				116D2520C437E7E3ED343239C6D3A7D3 /* KTVHCHTTPResponse.m in Sources */,
+				1559F953E61E0D7501CD4A0E3A37B33A /* KTVHCHTTPServer.m in Sources */,
+				C6451FDEC7CF7E0EF967D56CC1C5AF26 /* KTVHCHTTPURL.m in Sources */,
+				D7A0F72131DD5D3D6E8DCD4B6CB17EFF /* KTVHCLog.m in Sources */,
+				41ACAF526B3D4E3C033379E98D5FC91B /* KTVHCPathTools.m in Sources */,
+				AA4F7CAD32A4FE2B216258E705D72437 /* KTVHCRange.m in Sources */,
+				B811FF1C7DE8B641696F293504039045 /* KTVHCURLTools.m in Sources */,
+				922133D60F3A600CDFB1092645E3372A /* KTVHTTPCache-dummy.m in Sources */,
+				677D49D7A6D45A93EAEA10532449498A /* KTVHTTPCacheImp.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD452A203117FF8DFA26B0711D439093 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E4F0161B4D135DA3A0763619A56C2F5 /* CocoaAsyncSocket-dummy.m in Sources */,
+				8480493AEC1C7AF1B5C0E0BF2F70FB44 /* GCDAsyncSocket.m in Sources */,
+				AEE9644DA0EFCF945438E125BA4F0724 /* GCDAsyncUdpSocket.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE8C05B63A5299E66416881CD7069657 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30B44451CB081F413E5272A8ADBC830A /* UIImageView+ZFCache.m in Sources */,
+				0CDC5FF737EECFA30FCFB6AA32FB5B73 /* UIScrollView+ZFPlayer.m in Sources */,
+				CBF306B7E46AC6E78D1E0CDF836DCABA /* UIView+ZFFrame.m in Sources */,
+				F41E4806D4E985B00785785688B99AA5 /* UIViewController+ZFPlayerRotation.m in Sources */,
+				2FEA062DF0D93D183FE83288C74175A8 /* ZFAVPlayerManager.m in Sources */,
+				2F8737598B1EAC1C946294A0049B3F7C /* ZFFloatView.m in Sources */,
+				B1EAE59E484CF1E7B055699E0CFCDE5A /* ZFKVOController.m in Sources */,
+				294CC57AAAC59D43EBFE3297D06276D7 /* ZFLandScapeControlView.m in Sources */,
+				A630982B9BBA17ABFCF5DEE10F51059D /* ZFLoadingView.m in Sources */,
+				28CE8478974667B1DE4398E1DF3EC12E /* ZFOrientationObserver.m in Sources */,
+				5ED3471B33A298D459F4EB79AFEEED6A /* ZFPlayer-dummy.m in Sources */,
+				DB52628076290695A07D736FAA986C35 /* ZFPlayerController.m in Sources */,
+				74629AD3DAC9AFD032DF66B04DCDA351 /* ZFPlayerControlView.m in Sources */,
+				B92ADC23F44095E5416A1C55948786BB /* ZFPlayerGestureControl.m in Sources */,
+				303A74C35BF9ED9DDCCB46855385CD89 /* ZFPlayerNotification.m in Sources */,
+				E421449755D07AA8B3AA564C3E3A758B /* ZFPlayerView.m in Sources */,
+				9389160595D1A6B5A04B7E40AAD0576C /* ZFPortraitControlView.m in Sources */,
+				7084622A6F65984CE3E9B0194C185567 /* ZFReachabilityManager.m in Sources */,
+				5CF8E850783E28C7F222BC4BB38ED0EB /* ZFSliderView.m in Sources */,
+				B2F2C31AD33B691400BC55D1B9E0B559 /* ZFSmallFloatControlView.m in Sources */,
+				2DA587EB4F0DCEA7C5FB1024ED6A0C09 /* ZFUtilities.m in Sources */,
+				2E11C213DBA25F207BF4CA4E089B8ABE /* ZFVolumeBrightnessView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1E45A8A1D0B5B9D6056E125CD80E9E56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaAsyncSocket;
+			target = AC0D2D2B4EE7C873431AB3502859CA60 /* CocoaAsyncSocket */;
+			targetProxy = 80088DE6C653366D663F5166BEE146F7 /* PBXContainerItemProxy */;
+		};
+		23D368F3AC56583DBBEE9D54E8738FB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaAsyncSocket;
+			target = AC0D2D2B4EE7C873431AB3502859CA60 /* CocoaAsyncSocket */;
+			targetProxy = D743784A788CCA92209143C5CB6C938D /* PBXContainerItemProxy */;
+		};
+		585DBC96D078AC370633356852974CE6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaAsyncSocket;
+			target = AC0D2D2B4EE7C873431AB3502859CA60 /* CocoaAsyncSocket */;
+			targetProxy = FD5BBB779BE76777253140445BF5CC72 /* PBXContainerItemProxy */;
+		};
+		6FE92F72D9DABEC6EC3F8BB7080100E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ZFPlayer;
+			target = A52394513B0AA9250B8D4718B8664977 /* ZFPlayer */;
+			targetProxy = E99E934EACACD62E3634C6D2B300DC45 /* PBXContainerItemProxy */;
+		};
+		82BEBAF85438C151A2A7DD5C8CAEBD93 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = KTVCocoaHTTPServer;
+			target = C77CE399CB45172DADC477F198D2AA29 /* KTVCocoaHTTPServer */;
+			targetProxy = 816AA38701D5944E13E9718D5971722C /* PBXContainerItemProxy */;
+		};
+		DBBF7D9CE71925EBA62326EA3EF594AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = KTVHTTPCache;
+			target = 5128502CCE684EA86B17B0BA8BD56DDC /* KTVHTTPCache */;
+			targetProxy = EC21320CBFC4B8C285A446628E46CD31 /* PBXContainerItemProxy */;
+		};
+		E81CCC91790CA1B044E573737159F693 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = KTVCocoaHTTPServer;
+			target = C77CE399CB45172DADC477F198D2AA29 /* KTVCocoaHTTPServer */;
+			targetProxy = 6BFEA28ECF5FB850C1D0966A59CEDA1A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02F62A0018216B99C2158808138B787C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEB208F5DE439C195BF85311E4AA129A /* ZFPlayer.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ZFPlayer/ZFPlayer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ZFPlayer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ZFPlayer/ZFPlayer.modulemap";
+				PRODUCT_NAME = ZFPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		0CD76014622D25F348AC24F3E271E931 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F22D92E8CCA6E35A607DC4B3379194A4 /* CocoaAsyncSocket.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/CocoaAsyncSocket/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.modulemap";
+				PRODUCT_NAME = CocoaAsyncSocket;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		283D0B78B5FC8AED805B6D87319B6B22 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEB208F5DE439C195BF85311E4AA129A /* ZFPlayer.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ZFPlayer/ZFPlayer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ZFPlayer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ZFPlayer/ZFPlayer.modulemap";
+				PRODUCT_NAME = ZFPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3E916940FD308920A298824C18BD8B17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F22D92E8CCA6E35A607DC4B3379194A4 /* CocoaAsyncSocket.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/CocoaAsyncSocket/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.modulemap";
+				PRODUCT_NAME = CocoaAsyncSocket;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4F1420FB2D565E152B6F81C092ED893F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E58A4270137F2C85FD5F71C0D87DA470 /* KTVHTTPCache.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/KTVHTTPCache/KTVHTTPCache-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/KTVHTTPCache/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/KTVHTTPCache/KTVHTTPCache.modulemap";
+				PRODUCT_NAME = KTVHTTPCache;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		55354E005D6935DCC75012CC2BBCCEA8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36C116CA53C94A333F85BDECA83C6D2A /* Pods-ZFPlayer_Tests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-ZFPlayer_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-ZFPlayer_Tests/Pods-ZFPlayer_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_ZFPlayer_Tests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		78807DA91C8DDF1F080619FA5F79C989 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C3FEA464317F893236081D370F25B56 /* Pods-ZFPlayer_Example.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-ZFPlayer_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_ZFPlayer_Example;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A59BA083EA51673E95BBAE09C7F714AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E58A4270137F2C85FD5F71C0D87DA470 /* KTVHTTPCache.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/KTVHTTPCache/KTVHTTPCache-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/KTVHTTPCache/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/KTVHTTPCache/KTVHTTPCache.modulemap";
+				PRODUCT_NAME = KTVHTTPCache;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A74B3E126A7AB1D6732AA66335946F59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1ED92D563CADDC494C71D1EF785A77AA /* Pods-ZFPlayer_Example.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-ZFPlayer_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_ZFPlayer_Example;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BAB6F0529726B7794E40FA9BEA838A46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4CB4E28A13F4C14C8AA6D4EC042B40A2 /* KTVCocoaHTTPServer.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/KTVCocoaHTTPServer/KTVCocoaHTTPServer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/KTVCocoaHTTPServer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/KTVCocoaHTTPServer/KTVCocoaHTTPServer.modulemap";
+				PRODUCT_NAME = KTVCocoaHTTPServer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C3E37FB098AE76440E29106ADBF00CEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		DA03565BE765DB55C6448FB363A44481 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		F95264ADC23B44B3761110203B8C77AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4CB4E28A13F4C14C8AA6D4EC042B40A2 /* KTVCocoaHTTPServer.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/KTVCocoaHTTPServer/KTVCocoaHTTPServer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/KTVCocoaHTTPServer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/KTVCocoaHTTPServer/KTVCocoaHTTPServer.modulemap";
+				PRODUCT_NAME = KTVCocoaHTTPServer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		F99FB187CE4351644EDA295D6B9FA5D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA67F72534D40FDDAE7080FF19C031E8 /* Pods-ZFPlayer_Tests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-ZFPlayer_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-ZFPlayer_Tests/Pods-ZFPlayer_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_ZFPlayer_Tests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3E37FB098AE76440E29106ADBF00CEB /* Debug */,
+				DA03565BE765DB55C6448FB363A44481 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76CD6295FD90F8BE4F322301F2740FE3 /* Build configuration list for PBXNativeTarget "ZFPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				283D0B78B5FC8AED805B6D87319B6B22 /* Debug */,
+				02F62A0018216B99C2158808138B787C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7ED8D9D9F2DE0AA3DD77E088EB54D916 /* Build configuration list for PBXNativeTarget "KTVHTTPCache" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A59BA083EA51673E95BBAE09C7F714AD /* Debug */,
+				4F1420FB2D565E152B6F81C092ED893F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E216AA4B16C46CC81FEBA70C0BD1CAD3 /* Build configuration list for PBXNativeTarget "Pods-ZFPlayer_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A74B3E126A7AB1D6732AA66335946F59 /* Debug */,
+				78807DA91C8DDF1F080619FA5F79C989 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EFE4DD81AD6E6131F3F72FC8E6E9318A /* Build configuration list for PBXNativeTarget "Pods-ZFPlayer_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55354E005D6935DCC75012CC2BBCCEA8 /* Debug */,
+				F99FB187CE4351644EDA295D6B9FA5D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F2A03B912F777B2BFB05E7B9E903B15F /* Build configuration list for PBXNativeTarget "CocoaAsyncSocket" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E916940FD308920A298824C18BD8B17 /* Debug */,
+				0CD76014622D25F348AC24F3E271E931 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F36EB91CB4553C689FF8C1A11EB9289B /* Build configuration list for PBXNativeTarget "KTVCocoaHTTPServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAB6F0529726B7794E40FA9BEA838A46 /* Debug */,
+				F95264ADC23B44B3761110203B8C77AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}
