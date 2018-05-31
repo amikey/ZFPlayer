@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="https://github.com/renzifeng/ZFPlayer/raw/master/log.png" alt="ZFPlayer" title="ZFPlayer" width="557"/>
+<img src="https://upload-images.jianshu.io/upload_images/635942-092427e571756309.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ZFPlayer" title="ZFPlayer" width="557"/>
 </p>
 
 <p align="center">
@@ -103,6 +103,13 @@ ZFPlayerController *player = [ZFPlayerController playerWithScrollView:tableView 
 player.controlView = controlView<ZFPlayerMediaControl>;
 self.player.assetURLs = array<NSURL *>;
 ```
+### Picture demonstration
+
+![Picture effect](https://upload-images.jianshu.io/upload_images/635942-2837f5d00d970cd2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![Picture effect](https://upload-images.jianshu.io/upload_images/635942-b7498fe39e788604.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![Picture effect](https://upload-images.jianshu.io/upload_images/635942-1ba16bde9d12acbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Author
 
