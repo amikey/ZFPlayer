@@ -105,11 +105,7 @@ self.player.assetURLs = array<NSURL *>;
 ```
 ### Picture demonstration
 
-![Picture effect](https://upload-images.jianshu.io/upload_images/635942-2837f5d00d970cd2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![Picture effect](https://upload-images.jianshu.io/upload_images/635942-b7498fe39e788604.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![Picture effect](https://upload-images.jianshu.io/upload_images/635942-1ba16bde9d12acbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Picture effect](https://upload-images.jianshu.io/upload_images/635942-1b0e23b7f5eabd9e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Author
 

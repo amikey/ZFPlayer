@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
   s.requires_arc = true
 
-  s.default_subspec = 'Core'
+  # s.default_subspec = 'Core'
   
   s.subspec 'Core' do |core|
       core.source_files = 'ZFPlayer/Classes/Core/**/*'
