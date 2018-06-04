@@ -83,7 +83,6 @@ player.controlView = controlView;
 ```objc
 /// Your custom playerManager must conform `ZFPlayerMediaPlayback` protocol.
 Class<ZFPlayerMediaPlayback> *playerManager = ...;
-playerManager.shouldAutoPlay = YES;
 
 /// playerController
 ZFPlayerController *player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
@@ -96,7 +95,6 @@ playerManager.assetURL = [NSURL URLWithString:...];
 ```objc
 /// Your custom playerManager must conform `ZFPlayerMediaPlayback` protocol.
 Class<ZFPlayerMediaPlayback> *playerManager = ...;
-playerManager.shouldAutoPlay = YES;
 
 /// playerController
 ZFPlayerController *player = [ZFPlayerController playerWithScrollView:tableView playerManager:playerManager containerViewTag:tag<NSInteger>];

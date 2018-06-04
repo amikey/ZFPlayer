@@ -42,7 +42,6 @@ static NSString *kIdentifier = @"kIdentifier";
     self.navigationItem.title = @"Light and dark to play";
     
     self.playerManager = [[ZFAVPlayerManager alloc] init];
-    self.playerManager.shouldAutoPlay = YES;
     
     /// player
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];

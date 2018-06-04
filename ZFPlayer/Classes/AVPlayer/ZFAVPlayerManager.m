@@ -121,7 +121,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
 @implementation ZFAVPlayerManager
 
 @synthesize view                           = _view;
-@synthesize shouldAutoPlay                 = _shouldAutoPlay;
 @synthesize currentTime                    = _currentTime;
 @synthesize totalTime                      = _totalTime;
 @synthesize playerPlayTimeChanged          = _playerPlayTimeChanged;
@@ -157,7 +156,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     [self initializePlayer];
     self.loadState = ZFPlayerLoadStatePrepare;
     if (_playerPrepareToPlay) _playerPrepareToPlay(self, self.assetURL);
-    if (self.shouldAutoPlay) [self play];
+    [self play];
 }
 
 - (void)reloadPlayer {
@@ -363,7 +362,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
              if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
                  self.loadState = ZFPlayerLoadStatePlaythroughOK;
                  if (self.seekTime) [self seekToTime:self.seekTime completionHandler:nil];
-                 if (self.shouldAutoPlay) [self play];
+                 [self play];
                  self.player.muted = self.muted;
              } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
                  self.playState = ZFPlayerPlayStatePlayFailed;
@@ -433,13 +432,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
 - (void)setMuted:(BOOL)muted {
     _muted = muted;
     self.player.muted = muted;
-}
-
-- (void)setShouldAutoPlay:(BOOL)shouldAutoPlay {
-    _shouldAutoPlay = shouldAutoPlay;
-    if (!_isPreparedToPlay) {
-        [self prepareToPlay];
-    }
 }
 
 - (void)setScalingMode:(ZFPlayerScalingMode)scalingMode {

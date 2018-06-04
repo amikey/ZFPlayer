@@ -639,6 +639,7 @@
     scrollView.enableDirection = YES;
     scrollView.playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDidAppearInScrollView:)]) {
             [self.controlView playerDidAppearInScrollView:self];
         }
@@ -649,6 +650,7 @@
     
     scrollView.playerWillDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerWillDisappearInScrollView:)]) {
             [self.controlView playerWillDisappearInScrollView:self];
         }
@@ -656,6 +658,7 @@
     
     scrollView.playerDisappearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDisappearHalfInScrollView:)]) {
             [self.controlView playerDisappearHalfInScrollView:self];
         }
@@ -666,6 +669,7 @@
     
     scrollView.playerDidDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDidDisappearInScrollView:)]) {
             [self.controlView playerDidDisappearInScrollView:self];
         }

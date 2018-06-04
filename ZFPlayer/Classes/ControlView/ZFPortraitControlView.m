@@ -23,7 +23,6 @@
 
 #import "ZFPortraitControlView.h"
 #import "UIView+ZFFrame.h"
-#import "ZFPlayer.h"
 #import "ZFSliderView.h"
 #import "ZFUtilities.h"
 
@@ -56,10 +55,6 @@
 @end
 
 @implementation ZFPortraitControlView
-
-- (void)dealloc {
-    NSLog(@"%@释放了",self.class);
-}
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -267,14 +262,8 @@
     return YES;
 }
 
-#pragma mark - ZFPlayerControlViewDelegate
-
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL {
     self.player = videoPlayer;
-}
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer stateChanged:(ZFPlayerPlaybackState)state {
-    
 }
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime {

@@ -56,8 +56,8 @@ static NSString *const kContentOffset = @"contentOffset";
 }
 
 - (void)zf_dealloc {
-    [self zf_dealloc];
     [self.scrollViewKVO safelyRemoveAllObservers];
+    [self zf_dealloc];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

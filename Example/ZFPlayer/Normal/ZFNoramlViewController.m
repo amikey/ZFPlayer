@@ -38,7 +38,6 @@
 - (IBAction)playClick:(UIButton *)sender {
     [self.controlView resetControlView];
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-    playerManager.shouldAutoPlay = YES;
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;

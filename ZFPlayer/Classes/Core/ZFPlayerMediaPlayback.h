@@ -68,9 +68,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 /// Playback speed,0.5...2
 @property (nonatomic) float rate;
 
-/// Should auto play.
-@property (nonatomic) BOOL shouldAutoPlay;
-
 /// The player current play time.
 @property (nonatomic, readonly) NSTimeInterval currentTime;
 

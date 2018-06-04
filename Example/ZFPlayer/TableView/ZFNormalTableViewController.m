@@ -43,7 +43,6 @@ static NSString *kIdentifier = @"kIdentifier";
     
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];
-    self.playerManager.shouldAutoPlay = YES;
 
     /// player
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];

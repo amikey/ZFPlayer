@@ -393,14 +393,14 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 }
 
 - (void)playerDidAppearInScrollView:(ZFPlayerController *)videoPlayer {
-    if (!self.player.stopWhileNotVisible) {
+    if (!self.player.stopWhileNotVisible && !videoPlayer.isFullScreen) {
         self.floatControlView.hidden = YES;
         self.portraitControlView.hidden = NO;
     }
 }
 
 - (void)playerDidDisappearInScrollView:(ZFPlayerController *)videoPlayer {
-    if (!self.player.stopWhileNotVisible) {
+    if (!self.player.stopWhileNotVisible && !videoPlayer.isFullScreen) {
         self.floatControlView.hidden = NO;
         self.portraitControlView.hidden = YES;
     }

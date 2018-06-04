@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// WWANA networks play automatically,default NO.
 @property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
-/// The scrollView player should auto player,default is YES.
+/// The player should auto player,default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;
 
 /// The view tag that the player display in scrollView.
