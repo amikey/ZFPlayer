@@ -14,13 +14,14 @@
 #import "ZFTableData.h"
 #import <KTVHTTPCache/KTVHTTPCache.h>
 #import "ZFDouYinCell.h"
+#import "ZFDouYinControlView.h"
 
 static NSString *kIdentifier = @"kIdentifier";
 @interface ZFDouYinViewController ()  <UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
-@property (nonatomic, strong) ZFPlayerControlView *controlView;
+@property (nonatomic, strong) ZFDouYinControlView *controlView;
 @property (nonatomic, strong) ZFAVPlayerManager *playerManager;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSMutableArray *urls;
@@ -41,7 +42,8 @@ static NSString *kIdentifier = @"kIdentifier";
     /// player
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
     self.player.assetURLs = self.urls;
-    self.player.disableGestureTypes = ZFPlayerDisableGestureTypesAll;
+    self.player.disableGestureTypes = ZFPlayerDisableGestureTypesDoubleTap | ZFPlayerDisableGestureTypesPan |ZFPlayerDisableGestureTypesPinch;
+    self.player.controlView = self.controlView;
     @weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
@@ -165,6 +167,8 @@ static NSString *kIdentifier = @"kIdentifier";
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
     [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
     [self.controlView resetControlView];
+    ZFTableData *data = self.dataSource[indexPath.row];
+    [self.controlView showTitle:data.title coverURLString:data.thumbnail_url];
 }
 
 #pragma mark - getter
@@ -176,6 +180,7 @@ static NSString *kIdentifier = @"kIdentifier";
         [_tableView registerClass:[ZFDouYinCell class] forCellReuseIdentifier:kIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         if (@available(iOS 11.0, *)) {
             _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
@@ -183,6 +188,13 @@ static NSString *kIdentifier = @"kIdentifier";
         }
     }
     return _tableView;
+}
+
+- (ZFDouYinControlView *)controlView {
+    if (!_controlView) {
+        _controlView = [ZFDouYinControlView new];
+    }
+    return _controlView;
 }
 
 
