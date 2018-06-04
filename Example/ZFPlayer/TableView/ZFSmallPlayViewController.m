@@ -37,7 +37,6 @@ static NSString *kIdentifier = @"kIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
-    self.view.backgroundColor = [UIColor redColor];
     [self requestData];
     self.navigationItem.title = @"Small window to play";
     

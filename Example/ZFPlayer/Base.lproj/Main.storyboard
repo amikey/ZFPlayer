@@ -167,6 +167,30 @@
                                             <segue destination="qtY-VP-gL5" kind="show" id="8Yc-Jl-Rc9"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="5LK-Yq-trD">
+                                        <rect key="frame" x="0.0" y="264" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5LK-Yq-trD" id="c9R-Us-7Ur">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dou yin style" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jpu-Jw-0z4">
+                                                    <rect key="frame" x="15" y="12" width="311" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Jpu-Jw-0z4" firstAttribute="centerX" secondItem="c9R-Us-7Ur" secondAttribute="centerX" id="M4Q-yH-Gqa"/>
+                                                <constraint firstItem="Jpu-Jw-0z4" firstAttribute="centerY" secondItem="c9R-Us-7Ur" secondAttribute="centerY" id="OlZ-Zt-f1y"/>
+                                                <constraint firstItem="Jpu-Jw-0z4" firstAttribute="leading" secondItem="c9R-Us-7Ur" secondAttribute="leading" constant="15" id="uyw-NZ-tvH"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="c2h-Fi-LMM" kind="show" id="uhc-WA-oWp"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -257,6 +281,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RDG-eQ-NPk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1540" y="1841"/>
+        </scene>
+        <!--Dou Yin View Controller-->
+        <scene sceneID="ePl-vV-DZw">
+            <objects>
+                <viewController id="c2h-Fi-LMM" customClass="ZFDouYinViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="efd-aD-Fet"/>
+                        <viewControllerLayoutGuide type="bottom" id="a2c-Mt-Q3f"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QJc-ij-aAV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fsV-SA-2jg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1540" y="2515"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qIr-Gg-90G">

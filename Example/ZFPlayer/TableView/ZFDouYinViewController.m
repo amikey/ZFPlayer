@@ -1,80 +1,57 @@
 //
-//  ZFNotAutoPlayViewController.m
-//  ZFPlayer
+//  ZFDouYinViewController.m
+//  ZFPlayer_Example
 //
-//  Created by 任子丰 on 2018/4/1.
+//  Created by 紫枫 on 2018/6/4.
 //  Copyright © 2018年 紫枫. All rights reserved.
 //
 
-#import "ZFNotAutoPlayViewController.h"
-#import "ZFTableViewCell.h"
+#import "ZFDouYinViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import "ZFPlayerControlView.h"
+#import "ZFTableViewCellLayout.h"
 #import "ZFTableData.h"
 #import <KTVHTTPCache/KTVHTTPCache.h>
+#import "ZFDouYinCell.h"
 
 static NSString *kIdentifier = @"kIdentifier";
-
-@interface ZFNotAutoPlayViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
+@interface ZFDouYinViewController ()  <UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 @property (nonatomic, strong) ZFAVPlayerManager *playerManager;
-
-@property (nonatomic, assign) NSInteger count;
-
 @property (nonatomic, strong) NSMutableArray *dataSource;
-
 @property (nonatomic, strong) NSMutableArray *urls;
 
 @end
 
-@implementation ZFNotAutoPlayViewController
+@implementation ZFDouYinViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
     [self requestData];
-    self.navigationItem.title = @"Click to play";
+    self.navigationItem.title = @"Dou yin style";
     
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];
     
     /// player
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
-    self.player.controlView = self.controlView;
     self.player.assetURLs = self.urls;
-    self.player.shouldAutoPlay = NO;
-    
+    self.player.disableGestureTypes = ZFPlayerDisableGestureTypesAll;
     @weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        @strongify(self)
-        [self.view endEditing:YES];
-        [self setNeedsStatusBarAppearanceUpdate];
-        self.tableView.scrollsToTop = !isFullScreen;
-    };
-    
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
-        } else if (self.player.isFullScreen) {
-            [self.player enterFullScreen:NO animated:YES];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.player stopCurrentPlayingCell];
-            });
-        }
+        [self.player.currentPlayerManager replay];
     };
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-    CGFloat h = CGRectGetMaxY(self.view.frame);
-    self.tableView.frame = CGRectMake(0, y, self.view.frame.size.width, h-y);
+    self.tableView.frame = self.view.bounds;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -97,8 +74,7 @@ static NSString *kIdentifier = @"kIdentifier";
     for (NSDictionary *dataDic in videoList) {
         ZFTableData *data = [[ZFTableData alloc] init];
         [data setValuesForKeysWithDictionary:dataDic];
-        ZFTableViewCellLayout *layout = [[ZFTableViewCellLayout alloc] initWithData:data];
-        [self.dataSource addObject:layout];
+        [self.dataSource addObject:data];
         NSString *URLString = [data.video_url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
         NSURL *url = [NSURL URLWithString:proxyURLString];
@@ -128,10 +104,8 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ZFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
-    [cell setDelegate:self withIndexPath:indexPath];
-    cell.layout = self.dataSource[indexPath.row];
-    [cell setNormalMode];
+    ZFDouYinCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
+    cell.data = self.dataSource[indexPath.row];
     return cell;
 }
 
@@ -140,8 +114,7 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
-    return layout.height;
+    return ZFPlayer_ScreenHeight;
 }
 
 #pragma mark - ZFTableViewCellDelegate
@@ -192,10 +165,6 @@ static NSString *kIdentifier = @"kIdentifier";
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
     [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
     [self.controlView resetControlView];
-    ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
-    [self.controlView showTitle:layout.data.title
-                 coverURLString:layout.data.thumbnail_url
-                 fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
 }
 
 #pragma mark - getter
@@ -203,7 +172,8 @@ static NSString *kIdentifier = @"kIdentifier";
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        [_tableView registerClass:[ZFTableViewCell class] forCellReuseIdentifier:kIdentifier];
+        _tableView.pagingEnabled = YES;
+        [_tableView registerClass:[ZFDouYinCell class] forCellReuseIdentifier:kIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         if (@available(iOS 11.0, *)) {
@@ -215,12 +185,5 @@ static NSString *kIdentifier = @"kIdentifier";
     return _tableView;
 }
 
-- (ZFPlayerControlView *)controlView {
-    if (!_controlView) {
-        _controlView = [ZFPlayerControlView new];
-    }
-    return _controlView;
-}
 
 @end
-

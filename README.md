@@ -110,7 +110,7 @@ self.player.assetURLs = array<NSURL *>;
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
 - QQ: 459643690
-- QQ Group: 213375947（付费群,帮忙解答问题）
+- QQ Group: 213375947（付费群,提供技术支持）
 
 ## License
 

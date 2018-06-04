@@ -51,7 +51,7 @@ typedef void (^ZFImageBlock)(UIImage *image);
 /**
  *  Get/Set the callback block when download the image finished.
  *
- *  @param image The image object from network or from disk.
+ *  The image object from network or from disk.
  */
 @property (nonatomic, copy) ZFImageBlock completion;
 
@@ -86,8 +86,8 @@ typedef void (^ZFImageBlock)(UIImage *image);
  *
  * The download is asynchronous and cached.
  *
- * @param url         The url for the image.
- * @param placeholder The image to be set initially, until the image request finishes.
+ * @param url              The url for the image.
+ * @param placeholderImage The image to be set initially, until the image request finishes.
  */
 - (void)setImageWithURLString:(NSString *)url placeholder:(UIImage *)placeholderImage;
 
@@ -96,13 +96,13 @@ typedef void (^ZFImageBlock)(UIImage *image);
  *
  * The download is asynchronous and cached.
  *
- * @param url            The url for the image.
- * @param placeholder    The image to be set initially, until the image request finishes.
- * @param completion     A block called when operation has been completed. This block has no return value
- *                       and takes the requested UIImage as first parameter. In case of error the image parameter
- *                       is nil and the second parameter may contain an NSError. The third parameter is a Boolean
- *                       indicating if the image was retrieved from the local cache or from the network.
- *                       The fourth parameter is the original image url.
+ * @param url               The url for the image.
+ * @param placeholderImage  The image to be set initially, until the image request finishes.
+ * @param completion        A block called when operation has been completed. This block has no return value
+ *                          and takes the requested UIImage as first parameter. In case of error the image parameter
+ *                          is nil and the second parameter may contain an NSError. The third parameter is a Boolean
+ *                          indicating if the image was retrieved from the local cache or from the network.
+ *                          The fourth parameter is the original image url.
  */
 - (void)setImageWithURLString:(NSString *)url
                   placeholder:(UIImage *)placeholderImage

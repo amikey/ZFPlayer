@@ -9,7 +9,7 @@
 #import "ZFNormalTableViewController.h"
 #import "ZFTableViewCell.h"
 #import <ZFPlayer/ZFPlayer.h>
-#import "ZFAVPlayerManager.h"
+#import <ZFPlayer/ZFAVPlayerManager.h>
 #import "ZFPlayerControlView.h"
 #import "ZFTableData.h"
 #import <KTVHTTPCache/KTVHTTPCache.h>
@@ -37,7 +37,6 @@ static NSString *kIdentifier = @"kIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
-    self.view.backgroundColor = [UIColor redColor];
     [self requestData];
     self.navigationItem.title = @"Automic to play";
     
