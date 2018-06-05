@@ -37,9 +37,25 @@ static NSString *const kContentOffset = @"contentOffset";
 
 @implementation UIScrollView (ZFPlayer)
 
+static void Hook_Method(Class originalClass, SEL originalSel, Class replacedClass, SEL replacedSel, SEL noneSel){
+    Method originalMethod = class_getInstanceMethod(originalClass, originalSel);
+    Method replacedMethod = class_getInstanceMethod(replacedClass, replacedSel);
+    if (!originalMethod) {
+        Method noneMethod = class_getInstanceMethod(replacedClass, noneSel);
+        class_addMethod(originalClass, originalSel, method_getImplementation(noneMethod), method_getTypeEncoding(noneMethod));
+        return;
+    }
+    BOOL addMethod = class_addMethod(originalClass, replacedSel, method_getImplementation(replacedMethod), method_getTypeEncoding(replacedMethod));
+    if (addMethod) {
+        Method newMethod = class_getInstanceMethod(originalClass, replacedSel);
+        method_exchangeImplementations(originalMethod, newMethod);
+    }
+}
+
 + (void)load {
     SEL selectors[] = {
-        NSSelectorFromString(@"dealloc")
+        NSSelectorFromString(@"dealloc"),
+        @selector(setDelegate:)
     };
     
     for (NSUInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
@@ -58,6 +74,78 @@ static NSString *const kContentOffset = @"contentOffset";
 - (void)zf_dealloc {
     [self.scrollViewKVO safelyRemoveAllObservers];
     [self zf_dealloc];
+}
+
+- (void)zf_setDelegate:(id<UIScrollViewDelegate>)delegate {
+    [self zf_setDelegate:delegate];
+    if ([self isKindOfClass:[UIScrollView class]]) {
+        //Hook (scrollViewDidEndDecelerating:)
+        Hook_Method([delegate class], @selector(scrollViewDidEndDecelerating:), [self class], @selector(zf_scrollViewDidEndDecelerating:), @selector(add_scrollViewDidEndDecelerating:));
+        
+        //Hook (scrollViewDidEndDragging:willDecelerate:)
+        Hook_Method([delegate class], @selector(scrollViewDidEndDragging:willDecelerate:), [self class], @selector(zf_scrollViewDidEndDragging:willDecelerate:), @selector(add_scrollViewDidEndDragging:willDecelerate:));
+        
+        //Hook (scrollViewDidScrollToTop:)
+        Hook_Method([delegate class], @selector(scrollViewDidScrollToTop:), [self class], @selector(zf_scrollViewDidScrollToTop:), @selector(add_scrollViewDidScrollToTop:));
+    }
+}
+
+#pragma mark - Replace_Method
+
+- (void)zf_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self zf_scrollViewDidEndDecelerating:scrollView];
+    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+    if (scrollToScrollStop) {
+        [scrollView stopScroll:scrollView];
+    }
+}
+
+- (void)zf_scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self zf_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    if (!decelerate) {
+        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+        if (dragToDragStop) {
+            [scrollView stopScroll:scrollView];
+        }
+    }
+}
+
+- (void)zf_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    [self zf_scrollViewDidScrollToTop:scrollView];
+    [scrollView stopScroll:scrollView];
+}
+
+#pragma mark - Add_Method
+
+- (void)add_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+    if (scrollToScrollStop) {
+        [scrollView stopScroll:scrollView];
+    }
+}
+
+- (void)add_scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+        if (dragToDragStop) {
+            [scrollView stopScroll:scrollView];
+        }
+    }
+}
+
+- (void)add_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    [scrollView stopScroll:scrollView];
+}
+
+#pragma mark - scrollView did stop scroll
+
+- (void)stopScroll:(UIScrollView *)scrollView {
+    /// 停止的时候找出最合适的播放
+    @weakify(self)
+    [self zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if (self.scrollViewDidStopScroll) self.scrollViewDidStopScroll(indexPath);
+    }];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -316,6 +404,10 @@ static NSString *const kContentOffset = @"contentOffset";
     return objc_getAssociatedObject(self, _cmd);
 }
 
+- (void (^)(NSIndexPath * _Nonnull))scrollViewDidStopScroll {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
 #pragma mark - setter
 
 - (void)setPlaying:(BOOL)playing {
@@ -385,6 +477,10 @@ static NSString *const kContentOffset = @"contentOffset";
 
 - (void)setPlayerDidDisappearInScrollView:(void (^)(NSIndexPath * _Nonnull))playerDidDisappearInScrollView {
     objc_setAssociatedObject(self, @selector(playerDidDisappearInScrollView), playerDidDisappearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setScrollViewDidStopScroll:(void (^)(NSIndexPath * _Nonnull))scrollViewDidStopScroll {
+    objc_setAssociatedObject(self, @selector(scrollViewDidStopScroll), scrollViewDidStopScroll, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 @end

@@ -168,40 +168,6 @@ static NSString *kIdentifier = @"kIdentifier";
     }];
 }
 
-/**
- * 松手时已经静止, 只会调用scrollViewDidEndDragging
- */
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    // scrollView已经完全静止
-    if (!decelerate) {
-        [self scrollDidStoppedToPlay];
-    }
-}
-
-/**
- * 松手时还在运动, 先调用scrollViewDidEndDragging, 再调用scrollViewDidEndDecelerating
- */
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self scrollDidStoppedToPlay];
-}
-
-/**
- 当点击状态栏滑动顶部时候调用
- */
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [self scrollDidStoppedToPlay];
-}
-
-
-- (void)scrollDidStoppedToPlay {
-    /// 停止的时候找出最合适的播放
-    @weakify(self)
-    [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath * _Nonnull indexPath) {
-        @strongify(self)
-        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
-    }];
-}
-
 #pragma mark - private method
 
 /// play the video
@@ -236,6 +202,12 @@ static NSString *kIdentifier = @"kIdentifier";
             [[UITableViewCell appearance] setLayoutMargins:UIEdgeInsetsZero];
             [[UITableViewCell appearance] setPreservesSuperviewLayoutMargins:NO];
         }
+        /// 停止的时候找出最合适的播放
+        @weakify(self)
+        _tableView.scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
+            @strongify(self)
+            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+        };
     }
     return _tableView;
 }

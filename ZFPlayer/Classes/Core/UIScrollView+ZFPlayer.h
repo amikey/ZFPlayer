@@ -77,6 +77,9 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
+@property (nonatomic, copy, nullable) void(^scrollViewDidStopScroll)(NSIndexPath *indexPath);
+
+
 /// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped)
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
 
