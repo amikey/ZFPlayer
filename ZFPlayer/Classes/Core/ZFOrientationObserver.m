@@ -61,7 +61,7 @@ static UIWindow *kWindow;
 @interface ZFOrientationObserver ()
 
 @property (nonatomic, weak) UIView *view;
-///
+
 @property (nonatomic, assign, getter=isFullScreen) BOOL fullScreen;
 
 @property (nonatomic, assign) NSInteger playerViewIndex;

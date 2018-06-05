@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ZFPlayerMediaControl <NSObject>
 
+@optional
+
 #pragma mark - Playback state
 
 /// When the player prepare to play the video.

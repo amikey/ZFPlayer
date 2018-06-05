@@ -55,8 +55,7 @@
                   options:(NSKeyValueObservingOptions)options
                   context:(void *)context {
     NSObject *target = _target;
-    if (target == nil)
-        return;
+    if (target == nil) return;
 
     BOOL removed = [self removeEntryOfObserver:observer forKeyPath:keyPath];
     if (removed) {
