@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 @interface UIScrollView (ZFPlayer)
 
 /// Rolling direction switch
-@property (nonatomic) BOOL enableDirection;
+//@property (nonatomic) BOOL enableDirection;
 
 /// The indexPath is playing
 @property (nonatomic, strong, nullable) NSIndexPath *playingIndexPath;
@@ -91,8 +91,6 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 
 /// Scroll to indexPath with animations.
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath;
-
-- (void)zf_scrollViewDidScroll;
 
 @end
 

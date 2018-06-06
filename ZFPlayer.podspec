@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ZFPlayer'
-  s.version          = '3.0.0'
+  s.version          = '3.0.1'
   s.summary          = 'A good player made by renzifeng'
   s.homepage         = 'https://github.com/renzifeng/ZFPlayer'
   s.screenshots      = 'https://upload-images.jianshu.io/upload_images/635942-b7498fe39e788604.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', 'https://upload-images.jianshu.io/upload_images/635942-1ba16bde9d12acbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
   s.requires_arc = true
 
-  # s.default_subspec = 'Core'
+  s.default_subspec = 'Core'
   
   s.subspec 'Core' do |core|
       core.source_files = 'ZFPlayer/Classes/Core/**/*'

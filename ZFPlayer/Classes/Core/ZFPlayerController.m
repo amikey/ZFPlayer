@@ -636,7 +636,7 @@
     objc_setAssociatedObject(self, @selector(scrollView), scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.scrollView.WWANAutoPlay = self.isWWANAutoPlay;
     @weakify(self)
-    scrollView.enableDirection = YES;
+//    scrollView.enableDirection = YES;
     scrollView.playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
         if (self.isFullScreen) return;

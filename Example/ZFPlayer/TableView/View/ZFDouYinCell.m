@@ -20,6 +20,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self.contentView addSubview:self.coverImageView];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
