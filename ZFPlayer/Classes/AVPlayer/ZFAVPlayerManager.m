@@ -456,12 +456,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 - (void)setVolume:(float)volume {
-    if (volume <= 0) {
-        volume = 0;
-    } else if (volume >= 1) {
-        volume = 1;
-    }
-    _volume = volume;
+    _volume = MIN(MAX(0, volume), 1);
     self.player.volume = volume;
 }
 

@@ -85,6 +85,7 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
         [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
     }];
+    
 }
 
 - (void)requestData {
