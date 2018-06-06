@@ -47,7 +47,7 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
     self.player.assetURLs = self.urls;
-    self.player.shouldAutoPlay = NO;
+    self.player.shouldAutoPlay = YES;
 
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {

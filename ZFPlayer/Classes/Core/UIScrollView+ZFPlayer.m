@@ -26,6 +26,7 @@
 #import <objc/runtime.h>
 #import "ZFReachabilityManager.h"
 #import "ZFPlayer.h"
+#import "ZFKVOController.h"
 
 static NSString *const kContentOffset = @"contentOffset";
 
@@ -37,7 +38,7 @@ static NSString *const kContentOffset = @"contentOffset";
 
 @implementation UIScrollView (ZFPlayer)
 
-static void Hook_Method(Class originalClass, SEL originalSel, Class replacedClass, SEL replacedSel, SEL noneSel){
+UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class replacedClass, SEL replacedSel, SEL noneSel){
     Method originalMethod = class_getInstanceMethod(originalClass, originalSel);
     Method replacedMethod = class_getInstanceMethod(replacedClass, replacedSel);
     if (!originalMethod) {
@@ -59,7 +60,7 @@ static void Hook_Method(Class originalClass, SEL originalSel, Class replacedClas
             @selector(setDelegate:)
         };
         
-        for (NSUInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
+        for (NSInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
             SEL originalSelector = selectors[index];
             SEL swizzledSelector = NSSelectorFromString([@"zf_" stringByAppendingString:NSStringFromSelector(originalSelector)]);
             Method originalMethod = class_getInstanceMethod(self, originalSelector);
@@ -74,58 +75,71 @@ static void Hook_Method(Class originalClass, SEL originalSel, Class replacedClas
 }
 
 - (void)zf_setDelegate:(id<UIScrollViewDelegate>)delegate {
-    [self zf_setDelegate:delegate];
     if (([self isKindOfClass:[UITableView class]] || [self isKindOfClass:[UICollectionView class]]) && [delegate conformsToProtocol:@protocol(UIScrollViewDelegate)]) {
-        /// Hook (scrollViewDidEndDecelerating:)
-        Hook_Method([delegate class], @selector(scrollViewDidEndDecelerating:), [self class], @selector(zf_scrollViewDidEndDecelerating:), @selector(add_scrollViewDidEndDecelerating:));
+        SEL originalSelctors[] = {
+            @selector(scrollViewDidEndDecelerating:),
+            @selector(scrollViewDidEndDragging:willDecelerate:),
+            @selector(scrollViewDidScrollToTop:),
+            @selector(scrollViewWillBeginDragging:),
+            @selector(scrollViewDidScroll:)
+        };
         
-        /// Hook (scrollViewDidEndDragging:willDecelerate:)
-        Hook_Method([delegate class], @selector(scrollViewDidEndDragging:willDecelerate:), [self class], @selector(zf_scrollViewDidEndDragging:willDecelerate:), @selector(add_scrollViewDidEndDragging:willDecelerate:));
+        SEL replacedSelctors[] = {
+            @selector(zf_scrollViewDidEndDecelerating:),
+            @selector(zf_scrollViewDidEndDragging:willDecelerate:),
+            @selector(zf_scrollViewDidScrollToTop:),
+            @selector(zf_scrollViewWillBeginDragging:),
+            @selector(zf_scrollViewDidScroll:)
+        };
         
-        /// Hook (scrollViewDidScrollToTop:)
-        Hook_Method([delegate class], @selector(scrollViewDidScrollToTop:), [self class], @selector(zf_scrollViewDidScrollToTop:), @selector(add_scrollViewDidScrollToTop:));
-
-        /// Hook (scrollViewDidScroll:)
-        Hook_Method([delegate class], @selector(scrollViewDidScroll:), [self class], @selector(zf_scrollViewDidScroll:), @selector(add_scrollViewDidScroll:));
+        SEL noneSelctors[] = {
+            @selector(add_scrollViewDidEndDecelerating:),
+            @selector(add_scrollViewDidEndDragging:willDecelerate:),
+            @selector(add_scrollViewDidScrollToTop:),
+            @selector(add_scrollViewWillBeginDragging:),
+            @selector(add_scrollViewDidScroll:)
+        };
         
-        /// Hook (scrollViewWillBeginDragging:)
-        Hook_Method([delegate class], @selector(scrollViewWillBeginDragging:), [self class], @selector(zf_scrollViewWillBeginDragging:), @selector(add_scrollViewWillBeginDragging:));
+        for (NSInteger index = 0; index < sizeof(originalSelctors) / sizeof(SEL); ++index) {
+            Hook_Method([delegate class], originalSelctors[index], [self class], replacedSelctors[index], noneSelctors[index]);
+        }
     }
+    [self zf_setDelegate:delegate];
 }
 
 #pragma mark - Replace_Method
 
 - (void)zf_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self zf_scrollViewDidEndDecelerating:scrollView];
     BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
     if (scrollToScrollStop) {
         [scrollView scrollViewStopScroll];
     }
+    [self zf_scrollViewDidEndDecelerating:scrollView];
 }
 
 - (void)zf_scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [self zf_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     if (!decelerate) {
         BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
         if (dragToDragStop) {
             [scrollView scrollViewStopScroll];
         }
     }
+    [self zf_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
 
 - (void)zf_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [self zf_scrollViewDidScrollToTop:scrollView];
     [scrollView scrollViewStopScroll];
+    [self zf_scrollViewDidScrollToTop:scrollView];
 }
 
 - (void)zf_scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self zf_scrollViewDidScroll:scrollView];
     [scrollView scrollViewScrolling];
+    [self zf_scrollViewDidScroll:scrollView];
 }
 
 - (void)zf_scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [self zf_scrollViewWillBeginDragging:scrollView];
     [scrollView scrollViewBeginDragging];
+    [self zf_scrollViewWillBeginDragging:scrollView];
 }
 
 #pragma mark - Add_Method

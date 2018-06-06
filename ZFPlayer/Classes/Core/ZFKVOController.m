@@ -36,10 +36,16 @@
 
 @end
 
+@interface ZFKVOController ()
+@property (nonatomic, weak) NSObject *target;
+@property (nonatomic, strong) NSMutableArray *observerArray;
+@end
+
 @implementation ZFKVOController {
-    __weak NSObject *_target;
-    NSMutableArray  *_observerArray;
+//    __weak NSObject *_target;
+//    NSMutableArray  *_observerArray;
 }
+
 
 - (instancetype)initWithTarget:(NSObject *)target {
     self = [super init];
@@ -102,7 +108,7 @@
 - (void)safelyRemoveAllObservers {
     __block NSObject *target = _target;
     if (target == nil) return;
-    [_observerArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [self.observerArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         ZFKVOEntry *entry = obj;
         if (entry == nil) return;
         NSObject *observer = entry.observer;
