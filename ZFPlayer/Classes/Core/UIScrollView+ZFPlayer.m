@@ -27,16 +27,7 @@
 #import "ZFReachabilityManager.h"
 #import "ZFPlayer.h"
 #import "ZFKVOController.h"
-
-static NSString *const kContentOffset = @"contentOffset";
-
-@interface UIScrollView ()
-
-@property (nonatomic, assign) CGFloat offsetY_last;
-
-@end
-
-@implementation UIScrollView (ZFPlayer)
+#import <WebKit/WebKit.h>
 
 UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class replacedClass, SEL replacedSel, SEL noneSel){
     Method originalMethod = class_getInstanceMethod(originalClass, originalSel);
@@ -53,13 +44,22 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     }
 }
 
+static NSString *const kContentOffset = @"contentOffset";
+
+@interface UIScrollView ()
+
+@property (nonatomic, assign) CGFloat offsetY_last;
+
+@end
+
+@implementation UIScrollView (ZFPlayer)
+
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         SEL selectors[] = {
             @selector(setDelegate:)
         };
-        
         for (NSInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
             SEL originalSelector = selectors[index];
             SEL swizzledSelector = NSSelectorFromString([@"zf_" stringByAppendingString:NSStringFromSelector(originalSelector)]);
@@ -110,35 +110,27 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 #pragma mark - Replace_Method
 
 - (void)zf_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
-    if (scrollToScrollStop) {
-        [scrollView zf_scrollViewStopScroll];
-    }
+    [scrollView add_scrollViewDidEndDecelerating:scrollView];
     [self zf_scrollViewDidEndDecelerating:scrollView];
 }
 
 - (void)zf_scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
-        if (dragToDragStop) {
-            [scrollView zf_scrollViewStopScroll];
-        }
-    }
+    [scrollView add_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     [self zf_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
 
 - (void)zf_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [scrollView zf_scrollViewStopScroll];
+    [scrollView add_scrollViewDidScrollToTop:scrollView];
     [self zf_scrollViewDidScrollToTop:scrollView];
 }
 
 - (void)zf_scrollViewDidScroll:(UIScrollView *)scrollView {
-    [scrollView scrollViewScrolling];
+    [scrollView add_scrollViewDidScroll:scrollView];
     [self zf_scrollViewDidScroll:scrollView];
 }
 
 - (void)zf_scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [scrollView scrollViewBeginDragging];
+    [scrollView add_scrollViewWillBeginDragging:scrollView];
     [self zf_scrollViewWillBeginDragging:scrollView];
 }
 
@@ -398,8 +390,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 }
 
 - (BOOL)isWWANAutoPlay {
-    NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    return number.boolValue;
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 - (BOOL)shouldAutoPlay {

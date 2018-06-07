@@ -65,15 +65,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 - (void)destory {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackStateDidChangeNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerLoadStateDidChangeNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMovieNaturalSizeAvailableNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerFirstVideoFrameRenderedNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackStatusNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerSeekCompleteNotification object:self.player];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerSuggestReloadNotification object:self.player];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_playerItemKVO safelyRemoveAllObservers];
     _isPlaying = NO;
     _isPreparedToPlay = NO;

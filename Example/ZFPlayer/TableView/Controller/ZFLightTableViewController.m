@@ -164,8 +164,6 @@ static NSString *kIdentifier = @"kIdentifier";
             /// 隐藏黑色蒙版
             ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
             [cell hideMaskView];
-        } else {
-            NSLog(@"xxxxxxxxxxxxxxx");
         }
     }];
 }
