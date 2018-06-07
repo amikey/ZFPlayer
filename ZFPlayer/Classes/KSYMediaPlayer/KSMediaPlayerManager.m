@@ -152,7 +152,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 - (void)initializePlayer {
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
     self.player.shouldAutoplay = YES;
-    self.player.view.backgroundColor = [UIColor blackColor];
     [self addPlayerNotification];
 
     UIView *playerBgView = [UIView new];
@@ -240,10 +239,13 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 /// 播放器初始化视频文件完成通知
 - (void)videoPrepared:(NSNotification *)notify {
-    self.loadState = ZFPlayerLoadStatePlaythroughOK;
     self.player.shouldMute = self.muted;
     if (self.seekTime) [self seekToTime:self.seekTime completionHandler:nil];
     [self play];
+    /// 需要延迟改为ok状态，不然显示会有一点问题。
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.loadState = ZFPlayerLoadStatePlaythroughOK;
+    });
 }
 
 /// 播放完成通知。视频正常播放完成时触发。

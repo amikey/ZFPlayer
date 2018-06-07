@@ -33,7 +33,7 @@
 #import "ZFVolumeBrightnessView.h"
 #import "ZFSmallFloatControlView.h"
 
-static const CGFloat ZFPlayerAnimationTimeInterval              = 3.0f;
+static const CGFloat ZFPlayerAnimationTimeInterval              = 2.5f;
 static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 @interface ZFPlayerControlView () <ZFSliderViewDelegate>
@@ -196,7 +196,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
-- (void)hideControlViewWithAnimated:(BOOL)animated  {
+- (void)hideControlViewWithAnimated:(BOOL)animated {
     [UIView animateWithDuration:animated?ZFPlayerControlViewAutoFadeOutTimeInterval:0 animations:^{
         if (self.player.isFullScreen) {
             [self.landScapeControlView hideControlView];
@@ -262,13 +262,14 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 - (void)gestureSingleTapped:(ZFPlayerGestureControl *)gestureControl {
     if (!self.player) return;
-    if (self.controlViewAppeared) {
-        [self hideControlViewWithAnimated:YES];
-    } else {
-        [self showControlViewWithAnimated:YES];
-    }
     if (self.player.isSmallFloatViewShow && !self.player.isFullScreen) {
         [self.player enterFullScreen:YES animated:YES];
+    } else {
+        if (self.controlViewAppeared) {
+            [self hideControlViewWithAnimated:YES];
+        } else {
+            [self showControlViewWithAnimated:YES];
+        }
     }
 }
 
@@ -379,12 +380,23 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     if (videoPlayer.isSmallFloatViewShow) {
         self.floatControlView.hidden = observer.isFullScreen;
         self.portraitControlView.hidden = YES;
+        if (observer.isFullScreen) {
+            self.controlViewAppeared = NO;
+        }
     }
-    [self hideControlViewWithAnimated:NO];
+    if (self.controlViewAppeared) {
+        [self showControlViewWithAnimated:NO];
+    } else {
+        [self hideControlViewWithAnimated:NO];
+    }
 }
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer orientationDidChanged:(ZFOrientationObserver *)observer {
-     [self hideControlViewWithAnimated:NO];
+    if (self.controlViewAppeared) {
+        [self showControlViewWithAnimated:NO];
+    } else {
+        [self hideControlViewWithAnimated:NO];
+    }
 }
 
 - (void)lockedVideoPlayer:(ZFPlayerController *)videoPlayer lockedScreen:(BOOL)locked {

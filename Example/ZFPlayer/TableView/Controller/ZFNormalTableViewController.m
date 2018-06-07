@@ -39,6 +39,8 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+
     [self.view addSubview:self.tableView];
     [self requestData];
     self.navigationItem.title = @"Automic to play";

@@ -8,15 +8,17 @@
 
 #import "ZFKeyboardViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
-#import "ZFAVPlayerManager.h"
-#import "ZFPlayerControlView.h"
+#import <ZFPlayer/ZFAVPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
+#import <ZFPlayer/ZFPlayerControlView.h>
 #import <KTVHTTPCache/KTVHTTPCache.h>
 
 @interface ZFKeyboardViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
-@property (nonatomic, strong)  UITextField *textField;
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) UIButton *playBtn;
 
 @end
 
@@ -24,9 +26,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.containerView];
+    [self.containerView addSubview:self.playBtn];
     [self.controlView addSubview:self.textField];
     
-    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
@@ -44,8 +50,21 @@
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
+    CGFloat x = 0;
+    CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+    CGFloat w = CGRectGetWidth(self.view.frame);
+    CGFloat h = w*9/16;
+    self.containerView.frame = CGRectMake(x, y, w, h);
+    
     self.textField.frame = CGRectMake(0, 0, 200, 35);
     self.textField.center = self.controlView.center;
+    
+    
+    w = 44;
+    h = w;
+    x = (CGRectGetWidth(self.containerView.frame)-w)/2;
+    y = (CGRectGetHeight(self.containerView.frame)-h)/2;
+    self.playBtn.frame = CGRectMake(x, y, w, h);
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -92,6 +111,23 @@
         _textField.placeholder = @"Click on the input";
     }
     return _textField;
+}
+
+- (UIView *)containerView {
+    if (!_containerView) {
+        _containerView = [UIView new];
+        _containerView.backgroundColor = [UIColor orangeColor];
+    }
+    return _containerView;
+}
+
+- (UIButton *)playBtn {
+    if (!_playBtn) {
+        _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_playBtn setImage:[UIImage imageNamed:@"new_allPlay_44x44_"] forState:UIControlStateNormal];
+        [_playBtn addTarget:self action:@selector(playClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _playBtn;
 }
 
 @end

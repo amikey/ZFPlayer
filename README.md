@@ -29,19 +29,23 @@ Before this, you used ZFPlayer, are you worried about encapsulating avplayer ins
 ZFPlayer is available through [CocoaPods](https://cocoapods.org). To install it,use player template simply add the following line to your Podfile:
 
 ```objc
-pod 'ZFPlayer', '~> 3.0.2'
-```
-
-Use AVPlayer simply add the following line to your Podfile:
-
-```objc
-pod 'ZFPlayer/AVPlayer', '~> 3.0.2'
+pod 'ZFPlayer', '~> 3.0.3'
 ```
 
 Use default controlView simply add the following line to your Podfile:
 
 ```objc
-pod 'ZFPlayer/ControlView', '~> 3.0.2'
+pod 'ZFPlayer/ControlView', '~> 3.0.3'
+```
+Use AVPlayer simply add the following line to your Podfile:
+
+```objc
+pod 'ZFPlayer/AVPlayer', '~> 3.0.3'
+```
+Use KSYMediaPlayer simply add the following line to your Podfile:
+
+```objc
+pod 'ZFPlayer/KSYMediaPlayer', '~> 3.0.3'
 ```
 
 ## Usage introduce
@@ -110,6 +114,7 @@ self.player.assetURLs = array<NSURL *>;
 ## Reference
 - https://github.com/changsanjiang/SJVideoPlayer
 - https://github.com/ChangbaDevs/KTVHTTPCache
+- https://github.com/ksvc/KSYMediaPlayer_iOS
 
 ## Author
 
