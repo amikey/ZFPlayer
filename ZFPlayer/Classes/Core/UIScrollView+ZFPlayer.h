@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import "ZFPlayerController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +38,7 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 @interface UIScrollView (ZFPlayer)
 
 /// Rolling direction switch
-@property (nonatomic) BOOL enableScrollHook;
+@property (nonatomic, assign) BOOL enableScrollHook;
 
 /// The indexPath is playing
 @property (nonatomic, strong, nullable) NSIndexPath *playingIndexPath;
@@ -48,22 +47,22 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 @property (nonatomic, strong, nullable) NSIndexPath *shouldPlayIndexPath;
 
 /// WWANA networks play automatically,default NO.
-@property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
+@property (nonatomic, assign, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
 /// The player should auto player,default is YES.
-@property (nonatomic) BOOL shouldAutoPlay;
+@property (nonatomic, assign) BOOL shouldAutoPlay;
 
 /// The view tag that the player display in scrollView.
-@property (nonatomic) NSInteger containerViewTag;
+@property (nonatomic, assign) NSInteger containerViewTag;
 
 /// Is the video playing.
-@property (nonatomic, readonly, getter=isPlaying) BOOL playing;
+@property (nonatomic, assign, readonly, getter=isPlaying) BOOL playing;
 
 /// The scroll derection of scrollView.
-@property (nonatomic) ZFPlayerScrollDerection scrollDerection;
+@property (nonatomic, assign) ZFPlayerScrollDerection scrollDerection;
 
 /// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
-@property (nonatomic) BOOL stopWhileNotVisible;
+@property (nonatomic, assign) BOOL stopWhileNotVisible;
 
 /// The block invoked When the player did appeared.
 @property (nonatomic, copy, nullable) void(^playerDidAppearInScrollView)(NSIndexPath *indexPath);
