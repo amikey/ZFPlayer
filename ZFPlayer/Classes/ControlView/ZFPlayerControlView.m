@@ -41,27 +41,26 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 @property (nonatomic, strong) ZFPortraitControlView *portraitControlView;
 /// 横屏控制层的View
 @property (nonatomic, strong) ZFLandScapeControlView *landScapeControlView;
-
 /// 加载loading
-@property (nonatomic, strong) ZFLoadingView           *activity;
+@property (nonatomic, strong) ZFLoadingView *activity;
 /// 快进快退View
-@property (nonatomic, strong) UIView                  *fastView;
+@property (nonatomic, strong) UIView *fastView;
 /// 快进快退进度progress
-@property (nonatomic, strong) ZFSliderView            *fastProgressView;
+@property (nonatomic, strong) ZFSliderView *fastProgressView;
 /// 快进快退时间
-@property (nonatomic, strong) UILabel                 *fastTimeLabel;
+@property (nonatomic, strong) UILabel *fastTimeLabel;
 /// 快进快退ImageView
-@property (nonatomic, strong) UIImageView             *fastImageView;
+@property (nonatomic, strong) UIImageView *fastImageView;
 /// 加载失败按钮
-@property (nonatomic, strong) UIButton                *failBtn;
+@property (nonatomic, strong) UIButton *failBtn;
 /** 底部播放进度 */
-@property (nonatomic, strong) ZFSliderView            *bottomPgrogress;
+@property (nonatomic, strong) ZFSliderView *bottomPgrogress;
 /// 封面图
-@property (nonatomic, strong) UIImageView             *coverImageView;
+@property (nonatomic, strong) UIImageView *coverImageView;
 /// 是否显示了控制层
-@property (nonatomic, assign, getter=isShowing) BOOL  showing;
+@property (nonatomic, assign, getter=isShowing) BOOL showing;
 /// 是否播放结束
-@property (nonatomic, assign, getter=isPlayEnd) BOOL  playeEnd;
+@property (nonatomic, assign, getter=isPlayEnd) BOOL playeEnd;
 
 @property (nonatomic, weak) ZFPlayerController *player;
 
@@ -175,7 +174,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [self.fastView addSubview:self.fastTimeLabel];
     [self.fastView addSubview:self.fastProgressView];
     [self addSubview:self.bottomPgrogress];
-    
     [self addSubview:self.volumeBrightnessView];
 }
 
@@ -242,6 +240,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 }
 
 - (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
+    [self resetControlView];
     [self layoutIfNeeded];
     [self setNeedsDisplay];
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];

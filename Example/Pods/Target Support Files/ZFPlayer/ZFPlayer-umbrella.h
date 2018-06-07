@@ -34,6 +34,7 @@
 #import "ZFPlayerNotification.h"
 #import "ZFPlayerView.h"
 #import "ZFReachabilityManager.h"
+#import "KSMediaPlayerManager.h"
 
 FOUNDATION_EXPORT double ZFPlayerVersionNumber;
 FOUNDATION_EXPORT const unsigned char ZFPlayerVersionString[];

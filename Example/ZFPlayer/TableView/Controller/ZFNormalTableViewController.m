@@ -10,6 +10,7 @@
 #import "ZFTableViewCell.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
 #import "ZFPlayerControlView.h"
 #import "ZFTableData.h"
 #import <KTVHTTPCache/KTVHTTPCache.h>
@@ -22,7 +23,9 @@ static NSString *kIdentifier = @"kIdentifier";
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 
-@property (nonatomic, strong) ZFAVPlayerManager *playerManager;
+//@property (nonatomic, strong) ZFAVPlayerManager *playerManager;
+
+@property (nonatomic, strong) KSMediaPlayerManager *playerManager;
 
 @property (nonatomic, assign) NSInteger count;
 
@@ -41,7 +44,7 @@ static NSString *kIdentifier = @"kIdentifier";
     self.navigationItem.title = @"Automic to play";
     
     /// playerManager
-    self.playerManager = [[ZFAVPlayerManager alloc] init];
+    self.playerManager = [[KSMediaPlayerManager alloc] init];
 
     /// player
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
@@ -54,7 +57,6 @@ static NSString *kIdentifier = @"kIdentifier";
         if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
             [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
-            [self.tableView zf_scrollToRowAtIndexPath:indexPath];
         } else if (self.player.isFullScreen) {
             [self.player enterFullScreen:NO animated:YES];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -85,7 +87,6 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
         [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
     }];
-    
 }
 
 - (void)requestData {
@@ -156,12 +157,14 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
-    [self.controlView resetControlView];
-    ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
-    [self.controlView showTitle:layout.data.title
-                 coverURLString:layout.data.thumbnail_url
-                 fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
+    @weakify(self)
+    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop completionHandler:^{
+        @strongify(self)
+        ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
+        [self.controlView showTitle:layout.data.title
+                     coverURLString:layout.data.thumbnail_url
+                     fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
+    }];
 }
 
 #pragma mark - getter

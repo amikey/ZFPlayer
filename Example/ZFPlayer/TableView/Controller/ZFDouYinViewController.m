@@ -129,10 +129,13 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
-    [self.controlView resetControlView];
-    ZFTableData *data = self.dataSource[indexPath.row];
-    [self.controlView showTitle:data.title coverURLString:data.thumbnail_url];
+    @weakify(self)
+    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop completionHandler:^{
+        @strongify(self)
+        [self.controlView resetControlView];
+        ZFTableData *data = self.dataSource[indexPath.row];
+        [self.controlView showTitle:data.title coverURLString:data.thumbnail_url];
+    }];
 }
 
 #pragma mark - getter

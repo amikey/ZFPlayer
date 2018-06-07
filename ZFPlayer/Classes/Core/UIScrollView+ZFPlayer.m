@@ -112,7 +112,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 - (void)zf_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
     if (scrollToScrollStop) {
-        [scrollView scrollViewStopScroll];
+        [scrollView zf_scrollViewStopScroll];
     }
     [self zf_scrollViewDidEndDecelerating:scrollView];
 }
@@ -121,14 +121,14 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     if (!decelerate) {
         BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
         if (dragToDragStop) {
-            [scrollView scrollViewStopScroll];
+            [scrollView zf_scrollViewStopScroll];
         }
     }
     [self zf_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
 
 - (void)zf_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [scrollView scrollViewStopScroll];
+    [scrollView zf_scrollViewStopScroll];
     [self zf_scrollViewDidScrollToTop:scrollView];
 }
 
@@ -147,7 +147,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 - (void)add_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
     if (scrollToScrollStop) {
-        [scrollView scrollViewStopScroll];
+        [scrollView zf_scrollViewStopScroll];
     }
 }
 
@@ -155,13 +155,13 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     if (!decelerate) {
         BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
         if (dragToDragStop) {
-            [scrollView scrollViewStopScroll];
+            [scrollView zf_scrollViewStopScroll];
         }
     }
 }
 
 - (void)add_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [scrollView scrollViewStopScroll];
+    [scrollView zf_scrollViewStopScroll];
 }
 
 - (void)add_scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -174,7 +174,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 #pragma mark - scrollView did stop scroll
 
-- (void)scrollViewStopScroll {
+- (void)zf_scrollViewStopScroll {
     if (!self.enableScrollHook) return;
     @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath * _Nonnull indexPath) {
@@ -353,7 +353,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     return nil;
 }
 
-- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler {
     [UIView animateWithDuration:0.5 animations:^{
         if ([self isKindOfClass:[UITableView class]]) {
             UITableView *tableView = (UITableView *)self;
@@ -363,10 +363,8 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
             [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         }
     } completion:^(BOOL finished) {
-        /// To force scrollDidScroll
-        [self setContentOffset:CGPointMake(0, self.contentOffset.y+1)];
-        [self setContentOffset:CGPointMake(0, self.contentOffset.y-1)];
-    } ];
+        if (completionHandler) completionHandler();
+    }];
 }
 
 #pragma mark - getter
@@ -438,11 +436,11 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 #pragma mark - setter
 
 - (void)setEnableScrollHook:(BOOL)enableScrollHook {
-    objc_setAssociatedObject(self, @selector(enableScrollHook), @(enableScrollHook), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(enableScrollHook), @(enableScrollHook), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setPlaying:(BOOL)playing {
-    objc_setAssociatedObject(self, @selector(isPlaying), @(playing), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(isPlaying), @(playing), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setPlayingIndexPath:(NSIndexPath *)playingIndexPath {
@@ -454,23 +452,23 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 }
 
 - (void)setContainerViewTag:(NSInteger)containerViewTag {
-    objc_setAssociatedObject(self, @selector(containerViewTag), @(containerViewTag), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(containerViewTag), @(containerViewTag), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setScrollDerection:(ZFPlayerScrollDerection)scrollDerection {
-    objc_setAssociatedObject(self, @selector(scrollDerection), @(scrollDerection), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(scrollDerection), @(scrollDerection), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setStopWhileNotVisible:(BOOL)stopWhileNotVisible {
-    objc_setAssociatedObject(self, @selector(stopWhileNotVisible), @(stopWhileNotVisible), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(stopWhileNotVisible), @(stopWhileNotVisible), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
-    objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setShouldAutoPlay:(BOOL)shouldAutoPlay {
-    objc_setAssociatedObject(self, @selector(shouldAutoPlay), @(shouldAutoPlay), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(shouldAutoPlay), @(shouldAutoPlay), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setPlayerDidAppearInScrollView:(void (^)(NSIndexPath * _Nonnull))playerDidAppearInScrollView {

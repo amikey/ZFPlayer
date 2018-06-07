@@ -1,7 +1,8 @@
 CONFIGURATION_BUILD_DIR = $PODS_CONFIGURATION_BUILD_DIR/ZFPlayer
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/../../ZFPlayer/Classes/KSYMediaPlayer/Frameworks"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Public"
-OTHER_LDFLAGS = -framework "AVFoundation" -framework "MediaPlayer" -framework "UIKit"
+OTHER_LDFLAGS = -l"bz2" -l"iconv" -l"stdc++.6" -l"z" -framework "AVFoundation" -framework "KSYMediaPlayer" -framework "MediaPlayer" -framework "UIKit" -framework "VideoToolbox"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}

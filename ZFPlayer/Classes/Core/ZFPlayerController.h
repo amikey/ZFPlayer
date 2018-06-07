@@ -242,6 +242,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// `scrollToTop` scroll to top with animations.
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop;
 
+/// Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
+/// `scrollToTop` scroll to top with animations.
+/// Scroll completion callback.
+- (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

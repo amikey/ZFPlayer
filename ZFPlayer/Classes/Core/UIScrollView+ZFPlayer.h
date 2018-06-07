@@ -90,7 +90,9 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 - (UIView *)zf_getCellForIndexPath:(NSIndexPath *)indexPath;
 
 /// Scroll to indexPath with animations.
-- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler;
+
+- (void)zf_scrollViewStopScroll;
 
 @end
 

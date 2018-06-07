@@ -142,10 +142,10 @@
     self.slider.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.slider.centerY = self.playOrPauseBtn.centerY;
     
-    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 50: 15;
+    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 50: 20;
     min_y = 0;
-    min_w = 32;
-    min_h = 32;
+    min_w = 40;
+    min_h = 40;
     self.lockBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.lockBtn.centerY = self.centerY;
 }

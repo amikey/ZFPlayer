@@ -164,12 +164,14 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
-    [self.controlView resetControlView];
-    ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
-    [self.controlView showTitle:layout.data.title
-                 coverURLString:layout.data.thumbnail_url
-                 fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
+    @weakify(self)
+    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop completionHandler:^{
+        @strongify(self)
+        ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
+        [self.controlView showTitle:layout.data.title
+                     coverURLString:layout.data.thumbnail_url
+                     fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
+    }];
 }
 
 #pragma mark - getter

@@ -1,6 +1,6 @@
 {
   "name": "ZFPlayer",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "summary": "A good player made by renzifeng",
   "homepage": "https://github.com/renzifeng/ZFPlayer",
   "screenshots": [
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": "https://github.com/renzifeng/ZFPlayer.git",
-    "tag": "3.0.0"
+    "tag": "3.0.2"
   },
   "social_media_url": "http://weibo.com/zifeng1300",
   "platforms": {
@@ -35,8 +35,19 @@
       ]
     },
     {
+      "name": "ControlView",
+      "source_files": "ZFPlayer/Classes/ControlView/**/*.{h,m}",
+      "public_header_files": "ZFPlayer/Classes/ControlView/**/*.h",
+      "resources": "ZFPlayer/Classes/ControlView/ZFPlayer.bundle",
+      "dependencies": {
+        "ZFPlayer/Core": [
+
+        ]
+      }
+    },
+    {
       "name": "AVPlayer",
-      "source_files": "ZFPlayer/Classes/AVPlayer/**/*",
+      "source_files": "ZFPlayer/Classes/AVPlayer/**/*.{h,m}",
       "public_header_files": "ZFPlayer/Classes/AVPlayer/**/*.h",
       "dependencies": {
         "ZFPlayer/Core": [
@@ -45,10 +56,19 @@
       }
     },
     {
-      "name": "ControlView",
-      "source_files": "ZFPlayer/Classes/ControlView/**/*.{h,m}",
-      "public_header_files": "ZFPlayer/Classes/ControlView/**/*.h",
-      "resources": "ZFPlayer/Classes/ControlView/ZFPlayer.bundle",
+      "name": "KSYMediaPlayer",
+      "source_files": "ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}",
+      "public_header_files": "ZFPlayer/Classes/AVPlayer/KSMediaPlayerManager.h",
+      "vendored_frameworks": "ZFPlayer/Classes/KSYMediaPlayer/Frameworks/*.framework",
+      "frameworks": "VideoToolbox",
+      "ios": {
+        "libraries": [
+          "z",
+          "iconv",
+          "stdc++.6",
+          "bz2"
+        ]
+      },
       "dependencies": {
         "ZFPlayer/Core": [
 

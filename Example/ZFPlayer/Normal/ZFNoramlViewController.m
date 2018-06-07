@@ -33,10 +33,10 @@
     NSString *URLString = [@"https://ylmtst.yejingying.com/asset/video/20180525184959_mW8WVQVd.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     self.player.currentPlayerManager.assetURL = [NSURL URLWithString:proxyURLString];
+    [self.controlView showTitle:@"抖音" coverURLString:@"http://imgsrc.baidu.com/forum/eWH%3D240%2C176/sign=183252ee8bd6277ffb784f351a0c2f1c/5d6034a85edf8db15420ba310523dd54564e745d.jpg" fullScreenMode:ZFFullScreenModePortrait];
 }
 
 - (IBAction)playClick:(UIButton *)sender {
-    [self.controlView resetControlView];
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
@@ -57,6 +57,7 @@
     NSString *URLString = [@"http://tb-video.bdstatic.com/videocp/12045395_f9f87b84aaf4ff1fee62742f2d39687f.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     playerManager.assetURL = [NSURL URLWithString:proxyURLString];
+    [self.controlView showTitle:@"视频标题" coverURLString:@"http://imgsrc.baidu.com/forum/eWH%3D240%2C176/sign=183252ee8bd6277ffb784f351a0c2f1c/5d6034a85edf8db15420ba310523dd54564e745d.jpg" fullScreenMode:ZFFullScreenModePortrait];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -91,7 +92,6 @@
 - (ZFPlayerControlView *)controlView {
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
-        [_controlView showTitle:@"视频标题" coverURLString:@"http://imgsrc.baidu.com/forum/eWH%3D240%2C176/sign=183252ee8bd6277ffb784f351a0c2f1c/5d6034a85edf8db15420ba310523dd54564e745d.jpg" fullScreenMode:ZFFullScreenModeLandscape];
     }
     return _controlView;
 }
