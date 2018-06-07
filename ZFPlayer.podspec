@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'KSYMediaPlayer' do |ksyMediaPlayer|
       ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
-      ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/AVPlayer/KSMediaPlayerManager.h'
+      ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
       ksyMediaPlayer.vendored_frameworks = 'ZFPlayer/Classes/KSYMediaPlayer/Frameworks/*.framework'
       ksyMediaPlayer.frameworks   = 'VideoToolbox'
       ksyMediaPlayer.ios.library = 'z', 'iconv', 'stdc++.6', 'bz2'

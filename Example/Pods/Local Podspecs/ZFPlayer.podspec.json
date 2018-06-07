@@ -1,6 +1,6 @@
 {
   "name": "ZFPlayer",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "summary": "A good player made by renzifeng",
   "homepage": "https://github.com/renzifeng/ZFPlayer",
   "screenshots": [
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": "https://github.com/renzifeng/ZFPlayer.git",
-    "tag": "3.0.2"
+    "tag": "3.0.3"
   },
   "social_media_url": "http://weibo.com/zifeng1300",
   "platforms": {
@@ -58,7 +58,7 @@
     {
       "name": "KSYMediaPlayer",
       "source_files": "ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}",
-      "public_header_files": "ZFPlayer/Classes/AVPlayer/KSMediaPlayerManager.h",
+      "public_header_files": "ZFPlayer/Classes/KSYMediaPlayer/*.h",
       "vendored_frameworks": "ZFPlayer/Classes/KSYMediaPlayer/Frameworks/*.framework",
       "frameworks": "VideoToolbox",
       "ios": {
