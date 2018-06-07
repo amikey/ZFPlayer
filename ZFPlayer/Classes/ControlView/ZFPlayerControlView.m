@@ -382,6 +382,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         self.portraitControlView.hidden = YES;
         if (observer.isFullScreen) {
             self.controlViewAppeared = NO;
+            [self cancelAutoFadeOutControlView];
         }
     }
     if (self.controlViewAppeared) {

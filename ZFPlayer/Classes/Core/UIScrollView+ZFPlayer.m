@@ -76,7 +76,7 @@ static NSString *const kContentOffset = @"contentOffset";
 
 - (void)zf_setDelegate:(id<UIScrollViewDelegate>)delegate {
     if (([self isKindOfClass:[UITableView class]] || [self isKindOfClass:[UICollectionView class]]) && [delegate conformsToProtocol:@protocol(UIScrollViewDelegate)]) {
-        SEL originalSelctors[] = {
+        SEL originalSelectors[] = {
             @selector(scrollViewDidEndDecelerating:),
             @selector(scrollViewDidEndDragging:willDecelerate:),
             @selector(scrollViewDidScrollToTop:),
@@ -84,7 +84,7 @@ static NSString *const kContentOffset = @"contentOffset";
             @selector(scrollViewDidScroll:)
         };
         
-        SEL replacedSelctors[] = {
+        SEL replacedSelectors[] = {
             @selector(zf_scrollViewDidEndDecelerating:),
             @selector(zf_scrollViewDidEndDragging:willDecelerate:),
             @selector(zf_scrollViewDidScrollToTop:),
@@ -92,7 +92,7 @@ static NSString *const kContentOffset = @"contentOffset";
             @selector(zf_scrollViewDidScroll:)
         };
         
-        SEL noneSelctors[] = {
+        SEL noneSelectors[] = {
             @selector(add_scrollViewDidEndDecelerating:),
             @selector(add_scrollViewDidEndDragging:willDecelerate:),
             @selector(add_scrollViewDidScrollToTop:),
@@ -100,8 +100,8 @@ static NSString *const kContentOffset = @"contentOffset";
             @selector(add_scrollViewDidScroll:)
         };
         
-        for (NSInteger index = 0; index < sizeof(originalSelctors) / sizeof(SEL); ++index) {
-            Hook_Method([delegate class], originalSelctors[index], [self class], replacedSelctors[index], noneSelctors[index]);
+        for (NSInteger index = 0; index < sizeof(originalSelectors) / sizeof(SEL); ++index) {
+            Hook_Method([delegate class], originalSelectors[index], [self class], replacedSelectors[index], noneSelectors[index]);
         }
     }
     [self zf_setDelegate:delegate];
