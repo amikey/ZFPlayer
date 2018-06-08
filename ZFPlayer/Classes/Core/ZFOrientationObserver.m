@@ -81,7 +81,7 @@ static UIWindow *kWindow;
     if (self) {
         _duration = 0.25;
         _fullScreenMode = ZFFullScreenModeLandscape;
-        kWindow = [UIApplication sharedApplication].keyWindow;
+        kWindow = [(id)[UIApplication sharedApplication].delegate valueForKey:@"window"];
     }
     return self;
 }
@@ -127,7 +127,6 @@ static UIWindow *kWindow;
 }
 
 - (void)handleDeviceOrientationChange {
-    /// 如果是竖屏状态全屏，直接return
     if (self.fullScreenMode == ZFFullScreenModePortrait) return;
     if (UIDeviceOrientationIsValidInterfaceOrientation([UIDevice currentDevice].orientation)) {
         _currentOrientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;

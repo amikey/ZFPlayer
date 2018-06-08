@@ -125,7 +125,6 @@
     if (!_playBtn) {
         _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_playBtn setImage:[UIImage imageNamed:@"new_allPlay_44x44_"] forState:UIControlStateNormal];
-        [_playBtn addTarget:self action:@selector(playClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _playBtn;
 }

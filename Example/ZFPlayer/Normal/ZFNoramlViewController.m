@@ -54,7 +54,8 @@
 }
 
 - (void)changeVideo:(UIButton *)sender {
-    [self.controlView resetControlView];
+//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+//    [self.player replaceCurrentPlayerManager:playerManager];
     NSString *URLString = [@"https://ylmtst.yejingying.com/asset/video/20180525184959_mW8WVQVd.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
     self.player.currentPlayerManager.assetURL = [NSURL URLWithString:proxyURLString];

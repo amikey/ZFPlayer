@@ -82,6 +82,7 @@ typedef NS_OPTIONS(NSUInteger, ZFPlayerDisableGestureTypes) {
 @property (nonatomic) ZFPlayerDisableGestureTypes disableTypes;
 
 - (void)addGestureToControlView;
+- (void)removeGestureToControlView;
 
 @end
 

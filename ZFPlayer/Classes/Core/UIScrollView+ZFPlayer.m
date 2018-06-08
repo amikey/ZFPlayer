@@ -39,12 +39,14 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     }
     BOOL addMethod = class_addMethod(originalClass, replacedSel, method_getImplementation(replacedMethod), method_getTypeEncoding(replacedMethod));
     if (addMethod) {
+        /// 如果父类实现，但是当前类未实就崩溃。以下两行的代码是把当前类加进去这个方法，并取到当前类的originalMethod。
+        /// The following two lines of code add the current class to the method and take it to the originalMethod of the current class if the superclass implements it, but the current class fails to implement it.
+        class_addMethod(originalClass, originalSel, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
+        Method originalMethod = class_getInstanceMethod(originalClass, originalSel);
         Method newMethod = class_getInstanceMethod(originalClass, replacedSel);
         method_exchangeImplementations(originalMethod, newMethod);
     }
 }
-
-static NSString *const kContentOffset = @"contentOffset";
 
 @interface UIScrollView ()
 

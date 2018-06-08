@@ -261,14 +261,14 @@
 }
 
 - (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)manager {
-    if (manager.isPlaying) {
+    if (self.currentPlayerManager.isPreparedToPlay) {
         [self.notification removeNotification];
         [self.orientationObserver removeDeviceOrientationObserver];
         [self.currentPlayerManager stop];
     }
+    [self.gestureControl removeGestureToControlView];
     self.currentPlayerManager = manager;
     [self layoutPlayerSubViews];
-    [self.currentPlayerManager prepareToPlay];
 }
 
 - (void)playTheNext {

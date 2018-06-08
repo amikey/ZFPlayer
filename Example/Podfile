@@ -1,11 +1,8 @@
-use_frameworks!
+source 'https://github.com/CocoaPods/Specs.git'
+platform:ios, '8.0'
 
 target 'ZFPlayer_Example' do
     pod 'KTVHTTPCache', :git => 'https://github.com/ChangbaDevs/KTVHTTPCache.git'
-#    pod 'KSYMediaPlayer_iOS'
     pod 'ZFPlayer', :path => '../'
-  target 'ZFPlayer_Tests' do
-    inherit! :search_paths
 
-  end
 end

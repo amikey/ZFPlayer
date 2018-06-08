@@ -58,6 +58,13 @@
     [self.targetView addGestureRecognizer:self.pinchGR];
 }
 
+- (void)removeGestureToControlView {
+    [self.targetView removeGestureRecognizer:self.singleTap];
+    [self.targetView removeGestureRecognizer:self.doubleTap];
+    [self.targetView removeGestureRecognizer:self.panGR];
+    [self.targetView removeGestureRecognizer:self.pinchGR];
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     ZFPlayerGestureType type = ZFPlayerGestureTypeUnknown;
     if (gestureRecognizer == self.singleTap) type = ZFPlayerGestureTypeSingleTap;
