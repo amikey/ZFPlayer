@@ -95,7 +95,7 @@
     
     min_x = 20;
     min_h = 20;
-    min_y = min_view_h - min_h - 80;
+    min_y = min_view_h - min_h - 50;
     min_w = self.likeBtn.left - margin;
     self.titleLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
 }

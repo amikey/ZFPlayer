@@ -117,7 +117,7 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ZFPlayer_ScreenHeight;
+    return self.view.frame.size.height;
 }
 
 #pragma mark - ZFTableViewCellDelegate

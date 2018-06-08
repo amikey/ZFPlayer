@@ -39,17 +39,9 @@
 
 @implementation ZFPlayerGestureControl
 
-- (instancetype)initWithTargetView:(UIView *)view {
-    self = [super init];
-    if (self) {
-        NSAssert(view, @"view can not be empty!");
-        _targetView = view;
-        _targetView.multipleTouchEnabled = YES;
-    }
-    return self;
-}
-
-- (void)addGestureToControlView {
+- (void)addGestureToView:(UIView *)view {
+    self.targetView = view;
+    self.targetView.multipleTouchEnabled = YES;
     [self.singleTap requireGestureRecognizerToFail:self.doubleTap];
     [self.doubleTap requireGestureRecognizerToFail:self.panGR];
     [self.targetView addGestureRecognizer:self.singleTap];
@@ -58,11 +50,11 @@
     [self.targetView addGestureRecognizer:self.pinchGR];
 }
 
-- (void)removeGestureToControlView {
-    [self.targetView removeGestureRecognizer:self.singleTap];
-    [self.targetView removeGestureRecognizer:self.doubleTap];
-    [self.targetView removeGestureRecognizer:self.panGR];
-    [self.targetView removeGestureRecognizer:self.pinchGR];
+- (void)removeGestureToView:(UIView *)view {
+    [view removeGestureRecognizer:self.singleTap];
+    [view removeGestureRecognizer:self.doubleTap];
+    [view removeGestureRecognizer:self.panGR];
+    [view removeGestureRecognizer:self.pinchGR];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {

@@ -7,13 +7,13 @@
 //
 
 #import "ZFNormalTableViewController.h"
-#import "ZFTableViewCell.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/KSMediaPlayerManager.h>
-#import "ZFPlayerControlView.h"
-#import "ZFTableData.h"
+#import <ZFPlayer/ZFPlayerControlView.h>
 #import <KTVHTTPCache/KTVHTTPCache.h>
+#import "ZFTableViewCell.h"
+#import "ZFTableData.h"
 
 static NSString *kIdentifier = @"kIdentifier";
 

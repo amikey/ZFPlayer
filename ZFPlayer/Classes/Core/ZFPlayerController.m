@@ -208,7 +208,7 @@
     if (!currentPlayerManager) return;
     _currentPlayerManager = currentPlayerManager;
     self.gestureControl.disableTypes = self.disableGestureTypes;
-    [self.gestureControl addGestureToControlView];
+    [self.gestureControl addGestureToView:currentPlayerManager.view];
     [self playerManagerCallbcak];
     [self.notification addNotification];
 }
@@ -264,9 +264,9 @@
     if (self.currentPlayerManager.isPreparedToPlay) {
         [self.notification removeNotification];
         [self.orientationObserver removeDeviceOrientationObserver];
-        [self.currentPlayerManager stop];
+        [self stop];
     }
-    [self.gestureControl removeGestureToControlView];
+    [self.gestureControl removeGestureToView:self.currentPlayerManager.view];
     self.currentPlayerManager = manager;
     [self layoutPlayerSubViews];
 }
@@ -506,10 +506,10 @@
 #pragma mark - getter
 
 - (ZFPlayerGestureControl *)gestureControl {
-    if (!self.currentPlayerManager.view) return nil;
+//    if (!self.currentPlayerManager.view) return nil;
     ZFPlayerGestureControl *gestureControl = objc_getAssociatedObject(self, _cmd);
     if (!gestureControl) {
-        gestureControl = [[ZFPlayerGestureControl alloc] initWithTargetView:self.currentPlayerManager.view];
+        gestureControl = [[ZFPlayerGestureControl alloc] init];
         @weakify(self)
         gestureControl.triggerCondition = ^BOOL(ZFPlayerGestureControl * _Nonnull control, ZFPlayerGestureType type, UIGestureRecognizer * _Nonnull gesture, UITouch *touch) {
             @strongify(self)
