@@ -9,7 +9,7 @@
 #import "ZFNormalTableViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
-#import <ZFPlayer/KSMediaPlayerManager.h>
+//#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import <KTVHTTPCache/KTVHTTPCache.h>
 #import "ZFTableViewCell.h"
@@ -23,9 +23,9 @@ static NSString *kIdentifier = @"kIdentifier";
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 
-//@property (nonatomic, strong) ZFAVPlayerManager *playerManager;
+@property (nonatomic, strong) ZFAVPlayerManager *playerManager;
 
-@property (nonatomic, strong) KSMediaPlayerManager *playerManager;
+//@property (nonatomic, strong) KSMediaPlayerManager *playerManager;
 
 @property (nonatomic, assign) NSInteger count;
 
@@ -46,7 +46,7 @@ static NSString *kIdentifier = @"kIdentifier";
     self.navigationItem.title = @"Automic to play";
     
     /// playerManager
-    self.playerManager = [[KSMediaPlayerManager alloc] init];
+    self.playerManager = [[ZFAVPlayerManager alloc] init];
 
     /// player
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];

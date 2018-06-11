@@ -9,7 +9,7 @@
 #import "ZFKeyboardViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
-#import <ZFPlayer/KSMediaPlayerManager.h>
+//#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import <KTVHTTPCache/KTVHTTPCache.h>
 
@@ -31,8 +31,8 @@
     [self.containerView addSubview:self.playBtn];
     [self.controlView addSubview:self.textField];
     
-//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;

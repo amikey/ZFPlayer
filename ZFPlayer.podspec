@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ZFPlayer'
-  s.version          = '3.0.4'
+  s.version          = '3.0.5'
   s.summary          = 'A good player made by renzifeng'
   s.homepage         = 'https://github.com/renzifeng/ZFPlayer'
   s.screenshots      = 'https://upload-images.jianshu.io/upload_images/635942-b7498fe39e788604.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', 'https://upload-images.jianshu.io/upload_images/635942-1ba16bde9d12acbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
@@ -40,13 +40,24 @@ Pod::Spec.new do |s|
       avPlayer.dependency 'ZFPlayer/Core'
   end
   
+  s.subspec 'ijkplayer' do |ijkplayer|
+      ijkplayer.source_files = 'ZFPlayer/Classes/ijkplayer/*.{h,m}'
+      ijkplayer.public_header_files = 'ZFPlayer/Classes/ijkplayer/*.h'
+      ijkplayer.vendored_frameworks = 'ZFPlayer/Classes/ijkplayer/Frameworks/*.framework'
+      ijkplayer.frameworks = 'VideoToolbox', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'MobileCoreServices', 'OpenGLES', 'QuartzCore'
+      ijkplayer.ios.library = 'bz2', 'z', 'stdc++'
+      ijkplayer.dependency 'ZFPlayer/Core'
+      ijkplayer.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-lObjC' }
+  end
+ 
   s.subspec 'KSYMediaPlayer' do |ksyMediaPlayer|
       ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
       ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
       ksyMediaPlayer.vendored_frameworks = 'ZFPlayer/Classes/KSYMediaPlayer/Frameworks/*.framework'
-      ksyMediaPlayer.frameworks   = 'VideoToolbox'
+      ksyMediaPlayer.frameworks = 'VideoToolbox'
       ksyMediaPlayer.ios.library = 'z', 'iconv', 'stdc++.6', 'bz2'
       ksyMediaPlayer.dependency 'ZFPlayer/Core'
   end
+
 
 end
