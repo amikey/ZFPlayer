@@ -160,7 +160,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     /// 超时时间，timeout参数只对http设置有效，若果你用rtmp设置timeout，ijkplayer内部会忽略timeout参数。rtmp的timeout参数含义和http的不一样。
     [options setFormatOptionIntValue:30 * 1000 * 1000 forKey:@"timeout"];
     //设置缓存大小，太大了没啥用,太小了视频就处于边播边加载的状态，目前是10M，后期可以调整
-    [options setPlayerOptionIntValue:10* 1024 *1024 forKey:@"max-buffer-size"];
+    [options setPlayerOptionIntValue:1 * 1024 * 1024 forKey:@"max-buffer-size"];
     /// 精准seek
     [options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
     

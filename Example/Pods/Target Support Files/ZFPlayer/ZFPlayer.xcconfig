@@ -1,8 +1,7 @@
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/ZFPlayer
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/../../ZFPlayer/Classes/ijkplayer/Frameworks"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ZFPlayer" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CocoaAsyncSocket" "${PODS_ROOT}/Headers/Public/KTVCocoaHTTPServer" "${PODS_ROOT}/Headers/Public/KTVHTTPCache" "${PODS_ROOT}/Headers/Public/ZFPlayer"
-OTHER_LDFLAGS = -l"ObjC" -l"bz2" -l"stdc++" -l"z" -framework "AVFoundation" -framework "AudioToolbox" -framework "CoreGraphics" -framework "CoreMedia" -framework "CoreVideo" -framework "IJKMediaFramework" -framework "MediaPlayer" -framework "MobileCoreServices" -framework "OpenGLES" -framework "QuartzCore" -framework "UIKit" -framework "VideoToolbox"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ZFPlayer" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CocoaAsyncSocket" "${PODS_ROOT}/Headers/Public/IJKMediaFramework" "${PODS_ROOT}/Headers/Public/KTVCocoaHTTPServer" "${PODS_ROOT}/Headers/Public/KTVHTTPCache" "${PODS_ROOT}/Headers/Public/ZFPlayer"
+OTHER_LDFLAGS = -framework "AVFoundation" -framework "MediaPlayer" -framework "UIKit"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}

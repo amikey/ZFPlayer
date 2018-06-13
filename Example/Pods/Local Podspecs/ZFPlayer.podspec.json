@@ -1,6 +1,6 @@
 {
   "name": "ZFPlayer",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "summary": "A good player made by renzifeng",
   "homepage": "https://github.com/renzifeng/ZFPlayer",
   "screenshots": [
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": "https://github.com/renzifeng/ZFPlayer.git",
-    "tag": "3.0.4"
+    "tag": "3.0.5"
   },
   "social_media_url": "http://weibo.com/zifeng1300",
   "platforms": {
@@ -59,31 +59,13 @@
       "name": "ijkplayer",
       "source_files": "ZFPlayer/Classes/ijkplayer/*.{h,m}",
       "public_header_files": "ZFPlayer/Classes/ijkplayer/*.h",
-      "vendored_frameworks": "ZFPlayer/Classes/ijkplayer/Frameworks/*.framework",
-      "frameworks": [
-        "VideoToolbox",
-        "AudioToolbox",
-        "CoreGraphics",
-        "CoreMedia",
-        "CoreVideo",
-        "MobileCoreServices",
-        "OpenGLES",
-        "QuartzCore"
-      ],
-      "ios": {
-        "libraries": [
-          "bz2",
-          "z",
-          "stdc++"
-        ]
-      },
       "dependencies": {
         "ZFPlayer/Core": [
 
+        ],
+        "IJKMediaFramework": [
+
         ]
-      },
-      "pod_target_xcconfig": {
-        "OTHER_LDFLAGS": "-lObjC"
       }
     }
   ]

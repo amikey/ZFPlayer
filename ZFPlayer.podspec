@@ -43,21 +43,15 @@ Pod::Spec.new do |s|
   s.subspec 'ijkplayer' do |ijkplayer|
       ijkplayer.source_files = 'ZFPlayer/Classes/ijkplayer/*.{h,m}'
       ijkplayer.public_header_files = 'ZFPlayer/Classes/ijkplayer/*.h'
-      ijkplayer.vendored_frameworks = 'ZFPlayer/Classes/ijkplayer/Frameworks/*.framework'
-      ijkplayer.frameworks = 'VideoToolbox', 'AudioToolbox', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'MobileCoreServices', 'OpenGLES', 'QuartzCore'
-      ijkplayer.ios.library = 'bz2', 'z', 'stdc++'
       ijkplayer.dependency 'ZFPlayer/Core'
-      ijkplayer.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-lObjC' }
+      ijkplayer.dependency 'IJKMediaFramework'
   end
- 
+
   s.subspec 'KSYMediaPlayer' do |ksyMediaPlayer|
       ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
       ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
-      ksyMediaPlayer.vendored_frameworks = 'ZFPlayer/Classes/KSYMediaPlayer/Frameworks/*.framework'
-      ksyMediaPlayer.frameworks = 'VideoToolbox'
-      ksyMediaPlayer.ios.library = 'z', 'iconv', 'stdc++.6', 'bz2'
+      ksyMediaPlayer.dependency 'KSYMediaPlayer_iOS'
       ksyMediaPlayer.dependency 'ZFPlayer/Core'
   end
-
 
 end
