@@ -26,8 +26,6 @@
 #if __has_include(<IJKMediaFramework/IJKMediaFramework.h>)
 #import <IJKMediaFramework/IJKMediaFramework.h>
 
-static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
-
 @interface ZFIJKPlayerManager ()
 @property (nonatomic, strong) IJKFFMoviePlayerController *player;
 @property (nonatomic, assign) CGFloat lastVolume;

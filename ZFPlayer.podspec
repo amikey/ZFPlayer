@@ -11,7 +11,6 @@ Pod::Spec.new do |s|
     s.version          = '3.0.5'
     s.summary          = 'A good player made by renzifeng'
     s.homepage         = 'https://github.com/renzifeng/ZFPlayer'
-    s.screenshots      = 'https://upload-images.jianshu.io/upload_images/635942-b7498fe39e788604.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', 'https://upload-images.jianshu.io/upload_images/635942-1ba16bde9d12acbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
     s.author           = { 'renzifeng' => 'zifeng1300@gmail.com' }
     s.source           = { :git => 'https://github.com/renzifeng/ZFPlayer.git', :tag => s.version.to_s }

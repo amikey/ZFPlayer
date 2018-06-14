@@ -48,12 +48,14 @@ Use ijkplayer simply add the following line to your Podfile:
 ```objc
 pod 'ZFPlayer/ijkplayer', '~> 3.0.5'
 ```
+[IJKMediaFramework SDK](https://gitee.com/renzifeng/IJKMediaFramework) support cocoapods
 
 Use KSYMediaPlayer simply add the following line to your Podfile:
 
 ```objc
 pod 'ZFPlayer/KSYMediaPlayer', '~> 3.0.5'
 ```
+[KSYMediaPlayer SDK](https://github.com/ksvc/KSYMediaPlayer_iOS) support cocoapods
 
 ## Usage introduce
 
@@ -119,6 +121,7 @@ self.player.assetURLs = array<NSURL *>;
 ![Picture effect](https://upload-images.jianshu.io/upload_images/635942-1b0e23b7f5eabd9e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Reference
+- https://github.com/Bilibili/ijkplayer
 - https://github.com/changsanjiang/SJVideoPlayer
 - https://github.com/ChangbaDevs/KTVHTTPCache
 - https://github.com/ksvc/KSYMediaPlayer_iOS
@@ -127,7 +130,6 @@ self.player.assetURLs = array<NSURL *>;
 
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
-- QQ: 459643690
 - QQ Group: 213375947（付费群,提供技术支持）
 
 ## License
