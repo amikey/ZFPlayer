@@ -11,11 +11,6 @@ The original TCP version (AsyncSocket) was created by Dustin Voss in January 200
 Updated and maintained by Deusty LLC and the Apple development community.
 
 
-## KSYMediaPlayer_iOS
-
-Copyright 2015 kingsoft Ltd. All rights reserved.
-
-
 ## KTVCocoaHTTPServer
 
 MIT License

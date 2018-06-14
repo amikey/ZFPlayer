@@ -73,9 +73,6 @@
       "source_files": "ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}",
       "public_header_files": "ZFPlayer/Classes/KSYMediaPlayer/*.h",
       "dependencies": {
-        "KSYMediaPlayer_iOS": [
-
-        ],
         "ZFPlayer/Core": [
 
         ]

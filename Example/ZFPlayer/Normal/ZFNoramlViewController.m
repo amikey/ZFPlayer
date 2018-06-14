@@ -64,8 +64,8 @@
 }
 
 - (void)playClick:(UIButton *)sender {
-//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
 //    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];

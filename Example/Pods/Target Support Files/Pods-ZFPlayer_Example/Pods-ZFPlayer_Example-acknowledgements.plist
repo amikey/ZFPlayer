@@ -30,17 +30,6 @@ Updated and maintained by Deusty LLC and the Apple development community.
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Copyright 2015 kingsoft Ltd. All rights reserved.
-</string>
-			<key>License</key>
-			<string>Proprietary</string>
-			<key>Title</key>
-			<string>KSYMediaPlayer_iOS</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
 			<string>MIT License
 
 Copyright (c) 2018 唱吧

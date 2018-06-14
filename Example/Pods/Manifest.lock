@@ -1,8 +1,5 @@
 PODS:
   - CocoaAsyncSocket (7.6.3)
-  - KSYMediaPlayer_iOS (3.0.3):
-    - KSYMediaPlayer_iOS/KSYMediaPlayer_live (= 3.0.3)
-  - KSYMediaPlayer_iOS/KSYMediaPlayer_live (3.0.3)
   - KTVCocoaHTTPServer (1.0.0):
     - CocoaAsyncSocket
   - KTVHTTPCache (1.1.1):
@@ -21,7 +18,6 @@ PODS:
   - ZFPlayer/ijkplayer (3.0.5):
     - ZFPlayer/Core
   - ZFPlayer/KSYMediaPlayer (3.0.5):
-    - KSYMediaPlayer_iOS
     - ZFPlayer/Core
 
 DEPENDENCIES:
@@ -41,10 +37,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
-  KSYMediaPlayer_iOS: bd163c277487e99df58941f10f090af2fb53fd6d
   KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
   KTVHTTPCache: 71e3c492155d4f1bfad5d1750786efc4c5066d33
-  ZFPlayer: d3daae3cd1c69bf1025d043aa42cd169fd2b347e
+  ZFPlayer: 08c064fabe9a55a3dab444e875d87c1c37ab9079
 
 PODFILE CHECKSUM: d392ac5bff0b316041abdcceb59bf4b3239bc79d
 
