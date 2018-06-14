@@ -476,6 +476,10 @@
     return self.orientationObserver.isLockedScreen;
 }
 
+- (BOOL)shouldAutorotate {
+    return self.orientationObserver.shouldAutorotate;
+}
+
 #pragma mark - setter
 
 - (void)setOrientationWillChange:(void (^)(ZFPlayerController * _Nonnull, BOOL))orientationWillChange {
@@ -497,6 +501,11 @@
     if ([self.controlView respondsToSelector:@selector(lockedVideoPlayer:lockedScreen:)]) {
         [self.controlView lockedVideoPlayer:self lockedScreen:lockedScreen];
     }
+}
+
+- (void)setShouldAutorotate:(BOOL)shouldAutorotate {
+    objc_setAssociatedObject(self, @selector(shouldAutorotate), @(shouldAutorotate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.orientationObserver.shouldAutorotate = shouldAutorotate;
 }
 
 @end
