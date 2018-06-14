@@ -31,11 +31,10 @@
 /// 加载loading
 @property (nonatomic, strong) ZFLoadingView *activity;
 
-@property (nonatomic, weak) ZFPlayerController *player;
-
 @end
 
 @implementation ZFDouYinControlView
+@synthesize player = _player;
 
 - (instancetype)init {
     self = [super init];
@@ -108,10 +107,6 @@
 - (void)resetControlView {
     self.playBtn.hidden = YES;
     self.titleLabel.text = @"";
-}
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL {
-    self.player = videoPlayer;
 }
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state {
