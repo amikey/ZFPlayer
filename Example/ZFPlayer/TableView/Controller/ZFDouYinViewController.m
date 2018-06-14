@@ -12,7 +12,6 @@
 #import "ZFPlayerControlView.h"
 #import "ZFTableViewCellLayout.h"
 #import "ZFTableData.h"
-#import <KTVHTTPCache/KTVHTTPCache.h>
 #import "ZFDouYinCell.h"
 #import "ZFDouYinControlView.h"
 
@@ -80,8 +79,7 @@ static NSString *kIdentifier = @"kIdentifier";
         [data setValuesForKeysWithDictionary:dataDic];
         [self.dataSource addObject:data];
         NSString *URLString = [data.video_url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
-        NSURL *url = [NSURL URLWithString:proxyURLString];
+        NSURL *url = [NSURL URLWithString:URLString];
         [self.urls addObject:url];
     }
 }

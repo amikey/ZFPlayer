@@ -9,9 +9,8 @@
 #import "ZFKeyboardViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
-//#import <ZFPlayer/KSMediaPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
-#import <KTVHTTPCache/KTVHTTPCache.h>
 
 @interface ZFKeyboardViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -42,8 +41,7 @@
         [weakSelf setNeedsStatusBarAppearanceUpdate];
     };
     NSString *URLString = [@"http://tb-video.bdstatic.com/videocp/12045395_f9f87b84aaf4ff1fee62742f2d39687f.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *proxyURLString = [KTVHTTPCache proxyURLStringWithOriginalURLString:URLString];
-    playerManager.assetURL = [NSURL URLWithString:proxyURLString];
+    playerManager.assetURL = [NSURL URLWithString:URLString];
     
     [self.controlView showTitle:@"视频标题" coverURLString:@"http://imgsrc.baidu.com/forum/eWH%3D240%2C176/sign=183252ee8bd6277ffb784f351a0c2f1c/5d6034a85edf8db15420ba310523dd54564e745d.jpg" fullScreenMode:ZFFullScreenModeLandscape];
 }

@@ -42,6 +42,7 @@ Use AVPlayer simply add the following line to your Podfile:
 ```objc
 pod 'ZFPlayer/AVPlayer', '~> 3.0.5'
 ```
+如果使用AVPlayer边下边播可以参考使用[KTVHTTPCache](https://github.com/ChangbaDevs/KTVHTTPCache)
 
 Use ijkplayer simply add the following line to your Podfile:
 
@@ -123,7 +124,6 @@ self.player.assetURLs = array<NSURL *>;
 ## Reference
 - https://github.com/Bilibili/ijkplayer
 - https://github.com/changsanjiang/SJVideoPlayer
-- https://github.com/ChangbaDevs/KTVHTTPCache
 - https://github.com/ksvc/KSYMediaPlayer_iOS
 
 ## Author
