@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFLandScapeControlView : UIView
 
+@property (nonatomic, weak) ZFPlayerController *player;
 @property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);
 @property (nonatomic, copy, nullable) void(^sliderValueChanged)(CGFloat value);
 
@@ -41,15 +42,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)hideControlView;
 
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL;
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer
+        currentTime:(NSTimeInterval)currentTime
+          totalTime:(NSTimeInterval)totalTime;
 
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime;
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer
+         bufferTime:(NSTimeInterval)bufferTime;
 
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime;
+- (BOOL)shouldResponseGestureWithPoint:(CGPoint)point
+                       withGestureType:(ZFPlayerGestureType)type
+                                 touch:(nonnull UITouch *)touch;
 
-- (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch;
-
-- (void)showTitle:(NSString *_Nullable)title fullScreenMode:(ZFFullScreenMode)fullScreenMode;
+- (void)showTitle:(NSString *_Nullable)title
+   fullScreenMode:(ZFFullScreenMode)fullScreenMode;
 
 /// 根据当前播放状态取反
 - (void)playOrPause;

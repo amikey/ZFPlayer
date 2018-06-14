@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPortraitControlView : UIView 
 
+@property (nonatomic, weak) ZFPlayerController *player;
 @property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);
 @property (nonatomic, copy, nullable) void(^sliderValueChanged)(CGFloat value);
 
@@ -39,8 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showControlView;
 
 - (void)hideControlView;
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL;
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime;
 

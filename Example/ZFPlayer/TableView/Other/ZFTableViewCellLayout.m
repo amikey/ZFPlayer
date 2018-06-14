@@ -27,7 +27,8 @@
 - (instancetype)initWithData:(ZFTableData *)data {
     self = [super init];
     if (self) {
-        self.data = data;
+        _data = data;
+        
         CGFloat min_x = 0;
         CGFloat min_y = 0;
         CGFloat min_w = 0;
@@ -78,7 +79,7 @@
 }
 
 - (BOOL)isVerticalVideo {
-    return self.data.video_width < self.data.video_height;
+    return _data.video_width < _data.video_height;
 }
 
 - (CGFloat)videoHeight {

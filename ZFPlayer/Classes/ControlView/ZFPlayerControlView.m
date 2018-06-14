@@ -62,8 +62,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 /// 是否播放结束
 @property (nonatomic, assign, getter=isPlayEnd) BOOL playeEnd;
 
-@property (nonatomic, weak) ZFPlayerController *player;
-
 @property (nonatomic, assign) BOOL controlViewAppeared;
 
 @property (nonatomic, assign) NSTimeInterval sumTime;
@@ -79,6 +77,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 @end
 
 @implementation ZFPlayerControlView
+@synthesize player = _player;
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -331,12 +330,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
-/// 播放之前/状态
+/// 播放之前状态
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL {
     [self hideControlViewWithAnimated:NO];
-    self.player = videoPlayer;
-    [self.portraitControlView videoPlayer:videoPlayer prepareToPlay:assetURL];
-    [self.landScapeControlView videoPlayer:videoPlayer prepareToPlay:assetURL];
 }
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer playStateChanged:(ZFPlayerPlaybackState)state {
@@ -452,6 +448,14 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 - (void)replayBtnClick:(UIButton *)sender {
     sender.hidden = NO;
     [self.player.currentPlayerManager replay];
+}
+
+#pragma mark - setter
+
+- (void)setPlayer:(ZFPlayerController *)player {
+    _player = player;
+    self.landScapeControlView.player = player;
+    self.portraitControlView.player = player;
 }
 
 #pragma mark - getter

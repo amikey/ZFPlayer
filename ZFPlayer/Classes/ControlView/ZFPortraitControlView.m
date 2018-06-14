@@ -48,8 +48,6 @@
 
 @property (nonatomic, assign) double durationTime;
 
-@property (nonatomic, weak) ZFPlayerController *player;
-
 @property (nonatomic, assign) BOOL isShow;
 
 @end
@@ -260,10 +258,6 @@
         return NO;
     }
     return YES;
-}
-
-- (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL {
-    self.player = videoPlayer;
 }
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime {

@@ -37,7 +37,9 @@
 /// 横屏控制层的View
 @property (nonatomic, strong, readonly) ZFLandScapeControlView *landScapeControlView;
 
-- (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode;
+- (void)showTitle:(NSString *)title
+   coverURLString:(NSString *)coverUrl
+   fullScreenMode:(ZFFullScreenMode)fullScreenMode;
 
 - (void)resetControlView;
 

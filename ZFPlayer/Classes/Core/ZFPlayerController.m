@@ -226,6 +226,7 @@
 - (void)setControlView:(UIView<ZFPlayerMediaControl> *)controlView {
     if (!controlView) return;
     _controlView = controlView;
+    controlView.player = self;
     [self.currentPlayerManager.view addSubview:controlView];
     controlView.frame = self.currentPlayerManager.view.bounds;
     controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
