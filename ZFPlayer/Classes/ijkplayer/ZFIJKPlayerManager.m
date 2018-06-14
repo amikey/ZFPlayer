@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #import "ZFIJKPlayerManager.h"
+#if __has_include(<IJKMediaFramework/IJKMediaFramework.h>)
 #import <IJKMediaFramework/IJKMediaFramework.h>
 
 static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
@@ -423,3 +424,5 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 @end
+
+#endif

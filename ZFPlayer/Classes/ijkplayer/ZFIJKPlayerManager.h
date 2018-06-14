@@ -28,7 +28,10 @@
 #else
 #import "ZFPlayer.h"
 #endif
+#if __has_include(<IJKMediaFramework/IJKMediaFramework.h>)
 
 @interface ZFIJKPlayerManager : NSObject <ZFPlayerMediaPlayback>
 
 @end
+
+#endif

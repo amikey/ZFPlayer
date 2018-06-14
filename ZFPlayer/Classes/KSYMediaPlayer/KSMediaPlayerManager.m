@@ -23,9 +23,10 @@
 // THE SOFTWARE.
 
 #import "KSMediaPlayerManager.h"
-#import <KSYMediaPlayer/KSYMediaPlayer.h>
 #import "ZFKVOController.h"
 #import "ZFPlayerView.h"
+#if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
+#import <KSYMediaPlayer/KSYMediaPlayer.h>
 
 static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
@@ -370,3 +371,5 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 @end
+
+#endif

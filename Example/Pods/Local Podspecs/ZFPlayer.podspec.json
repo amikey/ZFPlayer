@@ -62,8 +62,21 @@
       "dependencies": {
         "ZFPlayer/Core": [
 
+        ]
+      },
+      "platforms": {
+        "ios": "8.0"
+      }
+    },
+    {
+      "name": "KSYMediaPlayer",
+      "source_files": "ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}",
+      "public_header_files": "ZFPlayer/Classes/KSYMediaPlayer/*.h",
+      "dependencies": {
+        "KSYMediaPlayer_iOS": [
+
         ],
-        "IJKMediaFramework": [
+        "ZFPlayer/Core": [
 
         ]
       }

@@ -30,6 +30,10 @@
 #import "ZFPlayer.h"
 #endif
 
+#if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
+
 @interface KSMediaPlayerManager : NSObject <ZFPlayerMediaPlayback>
 
 @end
+
+#endif

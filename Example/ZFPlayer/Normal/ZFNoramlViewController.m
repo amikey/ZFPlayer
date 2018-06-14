@@ -10,7 +10,7 @@
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/ZFIJKPlayerManager.h>
-//#import <ZFPlayer/KSMediaPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import <KTVHTTPCache/KTVHTTPCache.h>
 
@@ -65,8 +65,8 @@
 
 - (void)playClick:(UIButton *)sender {
 //    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
-    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
+    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+//    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
