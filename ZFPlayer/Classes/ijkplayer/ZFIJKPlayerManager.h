@@ -23,11 +23,8 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#if __has_include(<ZFPlayer/ZFPlayer.h>)
-#import <ZFPlayer/ZFPlayer.h>
-#else
-#import "ZFPlayer.h"
-#endif
+#import "ZFPlayerMediaPlayback.h"
+
 #if __has_include(<IJKMediaFramework/IJKMediaFramework.h>)
 
 @interface ZFIJKPlayerManager : NSObject <ZFPlayerMediaPlayback>

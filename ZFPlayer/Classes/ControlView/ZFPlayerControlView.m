@@ -22,16 +22,21 @@
 // THE SOFTWARE.
 
 #import "ZFPlayerControlView.h"
+#import <AVKit/AVKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "UIView+ZFFrame.h"
 #import "ZFSliderView.h"
 #import "ZFUtilities.h"
 #import "ZFLoadingView.h"
 #import "UIImageView+ZFCache.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import <AVKit/AVKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import "ZFVolumeBrightnessView.h"
 #import "ZFSmallFloatControlView.h"
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
+#import <ZFPlayer/ZFPlayer.h>
+#else
+#import "ZFPlayer.h"
+#endif
 
 static const CGFloat ZFPlayerAnimationTimeInterval              = 2.5f;
 static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;

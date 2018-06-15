@@ -23,8 +23,13 @@
 // THE SOFTWARE.
 
 #import "KSMediaPlayerManager.h"
-#import "ZFKVOController.h"
 #import "ZFPlayerView.h"
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
+#import <ZFPlayer/ZFPlayer.h>
+#else
+#import "ZFPlayer.h"
+#endif
+
 #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
 #import <KSYMediaPlayer/KSYMediaPlayer.h>
 

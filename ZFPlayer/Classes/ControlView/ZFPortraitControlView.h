@@ -22,11 +22,8 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#if __has_include(<ZFPlayer/ZFPlayer.h>)
-#import <ZFPlayer/ZFPlayer.h>
-#else
-#import "ZFPlayer.h"
-#endif
+#import "ZFPlayerController.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPortraitControlView : UIView 
