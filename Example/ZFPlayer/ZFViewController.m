@@ -43,6 +43,10 @@ static NSString *kIdentifier = @"kIdentifier";
     self.tableView.frame = self.view.bounds;
 }
 
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

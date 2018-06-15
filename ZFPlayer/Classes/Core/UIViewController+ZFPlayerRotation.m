@@ -24,38 +24,6 @@
 #import "UIViewController+ZFPlayerRotation.h"
 #import <objc/runtime.h>
 
-@implementation UIViewController (ZFPlayerRotation)
-
-/**
- * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController+ZFPlayerRotation.
- * All you need to do is revisit the following three methods on a page that supports directions other than portrait。
- */
-
-// Whether automatic screen rotation is supported.
-- (BOOL)shouldAutorotate {
-    return NO;
-}
-
-// Which screen directions are supported.
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAllButUpsideDown;
-}
-
-// The default screen direction (the current ViewController must be represented by a modal UIViewController (which is not valid with modal navigation) to call this method).
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationPortrait;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleDefault;
-}
-
-- (BOOL)prefersStatusBarHidden {
-    return NO;
-}
-
-@end
-
 @implementation UITabBarController (ZFPlayerRotation)
 
 + (void)load {

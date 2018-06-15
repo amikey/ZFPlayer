@@ -117,6 +117,15 @@ ZFPlayerController *player = [ZFPlayerController playerWithScrollView:tableView 
 player.controlView = controlView<ZFPlayerMediaControl>;
 self.player.assetURLs = array<NSURL *>;
 ```
+
+Rotate the video the viewController must implement
+
+```objc
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+```
+
 ### Picture demonstration
 
 ![Picture effect](https://upload-images.jianshu.io/upload_images/635942-1b0e23b7f5eabd9e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

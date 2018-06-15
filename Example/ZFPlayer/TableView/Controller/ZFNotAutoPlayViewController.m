@@ -106,6 +106,10 @@ static NSString *kIdentifier = @"kIdentifier";
     }
 }
 
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self.player.isFullScreen) {
         return UIStatusBarStyleLightContent;

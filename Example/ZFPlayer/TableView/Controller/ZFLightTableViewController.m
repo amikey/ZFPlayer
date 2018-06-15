@@ -65,6 +65,8 @@ static NSString *kIdentifier = @"kIdentifier";
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.player stopCurrentPlayingCell];
             });
+        } else {
+            [self.player stopCurrentPlayingCell];
         }
     };
 }
@@ -104,6 +106,10 @@ static NSString *kIdentifier = @"kIdentifier";
         NSURL *url = [NSURL URLWithString:URLString];
         [self.urls addObject:url];
     }
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
