@@ -133,8 +133,9 @@
     
     self.currentPlayerManager.playerPrepareToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         @strongify(self)
+        self.currentPlayerManager.view.hidden = NO;
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
-            [self.controlView videoPlayer:self prepareToPlay:self.currentPlayerManager.assetURL];
+            [self.controlView videoPlayer:self prepareToPlay:assetURL];
         }
     };
     
@@ -221,6 +222,7 @@
     self.currentPlayerManager.view.frame = containerView.bounds;
     self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.orientationObserver addDeviceOrientationObserver];
+    self.currentPlayerManager.view.hidden = YES;
 }
 
 - (void)setControlView:(UIView<ZFPlayerMediaControl> *)controlView {
@@ -273,29 +275,57 @@
 }
 
 - (void)playTheNext {
-    NSInteger index = self.currentPlayIndex + 1;
-    if (index >= self.assetURLs.count) return;
-    NSURL *assetURL = [self.assetURLs objectAtIndex:index];
-    [self.currentPlayerManager replaceCurrentAssetURL:assetURL];
-    self.currentPlayIndex = [self.assetURLs indexOfObject:assetURL];
+    if (self.assetURLs.count > 0) {
+        NSInteger index = self.currentPlayIndex + 1;
+        if (index >= self.assetURLs.count) return;
+        NSURL *assetURL = [self.assetURLs objectAtIndex:index];
+        self.assetURL = assetURL;
+        self.currentPlayIndex = [self.assetURLs indexOfObject:assetURL];
+    }
 }
 
 - (void)playThePrevious {
-    NSInteger index = self.currentPlayIndex - 1;
-    if (index < 0) return;
-    NSURL *assetURL = [self.assetURLs objectAtIndex:index];
-    [self.currentPlayerManager replaceCurrentAssetURL:assetURL];
-    self.currentPlayIndex = [self.assetURLs indexOfObject:assetURL];
+    if (self.assetURLs.count > 0) {
+        NSInteger index = self.currentPlayIndex - 1;
+        if (index < 0) return;
+        NSURL *assetURL = [self.assetURLs objectAtIndex:index];
+        self.assetURL = assetURL;
+        self.currentPlayIndex = [self.assetURLs indexOfObject:assetURL];
+    }
 }
 
 - (void)playTheIndex:(NSInteger)index {
-    if (index >= self.assetURLs.count) return;
-    NSURL *assetURL = [self.assetURLs objectAtIndex:index];
-    [self.currentPlayerManager replaceCurrentAssetURL:assetURL];
-    self.currentPlayIndex = index;
+    if (self.assetURLs.count > 0) {
+        if (index >= self.assetURLs.count) return;
+        NSURL *assetURL = [self.assetURLs objectAtIndex:index];
+        self.assetURL = assetURL;
+        self.currentPlayIndex = index;
+    }
 }
 
 #pragma mark - getter
+
+- (NSURL *)assetURL {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (NSArray<NSURL *> *)assetURLs {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (BOOL)isLastAssetURL {
+    if (self.assetURLs.count > 0) {
+        return self.assetURL == self.assetURLs.lastObject;
+    }
+    return NO;
+}
+
+- (BOOL)isFirstAssetURL {
+    if (self.assetURLs.count > 0) {
+        return self.assetURL == self.assetURLs.firstObject;
+    }
+    return NO;
+}
 
 - (BOOL)isWWANAutoPlay {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
@@ -348,6 +378,17 @@
 }
 
 #pragma mark - setter
+
+- (void)setAssetURL:(NSURL *)assetURL {
+    objc_setAssociatedObject(self, @selector(assetURL), assetURL, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (self.currentPlayerManager.isPreparedToPlay) [self.currentPlayerManager stop];
+    if (!self.currentPlayerManager.view.superview) self.containerView = self.containerView;
+    self.currentPlayerManager.assetURL = assetURL;
+}
+
+- (void)setAssetURLs:(NSArray<NSURL *> * _Nullable)assetURLs {
+    objc_setAssociatedObject(self, @selector(assetURLs), assetURLs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
     objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -516,7 +557,6 @@
 #pragma mark - getter
 
 - (ZFPlayerGestureControl *)gestureControl {
-//    if (!self.currentPlayerManager.view) return nil;
     ZFPlayerGestureControl *gestureControl = objc_getAssociatedObject(self, _cmd);
     if (!gestureControl) {
         gestureControl = [[ZFPlayerGestureControl alloc] init];
@@ -715,10 +755,6 @@
     self.scrollView.shouldAutoPlay = shouldAutoPlay;
 }
 
-- (void)setAssetURLs:(NSArray<NSURL *> * _Nullable)assetURLs {
-    objc_setAssociatedObject(self, @selector(assetURLs), assetURLs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
 - (void)setSectionAssetURLs:(NSArray<NSArray<NSURL *> *> * _Nullable)sectionAssetURLs {
     objc_setAssociatedObject(self, @selector(sectionAssetURLs), sectionAssetURLs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -768,10 +804,6 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (NSArray<NSURL *> *)assetURLs {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
 - (NSArray<NSArray<NSURL *> *> *)sectionAssetURLs {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -794,13 +826,13 @@
             @strongify(self)
             if (completionHandler) completionHandler();
             self.playingIndexPath = indexPath;
-            self.currentPlayerManager.assetURL = assetURL;
+            self.assetURL = assetURL;
             [self.scrollView zf_scrollViewStopScroll];
         }];
     } else {
         if (completionHandler) completionHandler();
         self.playingIndexPath = indexPath;
-        self.currentPlayerManager.assetURL = assetURL;
+        self.assetURL = assetURL;
     }
 }
 
@@ -813,7 +845,15 @@
         assetURL = self.assetURLs[indexPath.row];
         self.currentPlayIndex = indexPath.row;
     }
-    self.currentPlayerManager.assetURL = assetURL;
+    self.assetURL = assetURL;
+    if (scrollToTop) {
+        [self.scrollView zf_scrollToRowAtIndexPath:indexPath completionHandler:nil];
+    }
+}
+
+- (void)playTheIndexPath:(NSIndexPath *)indexPath assetURL:(NSURL *)assetURL scrollToTop:(BOOL)scrollToTop {
+    self.playingIndexPath = indexPath;
+    self.assetURL = assetURL;
     if (scrollToTop) {
         [self.scrollView zf_scrollToRowAtIndexPath:indexPath completionHandler:nil];
     }

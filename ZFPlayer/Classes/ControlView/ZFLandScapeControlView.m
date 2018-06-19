@@ -24,7 +24,6 @@
 #import "ZFLandScapeControlView.h"
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
-#import "ZFSliderView.h"
 
 @interface ZFLandScapeControlView () <ZFSliderViewDelegate>
 
@@ -36,7 +35,7 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 /// 底部工具栏
 @property (nonatomic, strong) UIView *bottomToolView;
-/// 播放或暂停按钮(小)
+/// 播放或暂停按钮
 @property (nonatomic, strong) UIButton *playOrPauseBtn;
 /// 下一个
 @property (nonatomic, strong) UIButton *nextBtn;

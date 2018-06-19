@@ -25,6 +25,7 @@
 #import "ZFPortraitControlView.h"
 #import "ZFLandScapeControlView.h"
 #import "ZFPlayerMediaControl.h"
+#import "ZFLoadingView.h"
 
 @interface ZFPlayerControlView : UIView <ZFPlayerMediaControl>
 
@@ -32,6 +33,22 @@
 @property (nonatomic, strong, readonly) ZFPortraitControlView *portraitControlView;
 /// 横屏控制层的View
 @property (nonatomic, strong, readonly) ZFLandScapeControlView *landScapeControlView;
+/// 加载loading
+@property (nonatomic, strong, readonly) ZFLoadingView *activity;
+/// 快进快退View
+@property (nonatomic, strong, readonly) UIView *fastView;
+/// 快进快退进度progress
+@property (nonatomic, strong, readonly) ZFSliderView *fastProgressView;
+/// 快进快退时间
+@property (nonatomic, strong, readonly) UILabel *fastTimeLabel;
+/// 快进快退ImageView
+@property (nonatomic, strong, readonly) UIImageView *fastImageView;
+/// 加载失败按钮
+@property (nonatomic, strong, readonly) UIButton *failBtn;
+/// 底部播放进度
+@property (nonatomic, strong, readonly) ZFSliderView *bottomPgrogress;
+/// 封面图
+@property (nonatomic, strong, readonly) UIImageView *coverImageView;
 
 - (void)showTitle:(NSString *)title
    coverURLString:(NSString *)coverUrl

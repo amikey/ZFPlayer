@@ -149,7 +149,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 /// Video UIImage at the current time.
 - (UIImage *)thumbnailImageAtCurrentTime;
 
-/// Replace the current playback address.
+/// Replace the current playback URL.
 - (void)replaceCurrentAssetURL:(NSURL *)assetURL;
 
 /// Use this method to seek to a specified time for the current player and to be notified when the seek operation is complete.

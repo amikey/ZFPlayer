@@ -22,12 +22,32 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import "ZFUtilities.h"
 #import "ZFPlayerController.h"
+#import "ZFSliderView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFLandScapeControlView : UIView
+/// 顶部工具栏
+@property (nonatomic, strong, readonly) UIView *topToolView;
+/// 返回按钮
+@property (nonatomic, strong, readonly) UIButton *backBtn;
+/// 标题
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+/// 底部工具栏
+@property (nonatomic, strong, readonly) UIView *bottomToolView;
+/// 播放或暂停按钮 
+@property (nonatomic, strong, readonly) UIButton *playOrPauseBtn;
+/// 下一个
+@property (nonatomic, strong, readonly) UIButton *nextBtn;
+/// 播放的当前时间label
+@property (nonatomic, strong, readonly) UILabel *currentTimeLabel;
+/// 滑杆
+@property (nonatomic, strong, readonly) ZFSliderView *slider;
+/// 视频总时间
+@property (nonatomic, strong, readonly) UILabel *totalTimeLabel;
+/// 锁定屏幕按钮
+@property (nonatomic, strong, readonly) UIButton *lockBtn;
 
 @property (nonatomic, weak) ZFPlayerController *player;
 @property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);

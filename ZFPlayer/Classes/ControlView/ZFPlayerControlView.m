@@ -27,7 +27,6 @@
 #import "UIView+ZFFrame.h"
 #import "ZFSliderView.h"
 #import "ZFUtilities.h"
-#import "ZFLoadingView.h"
 #import "UIImageView+ZFCache.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFVolumeBrightnessView.h"
@@ -58,7 +57,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 @property (nonatomic, strong) UIImageView *fastImageView;
 /// 加载失败按钮
 @property (nonatomic, strong) UIButton *failBtn;
-/** 底部播放进度 */
+/// 底部播放进度
 @property (nonatomic, strong) ZFSliderView *bottomPgrogress;
 /// 封面图
 @property (nonatomic, strong) UIImageView *coverImageView;
@@ -87,7 +86,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // 添加所有子控件
         [self addAllSubViews];
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
@@ -440,19 +438,14 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [self performSelector:@selector(hideFastView) withObject:nil afterDelay:0.5];
 }
 
-/** 隐藏快进视图 */
+/// 隐藏快进视图
 - (void)hideFastView {
     self.fastView.hidden = YES;
 }
 
 - (void)failBtnClick:(UIButton *)sender {
-    sender.hidden = NO;
+    sender.hidden = YES;
     [self.player.currentPlayerManager reloadPlayer];
-}
-
-- (void)replayBtnClick:(UIButton *)sender {
-    sender.hidden = NO;
-    [self.player.currentPlayerManager replay];
 }
 
 #pragma mark - setter

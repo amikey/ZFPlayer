@@ -348,7 +348,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 }
 
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler {
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.6 animations:^{
         if ([self isKindOfClass:[UITableView class]]) {
             UITableView *tableView = (UITableView *)self;
             [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];

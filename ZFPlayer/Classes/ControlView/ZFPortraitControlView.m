@@ -23,7 +23,6 @@
 
 #import "ZFPortraitControlView.h"
 #import "UIView+ZFFrame.h"
-#import "ZFSliderView.h"
 #import "ZFUtilities.h"
 
 @interface ZFPortraitControlView () <ZFSliderViewDelegate>

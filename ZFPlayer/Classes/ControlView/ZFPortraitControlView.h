@@ -23,10 +23,29 @@
 
 #import <UIKit/UIKit.h>
 #import "ZFPlayerController.h"
+#import "ZFSliderView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPortraitControlView : UIView 
+/// 返回按钮
+@property (nonatomic, strong, readonly) UIButton *backBtn;
+/// 底部工具栏
+@property (nonatomic, strong, readonly) UIView *bottomToolView;
+/// 顶部工具栏
+@property (nonatomic, strong, readonly) UIView *topToolView;
+/// 标题
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+/// 播放或暂停按钮
+@property (nonatomic, strong, readonly) UIButton *playOrPauseBtn;
+/// 播放的当前时间label
+@property (nonatomic, strong, readonly) UILabel *currentTimeLabel;
+/// 滑杆
+@property (nonatomic, strong, readonly) ZFSliderView *slider;
+/// 视频总时间
+@property (nonatomic, strong, readonly) UILabel *totalTimeLabel;
+/// 全屏按钮
+@property (nonatomic, strong, readonly) UIButton *fullScreenBtn;
 
 @property (nonatomic, weak) ZFPlayerController *player;
 @property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);

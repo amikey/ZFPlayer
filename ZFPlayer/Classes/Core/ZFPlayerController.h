@@ -122,8 +122,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// WWAN network auto play, default is NO.
 @property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
+/// The play asset URL.
+@property (nonatomic) NSURL *assetURL;
+
+/// if tableView or collectionView has only one section , use sectionAssetURLs.
+/// if normal model set this can use `playTheNext` `playThePrevious` `playTheIndex:`.
+@property (nonatomic, copy, nullable) NSArray <NSURL *>*assetURLs;
+
 /// The currently playing index,limited to one-dimensional arrays.
 @property (nonatomic) NSInteger currentPlayIndex;
+
+/// is the last asset URL in `assetURLs`.
+@property (nonatomic, readonly) BOOL isLastAssetURL;
+
+/// is the first asset URL in `assetURLs`.
+@property (nonatomic, readonly) BOOL isFirstAssetURL;
 
 /// If Yes, player will be called pause method When Received `UIApplicationWillResignActiveNotification` notification.
 /// default is YES.
@@ -131,6 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// When the player is play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id asset);
+
 
 /// Play the next url ,while the `assetURLs` is not NULL.
 - (void)playTheNext;
@@ -232,22 +246,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the small window is displayed.
 @property (nonatomic, readonly) BOOL isSmallFloatViewShow;
 
-/// if tableView or collectionView has only one section , use sectionAssetURLs.
-/// if normal model set this can use `playTheNext` `playThePrevious` `playTheIndex:`.
-@property (nonatomic, copy, nullable) NSArray <NSURL *>*assetURLs;
-
 /// if tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
 
 /// stop the current playing video on cell.
 - (void)stopCurrentPlayingCell;
 
-/// Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
-/// `scrollToTop` scroll to top with animations.
+/// Play the indexPath of url, while the `assetURLs` or `sectionAssetURLs` is not NULL.
+/// `scrollToTop` scroll the current cell to top with animations.
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop;
 
+/// Play the indexPath with assetURL.
+/// `assetURL` is the player URL.
+/// `scrollToTop` scroll the current cell to top with animations.
+- (void)playTheIndexPath:(NSIndexPath *)indexPath assetURL:(NSURL *)assetURL scrollToTop:(BOOL)scrollToTop;
+
 /// Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
-/// `scrollToTop` scroll to top with animations.
+/// `scrollToTop` scroll the current cell to top with animations.
 /// Scroll completion callback.
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
 
