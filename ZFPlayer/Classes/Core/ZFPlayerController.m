@@ -42,6 +42,8 @@
 @property (nonatomic, assign) NSTimeInterval currentTime;
 @property (nonatomic, assign) NSTimeInterval totalTime;
 @property (nonatomic, assign) NSTimeInterval bufferTime;
+/// The view tag that the player display in scrollView.
+@property (nonatomic, assign) NSInteger containerViewTag;
 
 @end
 

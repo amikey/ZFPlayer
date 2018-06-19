@@ -54,8 +54,8 @@
 }
 
 /**
- * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController+ZFPlayerRotation.
- * All you need to do is revisit the following three methods on a page that supports directions other than portrait。
+ * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController called.
+ * All you need to do is revisit the following three methods on a page that supports directions other than portrait.
  */
 
 // Whether automatic screen rotation is supported.
@@ -96,8 +96,8 @@
 @implementation UINavigationController (ZFPlayerRotation)
 
 /**
- * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController+ZFPlayerRotation.
- * All you need to do is revisit the following three methods on a page that supports directions other than portrait。
+ * If the root view of the window is a UINavigationController, you call this Category first, and then UIViewController called.
+ * All you need to do is revisit the following three methods on a page that supports directions other than portrait.
  */
 
 // Whether automatic screen rotation is supported

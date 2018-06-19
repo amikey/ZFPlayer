@@ -1,5 +1,6 @@
 //
 //  ZFPortraitControlView.h
+//  ZFPlayer
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
 //

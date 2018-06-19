@@ -181,13 +181,6 @@ static NSString *kIdentifier = @"kIdentifier";
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        
-        /// 停止的时候找出最合适的播放
-        @weakify(self)
-        _tableView.scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
-            @strongify(self)
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
-        };
     }
     return _tableView;
 }

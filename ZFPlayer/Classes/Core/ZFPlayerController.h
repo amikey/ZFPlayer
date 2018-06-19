@@ -228,17 +228,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// The scroll view is `tableView` or `collectionView`.
 @property (nonatomic, readonly, nullable) UIScrollView *scrollView;
 
-/// The scrollView player should auto player,default is YES.
+/// The scrollView player should auto player, default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;
 
 /// The list plays the container view of the player when the window is small after the player has slid off the screen.
 @property (nonatomic, readonly, nullable) ZFFloatView *smallFloatView;
 
 /// The indexPath is playing.
-@property (nonatomic, nullable) NSIndexPath *playingIndexPath;
+@property (nonatomic, readonly, nullable) NSIndexPath *playingIndexPath;
 
 /// The view tag that the player display in scrollView.
-@property (nonatomic) NSInteger containerViewTag;
+@property (nonatomic, readonly) NSInteger containerViewTag;
 
 /// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;

@@ -27,7 +27,6 @@
 #import "ZFReachabilityManager.h"
 #import "ZFPlayer.h"
 #import "ZFKVOController.h"
-#import <WebKit/WebKit.h>
 
 UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class replacedClass, SEL replacedSel, SEL noneSel){
     Method originalMethod = class_getInstanceMethod(originalClass, originalSel);
