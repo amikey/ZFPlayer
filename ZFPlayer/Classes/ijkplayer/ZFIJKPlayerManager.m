@@ -270,6 +270,7 @@
         case IJKMPMovieFinishReasonPlaybackEnded: {
             NSLog(@"playbackStateDidChange: 播放完毕: %d\n", reason);
             self.playState = ZFPlayerPlayStatePlayStopped;
+            if (self.playerDidToEnd) self.playerDidToEnd(self);
         }
             break;
             
