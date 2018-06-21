@@ -210,6 +210,7 @@
 - (void)setCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)currentPlayerManager {
     if (!currentPlayerManager) return;
     _currentPlayerManager = currentPlayerManager;
+    _currentPlayerManager.view.hidden = YES;
     self.gestureControl.disableTypes = self.disableGestureTypes;
     [self.gestureControl addGestureToView:currentPlayerManager.view];
     [self playerManagerCallbcak];
@@ -224,7 +225,6 @@
     self.currentPlayerManager.view.frame = containerView.bounds;
     self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.orientationObserver addDeviceOrientationObserver];
-    self.currentPlayerManager.view.hidden = YES;
 }
 
 - (void)setControlView:(UIView<ZFPlayerMediaControl> *)controlView {
@@ -663,7 +663,7 @@
 - (void)addPlayerViewToCell {
     self.isSmallFloatViewShow = NO;
     self.smallFloatView.hidden = YES;
-    UIView *cell = [self.scrollView zf_getCellForIndexPath:self.scrollView.playingIndexPath];
+    UIView *cell = [self.scrollView zf_getCellForIndexPath:self.playingIndexPath];
     self.containerView = [cell viewWithTag:self.containerViewTag];
     [self.containerView addSubview:self.currentPlayerManager.view];
     self.currentPlayerManager.view.frame = self.containerView.bounds;
@@ -677,6 +677,7 @@
     self.smallFloatView.hidden = NO;
     [self.smallFloatView addSubview:self.currentPlayerManager.view];
     self.currentPlayerManager.view.frame = self.smallFloatView.bounds;
+    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.orientationObserver cellSmallModelRotateView:self.currentPlayerManager.view containerView:self.smallFloatView];
 }
 
