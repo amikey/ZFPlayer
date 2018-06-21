@@ -275,17 +275,25 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
         // Top
         indexPath = collectionView.indexPathsForVisibleItems.firstObject;
         if (self.contentOffset.y <= 0 && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
-            if (handler) handler(indexPath);
-            self.shouldPlayIndexPath = indexPath;
-            return;
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+            UIView *playerView = [cell viewWithTag:self.containerViewTag];
+            if (playerView) {
+                if (handler) handler(indexPath);
+                self.shouldPlayIndexPath = indexPath;
+                return;
+            }
         }
         
         // Bottom
         indexPath = collectionView.indexPathsForVisibleItems.lastObject;
         if (self.contentOffset.y + self.frame.size.height >= self.contentSize.height && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
-            if (handler) handler(indexPath);
-            self.shouldPlayIndexPath = indexPath;
-            return;
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+            UIView *playerView = [cell viewWithTag:self.containerViewTag];
+            if (playerView) {
+                if (handler) handler(indexPath);
+                self.shouldPlayIndexPath = indexPath;
+                return;
+            }
         }
     }
     
