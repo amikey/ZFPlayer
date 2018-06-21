@@ -38,7 +38,6 @@ static NSString *kIdentifier = @"kIdentifier";
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self requestData];
-    self.navigationItem.title = @"Click to play";
     
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];
@@ -52,7 +51,6 @@ static NSString *kIdentifier = @"kIdentifier";
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
-        [self.view endEditing:YES];
         [self setNeedsStatusBarAppearanceUpdate];
         self.tableView.scrollsToTop = !isFullScreen;
     };
@@ -158,14 +156,11 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    @weakify(self)
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop completionHandler:^{
-        @strongify(self)
-        ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
-        [self.controlView showTitle:layout.data.title
-                     coverURLString:layout.data.thumbnail_url
-                     fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
-    }];
+    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
+    ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
+    [self.controlView showTitle:layout.data.title
+                 coverURLString:layout.data.thumbnail_url
+                 fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
 }
 
 #pragma mark - getter

@@ -1,22 +1,24 @@
 //
-//  ZFNormalTableViewController.m
-//  ZFPlayer
+//  ZFMixViewController.m
+//  ZFPlayer_Example
 //
-//  Created by 任子丰 on 2018/4/1.
+//  Created by 任子丰 on 2018/6/21.
 //  Copyright © 2018年 紫枫. All rights reserved.
 //
 
-#import "ZFNormalTableViewController.h"
+#import "ZFMixViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import "ZFTableViewCell.h"
 #import "ZFTableData.h"
+#import "ZFOtherCell.h"
 
 static NSString *kIdentifier = @"kIdentifier";
+static NSString *kDouYinIdentifier = @"douYinIdentifier";
 
-@interface ZFNormalTableViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
+@interface ZFMixViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -24,51 +26,38 @@ static NSString *kIdentifier = @"kIdentifier";
 
 @property (nonatomic, strong) ZFAVPlayerManager *playerManager;
 
-//@property (nonatomic, strong) KSMediaPlayerManager *playerManager;
-
 @property (nonatomic, assign) NSInteger count;
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
-@property (nonatomic, strong) NSMutableArray *urls;
-
 @end
 
-@implementation ZFNormalTableViewController
+@implementation ZFMixViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-
     [self.view addSubview:self.tableView];
     [self requestData];
-    self.navigationItem.title = @"Automic to play";
     
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];
-
-    /// player
+    
+    /// player,tag值必须在cell里设置
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
-    self.player.assetURLs = self.urls;
     
     @weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
-        } else if (self.player.isFullScreen) {
-            [self.player enterFullScreen:NO animated:YES];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.player stopCurrentPlayingCell];
-            });
-        }
+        [self.player enterFullScreen:NO animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.player stopCurrentPlayingCell];
+        });
     };
     
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
-        [self.view endEditing:YES];
         [self setNeedsStatusBarAppearanceUpdate];
         self.tableView.scrollsToTop = !isFullScreen;
     };
@@ -91,7 +80,6 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (void)requestData {
-    self.urls = @[].mutableCopy;
     NSString *path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -103,9 +91,6 @@ static NSString *kIdentifier = @"kIdentifier";
         [data setValuesForKeysWithDictionary:dataDic];
         ZFTableViewCellLayout *layout = [[ZFTableViewCellLayout alloc] initWithData:data];
         [self.dataSource addObject:layout];
-        NSString *URLString = [data.video_url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSURL *url = [NSURL URLWithString:URLString];
-        [self.urls addObject:url];
     }
 }
 
@@ -131,14 +116,19 @@ static NSString *kIdentifier = @"kIdentifier";
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.dataSource.count;
+    return 2*self.dataSource.count+1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ZFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
-    [cell setDelegate:self withIndexPath:indexPath];
-    cell.layout = self.dataSource[indexPath.row];
-    [cell setNormalMode];
+    if (indexPath.row % 2 == 1) {
+        ZFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
+        [cell setDelegate:self withIndexPath:indexPath];
+        NSInteger index = (indexPath.row-1)/2;
+        cell.layout = self.dataSource[index];
+        [cell setNormalMode];
+        return cell;
+    }
+    ZFOtherCell *cell = [tableView dequeueReusableCellWithIdentifier:kDouYinIdentifier];
     return cell;
 }
 
@@ -147,8 +137,12 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
-    return layout.height;
+    if (indexPath.row % 2 == 1) {
+        NSInteger index = (indexPath.row-1)/2;
+        ZFTableViewCellLayout *layout = self.dataSource[index];
+        return layout.height;
+    }
+    return 200;
 }
 
 #pragma mark - ZFTableViewCellDelegate
@@ -161,14 +155,12 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    @weakify(self)
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop completionHandler:^{
-        @strongify(self)
-        ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
-        [self.controlView showTitle:layout.data.title
-                     coverURLString:layout.data.thumbnail_url
-                     fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
-    }];
+    NSInteger index = (indexPath.row-1)/2;
+    ZFTableViewCellLayout *layout = self.dataSource[index];
+    [self.player playTheIndexPath:indexPath assetURL:[NSURL URLWithString:layout.data.video_url] scrollToTop:scrollToTop];
+    [self.controlView showTitle:layout.data.title
+                 coverURLString:layout.data.thumbnail_url
+                 fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
 }
 
 #pragma mark - getter
@@ -177,6 +169,7 @@ static NSString *kIdentifier = @"kIdentifier";
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         [_tableView registerClass:[ZFTableViewCell class] forCellReuseIdentifier:kIdentifier];
+        [_tableView registerClass:[ZFOtherCell class] forCellReuseIdentifier:kDouYinIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         if (@available(iOS 11.0, *)) {
@@ -184,7 +177,7 @@ static NSString *kIdentifier = @"kIdentifier";
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        /// 停止的时候找出最合适的播放
+        /// 停止的时候找出最合适的播放(只能找到设置了tag值cell)
         @weakify(self)
         _tableView.scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
@@ -201,5 +194,5 @@ static NSString *kIdentifier = @"kIdentifier";
     return _controlView;
 }
 
-@end
 
+@end

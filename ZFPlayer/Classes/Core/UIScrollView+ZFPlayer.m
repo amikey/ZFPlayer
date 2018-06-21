@@ -249,17 +249,25 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
         // Top
         indexPath = tableView.indexPathsForVisibleRows.firstObject;
         if (self.contentOffset.y <= 0 && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
-            if (handler) handler(indexPath);
-            self.shouldPlayIndexPath = indexPath;
-            return;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            UIView *playerView = [cell viewWithTag:self.containerViewTag];
+            if (playerView) {
+                if (handler) handler(indexPath);
+                self.shouldPlayIndexPath = indexPath;
+                return;
+            }
         }
         
         // Bottom
         indexPath = tableView.indexPathsForVisibleRows.lastObject;
         if (self.contentOffset.y + self.frame.size.height >= self.contentSize.height && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
-            if (handler) handler(indexPath);
-            self.shouldPlayIndexPath = indexPath;
-            return;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            UIView *playerView = [cell viewWithTag:self.containerViewTag];
+            if (playerView) {
+                if (handler) handler(indexPath);
+                self.shouldPlayIndexPath = indexPath;
+                return;
+            }
         }
     } else if ([self isKindOfClass:[UICollectionView class]]) {
         UICollectionView *collectionView = (UICollectionView *)self;
@@ -289,6 +297,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     
     [cellsArray enumerateObjectsUsingBlock:^(UIView *cell, NSUInteger idx, BOOL * _Nonnull stop) {
         UIView *playerView = [cell viewWithTag:self.containerViewTag];
+        if (!playerView) return;
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
         CGRect rect = [self convertRect:rect1 toView:self.superview];
         CGFloat topSpacing = rect.origin.y - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;

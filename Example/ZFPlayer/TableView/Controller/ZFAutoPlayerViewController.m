@@ -1,22 +1,22 @@
 //
-//  ZFSmallPlayViewController.m
+//  ZFAutoPlayerViewController.m
 //  ZFPlayer
 //
 //  Created by 任子丰 on 2018/4/1.
 //  Copyright © 2018年 紫枫. All rights reserved.
 //
 
-#import "ZFSmallPlayViewController.h"
+#import "ZFAutoPlayerViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
-#import "ZFUtilities.h"
 #import "ZFTableViewCell.h"
 #import "ZFTableData.h"
 
 static NSString *kIdentifier = @"kIdentifier";
 
-@interface ZFSmallPlayViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
+@interface ZFAutoPlayerViewController () <UITableViewDelegate,UITableViewDataSource,ZFTableViewCellDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -32,35 +32,30 @@ static NSString *kIdentifier = @"kIdentifier";
 
 @end
 
-@implementation ZFSmallPlayViewController
+@implementation ZFAutoPlayerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+
     [self.view addSubview:self.tableView];
-    [self requestData];    
+    [self requestData];
+    
     /// playerManager
     self.playerManager = [[ZFAVPlayerManager alloc] init];
-    
+
     /// player,tag值必须在cell里设置
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
     self.player.assetURLs = self.urls;
-    self.player.shouldAutoPlay = YES;
-
-    @weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        @strongify(self)
-        [self setNeedsStatusBarAppearanceUpdate];
-        self.tableView.scrollsToTop = !isFullScreen;
-    };
     
+    @weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (!self.player.isFullScreen) {
-            [self.player stopCurrentPlayingCell];
-            [self.controlView resetControlView];
-        } else {
+        if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
+            [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
+        } else if (self.player.isFullScreen) {
             [self.player enterFullScreen:NO animated:YES];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.player stopCurrentPlayingCell];
@@ -68,14 +63,11 @@ static NSString *kIdentifier = @"kIdentifier";
         }
     };
     
-    /// 以下设置滑出屏幕后不停止播放
-    self.player.stopWhileNotVisible = NO;
-    CGFloat margin = 20;
-    CGFloat w = ZFPlayer_ScreenWidth/2;
-    CGFloat h = w * 9/16;
-    CGFloat x = ZFPlayer_ScreenWidth - w - margin;
-    CGFloat y = ZFPlayer_ScreenHeight - h - margin;
-    self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
+    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        @strongify(self)
+        [self setNeedsStatusBarAppearanceUpdate];
+        self.tableView.scrollsToTop = !isFullScreen;
+    };
 }
 
 - (void)viewWillLayoutSubviews {

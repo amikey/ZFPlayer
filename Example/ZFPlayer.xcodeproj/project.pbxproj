@@ -22,11 +22,13 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		80BE2428ECB65735B49B8FC1 /* libPods-ZFPlayer_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4EDC6B3234B489A216C8825 /* libPods-ZFPlayer_Example.a */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		CC112E9A20DBD45E0051EE60 /* ZFMixViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC112E9920DBD45E0051EE60 /* ZFMixViewController.m */; };
+		CC112E9D20DBD6600051EE60 /* ZFOtherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC112E9C20DBD6600051EE60 /* ZFOtherCell.m */; };
 		CC47EB6B20C969EC0040419D /* ZFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC47EB6A20C969EC0040419D /* ZFViewController.m */; };
 		CCF66D7420C57BE5001B6121 /* ZFDouYinControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF66D7320C57BE5001B6121 /* ZFDouYinControlView.m */; };
 		D20935FD20B658AE0002C956 /* ZFTableViewCellLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D20935F020B658AE0002C956 /* ZFTableViewCellLayout.m */; };
 		D20935FE20B658AE0002C956 /* ZFTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D20935F120B658AE0002C956 /* ZFTableViewCell.m */; };
-		D20935FF20B658AE0002C956 /* ZFNormalTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20935F220B658AE0002C956 /* ZFNormalTableViewController.m */; };
+		D20935FF20B658AE0002C956 /* ZFAutoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20935F220B658AE0002C956 /* ZFAutoPlayerViewController.m */; };
 		D209360020B658AE0002C956 /* ZFTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = D20935F520B658AE0002C956 /* ZFTableData.m */; };
 		D209360120B658AE0002C956 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = D20935F620B658AE0002C956 /* data.json */; };
 		D209360220B658AE0002C956 /* NSString+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = D20935FB20B658AE0002C956 /* NSString+Size.m */; };
@@ -76,18 +78,22 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		880FA6F9C4DCEF2BB4D2644B /* Pods-ZFPlayer_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFPlayer_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		A4EDC6B3234B489A216C8825 /* libPods-ZFPlayer_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZFPlayer_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC112E9820DBD45E0051EE60 /* ZFMixViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFMixViewController.h; sourceTree = "<group>"; };
+		CC112E9920DBD45E0051EE60 /* ZFMixViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFMixViewController.m; sourceTree = "<group>"; };
+		CC112E9B20DBD6600051EE60 /* ZFOtherCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFOtherCell.h; sourceTree = "<group>"; };
+		CC112E9C20DBD6600051EE60 /* ZFOtherCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFOtherCell.m; sourceTree = "<group>"; };
 		CC47EB6920C969EC0040419D /* ZFViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFViewController.h; sourceTree = "<group>"; };
 		CC47EB6A20C969EC0040419D /* ZFViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFViewController.m; sourceTree = "<group>"; };
 		CCF66D7220C57BE5001B6121 /* ZFDouYinControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFDouYinControlView.h; sourceTree = "<group>"; };
 		CCF66D7320C57BE5001B6121 /* ZFDouYinControlView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFDouYinControlView.m; sourceTree = "<group>"; };
 		D20935F020B658AE0002C956 /* ZFTableViewCellLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFTableViewCellLayout.m; sourceTree = "<group>"; };
 		D20935F120B658AE0002C956 /* ZFTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFTableViewCell.m; sourceTree = "<group>"; };
-		D20935F220B658AE0002C956 /* ZFNormalTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFNormalTableViewController.m; sourceTree = "<group>"; };
+		D20935F220B658AE0002C956 /* ZFAutoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFAutoPlayerViewController.m; sourceTree = "<group>"; };
 		D20935F320B658AE0002C956 /* ZFLightTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFLightTableViewController.h; sourceTree = "<group>"; };
 		D20935F420B658AE0002C956 /* NSString+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Size.h"; sourceTree = "<group>"; };
 		D20935F520B658AE0002C956 /* ZFTableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFTableData.m; sourceTree = "<group>"; };
 		D20935F620B658AE0002C956 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
-		D20935F720B658AE0002C956 /* ZFNormalTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFNormalTableViewController.h; sourceTree = "<group>"; };
+		D20935F720B658AE0002C956 /* ZFAutoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFAutoPlayerViewController.h; sourceTree = "<group>"; };
 		D20935F820B658AE0002C956 /* ZFTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFTableViewCell.h; sourceTree = "<group>"; };
 		D20935F920B658AE0002C956 /* ZFTableViewCellLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFTableViewCellLayout.h; sourceTree = "<group>"; };
 		D20935FA20B658AE0002C956 /* ZFTableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFTableData.h; sourceTree = "<group>"; };
@@ -230,12 +236,14 @@
 			children = (
 				D2EEFE6120BBB03E0097D6D9 /* ZFNotAutoPlayViewController.h */,
 				D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */,
-				D20935F720B658AE0002C956 /* ZFNormalTableViewController.h */,
-				D20935F220B658AE0002C956 /* ZFNormalTableViewController.m */,
+				D20935F720B658AE0002C956 /* ZFAutoPlayerViewController.h */,
+				D20935F220B658AE0002C956 /* ZFAutoPlayerViewController.m */,
 				D2EEFE6420BBF3890097D6D9 /* ZFSmallPlayViewController.h */,
 				D2EEFE6520BBF3890097D6D9 /* ZFSmallPlayViewController.m */,
 				D20935F320B658AE0002C956 /* ZFLightTableViewController.h */,
 				D20935FC20B658AE0002C956 /* ZFLightTableViewController.m */,
+				CC112E9820DBD45E0051EE60 /* ZFMixViewController.h */,
+				CC112E9920DBD45E0051EE60 /* ZFMixViewController.m */,
 				D243FC9E20C53F950014F533 /* ZFDouYinViewController.h */,
 				D243FC9F20C53F950014F533 /* ZFDouYinViewController.m */,
 			);
@@ -247,6 +255,8 @@
 			children = (
 				D20935F820B658AE0002C956 /* ZFTableViewCell.h */,
 				D20935F120B658AE0002C956 /* ZFTableViewCell.m */,
+				CC112E9B20DBD6600051EE60 /* ZFOtherCell.h */,
+				CC112E9C20DBD6600051EE60 /* ZFOtherCell.m */,
 				D243FCA120C543D30014F533 /* ZFDouYinCell.h */,
 				D243FCA220C543D30014F533 /* ZFDouYinCell.m */,
 				CCF66D7220C57BE5001B6121 /* ZFDouYinControlView.h */,
@@ -490,15 +500,17 @@
 				D209360320B658AE0002C956 /* ZFLightTableViewController.m in Sources */,
 				D20935FD20B658AE0002C956 /* ZFTableViewCellLayout.m in Sources */,
 				D209360A20B659190002C956 /* ZFNoramlViewController.m in Sources */,
+				CC112E9D20DBD6600051EE60 /* ZFOtherCell.m in Sources */,
 				D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */,
 				D209360020B658AE0002C956 /* ZFTableData.m in Sources */,
 				D243FCA320C543D30014F533 /* ZFDouYinCell.m in Sources */,
+				CC112E9A20DBD45E0051EE60 /* ZFMixViewController.m in Sources */,
 				D243FCA020C53F950014F533 /* ZFDouYinViewController.m in Sources */,
 				D209360220B658AE0002C956 /* NSString+Size.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				CC47EB6B20C969EC0040419D /* ZFViewController.m in Sources */,
 				D209365920B79C1E0002C956 /* ZFKeyboardViewController.m in Sources */,
-				D20935FF20B658AE0002C956 /* ZFNormalTableViewController.m in Sources */,
+				D20935FF20B658AE0002C956 /* ZFAutoPlayerViewController.m in Sources */,
 				D2EEFE6320BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

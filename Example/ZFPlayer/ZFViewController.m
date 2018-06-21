@@ -20,21 +20,24 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.title = @"ZFPlayer";
     [self.view addSubview:self.tableView];
-    self.titles = @[@"Keyboard",
-                        @"Noraml",
-                        @"Click to play the at tableView",
-                        @"Automatic to play at tableView",
-                        @"Small window to play at tableView",
-                        @"Light and dark to play at tableView",
-                        @"Dou yin style"];
+    self.titles = @[@"键盘支持横屏",
+                    @"普通样式",
+                    @"列表点击播放",
+                    @"列表自动播放",
+                    @"列表小窗播放",
+                    @"列表明按播放",
+                    @"多种cell混合样式",
+                    @"抖音样式"];
     
     self.viewControllers = @[@"ZFKeyboardViewController",
                              @"ZFNoramlViewController",
                              @"ZFNotAutoPlayViewController",
-                             @"ZFNormalTableViewController",
+                             @"ZFAutoPlayerViewController",
                              @"ZFSmallPlayViewController",
                              @"ZFLightTableViewController",
+                             @"ZFMixViewController",
                              @"ZFDouYinViewController"];
 }
 
@@ -63,6 +66,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *vcString = self.viewControllers[indexPath.row];
     UIViewController *viewController = [[NSClassFromString(vcString) alloc] init];
+    viewController.navigationItem.title = self.titles[indexPath.row];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -1,5 +1,5 @@
 //
-//  ZFNormalTableViewController.h
+//  ZFAutoPlayerViewController.h
 //  ZFPlayer
 //
 //  Created by 紫枫 on 2018/5/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZFNormalTableViewController : UIViewController
+@interface ZFAutoPlayerViewController : UIViewController
 
 @end

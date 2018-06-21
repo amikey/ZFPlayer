@@ -1,4 +1,4 @@
-//
+
 //  ZFOrentationObserver.m
 //  ZFPlayer
 //
@@ -156,10 +156,6 @@ static UIWindow *kWindow;
 
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated {
     if (self.fullScreenMode == ZFFullScreenModeLandscape) {
-        UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-        // Determine that if the current direction is the same as the direction you want to rotate, do nothing
-        if (currentOrientation == orientation) { return; }
-        
         UIView *superview = nil;
         CGRect frame;
         if (UIInterfaceOrientationIsLandscape(orientation)) {

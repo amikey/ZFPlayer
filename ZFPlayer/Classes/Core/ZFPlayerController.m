@@ -262,6 +262,7 @@
     [self.notification removeNotification];
     [self.orientationObserver removeDeviceOrientationObserver];
     [self.currentPlayerManager stop];
+    
     [self.currentPlayerManager.view removeFromSuperview];
 }
 
