@@ -272,8 +272,18 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     } else if ([self isKindOfClass:[UICollectionView class]]) {
         UICollectionView *collectionView = (UICollectionView *)self;
         visiableCells = [collectionView visibleCells];
+        NSArray *sortedIndexPaths = [collectionView.indexPathsForVisibleItems sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            return [obj1 compare:obj2];
+        }];
+        
+        visiableCells = [visiableCells sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSIndexPath *path1 = (NSIndexPath *)[collectionView indexPathForCell:obj1];
+            NSIndexPath *path2 = (NSIndexPath *)[collectionView indexPathForCell:obj2];
+            return [path1 compare:path2];
+        }];
+        
         // Top
-        indexPath = collectionView.indexPathsForVisibleItems.firstObject;
+        indexPath = sortedIndexPaths.firstObject;
         if (self.contentOffset.y <= 0 && (!self.playingIndexPath || [indexPath compare:self.playingIndexPath] == NSOrderedSame)) {
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
             UIView *playerView = [cell viewWithTag:self.containerViewTag];

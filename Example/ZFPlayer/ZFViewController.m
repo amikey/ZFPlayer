@@ -29,7 +29,8 @@ static NSString *kIdentifier = @"kIdentifier";
                     @"列表小窗播放",
                     @"列表明按播放",
                     @"多种cell混合样式",
-                    @"抖音样式"];
+                    @"抖音样式",
+                    @"CollectionView"];
     
     self.viewControllers = @[@"ZFKeyboardViewController",
                              @"ZFNoramlViewController",
@@ -38,7 +39,8 @@ static NSString *kIdentifier = @"kIdentifier";
                              @"ZFSmallPlayViewController",
                              @"ZFLightTableViewController",
                              @"ZFMixViewController",
-                             @"ZFDouYinViewController"];
+                             @"ZFDouYinViewController",
+                             @"ZFCollectionViewController"];
 }
 
 - (void)viewWillLayoutSubviews {

@@ -461,7 +461,7 @@
     if (self.orientationObserver.fullScreenMode == ZFFullScreenModePortrait) {
         [self.orientationObserver enterPortraitFullScreen:fullScreen animated:YES];
     } else {
-        UIInterfaceOrientation orientation =  UIInterfaceOrientationUnknown;
+        UIInterfaceOrientation orientation = UIInterfaceOrientationUnknown;
         orientation = fullScreen? UIInterfaceOrientationLandscapeRight : UIInterfaceOrientationPortrait;
         [self.orientationObserver enterLandscapeFullScreen:orientation animated:animated];
     }

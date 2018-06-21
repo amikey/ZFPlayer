@@ -261,7 +261,6 @@
 - (void)backBtnClickAction:(UIButton *)sender {
     self.lockBtn.selected = NO;
     [self.player enterFullScreen:NO animated:YES];
-    
     self.player.lockedScreen = NO;
     self.lockBtn.selected = NO;
 }
