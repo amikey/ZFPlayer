@@ -38,46 +38,46 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 @interface UIScrollView (ZFPlayer)
 
 /// Rolling direction switch
-@property (nonatomic, assign) BOOL enableScrollHook;
+@property (nonatomic, assign) BOOL zf_enableScrollHook;
 
 /// The indexPath is playing
-@property (nonatomic, strong, nullable) NSIndexPath *playingIndexPath;
+@property (nonatomic, strong, nullable) NSIndexPath *zf_playingIndexPath;
 
 /// The indexPath that should play, the one that lights up.
-@property (nonatomic, strong, nullable) NSIndexPath *shouldPlayIndexPath;
+@property (nonatomic, strong, nullable) NSIndexPath *zf_shouldPlayIndexPath;
 
 /// WWANA networks play automatically,default NO.
-@property (nonatomic, assign, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
+@property (nonatomic, assign, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
 
 /// The player should auto player,default is YES.
-@property (nonatomic, assign) BOOL shouldAutoPlay;
+@property (nonatomic, assign) BOOL zf_shouldAutoPlay;
 
 /// The view tag that the player display in scrollView.
-@property (nonatomic, assign) NSInteger containerViewTag;
+@property (nonatomic, assign) NSInteger zf_containerViewTag;
 
 /// Is the video playing.
-@property (nonatomic, assign, readonly, getter=isPlaying) BOOL playing;
+@property (nonatomic, assign, readonly, getter=zf_isPlaying) BOOL zf_playing;
 
 /// The scroll derection of scrollView.
-@property (nonatomic, assign) ZFPlayerScrollDerection scrollDerection;
+@property (nonatomic, assign) ZFPlayerScrollDerection zf_scrollDerection;
 
 /// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
-@property (nonatomic, assign) BOOL stopWhileNotVisible;
+@property (nonatomic, assign) BOOL zf_stopWhileNotVisible;
 
 /// The block invoked When the player did appeared.
-@property (nonatomic, copy, nullable) void(^playerDidAppearInScrollView)(NSIndexPath *indexPath);
+@property (nonatomic, copy, nullable) void(^zf_playerDidAppearInScrollView)(NSIndexPath *indexPath);
 
 /// The block invoked When the player will disappear.
-@property (nonatomic, copy, nullable) void(^playerWillDisappearInScrollView)(NSIndexPath *indexPath);
+@property (nonatomic, copy, nullable) void(^zf_playerWillDisappearInScrollView)(NSIndexPath *indexPath);
 
 /// The block invoked When the player did disappeared half.
-@property (nonatomic, copy, nullable) void(^playerDisappearHalfInScrollView)(NSIndexPath *indexPath);
+@property (nonatomic, copy, nullable) void(^zf_playerDisappearHalfInScrollView)(NSIndexPath *indexPath);
 
 /// The block invoked When the player did disappeared.
-@property (nonatomic, copy, nullable) void(^playerDidDisappearInScrollView)(NSIndexPath *indexPath);
+@property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
 /// The block invoked When the player did stop scroll.
-@property (nonatomic, copy, nullable) void(^scrollViewDidStopScroll)(NSIndexPath *indexPath);
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScroll)(NSIndexPath *indexPath);
 
 /// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped)
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
@@ -92,6 +92,15 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler;
 
 - (void)zf_scrollViewStopScroll;
+
+@end
+
+@interface UIScrollView (ZFPlayerDeprecated)
+
+@property (nonatomic, copy, nullable) void(^scrollViewDidStopScroll)(NSIndexPath *indexPath) __attribute__((deprecated("use `zf_scrollViewDidStopScroll` instead.")));
+
+/// The indexPath that should play, the one that lights up.
+@property (nonatomic, strong, nullable) NSIndexPath *shouldPlayIndexPath __attribute__((deprecated("use `zf_shouldPlayIndexPath` instead.")));
 
 @end
 

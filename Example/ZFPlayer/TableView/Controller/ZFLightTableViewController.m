@@ -83,7 +83,7 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
          [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
     }];
-    ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.tableView.shouldPlayIndexPath];
+    ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.tableView.zf_shouldPlayIndexPath];
     [cell hideMaskView];
 }
 
@@ -158,10 +158,10 @@ static NSString *kIdentifier = @"kIdentifier";
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     @weakify(self)
     [scrollView zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
-        if ([indexPath compare:self.tableView.shouldPlayIndexPath] != NSOrderedSame) {
+        if ([indexPath compare:self.tableView.zf_shouldPlayIndexPath] != NSOrderedSame) {
             @strongify(self)
             /// 显示黑色蒙版
-            ZFTableViewCell *cell1 = [self.tableView cellForRowAtIndexPath:self.tableView.shouldPlayIndexPath];
+            ZFTableViewCell *cell1 = [self.tableView cellForRowAtIndexPath:self.tableView.zf_shouldPlayIndexPath];
             [cell1 showMaskView];
             /// 隐藏黑色蒙版
             ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -205,9 +205,9 @@ static NSString *kIdentifier = @"kIdentifier";
         }
         /// 停止的时候找出最合适的播放
         @weakify(self)
-        _tableView.scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
+        _tableView.zf_scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
+            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };
     }
     return _tableView;

@@ -137,6 +137,10 @@ static UIWindow *kWindow;
         return;
     }
     
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    // Determine that if the current direction is the same as the direction you want to rotate, do nothing
+    if (_currentOrientation == currentOrientation) return;
+    
     switch (_currentOrientation) {
         case UIInterfaceOrientationPortrait: {
             [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:YES];
@@ -155,10 +159,6 @@ static UIWindow *kWindow;
 }
 
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated {
-    /// 兼容一些错误
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) && orientation == UIInterfaceOrientationPortrait) {
-        [self interfaceOrientation:UIInterfaceOrientationPortrait];
-    }
     if (self.fullScreenMode == ZFFullScreenModeLandscape) {
         UIView *superview = nil;
         CGRect frame;
@@ -211,7 +211,7 @@ static UIWindow *kWindow;
 
 /// Gets the rotation Angle of the transformation.
 - (CGAffineTransform)getTransformRotationAngle:(UIInterfaceOrientation)orientation {
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) && orientation == UIInterfaceOrientationPortrait) {
         return CGAffineTransformIdentity;
     }
     if (orientation == UIInterfaceOrientationPortrait) {
@@ -222,26 +222,6 @@ static UIWindow *kWindow;
         return CGAffineTransformMakeRotation(M_PI_2);
     }
     return CGAffineTransformIdentity;
-}
-
-/**
- *  强制屏幕转屏
- *
- *  @param orientation 屏幕方向
- */
-- (void)interfaceOrientation:(UIInterfaceOrientation)orientation
-{
-    // arc下
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector             = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val                  = orientation;
-        // 从2开始是因为0 1 两个参数已经被selector和target占用
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
-    }
 }
 
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated {

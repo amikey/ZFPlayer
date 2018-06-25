@@ -395,7 +395,7 @@
 
 - (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
     objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    if (self.scrollView) self.scrollView.WWANAutoPlay = self.isWWANAutoPlay;
+    if (self.scrollView) self.scrollView.zf_WWANAutoPlay = self.isWWANAutoPlay;
 }
 
 - (void)setVolume:(float)volume {
@@ -686,10 +686,10 @@
 
 - (void)setScrollView:(UIScrollView *)scrollView {
     objc_setAssociatedObject(self, @selector(scrollView), scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    self.scrollView.WWANAutoPlay = self.isWWANAutoPlay;
+    self.scrollView.zf_WWANAutoPlay = self.isWWANAutoPlay;
     @weakify(self)
-    scrollView.enableScrollHook = YES;
-    scrollView.playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+    scrollView.zf_enableScrollHook = YES;
+    scrollView.zf_playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDidAppearInScrollView:)]) {
@@ -700,7 +700,7 @@
         }
     };
     
-    scrollView.playerWillDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+    scrollView.zf_playerWillDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerWillDisappearInScrollView:)]) {
@@ -708,7 +708,7 @@
         }
     };
     
-    scrollView.playerDisappearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+    scrollView.zf_playerDisappearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDisappearHalfInScrollView:)]) {
@@ -719,7 +719,7 @@
         }
     };
     
-    scrollView.playerDidDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+    scrollView.zf_playerDidDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDidDisappearInScrollView:)]) {
@@ -734,13 +734,13 @@
 }
 
 - (void)setStopWhileNotVisible:(BOOL)stopWhileNotVisible {
-    self.scrollView.stopWhileNotVisible = stopWhileNotVisible;
+    self.scrollView.zf_stopWhileNotVisible = stopWhileNotVisible;
     objc_setAssociatedObject(self, @selector(stopWhileNotVisible), @(stopWhileNotVisible), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setContainerViewTag:(NSInteger)containerViewTag {
     objc_setAssociatedObject(self, @selector(containerViewTag), @(containerViewTag), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    self.scrollView.containerViewTag = containerViewTag;
+    self.scrollView.zf_containerViewTag = containerViewTag;
 }
 
 - (void)setPlayingIndexPath:(NSIndexPath *)playingIndexPath {
@@ -751,12 +751,12 @@
         self.containerView = [cell viewWithTag:self.containerViewTag];
         [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
         [self.orientationObserver addDeviceOrientationObserver];
-        self.scrollView.playingIndexPath = playingIndexPath;
+        self.scrollView.zf_playingIndexPath = playingIndexPath;
     }
 }
 
 - (void)setShouldAutoPlay:(BOOL)shouldAutoPlay {
-    self.scrollView.shouldAutoPlay = shouldAutoPlay;
+    self.scrollView.zf_shouldAutoPlay = shouldAutoPlay;
 }
 
 - (void)setSectionAssetURLs:(NSArray<NSArray<NSURL *> *> * _Nullable)sectionAssetURLs {
@@ -813,7 +813,7 @@
 }
 
 - (BOOL)shouldAutoPlay {
-    return self.scrollView.shouldAutoPlay;
+    return self.scrollView.zf_shouldAutoPlay;
 }
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ _Nullable)(void))completionHandler {
@@ -864,10 +864,10 @@
 }
 
 - (void)stopCurrentPlayingCell {
-    if (self.scrollView.playingIndexPath) {
+    if (self.scrollView.zf_playingIndexPath) {
         [self stop];
         self.isSmallFloatViewShow = NO;
-        self.scrollView.playingIndexPath = nil;
+        self.scrollView.zf_playingIndexPath = nil;
         if (self.smallFloatView) self.smallFloatView.hidden = YES;
     }
 }

@@ -179,7 +179,7 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
         }
         /// 停止的时候找出最合适的播放(只能找到设置了tag值cell)
         @weakify(self)
-        _tableView.scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
+        _tableView.zf_scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };

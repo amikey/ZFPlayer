@@ -171,7 +171,7 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
         [_collectionView registerClass:[ZFCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
         /// 停止的时候找出最合适的播放
         @weakify(self)
-        _collectionView.scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
+        _collectionView.zf_scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };

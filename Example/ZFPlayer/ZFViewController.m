@@ -27,7 +27,7 @@ static NSString *kIdentifier = @"kIdentifier";
                     @"列表点击播放",
                     @"列表自动播放",
                     @"列表小窗播放",
-                    @"列表明按播放",
+                    @"列表明暗播放",
                     @"多种cell混合样式",
                     @"抖音样式",
                     @"CollectionView"];
