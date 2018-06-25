@@ -831,7 +831,7 @@
             if (completionHandler) completionHandler();
             self.playingIndexPath = indexPath;
             self.assetURL = assetURL;
-            [self.scrollView zf_scrollViewStopScroll];
+            [self.scrollView zf_scrollViewDidStopScroll];
         }];
     } else {
         if (completionHandler) completionHandler();

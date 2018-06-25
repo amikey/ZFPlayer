@@ -77,7 +77,7 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
 /// The block invoked When the player did stop scroll.
-@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScroll)(NSIndexPath *indexPath);
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);
 
 /// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped)
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
@@ -91,13 +91,14 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// Scroll to indexPath with animations.
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler;
 
-- (void)zf_scrollViewStopScroll;
+/// ScrollView did stop scroll.
+- (void)zf_scrollViewDidStopScroll;
 
 @end
 
 @interface UIScrollView (ZFPlayerDeprecated)
 
-@property (nonatomic, copy, nullable) void(^scrollViewDidStopScroll)(NSIndexPath *indexPath) __attribute__((deprecated("use `zf_scrollViewDidStopScroll` instead.")));
+@property (nonatomic, copy, nullable) void(^scrollViewDidStopScroll)(NSIndexPath *indexPath) __attribute__((deprecated("use `zf_scrollViewDidStopScrollCallback` instead.")));
 
 /// The indexPath that should play, the one that lights up.
 @property (nonatomic, strong, nullable) NSIndexPath *shouldPlayIndexPath __attribute__((deprecated("use `zf_shouldPlayIndexPath` instead.")));

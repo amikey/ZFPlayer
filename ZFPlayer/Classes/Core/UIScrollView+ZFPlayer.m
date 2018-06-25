@@ -143,7 +143,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 - (void)add_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
     if (scrollToScrollStop) {
-        [scrollView zf_scrollViewStopScroll];
+        [scrollView zf_scrollViewDidStopScroll];
     }
 }
 
@@ -151,13 +151,13 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     if (!decelerate) {
         BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
         if (dragToDragStop) {
-            [scrollView zf_scrollViewStopScroll];
+            [scrollView zf_scrollViewDidStopScroll];
         }
     }
 }
 
 - (void)add_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [scrollView zf_scrollViewStopScroll];
+    [scrollView zf_scrollViewDidStopScroll];
 }
 
 - (void)add_scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -170,12 +170,12 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 #pragma mark - scrollView did stop scroll
 
-- (void)zf_scrollViewStopScroll {
+- (void)zf_scrollViewDidStopScroll {
     if (!self.zf_enableScrollHook) return;
     @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
-        if (self.zf_scrollViewDidStopScroll) self.zf_scrollViewDidStopScroll(indexPath);
+        if (self.zf_scrollViewDidStopScrollCallback) self.zf_scrollViewDidStopScrollCallback(indexPath);
         if (self.scrollViewDidStopScroll) self.scrollViewDidStopScroll(indexPath);
     }];
 }
@@ -446,7 +446,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScroll {
+- (void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScrollCallback {
     return objc_getAssociatedObject(self, _cmd);
 }
 
@@ -509,8 +509,8 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     objc_setAssociatedObject(self, @selector(zf_playerDidDisappearInScrollView), zf_playerDidDisappearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (void)setZf_scrollViewDidStopScroll:(void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScroll {
-    objc_setAssociatedObject(self, @selector(zf_scrollViewDidStopScroll), zf_scrollViewDidStopScroll, OBJC_ASSOCIATION_COPY_NONATOMIC);
+- (void)setZf_scrollViewDidStopScrollCallback:(void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScrollCallback {
+    objc_setAssociatedObject(self, @selector(zf_scrollViewDidStopScrollCallback), zf_scrollViewDidStopScrollCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 - (void)setZf_lastOffsetY:(CGFloat)zf_lastOffsetY {

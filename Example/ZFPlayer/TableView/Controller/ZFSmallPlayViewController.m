@@ -187,7 +187,7 @@ static NSString *kIdentifier = @"kIdentifier";
         }
         /// 停止的时候找出最合适的播放
         @weakify(self)
-        _tableView.zf_scrollViewDidStopScroll = ^(NSIndexPath * _Nonnull indexPath) {
+        _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };
