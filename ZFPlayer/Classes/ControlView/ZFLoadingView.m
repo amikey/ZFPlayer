@@ -23,6 +23,13 @@
 // THE SOFTWARE.
 
 #import "ZFLoadingView.h"
+#import "ZFNetworkSpeedMonitor.h"
+#import "UIView+ZFFrame.h"
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
+#import <ZFPlayer/ZFPlayer.h>
+#else
+#import "ZFPlayer.h"
+#endif
 
 @interface ZFLoadingView ()
 
@@ -178,6 +185,109 @@
 - (void)setHidesWhenStopped:(BOOL)hidesWhenStopped {
     _hidesWhenStopped = hidesWhenStopped;
     self.hidden = !self.isAnimating && hidesWhenStopped;
+}
+
+@end
+
+@interface ZFSpeedLoadingView ()
+
+@property (nonatomic, strong) ZFNetworkSpeedMonitor *speedMonitor;
+
+@end
+
+@implementation ZFSpeedLoadingView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        [self initialize];
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self initialize];
+}
+
+- (void)initialize {
+    [self addSubview:self.loadingView];
+    [self addSubview:self.speedTextLabel];
+    [self.speedMonitor startSpeedMonitor];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    CGFloat min_x = 0;
+    CGFloat min_y = 0;
+    CGFloat min_w = 0;
+    CGFloat min_h = 0;
+    CGFloat min_view_w = self.width;
+    CGFloat min_view_h = self.height;
+    
+    min_w = min_view_w;
+    min_h = min_view_h;
+    
+    min_w = 44;
+    min_h = min_w;
+    min_x = (min_view_w - min_w) / 2;
+    min_y = (min_view_h - min_h) / 2 - 10;
+    self.loadingView.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    
+    min_x = 0;
+    min_y = self.loadingView.bottom+5;
+    min_w = min_view_w;
+    min_h = 20;
+    self.speedTextLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
+}
+
+- (void)startAnimating {
+    [self.loadingView startAnimating];
+    self.hidden = NO;
+}
+
+- (void)stopAnimating {
+    [self.loadingView stopAnimating];
+    self.hidden = YES;
+}
+
+- (UILabel *)speedTextLabel {
+    if (!_speedTextLabel) {
+        _speedTextLabel = [UILabel new];
+        _speedTextLabel.textColor = [UIColor whiteColor];
+        _speedTextLabel.font = [UIFont systemFontOfSize:12.0];
+        _speedTextLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _speedTextLabel;
+}
+
+- (ZFNetworkSpeedMonitor *)speedMonitor {
+    if (!_speedMonitor) {
+        _speedMonitor = [[ZFNetworkSpeedMonitor alloc] init];
+        @weakify(self)
+        [_speedMonitor networkSpeedChangeBlock:^(NSString *downloadSpped) {
+            @strongify(self)
+            self.speedTextLabel.text = downloadSpped;
+        }];
+    }
+    return _speedMonitor;
+}
+
+- (ZFLoadingView *)loadingView {
+    if (!_loadingView) {
+        _loadingView = [[ZFLoadingView alloc] init];
+        _loadingView.lineWidth = 0.8;
+        _loadingView.duration = 1;
+        _loadingView.hidesWhenStopped = YES;
+    }
+    return _loadingView;
 }
 
 @end

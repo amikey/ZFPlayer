@@ -32,6 +32,8 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFVolumeBrightnessView.h"
 #import "ZFSmallFloatControlView.h"
+#import "ZFNetworkSpeedMonitor.h"
+
 #if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
 #else
@@ -47,7 +49,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 /// 横屏控制层的View
 @property (nonatomic, strong) ZFLandScapeControlView *landScapeControlView;
 /// 加载loading
-@property (nonatomic, strong) ZFLoadingView *activity;
+@property (nonatomic, strong) ZFSpeedLoadingView *activity;
 /// 快进快退View
 @property (nonatomic, strong) UIView *fastView;
 /// 快进快退进度progress
@@ -62,6 +64,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 @property (nonatomic, strong) ZFSliderView *bottomPgrogress;
 /// 封面图
 @property (nonatomic, strong) UIImageView *coverImageView;
+
 /// 是否显示了控制层
 @property (nonatomic, assign, getter=isShowing) BOOL showing;
 /// 是否播放结束
@@ -79,6 +82,8 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 
+@property (nonatomic, strong) ZFNetworkSpeedMonitor *speedMonitor;
+
 @end
 
 @implementation ZFPlayerControlView
@@ -90,6 +95,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         [self addAllSubViews];
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
+        [self.speedMonitor startSpeedMonitor];
     }
     return self;
 }
@@ -110,10 +116,11 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.floatControlView.frame = self.bounds;
     self.coverImageView.frame = self.bounds;
 
-    min_w = 44;
-    min_h = 44;
+    min_w = 80;
+    min_h = 80;
     self.activity.frame = CGRectMake(min_x, min_y, min_w, min_h);
-    self.activity.center = self.center;
+    self.activity.centerX = self.centerX;
+    self.activity.centerY = self.centerY + 10;
     
     min_w = 150;
     min_h = 30;
@@ -155,6 +162,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     min_h = 40;
     self.volumeBrightnessView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.volumeBrightnessView.center = self.center;
+    
 }
 
 - (void)dealloc {
@@ -493,12 +501,12 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     return _landScapeControlView;
 }
 
-- (ZFLoadingView *)activity {
+- (ZFSpeedLoadingView *)activity {
     if (!_activity) {
-        _activity = [[ZFLoadingView alloc] init];
-        _activity.lineWidth = 0.8;
-        _activity.duration = 1;
-        _activity.hidesWhenStopped = YES;
+        _activity = [[ZFSpeedLoadingView alloc] init];
+//        _activity.lineWidth = 0.8;
+//        _activity.duration = 1;
+//        _activity.hidesWhenStopped = YES;
     }
     return _activity;
 }

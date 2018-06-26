@@ -63,4 +63,22 @@ typedef NS_ENUM(NSUInteger, ZFLoadingType) {
 
 @end
 
+@interface ZFSpeedLoadingView : UIView
+
+@property (nonatomic, strong) ZFLoadingView *loadingView;
+/// 网速
+@property (nonatomic, strong) UILabel *speedTextLabel;
+
+/**
+ *  Starts animation of the spinner.
+ */
+- (void)startAnimating;
+
+/**
+ *  Stops animation of the spinnner.
+ */
+- (void)stopAnimating;
+
+@end
+
 NS_ASSUME_NONNULL_END

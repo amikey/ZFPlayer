@@ -244,7 +244,6 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler {
     if (!self.zf_shouldAutoPlay) return;
     if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.zf_WWANAutoPlay) return;
-    NSArray *cellsArray = nil;
     NSArray *visiableCells = nil;
     NSIndexPath *indexPath = nil;
     if ([self isKindOfClass:[UITableView class]]) {
@@ -311,28 +310,41 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
         }
     }
     
+    NSArray *cellsArray = nil;
     if (self.zf_scrollDerection == ZFPlayerScrollDerectionUp) {
         cellsArray = visiableCells;
     } else {
         cellsArray = [visiableCells reverseObjectEnumerator].allObjects;
     }
-    
+    /// 中线
+    CGFloat scrollViewMidY = (CGRectGetHeight(self.frame) - self.contentInset.top - self.contentInset.bottom)/2;
+    /// 最终播放的indexPath
+    __block NSIndexPath *finalIndexPath = nil;
+    /// 最终距离中线的间距
+    __block CGFloat finalSpace = 0;
     [cellsArray enumerateObjectsUsingBlock:^(UIView *cell, NSUInteger idx, BOOL * _Nonnull stop) {
         UIView *playerView = [cell viewWithTag:self.zf_containerViewTag];
         if (!playerView) return;
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
         CGRect rect = [self convertRect:rect1 toView:self.superview];
-        CGFloat topSpacing = rect.origin.y - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
+        CGFloat topSpacing = CGRectGetMinY(rect) - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
         CGFloat bottomSpacing = CGRectGetMaxY(self.frame) - CGRectGetMaxY(rect) + CGRectGetMinY(self.frame) + self.contentInset.top;
+        CGFloat centerSpacing = ABS(scrollViewMidY - CGRectGetMidY(rect));
         NSIndexPath *indexPath = [self zf_getIndexPathForCell:cell];
         /// Play when the video playback section is visible.
         if ((topSpacing >= -CGRectGetHeight(rect)/2) && (bottomSpacing >= -CGRectGetHeight(rect)/2)) {
             if (self.zf_playingIndexPath) indexPath = self.zf_playingIndexPath;
-            if (handler) handler(indexPath);
-            self.zf_shouldPlayIndexPath = indexPath;
-            *stop = YES;
+            if (!finalIndexPath || centerSpacing < finalSpace) {
+                finalIndexPath = indexPath;
+                finalSpace = centerSpacing;
+            }
         }
     }];
+    /// 如果找到播放的indexPath
+    if (finalIndexPath) {
+        if (handler) handler(finalIndexPath);
+        self.zf_shouldPlayIndexPath = finalIndexPath;
+    }
 }
 
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler {
