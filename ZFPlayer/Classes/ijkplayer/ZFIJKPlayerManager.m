@@ -178,11 +178,12 @@
     [self.view insertSubview:playerBgView atIndex:0];
     playerBgView.frame = self.view.bounds;
     playerBgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
+
     [playerBgView addSubview:self.player.view];
     self.player.view.frame = playerBgView.bounds;
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.scalingMode = _scalingMode;
+    
     [self addPlayerNotificationObservers];
 }
 

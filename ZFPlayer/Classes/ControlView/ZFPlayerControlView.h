@@ -26,7 +26,7 @@
 #import "ZFPortraitControlView.h"
 #import "ZFLandScapeControlView.h"
 #import "ZFPlayerMediaControl.h"
-#import "ZFLoadingView.h"
+#import "ZFSpeedLoadingView.h"
 
 @interface ZFPlayerControlView : UIView <ZFPlayerMediaControl>
 

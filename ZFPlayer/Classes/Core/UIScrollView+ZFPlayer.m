@@ -333,7 +333,12 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
         NSIndexPath *indexPath = [self zf_getIndexPathForCell:cell];
         /// Play when the video playback section is visible.
         if ((topSpacing >= -CGRectGetHeight(rect)/2) && (bottomSpacing >= -CGRectGetHeight(rect)/2)) {
-            if (self.zf_playingIndexPath) indexPath = self.zf_playingIndexPath;
+            /// 如果有正在播放的cell，直接停止遍历
+            if (self.zf_playingIndexPath) {
+                indexPath = self.zf_playingIndexPath;
+                *stop = YES;
+                return;
+            }
             if (!finalIndexPath || centerSpacing < finalSpace) {
                 finalIndexPath = indexPath;
                 finalSpace = centerSpacing;

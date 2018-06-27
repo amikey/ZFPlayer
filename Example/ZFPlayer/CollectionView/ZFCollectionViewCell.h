@@ -13,7 +13,7 @@
 @property (nonatomic, strong) UIImageView *coverImageView;
 @property (nonatomic, strong) UIButton *playBtn;
 /// 播放按钮block 
-@property (nonatomic, copy  ) void(^playBlock)(UIButton *);
+@property (nonatomic, copy  ) void(^playBlock)(UIButton *sender);
 
 @property (nonatomic, strong) ZFTableData *data;
 

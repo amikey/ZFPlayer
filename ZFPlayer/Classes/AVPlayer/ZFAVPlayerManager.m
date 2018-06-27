@@ -165,6 +165,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 - (void)reloadPlayer {
+    self.seekTime = self.currentTime;
     [self prepareToPlay];
 }
 
@@ -366,7 +367,10 @@ static NSString *const kPresentationSize         = @"presentationSize";
          if ([keyPath isEqualToString:kStatus]) {
              if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
                  self.loadState = ZFPlayerLoadStatePlaythroughOK;
-                 if (self.seekTime) [self seekToTime:self.seekTime completionHandler:nil];
+                 if (self.seekTime) {
+                     [self seekToTime:self.seekTime completionHandler:nil];
+                     self.seekTime = 0; // 滞空, 防止下次播放出错
+                 }
                  [self play];
                  self.player.muted = self.muted;
              } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {

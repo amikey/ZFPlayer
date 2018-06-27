@@ -169,7 +169,7 @@
 
 #pragma mark - ZFSliderViewDelegate
 
-- (void)sliderTouchBegin:(float)value {
+- (void)sliderTouchBegan:(float)value {
     self.slider.isdragging = YES;
 }
 
@@ -182,6 +182,10 @@
 }
 
 - (void)sliderValueChanged:(float)value {
+    if (self.player.totalTime == 0) {
+        self.slider.value = 0;
+        return;
+    }
     self.slider.isdragging = YES;
     NSString *currentTimeString = [ZFUtilities convertTimeSecond:self.player.totalTime*value];
     self.currentTimeLabel.text = currentTimeString;

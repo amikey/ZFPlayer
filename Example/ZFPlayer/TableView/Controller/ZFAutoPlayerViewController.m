@@ -9,7 +9,7 @@
 #import "ZFAutoPlayerViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
-#import <ZFPlayer/KSMediaPlayerManager.h>
+//#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import "ZFTableViewCell.h"
 #import "ZFTableData.h"

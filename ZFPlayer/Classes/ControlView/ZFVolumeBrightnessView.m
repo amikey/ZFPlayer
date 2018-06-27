@@ -42,8 +42,8 @@
 
 @implementation ZFVolumeBrightnessView
 
-- (instancetype)init {
-    self = [super init];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
         [self addSubview:self.iconImageView];

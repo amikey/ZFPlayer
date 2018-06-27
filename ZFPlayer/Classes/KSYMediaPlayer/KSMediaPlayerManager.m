@@ -144,7 +144,8 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 - (void)reloadPlayer {
-    [self.player reload:self.assetURL];
+    self.seekTime = self.currentTime;
+    [self prepareToPlay];
 }
 
 - (void)initializePlayer {
@@ -238,7 +239,10 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 /// 播放器初始化视频文件完成通知
 - (void)videoPrepared:(NSNotification *)notify {
     self.player.shouldMute = self.muted;
-    if (self.seekTime) [self seekToTime:self.seekTime completionHandler:nil];
+    if (self.seekTime) {
+        [self seekToTime:self.seekTime completionHandler:nil];
+        self.seekTime = 0; // 滞空, 防止下次播放出错
+    }
     [self play];
     /// 需要延迟改为ok状态，不然显示会有一点问题。
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

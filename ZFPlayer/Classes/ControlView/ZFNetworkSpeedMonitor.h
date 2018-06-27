@@ -24,25 +24,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZFMonitorData : NSObject
-
-@property (assign, nonatomic) float wwanSend;
-@property (assign, nonatomic) float wwanReceived;
-@property (assign, nonatomic) float wifiSend;
-@property (assign, nonatomic) float wifiReceived;
-
-@end
-
 @interface ZFNetworkSpeedMonitor : NSObject
 
 - (void)networkSpeedChangeBlock:(nullable void (^)(NSString *downloadSpped))block;
 
-//开始检测
-- (void)startSpeedMonitor;
-//停止检测
-- (void)stopSpeedMonitor;
-
-- (void)getCurrentNetSpped;
+/// 开始检测
+- (void)startNetworkSpeedMonitor;
+/// 停止检测
+- (void)stopNetworkSpeedMonitor;
 
 @end
 

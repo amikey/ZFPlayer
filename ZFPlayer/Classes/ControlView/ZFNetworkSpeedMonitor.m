@@ -32,90 +32,56 @@
 #include <sys/socket.h>
 #include <net/if.h>
 
-@implementation ZFMonitorData
-
-@end
-
 @interface ZFNetworkSpeedMonitor ()
 
 @property (nonatomic, strong) NSTimer *timer;
-@property (assign, nonatomic) float tempWWANReceived;
-@property (assign, nonatomic) float tempWWANSend;
-@property (assign, nonatomic) float tempWifiReceived;
-@property (assign, nonatomic) float tempWifiSend;
-
+/// 上一次下行速率
+@property (nonatomic, assign) float lastUpstreamSpped;
+/// 上一次下行速率
+@property (nonatomic, assign) float lastDownstreamSpped;
+/// 上行速率
+@property (nonatomic, assign) float upstreamSpped;
+/// 下行速率
+@property (nonatomic, assign) float downstreamSpped;
+/// 速率回调
 @property (nonatomic, copy) void(^networkSpeedChangeBlock)(NSString *downloadSpped);
-
-
 
 @end
 
 @implementation ZFNetworkSpeedMonitor
 
-- (void)startSpeedMonitor {
-    [self currentFlow];
-    self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(getCurrentNetSpped) userInfo:nil repeats:YES];
+- (void)startNetworkSpeedMonitor {
+    [self getMonitorDataDetail];
+    self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(getCurrentNetworkSpped) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)stopSpeedMonitor {
+- (void)stopNetworkSpeedMonitor {
     [self.timer invalidate];
 }
 
-- (void)getCurrentNetSpped {
-    // 上传、下载
-    //不需要连通网络获取的是总的数据
-    ZFReachabilityStatus networkReachabilityStatus = [ZFReachabilityManager sharedManager].networkReachabilityStatus;
-    ZFMonitorData *monitor = [self getMonitorDataDetail];
-    switch (networkReachabilityStatus) {
-        case ZFReachabilityStatusReachableViaWiFi: {
-            float wifiReceived = monitor.wifiReceived - self.tempWifiReceived;
-            if (self.networkSpeedChangeBlock) {
-                self.networkSpeedChangeBlock([self getSpeedString:wifiReceived]);
-            }
-            NSLog(@"wifi下载速度：%@",[self getSpeedString:wifiReceived]);
+- (void)getCurrentNetworkSpped {
+    if ([ZFReachabilityManager sharedManager].isReachable) {
+        [self getMonitorDataDetail];
+        float downstreamSpped = self.downstreamSpped - self.lastDownstreamSpped;
+        if (self.networkSpeedChangeBlock) {
+            self.networkSpeedChangeBlock([self getSpeedString:downstreamSpped]);
         }
-            break;
-        case ZFReachabilityStatusReachableVia2G:
-        case ZFReachabilityStatusReachableVia3G:
-        case ZFReachabilityStatusReachableVia4G: {
-            float wwanReceived = monitor.wifiReceived - self.tempWWANSend;
-            if (self.networkSpeedChangeBlock) {
-                self.networkSpeedChangeBlock([self getSpeedString:wwanReceived]);
-            }
-        }
-            break;
-        default: {
-            NSLog(@"无网络");
-
-        }
-            break;
+        NSLog(@"download speed：%@",[self getSpeedString:downstreamSpped]);
+        self.lastUpstreamSpped = self.upstreamSpped;
+        self.lastDownstreamSpped = self.downstreamSpped;
     }
-
-    [self currentFlow];
 }
-
-
-// 赋值当前流量
-- (void)currentFlow {
-    ZFMonitorData *monitor = [self getMonitorDataDetail];
-    self.tempWifiSend = monitor.wifiSend;
-    self.tempWifiReceived = monitor.wifiReceived;
-    self.tempWWANSend = monitor.wwanSend;
-    self.tempWWANReceived = monitor.wwanReceived;
-}
-
 
 // 上传、下载总额流量
-- (ZFMonitorData *)getMonitorDataDetail {
+- (void)getMonitorDataDetail {
     BOOL success;
     struct ifaddrs *addrs;
     struct ifaddrs *cursor;
     struct if_data *networkStatisc;
-    long tempWiFiSend = 0;
-    long tempWiFiReceived = 0;
-    long tempWWANSend = 0;
-    long tempWWANReceived = 0;
+    
+    long upstreamSpped = 0;
+    long downstreamSpped = 0;
     NSString *dataName;
     success = getifaddrs(&addrs) == 0;
     if (success) {
@@ -123,27 +89,16 @@
         while (cursor != NULL) {
             dataName = [NSString stringWithFormat:@"%s",cursor->ifa_name];
             if (cursor->ifa_addr->sa_family == AF_LINK) {
-                if ([dataName hasPrefix:@"en"]) {
-                    networkStatisc = (struct if_data *) cursor->ifa_data;
-                    tempWiFiSend += networkStatisc->ifi_obytes;
-                    tempWiFiReceived += networkStatisc->ifi_ibytes;
-                }
-                if ([dataName hasPrefix:@"pdp_ip"]) {
-                    networkStatisc = (struct if_data *) cursor->ifa_data;
-                    tempWWANSend += networkStatisc->ifi_obytes;
-                    tempWWANReceived += networkStatisc->ifi_ibytes;
-                }
+                networkStatisc = (struct if_data *) cursor->ifa_data;
+                upstreamSpped += networkStatisc->ifi_obytes;
+                downstreamSpped += networkStatisc->ifi_ibytes;
             }
             cursor = cursor->ifa_next;
         }
         freeifaddrs(addrs);
     }
-    ZFMonitorData *monitorData = [ZFMonitorData new];
-    monitorData.wifiSend = tempWiFiSend;
-    monitorData.wifiReceived = tempWiFiReceived;
-    monitorData.wwanSend = tempWWANSend;
-    monitorData.wwanReceived = tempWWANReceived;
-    return monitorData;
+    self.upstreamSpped = upstreamSpped;
+    self.downstreamSpped = downstreamSpped;
 }
 
 - (NSString *)getSpeedString:(float)size {
