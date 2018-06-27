@@ -148,11 +148,11 @@
 
 - (NSString *)getSpeedString:(float)size {
     if(size >= 1024*1024) { /// 大于1M，则转化成M单位的字符串
-        return [NSString stringWithFormat:@"%1.2fM/s",size/1024/1024];
+        return [NSString stringWithFormat:@"%.1f M/s",size/1024/1024];
     } else if(size >= 1024 && size < 1024*1024) { /// 不到1M,但是超过了1KB，则转化成KB单位
-        return [NSString stringWithFormat:@"%1.2fkb/s",size/1024];
+        return [NSString stringWithFormat:@"%.0f kb/s",size/1024];
     } else { /// 剩下的都是小于1K的，则转化成B单位
-        return [NSString stringWithFormat:@"%1.2fb/s",size];
+        return [NSString stringWithFormat:@"%.0f b/s",size];
     }
 }
 
