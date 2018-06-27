@@ -223,6 +223,10 @@
     [self.speedMonitor startSpeedMonitor];
 }
 
+- (void)dealloc {
+    [self.speedMonitor stopSpeedMonitor];
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     CGFloat min_x = 0;

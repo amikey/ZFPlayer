@@ -32,8 +32,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFVolumeBrightnessView.h"
 #import "ZFSmallFloatControlView.h"
-#import "ZFNetworkSpeedMonitor.h"
-
 #if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
 #else
@@ -82,8 +80,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 
-@property (nonatomic, strong) ZFNetworkSpeedMonitor *speedMonitor;
-
 @end
 
 @implementation ZFPlayerControlView
@@ -95,7 +91,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         [self addAllSubViews];
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
-        [self.speedMonitor startSpeedMonitor];
     }
     return self;
 }

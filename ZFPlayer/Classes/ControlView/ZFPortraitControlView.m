@@ -59,7 +59,6 @@
         // 添加子控件
         [self addSubview:self.topToolView];
         [self addSubview:self.bottomToolView];
-        [self addSubview:self.topToolView];
         [self addSubview:self.playOrPauseBtn];
         [self.topToolView addSubview:self.titleLabel];
         [self.bottomToolView addSubview:self.currentTimeLabel];
