@@ -43,6 +43,7 @@
 }
 
 - (void)initialize {
+    self.userInteractionEnabled = NO;
     [self addSubview:self.loadingView];
     [self addSubview:self.speedTextLabel];
     [self.speedMonitor startNetworkSpeedMonitor];
@@ -51,6 +52,7 @@
 
 - (void)dealloc {
     [self.speedMonitor stopNetworkSpeedMonitor];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ZFDownloadNetworkSpeedNotificationKey object:nil];
 }
 
 - (void)layoutSubviews {

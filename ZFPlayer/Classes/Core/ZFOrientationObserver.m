@@ -23,6 +23,10 @@
 // THE SOFTWARE.
 
 #import "ZFOrientationObserver.h"
+// 屏幕的宽
+#define ScreenWidth                 [[UIScreen mainScreen] bounds].size.width
+// 屏幕的高
+#define ScreenHeight                [[UIScreen mainScreen] bounds].size.height
 
 @interface UIWindow (CurrentViewController)
 
@@ -63,8 +67,6 @@ static UIWindow *kWindow;
 @property (nonatomic, weak) UIView *view;
 
 @property (nonatomic, assign, getter=isFullScreen) BOOL fullScreen;
-
-@property (nonatomic, assign) NSInteger playerViewIndex;
 
 @property (nonatomic, strong) UIView *cell;
 
@@ -167,12 +169,6 @@ static UIWindow *kWindow;
             if (!self.isFullScreen) { /// It's not set from the other side of the screen to this side
                 self.view.frame = [self.view convertRect:self.view.frame toView:superview];
             }
-            for (NSInteger i = 0; i < _containerView.subviews.count; i++) {
-                if (self.containerView.subviews[i] == self.view) {
-                    self.playerViewIndex = i;
-                    break;
-                }
-            }
             self.fullScreen = YES;
             [superview addSubview:_view];
         } else {
@@ -187,6 +183,18 @@ static UIWindow *kWindow;
         _currentOrientation = orientation;
         
         [UIApplication sharedApplication].statusBarOrientation = orientation;
+        NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
+        if(windowCount > 1) {
+            UIWindow *keyboardWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:(windowCount-1)];
+            if (UIInterfaceOrientationIsLandscape(orientation)) {
+                keyboardWindow.bounds = CGRectMake(0, 0, MAX(ScreenHeight, ScreenWidth), MIN(ScreenHeight, ScreenWidth));
+            } else {
+                 keyboardWindow.bounds = CGRectMake(0, 0, MIN(ScreenHeight, ScreenWidth), MAX(ScreenHeight, ScreenWidth));
+            }
+            keyboardWindow.transform = [self getTransformRotationAngle:orientation];
+        }
+        
+        
         if (self.orientationWillChange) {
             self.orientationWillChange(self, self.isFullScreen);
         }
@@ -198,11 +206,7 @@ static UIWindow *kWindow;
                 [self.view layoutIfNeeded];
             }];
         } completion:^(BOOL finished) {
-            if (!UIInterfaceOrientationIsLandscape(orientation) && self.roateType == ZFRotateTypeNormal) {
-                [superview insertSubview:self.view atIndex:self.playerViewIndex];
-            } else if (!UIInterfaceOrientationIsLandscape(orientation)) {
-                [superview addSubview:self.view];
-            }
+            [superview addSubview:self.view];
             self.view.frame = superview.bounds;
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
         }];

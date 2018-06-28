@@ -10,8 +10,9 @@
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/ZFIJKPlayerManager.h>
-#import <ZFPlayer/KSMediaPlayerManager.h>
+//#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
+#import "ZFSmallPlayViewController.h"
 
 @interface ZFNoramlViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -31,6 +32,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStylePlain target:self action:@selector(pushNewVC)];
     [self.view addSubview:self.containerView];
     [self.containerView addSubview:self.playBtn];
     [self.view addSubview:self.changeBtn];
@@ -59,7 +61,8 @@
         }
     };
     
-    self.assetURLs = @[[NSURL URLWithString:@"http://flv3.bn.netease.com/tvmrepo/2018/6/H/9/EDJTRBEH9/SD/EDJTRBEH9-mobile.mp4"],
+    self.assetURLs = @[[NSURL URLWithString:@"https://www.apple.com/105/media/us/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-tpl-cc-us-20170912_1280x720h.mp4"],
+                       [NSURL URLWithString:@"http://flv3.bn.netease.com/tvmrepo/2018/6/H/9/EDJTRBEH9/SD/EDJTRBEH9-mobile.mp4"],
                        [NSURL URLWithString:@"http://flv3.bn.netease.com/tvmrepo/2018/6/9/R/EDJTRAD9R/SD/EDJTRAD9R-mobile.mp4"],
                        [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4"],
                        [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-smallvideo/68_20df3a646ab5357464cd819ea987763a.mp4"],
@@ -70,6 +73,26 @@
                        [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-movideo/11233547_ac127ce9e993877dce0eebceaa04d6c2_593d93a619b0.mp4"]];
     
     self.player.assetURLs = self.assetURLs;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.player.currentPlayerManager.isPreparedToPlay) {
+        [self.player addDeviceOrientationObserver];
+        if (self.player.isPauseByEvent) {
+            self.player.pauseByEvent = NO;
+        }
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (self.player.currentPlayerManager.isPreparedToPlay) {
+        [self.player removeDeviceOrientationObserver];
+        if (self.player.currentPlayerManager.isPlaying) {
+            self.player.pauseByEvent = YES;
+        }
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -118,6 +141,11 @@
     } else {
         NSLog(@"最后一个视频了");
     }
+}
+
+- (void)pushNewVC {
+    ZFSmallPlayViewController *vc = [[ZFSmallPlayViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

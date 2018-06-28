@@ -25,6 +25,11 @@
 #import "ZFLandScapeControlView.h"
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
+#import <ZFPlayer/ZFPlayer.h>
+#else
+#import "ZFPlayer.h"
+#endif
 
 @interface ZFLandScapeControlView () <ZFSliderViewDelegate>
 
@@ -175,8 +180,11 @@
 
 - (void)sliderTouchEnded:(float)value {
     self.slider.isdragging = YES;
+    @weakify(self)
     [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
+        @strongify(self)
         self.slider.isdragging = NO;
+        [self.player.currentPlayerManager play];
     }];
     if (self.sliderValueChanged) self.sliderValueChanged(value);
 }

@@ -302,6 +302,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         self.sumTime += velocity.x / 200;
         // 需要限定sumTime的范围
         NSTimeInterval totalMovieDuration = self.player.totalTime;
+        if (totalMovieDuration == 0) return;
         if (self.sumTime > totalMovieDuration) { self.sumTime = totalMovieDuration;}
         if (self.sumTime < 0) { self.sumTime = 0; }
         BOOL style = false;

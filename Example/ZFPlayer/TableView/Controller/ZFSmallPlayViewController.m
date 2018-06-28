@@ -78,6 +78,10 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.player stopCurrentPlayingCell];
+}
+
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);

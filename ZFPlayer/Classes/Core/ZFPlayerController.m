@@ -37,7 +37,6 @@
 @property (nonatomic, strong) ZFPlayerNotification *notification;
 @property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
 @property (nonatomic, strong, nullable) UIScrollView *scrollView;
-@property (nonatomic, assign, getter=isPauseByUser) BOOL pauseByUser;
 @property (nonatomic, strong) UISlider *volumeViewSlider;
 @property (nonatomic, assign) NSTimeInterval currentTime;
 @property (nonatomic, assign) NSTimeInterval totalTime;
@@ -85,17 +84,12 @@
 }
 
 + (instancetype)playerWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(nonnull UIView *)containerView {
-    ZFPlayerController *player = [[self alloc] init];
-    player.currentPlayerManager = playerManager;
-    player.containerView = containerView;
+    ZFPlayerController *player = [[self alloc] initWithPlayerManager:playerManager containerView:containerView];
     return player;
 }
 
 + (instancetype)playerWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag {
-    ZFPlayerController *player = [[self alloc] init];
-    player.scrollView = scrollView;
-    player.currentPlayerManager = playerManager;
-    player.containerViewTag = containerViewTag;
+    ZFPlayerController *player = [[self alloc] initWithScrollView:scrollView playerManager:playerManager containerViewTag:containerViewTag];
     return player;
 }
 
@@ -136,6 +130,8 @@
     self.currentPlayerManager.playerPrepareToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         @strongify(self)
         self.currentPlayerManager.view.hidden = NO;
+        [self.notification addNotification];
+        [self.orientationObserver addDeviceOrientationObserver];
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
             [self.controlView videoPlayer:self prepareToPlay:assetURL];
         }
@@ -184,15 +180,13 @@
         _notification.willResignActive = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
             if (self.pauseWhenAppResignActive && self.currentPlayerManager.isPlaying) {
-                [self.currentPlayerManager pause];
-                self.pauseByUser = YES;
+                self.pauseByEvent = YES;
             }
         };
         _notification.didBecomeActive = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
-            if (self.isPauseByUser) {
-                [self.currentPlayerManager play];
-                self.pauseByUser = NO;
+            if (self.isPauseByEvent) {
+                self.pauseByEvent = NO;
             }
         };
         _notification.oldDeviceUnavailable = ^(ZFPlayerNotification * _Nonnull registrar) {
@@ -214,7 +208,6 @@
     self.gestureControl.disableTypes = self.disableGestureTypes;
     [self.gestureControl addGestureToView:currentPlayerManager.view];
     [self playerManagerCallbcak];
-    [self.notification addNotification];
 }
 
 - (void)setContainerView:(UIView *)containerView {
@@ -224,7 +217,6 @@
     [containerView addSubview:self.currentPlayerManager.view];
     self.currentPlayerManager.view.frame = containerView.bounds;
     self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.orientationObserver addDeviceOrientationObserver];
 }
 
 - (void)setControlView:(UIView<ZFPlayerMediaControl> *)controlView {
@@ -262,7 +254,6 @@
     [self.notification removeNotification];
     [self.orientationObserver removeDeviceOrientationObserver];
     [self.currentPlayerManager stop];
-    
     [self.currentPlayerManager.view removeFromSuperview];
 }
 
@@ -331,10 +322,11 @@
 }
 
 - (BOOL)isWWANAutoPlay {
-    NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    if (number) return number.boolValue;
-    self.WWANAutoPlay = YES;
-    return YES;
+   return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (BOOL)isPauseByEvent {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 - (float)brightness {
@@ -421,6 +413,15 @@
     brightness = MIN(MAX(0, brightness), 1);
     objc_setAssociatedObject(self, @selector(brightness), @(brightness), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [UIScreen mainScreen].brightness = brightness;
+}
+
+- (void)setPauseByEvent:(BOOL)pauseByEvent {
+    objc_setAssociatedObject(self, @selector(isPauseByEvent), @(pauseByEvent), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (pauseByEvent) {
+        [self.currentPlayerManager pause];
+    } else {
+        [self.currentPlayerManager play];
+    }
 }
 
 - (void)setPauseWhenAppResignActive:(BOOL)pauseWhenAppResignActive {

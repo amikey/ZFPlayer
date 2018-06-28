@@ -109,11 +109,12 @@
     self.playState = ZFPlayerPlayStatePlayStopped;
     [self.player stop];
     [self.player.view removeFromSuperview];
-    _isPlaying = NO;
     self.player = nil;
     _assetURL = nil;
     [self.timer invalidate];
     self.timer = nil;
+    _isPlaying = NO;
+    _isPreparedToPlay = NO;
 }
 
 - (void)replay {
@@ -147,10 +148,7 @@
     IJKFFOptions *options = [IJKFFOptions optionsByDefault];
     /// 帧速率（fps）可以改，确认非标准桢率会导致音画不同步，所以只能设定为15或者29.97）
     [options setPlayerOptionIntValue:29.97 forKey:@"r"];
-    
-    /// 播放前的探测Size，默认是1M, 改小一点会出画面更快
-    [options setFormatOptionIntValue:1024 * 0.5 forKey:@"probesize"];
-    ///
+
     [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
     /// 解码参数，画面更清晰
     [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
