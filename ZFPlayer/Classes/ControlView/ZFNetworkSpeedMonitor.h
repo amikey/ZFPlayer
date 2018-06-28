@@ -22,16 +22,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+extern NSString *const ZFDownloadNetworkSpeedNotificationKey;
+extern NSString *const ZFUploadNetworkSpeedNotificationKey;
+extern NSString *const ZFNetworkSpeedNotificationKey;
 
 @interface ZFNetworkSpeedMonitor : NSObject
 
-- (void)networkSpeedChangeBlock:(nullable void (^)(NSString *downloadSpped))block;
+@property (nonatomic, copy, readonly) NSString *downloadNetworkSpeed;
+@property (nonatomic, copy, readonly) NSString *uploadNetworkSpeed;
 
-/// 开始检测
 - (void)startNetworkSpeedMonitor;
-/// 停止检测
 - (void)stopNetworkSpeedMonitor;
 
 @end
-

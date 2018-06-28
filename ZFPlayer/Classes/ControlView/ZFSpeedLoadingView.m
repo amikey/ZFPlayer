@@ -46,6 +46,7 @@
     [self addSubview:self.loadingView];
     [self addSubview:self.speedTextLabel];
     [self.speedMonitor startNetworkSpeedMonitor];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSpeedChanged:) name:ZFDownloadNetworkSpeedNotificationKey object:nil];
 }
 
 - (void)dealloc {
@@ -77,6 +78,11 @@
     self.speedTextLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
 }
 
+- (void)networkSpeedChanged:(NSNotification *)sender {
+    NSString *downloadSpped = [sender.userInfo objectForKey:ZFNetworkSpeedNotificationKey];
+    self.speedTextLabel.text = downloadSpped;
+}
+
 - (void)startAnimating {
     [self.loadingView startAnimating];
     self.hidden = NO;
@@ -100,11 +106,6 @@
 - (ZFNetworkSpeedMonitor *)speedMonitor {
     if (!_speedMonitor) {
         _speedMonitor = [[ZFNetworkSpeedMonitor alloc] init];
-        @weakify(self)
-        [_speedMonitor networkSpeedChangeBlock:^(NSString *downloadSpped) {
-            @strongify(self)
-            self.speedTextLabel.text = downloadSpped;
-        }];
     }
     return _speedMonitor;
 }

@@ -23,96 +23,134 @@
 // THE SOFTWARE.
 
 #import "ZFNetworkSpeedMonitor.h"
-#import "ZFReachabilityManager.h"
-#import <sys/sysctl.h>
-#import <mach/mach.h>
-#include <sys/param.h>
-#include <sys/mount.h>
+#include <arpa/inet.h>
 #include <ifaddrs.h>
-#include <sys/socket.h>
 #include <net/if.h>
+#include <net/if_dl.h>
 
-@interface ZFNetworkSpeedMonitor ()
+NSString *const ZFDownloadNetworkSpeedNotificationKey = @"ZFDownloadNetworkSpeedNotificationKey";
+NSString *const ZFUploadNetworkSpeedNotificationKey   = @"ZFUploadNetworkSpeedNotificationKey";
+NSString *const ZFNetworkSpeedNotificationKey         = @"ZFNetworkSpeedNotificationKey";
+
+@interface ZFNetworkSpeedMonitor () {
+    // 总网速
+    uint32_t _iBytes;
+    uint32_t _oBytes;
+    uint32_t _allFlow;
+    
+    // wifi网速
+    uint32_t _wifiIBytes;
+    uint32_t _wifiOBytes;
+    uint32_t _wifiFlow;
+    
+    // 3G网速
+    uint32_t _wwanIBytes;
+    uint32_t _wwanOBytes;
+    uint32_t _wwanFlow;
+}
 
 @property (nonatomic, strong) NSTimer *timer;
-/// 上一次下行速率
-@property (nonatomic, assign) float lastUpstreamSpped;
-/// 上一次下行速率
-@property (nonatomic, assign) float lastDownstreamSpped;
-/// 上行速率
-@property (nonatomic, assign) float upstreamSpped;
-/// 下行速率
-@property (nonatomic, assign) float downstreamSpped;
-/// 速率回调
-@property (nonatomic, copy) void(^networkSpeedChangeBlock)(NSString *downloadSpped);
 
 @end
 
 @implementation ZFNetworkSpeedMonitor
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _iBytes = _oBytes = _allFlow = _wifiIBytes = _wifiOBytes = _wifiFlow = _wwanIBytes = _wwanOBytes = _wwanFlow = 0;
+    }
+    return self;
+}
+
+// 开始监听网速
 - (void)startNetworkSpeedMonitor {
-    [self getMonitorDataDetail];
-    self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(getCurrentNetworkSpped) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    if (!_timer) {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkNetworkSpeed) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        [_timer fire];
+    }
 }
 
+// 停止监听网速
 - (void)stopNetworkSpeedMonitor {
-    [self.timer invalidate];
-}
-
-- (void)getCurrentNetworkSpped {
-    if ([ZFReachabilityManager sharedManager].isReachable) {
-        [self getMonitorDataDetail];
-        float downstreamSpped = self.downstreamSpped - self.lastDownstreamSpped;
-        if (self.networkSpeedChangeBlock) {
-            self.networkSpeedChangeBlock([self getSpeedString:downstreamSpped]);
-        }
-        NSLog(@"download speed：%@",[self getSpeedString:downstreamSpped]);
-        self.lastUpstreamSpped = self.upstreamSpped;
-        self.lastDownstreamSpped = self.downstreamSpped;
+    if ([_timer isValid]) {
+        [_timer invalidate];
+        _timer = nil;
     }
 }
 
-// 上传、下载总额流量
-- (void)getMonitorDataDetail {
-    BOOL success;
-    struct ifaddrs *addrs;
-    struct ifaddrs *cursor;
-    struct if_data *networkStatisc;
+- (NSString *)stringWithbytes:(int)bytes {
+    if (bytes < 1024) { // B
+        return [NSString stringWithFormat:@"%dB", bytes];
+    } else if (bytes >= 1024 && bytes < 1024 * 1024) { // KB
+        return [NSString stringWithFormat:@"%.0fKB", (double)bytes / 1024];
+    } else if (bytes >= 1024 * 1024 && bytes < 1024 * 1024 * 1024) { // MB
+        return [NSString stringWithFormat:@"%.1fMB", (double)bytes / (1024 * 1024)];
+    } else { // GB
+        return [NSString stringWithFormat:@"%.1fGB", (double)bytes / (1024 * 1024 * 1024)];
+    }
+}
+
+- (void)checkNetworkSpeed {
+    struct ifaddrs *ifa_list = 0, *ifa;
+    if (getifaddrs(&ifa_list) == -1) return;
     
-    long upstreamSpped = 0;
-    long downstreamSpped = 0;
-    NSString *dataName;
-    success = getifaddrs(&addrs) == 0;
-    if (success) {
-        cursor = addrs;
-        while (cursor != NULL) {
-            dataName = [NSString stringWithFormat:@"%s",cursor->ifa_name];
-            if (cursor->ifa_addr->sa_family == AF_LINK) {
-                networkStatisc = (struct if_data *) cursor->ifa_data;
-                upstreamSpped += networkStatisc->ifi_obytes;
-                downstreamSpped += networkStatisc->ifi_ibytes;
-            }
-            cursor = cursor->ifa_next;
+    uint32_t iBytes = 0;
+    uint32_t oBytes = 0;
+    uint32_t allFlow = 0;
+    uint32_t wifiIBytes = 0;
+    uint32_t wifiOBytes = 0;
+    uint32_t wifiFlow = 0;
+    uint32_t wwanIBytes = 0;
+    uint32_t wwanOBytes = 0;
+    uint32_t wwanFlow = 0;
+    
+    for (ifa = ifa_list; ifa; ifa = ifa->ifa_next) {
+        if (AF_LINK != ifa->ifa_addr->sa_family) continue;
+        if (!(ifa->ifa_flags & IFF_UP) && !(ifa->ifa_flags & IFF_RUNNING)) continue;
+        if (ifa->ifa_data == 0) continue;
+        
+        // network
+        if (strncmp(ifa->ifa_name, "lo", 2)) {
+            struct if_data* if_data = (struct if_data*)ifa->ifa_data;
+            iBytes += if_data->ifi_ibytes;
+            oBytes += if_data->ifi_obytes;
+            allFlow = iBytes + oBytes;
         }
-        freeifaddrs(addrs);
+        
+        //wifi
+        if (!strcmp(ifa->ifa_name, "en0")) {
+            struct if_data* if_data = (struct if_data*)ifa->ifa_data;
+            wifiIBytes += if_data->ifi_ibytes;
+            wifiOBytes += if_data->ifi_obytes;
+            wifiFlow = wifiIBytes + wifiOBytes;
+        }
+        
+        //3G or gprs
+        if (!strcmp(ifa->ifa_name, "pdp_ip0")) {
+            struct if_data* if_data = (struct if_data*)ifa->ifa_data;
+            wwanIBytes += if_data->ifi_ibytes;
+            wwanOBytes += if_data->ifi_obytes;
+            wwanFlow = wwanIBytes + wwanOBytes;
+        }
     }
-    self.upstreamSpped = upstreamSpped;
-    self.downstreamSpped = downstreamSpped;
-}
-
-- (NSString *)getSpeedString:(float)size {
-    if(size >= 1024*1024) { /// 大于1M，则转化成M单位的字符串
-        return [NSString stringWithFormat:@"%.1f M/s",size/1024/1024];
-    } else if(size >= 1024 && size < 1024*1024) { /// 不到1M,但是超过了1KB，则转化成KB单位
-        return [NSString stringWithFormat:@"%.0f kb/s",size/1024];
-    } else { /// 剩下的都是小于1K的，则转化成B单位
-        return [NSString stringWithFormat:@"%.0f b/s",size];
+    
+    freeifaddrs(ifa_list);
+    if (_iBytes != 0) {
+        _downloadNetworkSpeed = [[self stringWithbytes:iBytes - _iBytes] stringByAppendingString:@"/s"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ZFDownloadNetworkSpeedNotificationKey object:nil userInfo:@{ZFNetworkSpeedNotificationKey:_downloadNetworkSpeed}];
+        // NSLog(@"downloadNetworkSpeed : %@",_downloadNetworkSpeed);
     }
-}
-
-- (void)networkSpeedChangeBlock:(nullable void (^)(NSString *downloadSpped))block {
-    self.networkSpeedChangeBlock = block;
+    
+    _iBytes = iBytes;
+    
+    if (_oBytes != 0) {
+        _uploadNetworkSpeed = [[self stringWithbytes:oBytes - _oBytes] stringByAppendingString:@"/s"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ZFUploadNetworkSpeedNotificationKey object:nil userInfo:@{ZFNetworkSpeedNotificationKey:_uploadNetworkSpeed}];
+        // NSLog(@"uploadNetworkSpeed  :%@",_uploadNetworkSpeed);
+    }
+    
+    _oBytes = oBytes;
 }
 
 @end
