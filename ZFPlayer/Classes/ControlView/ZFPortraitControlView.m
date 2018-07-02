@@ -118,9 +118,16 @@
 
 - (void)sliderTapped:(float)value {
     self.slider.isdragging = YES;
-    [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
-        self.slider.isdragging = NO;
-    }];
+    if (self.player.totalTime > 0) {
+        @weakify(self)
+        [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
+            @strongify(self)
+            self.slider.isdragging = NO;
+            [self.player.currentPlayerManager play];
+        }];
+    } else {
+        self.slider.value = 0;
+    }
 }
 
 #pragma mark - action

@@ -74,11 +74,11 @@ FOUNDATION_EXPORT const unsigned char ZFPlayerVersionString[];
 #endif
 #endif
 
-//#ifdef DEBUG
-//#define ZFPlayerLog(...) NSLog(__VA_ARGS__)
-//#else
-//#define ZFPlayerLog(...)
-//#endif
+// 屏幕的宽
+#define ZFPlayerScreenWidth                 [[UIScreen mainScreen] bounds].size.width
+// 屏幕的高
+#define ZFPlayerScreenHeight                [[UIScreen mainScreen] bounds].size.height
+
 
 #import "ZFPlayerController.h"
 #import "ZFPlayerGestureControl.h"
