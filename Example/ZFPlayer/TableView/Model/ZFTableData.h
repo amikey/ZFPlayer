@@ -21,8 +21,6 @@
 @property (nonatomic, assign) CGFloat video_duration;
 @property (nonatomic, assign) CGFloat video_width;
 @property (nonatomic, assign) CGFloat video_height;
-@property (nonatomic, assign) long video_length;
-@property (nonatomic, assign) long video_size;
 @property (nonatomic, copy) NSString *thumbnail_url;
 @property (nonatomic, copy) NSString *video_url;
 

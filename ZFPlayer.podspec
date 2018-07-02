@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
     end
     
     s.subspec 'KSYMediaPlayer' do |ksyMediaPlayer|
-       ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
+        ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
         ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
         ksyMediaPlayer.dependency 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod'
         ksyMediaPlayer.dependency 'ZFPlayer/Core'

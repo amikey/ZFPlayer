@@ -74,6 +74,12 @@ FOUNDATION_EXPORT const unsigned char ZFPlayerVersionString[];
 #endif
 #endif
 
+//#ifdef DEBUG
+//#define ZFPlayerLog(...) NSLog(__VA_ARGS__)
+//#else
+//#define ZFPlayerLog(...)
+//#endif
+
 #import "ZFPlayerController.h"
 #import "ZFPlayerGestureControl.h"
 #import "ZFPlayerMediaPlayback.h"
@@ -81,3 +87,4 @@ FOUNDATION_EXPORT const unsigned char ZFPlayerVersionString[];
 #import "ZFOrientationObserver.h"
 #import "ZFKVOController.h"
 #import "UIScrollView+ZFPlayer.h"
+#import "ZFPlayerLogManager.h"

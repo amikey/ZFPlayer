@@ -7,10 +7,12 @@
 //
 
 #import "ZFAppDelegate.h"
+#import <ZFPlayer/ZFPlayer.h>
 
 @implementation ZFAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [ZFPlayerLogManager setLogEnable:YES];
     return YES;
 }
 

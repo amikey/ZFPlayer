@@ -246,17 +246,17 @@
     IJKMPMovieLoadState loadState = self.player.loadState;
     if (loadState & IJKMPMovieLoadStatePlaythroughOK) {
         // 加载完成，即将播放，停止加载的动画，并将其移除
-         NSLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
+         ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
         self.loadState = ZFPlayerLoadStatePlayable;
     } else if (loadState & IJKMPMovieLoadStateStalled) {
         // 可能由于网速不好等因素导致了暂停，重新添加加载的动画
-        NSLog(@"自动暂停了，loadStateDidChange: IJKMPMovieLoadStateStalled: %d\n", (int)loadState);
+        ZFPlayerLog(@"自动暂停了，loadStateDidChange: IJKMPMovieLoadStateStalled: %d\n", (int)loadState);
         self.loadState = ZFPlayerLoadStateStalled;
     } else if (loadState & IJKMPMovieLoadStatePlayable) {
-        NSLog(@"加载状态变成了缓存数据足够开始播放，但是视频并没有缓存完全");
+        ZFPlayerLog(@"加载状态变成了缓存数据足够开始播放，但是视频并没有缓存完全");
         self.loadState = ZFPlayerLoadStatePlayable;
     } else {
-        NSLog(@"加载状态变成了未知状态");
+        ZFPlayerLog(@"加载状态变成了未知状态");
         self.loadState = ZFPlayerLoadStateUnknown;
     }
 }
@@ -267,36 +267,36 @@
     int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
     switch (reason) {
         case IJKMPMovieFinishReasonPlaybackEnded: {
-            NSLog(@"playbackStateDidChange: 播放完毕: %d\n", reason);
+            ZFPlayerLog(@"playbackStateDidChange: 播放完毕: %d\n", reason);
             self.playState = ZFPlayerPlayStatePlayStopped;
             if (self.playerDidToEnd) self.playerDidToEnd(self);
         }
             break;
             
         case IJKMPMovieFinishReasonUserExited: {
-            NSLog(@"playbackStateDidChange: 用户退出播放: %d\n", reason);
+            ZFPlayerLog(@"playbackStateDidChange: 用户退出播放: %d\n", reason);
         }
             break;
             
         case IJKMPMovieFinishReasonPlaybackError: {
-            NSLog(@"playbackStateDidChange: 播放出现错误: %d\n", reason);
+            ZFPlayerLog(@"playbackStateDidChange: 播放出现错误: %d\n", reason);
             self.playState = ZFPlayerPlayStatePlayFailed;
         }
             break;
             
         default:
-            NSLog(@"playbackPlayBackDidFinish: ???: %d\n", reason);
+            ZFPlayerLog(@"playbackPlayBackDidFinish: ???: %d\n", reason);
             break;
     }
 }
 
 // 准备开始播放了
 - (void)mediaIsPreparedToPlayDidChange:(NSNotification *)notification {
-    NSLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
+    ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
     });
-    NSLog(@"mediaIsPrepareToPlayDidChange");
+    ZFPlayerLog(@"mediaIsPrepareToPlayDidChange");
 }
 
 // 播放状态改变
@@ -311,14 +311,14 @@
     
     switch (self.player.playbackState) {
         case IJKMPMoviePlaybackStateStopped: {
-            NSLog(@"播放器的播放状态变了，现在是停止状态 %d: stoped", (int)_player.playbackState);
+            ZFPlayerLog(@"播放器的播放状态变了，现在是停止状态 %d: stoped", (int)_player.playbackState);
             // 这里的回调也会来多次(一次播放完成, 会回调三次), 所以, 这里不设置
             self.playState = ZFPlayerPlayStatePlayStopped;
         }
             break;
             
         case IJKMPMoviePlaybackStatePlaying: {
-            NSLog(@"播放器的播放状态变了，现在是播放状态 %d: playing", (int)_player.playbackState);
+            ZFPlayerLog(@"播放器的播放状态变了，现在是播放状态 %d: playing", (int)_player.playbackState);
             self.playState = ZFPlayerPlayStatePlaying;
             if (self.seekTime) {
                 self.player.currentPlaybackTime = self.seekTime;
@@ -329,26 +329,26 @@
             break;
             
         case IJKMPMoviePlaybackStatePaused: {
-            NSLog(@"播放器的播放状态变了，现在是暂停状态 %d: paused", (int)_player.playbackState);
+            ZFPlayerLog(@"播放器的播放状态变了，现在是暂停状态 %d: paused", (int)_player.playbackState);
         }
             break;
             
         case IJKMPMoviePlaybackStateInterrupted: {
-            NSLog(@"播放器的播放状态变了，现在是中断状态 %d: interrupted", (int)_player.playbackState);
+            ZFPlayerLog(@"播放器的播放状态变了，现在是中断状态 %d: interrupted", (int)_player.playbackState);
         }
             break;
             
         case IJKMPMoviePlaybackStateSeekingForward: {
-            NSLog(@"播放器的播放状态变了，现在是向前拖动状态:%d forward",(int)self.player.playbackState);
+            ZFPlayerLog(@"播放器的播放状态变了，现在是向前拖动状态:%d forward",(int)self.player.playbackState);
         }
             break;
         case IJKMPMoviePlaybackStateSeekingBackward: {
-            NSLog(@"放器的播放状态变了，现在是向后拖动状态 %d: backward", (int)_player.playbackState);
+            ZFPlayerLog(@"放器的播放状态变了，现在是向后拖动状态 %d: backward", (int)_player.playbackState);
         }
             break;
             
         default: {
-            NSLog(@"播放器的播放状态变了，现在是未知状态 %d: unknown", (int)_player.playbackState);
+            ZFPlayerLog(@"播放器的播放状态变了，现在是未知状态 %d: unknown", (int)_player.playbackState);
         }
             break;
     }

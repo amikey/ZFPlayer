@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #import "ZFNetworkSpeedMonitor.h"
+#import "ZFPlayerLogManager.h"
 #include <arpa/inet.h>
 #include <ifaddrs.h>
 #include <net/if.h>
@@ -139,7 +140,7 @@ NSString *const ZFNetworkSpeedNotificationKey         = @"ZFNetworkSpeedNotifica
     if (_iBytes != 0) {
         _downloadNetworkSpeed = [[self stringWithbytes:iBytes - _iBytes] stringByAppendingString:@"/s"];
         [[NSNotificationCenter defaultCenter] postNotificationName:ZFDownloadNetworkSpeedNotificationKey object:nil userInfo:@{ZFNetworkSpeedNotificationKey:_downloadNetworkSpeed}];
-        // NSLog(@"downloadNetworkSpeed : %@",_downloadNetworkSpeed);
+        ZFPlayerLog(@"downloadNetworkSpeed : %@",_downloadNetworkSpeed);
     }
     
     _iBytes = iBytes;
@@ -147,7 +148,7 @@ NSString *const ZFNetworkSpeedNotificationKey         = @"ZFNetworkSpeedNotifica
     if (_oBytes != 0) {
         _uploadNetworkSpeed = [[self stringWithbytes:oBytes - _oBytes] stringByAppendingString:@"/s"];
         [[NSNotificationCenter defaultCenter] postNotificationName:ZFUploadNetworkSpeedNotificationKey object:nil userInfo:@{ZFNetworkSpeedNotificationKey:_uploadNetworkSpeed}];
-        // NSLog(@"uploadNetworkSpeed  :%@",_uploadNetworkSpeed);
+        ZFPlayerLog(@"uploadNetworkSpeed :%@",_uploadNetworkSpeed);
     }
     
     _oBytes = oBytes;
