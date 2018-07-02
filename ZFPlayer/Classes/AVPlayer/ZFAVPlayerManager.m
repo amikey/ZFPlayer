@@ -146,6 +146,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 @synthesize rate                           = _rate;
 @synthesize isPreparedToPlay               = _isPreparedToPlay;
 @synthesize scalingMode                    = _scalingMode;
+@synthesize playerPlayFailed               = _playerPlayFailed;
 
 - (instancetype)init {
     self = [super init];
@@ -375,6 +376,8 @@ static NSString *const kPresentationSize         = @"presentationSize";
                  self.player.muted = self.muted;
              } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
                  self.playState = ZFPlayerPlayStatePlayFailed;
+                 NSError *error = self.player.currentItem.error;
+                 if (self.playerPlayFailed) self.playerPlayFailed(self, error);
              }
          } else if ([keyPath isEqualToString:kPlaybackBufferEmpty]) {
              // When the buffer is empty

@@ -158,6 +158,14 @@
             [self.controlView videoPlayerPlayEnd:self];
         }
     };
+    
+    self.currentPlayerManager.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
+        @strongify(self)
+        if ([self.controlView respondsToSelector:@selector(videoPlayerPlayFailed:error:)]) {
+            [self.controlView videoPlayerPlayFailed:self error:error];
+        }
+        if (self.playerPlayFailed) self.playerPlayFailed(asset,error);
+    };
 }
 
 - (void)layoutPlayerSubViews {
@@ -364,7 +372,11 @@
     return YES;
 }
 
-- (void (^)(id _Nonnull))playerDidToEnd {
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull))playerDidToEnd {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, id _Nonnull))playerPlayFailed {
     return objc_getAssociatedObject(self, _cmd);
 }
 
@@ -428,8 +440,12 @@
     objc_setAssociatedObject(self, @selector(pauseWhenAppResignActive), @(pauseWhenAppResignActive), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setPlayerDidToEnd:(void (^)(id _Nonnull))playerDidToEnd {
+- (void)setPlayerDidToEnd:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull))playerDidToEnd {
     objc_setAssociatedObject(self, @selector(playerDidToEnd), playerDidToEnd, OBJC_ASSOCIATION_COPY);
+}
+
+- (void)setPlayerPlayFailed:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, id _Nonnull))playerPlayFailed {
+    objc_setAssociatedObject(self, @selector(playerPlayFailed), playerPlayFailed, OBJC_ASSOCIATION_COPY);
 }
 
 - (void)setCurrentPlayIndex:(NSInteger)currentPlayIndex {

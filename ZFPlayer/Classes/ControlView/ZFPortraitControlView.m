@@ -94,12 +94,14 @@
 
 - (void)sliderTouchEnded:(float)value {
     self.slider.isdragging = YES;
-    @weakify(self)
-    [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
-        @strongify(self)
-        self.slider.isdragging = NO;
-        [self.player.currentPlayerManager play];
-    }];
+    if (self.player.totalTime > 0) {
+        @weakify(self)
+        [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
+            @strongify(self)
+            self.slider.isdragging = NO;
+            [self.player.currentPlayerManager play];
+        }];
+    }
     if (self.sliderValueChanged) self.sliderValueChanged(value);
 }
 

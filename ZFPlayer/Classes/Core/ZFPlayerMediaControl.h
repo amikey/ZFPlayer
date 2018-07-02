@@ -81,6 +81,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoPlayerPlayEnd:(ZFPlayerController *)videoPlayer;
 
+/**
+ When play failed.
+ */
+- (void)videoPlayerPlayFailed:(ZFPlayerController *)videoPlayer error:(id)error;
+
 #pragma mark - lock screen
 
 /**

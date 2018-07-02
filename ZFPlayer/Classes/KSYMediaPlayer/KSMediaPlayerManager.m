@@ -65,6 +65,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 @synthesize rate                           = _rate;
 @synthesize isPreparedToPlay               = _isPreparedToPlay;
 @synthesize scalingMode                    = _scalingMode;
+@synthesize playerPlayFailed               = _playerPlayFailed;
 
 - (void)dealloc {
     [self destory];
@@ -259,6 +260,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     } else if (reason == MPMovieFinishReasonPlaybackError) {
         ZFPlayerLog(@"%@", [NSString stringWithFormat:@"player Error : %@", [[notify userInfo] valueForKey:@"error"]]);
         self.playState = ZFPlayerPlayStatePlayFailed;
+        if (self.playerPlayFailed) self.playerPlayFailed(self, [[notify userInfo] valueForKey:@"error"]]);
     } else if (reason == MPMovieFinishReasonUserExited){
         /// player userExited
     }

@@ -147,8 +147,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, getter=isPauseByEvent) BOOL pauseByEvent;
 
 /// When the player is play end.
-@property (nonatomic, copy, nullable) void(^playerDidToEnd)(id asset);
+@property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
 
+/// The block invoked when the player play failed.
+@property (nonatomic, copy, nullable) void(^playerPlayFailed)(id<ZFPlayerMediaPlayback> asset, id error);
 
 /// Play the next url ,while the `assetURLs` is not NULL.
 - (void)playTheNext;

@@ -125,6 +125,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 /// The block invoked when the player load state changed.
 @property (nonatomic, copy, nullable) void(^playerLoadStatChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerLoadState loadState);
 
+/// The block invoked when the player play failed.
+@property (nonatomic, copy, nullable) void(^playerPlayFailed)(id<ZFPlayerMediaPlayback> asset, id error);
+
 /// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
 

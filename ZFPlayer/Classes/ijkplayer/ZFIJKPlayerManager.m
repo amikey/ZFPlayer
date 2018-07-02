@@ -61,6 +61,7 @@
 @synthesize rate                           = _rate;
 @synthesize isPreparedToPlay               = _isPreparedToPlay;
 @synthesize scalingMode                    = _scalingMode;
+@synthesize playerPlayFailed               = _playerPlayFailed;
 
 - (void)dealloc {
     [self stop];
@@ -281,6 +282,7 @@
         case IJKMPMovieFinishReasonPlaybackError: {
             ZFPlayerLog(@"playbackStateDidChange: 播放出现错误: %d\n", reason);
             self.playState = ZFPlayerPlayStatePlayFailed;
+            if (self.playerPlayFailed) self.playerPlayFailed(self, @(reason));
         }
             break;
             

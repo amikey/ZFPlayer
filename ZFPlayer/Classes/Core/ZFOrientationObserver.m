@@ -194,7 +194,6 @@ static UIWindow *kWindow;
             keyboardWindow.transform = [self getTransformRotationAngle:orientation];
         }
         
-        
         if (self.orientationWillChange) {
             self.orientationWillChange(self, self.isFullScreen);
         }
@@ -209,6 +208,9 @@ static UIWindow *kWindow;
             [superview addSubview:self.view];
             self.view.frame = superview.bounds;
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
+            
+            
+            NSLog(@"%f",ScreenWidth);
         }];
     }
 }
