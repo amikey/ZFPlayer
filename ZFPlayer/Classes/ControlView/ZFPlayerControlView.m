@@ -153,7 +153,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     
     min_x = 0;
     min_y = 0;
-    min_w = 180;
+    min_w = 160;
     min_h = 40;
     self.volumeBrightnessView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.volumeBrightnessView.center = self.center;

@@ -98,6 +98,8 @@ typedef NS_ENUM(NSUInteger, ZFRotateType) {
 /// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
 
+- (void)exitFullScreenWithAnimated:(BOOL)animated;
+
 @end
 
 NS_ASSUME_NONNULL_END

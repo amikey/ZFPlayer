@@ -190,12 +190,13 @@
             if (self.pauseWhenAppResignActive && self.currentPlayerManager.isPlaying) {
                 self.pauseByEvent = YES;
             }
+            if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = YES;
         };
         _notification.didBecomeActive = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
-            if (self.isPauseByEvent) {
-                self.pauseByEvent = NO;
-            }
+            if (self.isPauseByEvent) self.pauseByEvent = NO;
+            if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = NO;
+
         };
         _notification.oldDeviceUnavailable = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
@@ -261,8 +262,12 @@
 - (void)stop {
     [self.notification removeNotification];
     [self.orientationObserver removeDeviceOrientationObserver];
+    if (self.isFullScreen) {
+        [self.orientationObserver exitFullScreenWithAnimated:NO];
+    }
     [self.currentPlayerManager stop];
     [self.currentPlayerManager.view removeFromSuperview];
+    self.currentPlayerManager.view.hidden = YES;
 }
 
 - (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)manager {
@@ -530,15 +535,15 @@
 }
 
 - (BOOL)isStatusBarHidden {
-    return self.orientationObserver.isStatusBarHidden;
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 - (BOOL)isLockedScreen {
-    return self.orientationObserver.isLockedScreen;
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 - (BOOL)shouldAutorotate {
-    return self.orientationObserver.shouldAutorotate;
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 #pragma mark - setter

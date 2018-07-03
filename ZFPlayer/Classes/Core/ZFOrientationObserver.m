@@ -170,6 +170,7 @@ static UIWindow *kWindow;
                 self.view.frame = [self.view convertRect:self.view.frame toView:superview];
             }
             self.fullScreen = YES;
+            /// 先加到window上，效果更好一些
             [superview addSubview:_view];
         } else {
             if (self.roateType == ZFRotateTypeCell) {
@@ -183,6 +184,7 @@ static UIWindow *kWindow;
         _currentOrientation = orientation;
         
         [UIApplication sharedApplication].statusBarOrientation = orientation;
+        /// 处理键盘
         NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
         if(windowCount > 1) {
             UIWindow *keyboardWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:(windowCount-1)];
@@ -198,9 +200,9 @@ static UIWindow *kWindow;
             self.orientationWillChange(self, self.isFullScreen);
         }
     
-        [UIView animateWithDuration:self.duration animations:^{
+        [UIView animateWithDuration:animated?self.duration:0 animations:^{
             self.view.transform = [self getTransformRotationAngle:orientation];
-            [UIView animateWithDuration:self.duration animations:^{
+            [UIView animateWithDuration:animated?self.duration:0 animations:^{
                 self.view.frame = frame;
                 [self.view layoutIfNeeded];
             }];
@@ -208,9 +210,6 @@ static UIWindow *kWindow;
             [superview addSubview:self.view];
             self.view.frame = superview.bounds;
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
-            
-            
-            NSLog(@"%f",ScreenWidth);
         }];
     }
 }
@@ -253,7 +252,7 @@ static UIWindow *kWindow;
         }
     }
     CGRect frame = [superview convertRect:superview.bounds toView:kWindow];
-    [UIView animateWithDuration:self.duration animations:^{
+    [UIView animateWithDuration:animated?self.duration:0 animations:^{
         self.view.frame = frame;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
@@ -263,6 +262,14 @@ static UIWindow *kWindow;
             self.orientationDidChanged(self, self.isFullScreen);
         }
     }];
+}
+
+- (void)exitFullScreenWithAnimated:(BOOL)animated {
+    if (self.fullScreenMode == ZFFullScreenModeLandscape) {
+        [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:animated];
+    } else if (self.fullScreenMode == ZFFullScreenModePortrait) {
+        [self enterPortraitFullScreen:NO animated:animated];
+    }
 }
 
 - (void)setLockedScreen:(BOOL)lockedScreen {
