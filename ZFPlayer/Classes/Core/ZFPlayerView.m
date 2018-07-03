@@ -50,26 +50,29 @@
     // Determine if the touch point is out of reach
     if (![self pointInside:point withEvent:event]) return nil;
     /// Fix iOS8 部分区域不响应的bug
-    CGFloat screenWidth = MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth);
-    CGFloat screenHeight = MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth);
-    if ([self isNeedAdaptiveiOS8Rotation] && point.x == (screenHeight - screenWidth) && self.fitView) {
-        UIView *fitView = self.fitView;
-        self.fitView = nil;
-        return fitView;
-    }
-    // Iterate through your child controls from behind to see if any child controls are better suited to respond to this event
-    NSInteger count = self.subviews.count;
-    for (NSInteger i = count - 1; i >= 0; i--) {
-        UIView *childView = self.subviews[i];
-        CGPoint childPoint = [self convertPoint:point toView:childView];
-        UIView *fitView = [childView hitTest:childPoint withEvent:event];
-        if (fitView) {
-            self.fitView = fitView;
-            return fitView;
+    UIInterfaceOrientation currentInterfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    BOOL isNeedJudge = currentInterfaceOrientation == UIInterfaceOrientationLandscapeRight;
+    if ([self isNeedAdaptiveiOS8Rotation] && isNeedJudge) {
+        NSInteger count = self.subviews.count;
+        for (NSInteger i = count - 1; i >= 0; i--) {
+            UIView *childView = self.subviews[i];
+            if ([childView isKindOfClass:[UIButton class]] && childView.userInteractionEnabled && !childView.hidden && childView.alpha > 0.01) {
+                CGPoint childPoint = [self convertPoint:point toView:childView];
+                if ([childView pointInside:childPoint withEvent:event]) {
+                    UIButton *clickButton = (UIButton *)childView;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.11 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [clickButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+                    });
+                    clickButton.userInteractionEnabled = NO;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        clickButton.userInteractionEnabled = YES;
+                    });
+                    return childView;
+                }
+            }
         }
     }
-    // Did ont find a better view than myself
-    return self;
+    return [super hitTest:point withEvent:event];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {}
