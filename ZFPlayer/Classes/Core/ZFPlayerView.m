@@ -32,47 +32,21 @@
 
 @implementation ZFPlayerView
 
-- (BOOL)isNeedAdaptiveiOS8Rotation {
-    NSArray<NSString *> *versionStrArr = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-    int firstVer = [[versionStrArr objectAtIndex:0] intValue];
-    int secondVer = [[versionStrArr objectAtIndex:1] intValue];
-    if (firstVer == 8) {
-        if (secondVer >= 1 && secondVer <= 3) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     // Determine whether you can receive touch events
     if (self.userInteractionEnabled == NO || self.hidden == YES || self.alpha <= 0.01) return nil;
     // Determine if the touch point is out of reach
     if (![self pointInside:point withEvent:event]) return nil;
-    /// Fix iOS8 部分区域不响应的bug
-    UIInterfaceOrientation currentInterfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    BOOL isNeedJudge = currentInterfaceOrientation == UIInterfaceOrientationLandscapeRight;
-    if ([self isNeedAdaptiveiOS8Rotation] && isNeedJudge) {
-        NSInteger count = self.subviews.count;
-        for (NSInteger i = count - 1; i >= 0; i--) {
-            UIView *childView = self.subviews[i];
-            if ([childView isKindOfClass:[UIButton class]] && childView.userInteractionEnabled && !childView.hidden && childView.alpha > 0.01) {
-                CGPoint childPoint = [self convertPoint:point toView:childView];
-                if ([childView pointInside:childPoint withEvent:event]) {
-                    UIButton *clickButton = (UIButton *)childView;
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.11 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [clickButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-                    });
-                    clickButton.userInteractionEnabled = NO;
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        clickButton.userInteractionEnabled = YES;
-                    });
-                    return childView;
-                }
-            }
+    NSInteger count = self.subviews.count;
+    for (NSInteger i = count - 1; i >= 0; i--) {
+        UIView *childView = self.subviews[i];
+        CGPoint childPoint = [self convertPoint:point toView:childView];
+        UIView *fitView = [childView hitTest:childPoint withEvent:event];
+        if (fitView) {
+            return fitView;
         }
     }
-    return [super hitTest:point withEvent:event];
+    return self;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {}

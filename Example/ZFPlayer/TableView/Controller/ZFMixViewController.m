@@ -95,7 +95,7 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
 }
 
 - (BOOL)shouldAutorotate {
-    return NO;
+    return self.player.shouldAutorotate;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

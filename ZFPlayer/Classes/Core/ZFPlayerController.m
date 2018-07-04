@@ -543,7 +543,7 @@
 }
 
 - (BOOL)shouldAutorotate {
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
+    return self.orientationObserver.shouldAutorotate;
 }
 
 #pragma mark - setter
@@ -569,10 +569,10 @@
     }
 }
 
-- (void)setShouldAutorotate:(BOOL)shouldAutorotate {
-    objc_setAssociatedObject(self, @selector(shouldAutorotate), @(shouldAutorotate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    self.orientationObserver.shouldAutorotate = shouldAutorotate;
-}
+//- (void)setShouldAutorotate:(BOOL)shouldAutorotate {
+//    objc_setAssociatedObject(self, @selector(shouldAutorotate), @(shouldAutorotate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//    self.orientationObserver.shouldAutorotate = shouldAutorotate;
+//}
 
 @end
 

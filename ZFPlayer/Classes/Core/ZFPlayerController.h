@@ -180,7 +180,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Whether automatic screen rotation is supported.
 /// default is YES.
-@property (nonatomic) BOOL shouldAutorotate;
+@property (nonatomic, readonly) BOOL shouldAutorotate;
 
 /// When ZFFullScreenMode is ZFFullScreenModeLandscape the orientation is LandscapeLeft or LandscapeRight, this value is YES.
 /// When ZFFullScreenMode is ZFFullScreenModePortrait, while the player fullSceen this value is YES.

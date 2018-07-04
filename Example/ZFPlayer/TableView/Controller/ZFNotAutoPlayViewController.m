@@ -105,7 +105,7 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (BOOL)shouldAutorotate {
-    return NO;
+    return self.player.shouldAutorotate;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

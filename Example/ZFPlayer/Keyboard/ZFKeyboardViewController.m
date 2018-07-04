@@ -12,6 +12,7 @@
 #import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import <ZFPlayer/ZFIJKPlayerManager.h>
+#import <ZFPlayer/UIView+ZFFrame.h>
 
 @interface ZFKeyboardViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -37,10 +38,11 @@
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        [weakSelf.textField resignFirstResponder];
-        [weakSelf setNeedsStatusBarAppearanceUpdate];
+        @strongify(self)
+        [self.textField resignFirstResponder];
+        [self setNeedsStatusBarAppearanceUpdate];
     };
     NSString *URLString = [@"http://flv3.bn.netease.com/tvmrepo/2018/6/H/9/EDJTRBEH9/SD/EDJTRBEH9-mobile.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     playerManager.assetURL = [NSURL URLWithString:URLString];
@@ -56,10 +58,12 @@
     CGFloat h = w*9/16;
     self.containerView.frame = CGRectMake(x, y, w, h);
     
-    self.textField.frame = CGRectMake(0, 0, 200, 35);
-    self.textField.center = self.controlView.center;
-    
-    
+    w = 200;
+    h = 35;
+    x = (self.containerView.width - w)/2;
+    y = (self.containerView.height - h)/2;
+    self.textField.frame = CGRectMake(x, y, w, h);
+
     w = 44;
     h = w;
     x = (CGRectGetWidth(self.containerView.frame)-w)/2;
@@ -83,7 +87,7 @@
 }
 
 - (BOOL)shouldAutorotate {
-    return NO;
+    return self.player.shouldAutorotate;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

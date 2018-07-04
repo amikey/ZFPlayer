@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, ZFRotateType) {
 
 /// Whether automatic screen rotation is supported.
 /// default is YES.
-@property (nonatomic) BOOL shouldAutorotate;
+@property (nonatomic, readonly) BOOL shouldAutorotate;
 
 /// If the full screen
 @property (nonatomic, readonly, getter=isFullScreen) BOOL fullScreen;

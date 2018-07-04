@@ -164,7 +164,7 @@
 }
 
 - (BOOL)shouldAutorotate {
-    return NO;
+    return self.player.shouldAutorotate;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
