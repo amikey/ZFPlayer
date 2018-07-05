@@ -30,32 +30,32 @@ Before this, you used ZFPlayer, are you worried about encapsulating avplayer ins
 ZFPlayer is available through [CocoaPods](https://cocoapods.org). To install it,use player template simply add the following line to your Podfile:
 
 ```objc
-pod 'ZFPlayer', '~> 3.0.9'
+pod 'ZFPlayer', '~> 3.0'
 ```
 
 Use default controlView simply add the following line to your Podfile:
 
 ```objc
-pod 'ZFPlayer/ControlView', '~> 3.0.9'
+pod 'ZFPlayer/ControlView', '~> 3.0'
 ```
 Use AVPlayer simply add the following line to your Podfile:
 
 ```objc
-pod 'ZFPlayer/AVPlayer', '~> 3.0.9'
+pod 'ZFPlayer/AVPlayer', '~> 3.0'
 ```
 如果使用AVPlayer边下边播可以参考使用[KTVHTTPCache](https://github.com/ChangbaDevs/KTVHTTPCache)
 
 Use ijkplayer simply add the following line to your Podfile:
 
 ```objc
-pod 'ZFPlayer/ijkplayer', '~> 3.0.9'
+pod 'ZFPlayer/ijkplayer', '~> 3.0'
 ```
 [IJKMediaFramework SDK](https://gitee.com/renzifeng/IJKMediaFramework) support cocoapods
 
 Use KSYMediaPlayer simply add the following line to your Podfile:
 
 ```objc
-pod 'ZFPlayer/KSYMediaPlayer', '~> 3.0.9'
+pod 'ZFPlayer/KSYMediaPlayer', '~> 3.0'
 ```
 [KSYMediaPlayer SDK](https://github.com/ksvc/KSYMediaPlayer_iOS) support cocoapods
 
@@ -123,7 +123,7 @@ Rotate the video the viewController must implement
 
 ```objc
 - (BOOL)shouldAutorotate {
-    return NO;
+    return player.shouldAutorotate;
 }
 ```
 
@@ -134,7 +134,6 @@ Rotate the video the viewController must implement
 ## Reference
 - https://github.com/Bilibili/ijkplayer
 - https://github.com/changsanjiang/SJVideoPlayer
-- https://github.com/ksvc/KSYMediaPlayer_iOS
 
 ## Author
 

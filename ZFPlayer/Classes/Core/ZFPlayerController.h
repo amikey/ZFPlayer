@@ -179,8 +179,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) ZFOrientationObserver *orientationObserver;
 
 /// Whether automatic screen rotation is supported.
-/// default is YES.
+/// iOS8.1~iOS8.3 the value is YES, other iOS version the value is NO.
+/// This property is used for the return value of UIViewController `shouldAutorotate` method.
 @property (nonatomic, readonly) BOOL shouldAutorotate;
+
+/// Whether allow the video orientation rotate.
+/// default is YES.
+@property (nonatomic) BOOL allowOrentitaionRotation;
 
 /// When ZFFullScreenMode is ZFFullScreenModeLandscape the orientation is LandscapeLeft or LandscapeRight, this value is YES.
 /// When ZFFullScreenMode is ZFFullScreenModePortrait, while the player fullSceen this value is YES.
