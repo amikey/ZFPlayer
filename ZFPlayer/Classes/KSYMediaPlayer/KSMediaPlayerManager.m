@@ -253,14 +253,15 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 /// 播放完成通知。视频正常播放完成时触发。
 - (void)videoFinish:(NSNotification *)notify {
-    NSInteger reason = [[[notify userInfo] valueForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
+    NSInteger reason = [[notify.userInfo valueForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
     if (reason == MPMovieFinishReasonPlaybackEnded) {
         self.playState = ZFPlayerPlayStatePlayStopped;
         if (self.playerDidToEnd) self.playerDidToEnd(self);
     } else if (reason == MPMovieFinishReasonPlaybackError) {
-        ZFPlayerLog(@"%@", [NSString stringWithFormat:@"player Error : %@", [[notify userInfo] valueForKey:@"error"]]);
         self.playState = ZFPlayerPlayStatePlayFailed;
-        if (self.playerPlayFailed) self.playerPlayFailed(self, [[notify userInfo] valueForKey:@"error"]);
+        NSString *error = [notify.userInfo valueForKey:@"error"];
+        ZFPlayerLog(@"player Error : %@", error);
+        if (self.playerPlayFailed) self.playerPlayFailed(self, error);
     } else if (reason == MPMovieFinishReasonUserExited){
         /// player userExited
     }
