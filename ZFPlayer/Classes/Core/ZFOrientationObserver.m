@@ -68,8 +68,6 @@ static UIWindow *kWindow;
 
 @property (nonatomic, assign, getter=isFullScreen) BOOL fullScreen;
 
-@property (nonatomic, assign) BOOL shouldAutorotate;
-
 @property (nonatomic, strong) UIView *cell;
 
 @property (nonatomic, assign) NSInteger playerViewTag;
@@ -128,7 +126,6 @@ static UIWindow *kWindow;
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-    self.shouldAutorotate = NO;
 }
 
 - (void)handleDeviceOrientationChange {
@@ -166,7 +163,6 @@ static UIWindow *kWindow;
     _currentOrientation = orientation;
     UIView *superview = nil;
     CGRect frame;
-    self.shouldAutorotate = [self isNeedAdaptiveiOS8Rotation];
     if ([self isNeedAdaptiveiOS8Rotation]) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             if (self.fullScreen) return;

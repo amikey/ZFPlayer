@@ -489,6 +489,18 @@
     }
 }
 
+- (BOOL)isNeedAdaptiveiOS8Rotation {
+    NSArray<NSString *> *versionStrArr = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+    int firstVer = [[versionStrArr objectAtIndex:0] intValue];
+    int secondVer = [[versionStrArr objectAtIndex:1] intValue];
+    if (firstVer == 8) {
+        if (secondVer >= 1 && secondVer <= 3) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark - getter
 
 - (ZFOrientationObserver *)orientationObserver {
@@ -543,11 +555,14 @@
 }
 
 - (BOOL)shouldAutorotate {
-    return self.orientationObserver.shouldAutorotate;
+    return [self isNeedAdaptiveiOS8Rotation];
 }
 
 - (BOOL)allowOrentitaionRotation {
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
+    NSNumber *number = objc_getAssociatedObject(self, _cmd);
+    if (number) return number.boolValue;
+    self.allowOrentitaionRotation = YES;
+    return YES;
 }
 
 #pragma mark - setter
