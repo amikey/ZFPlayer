@@ -336,6 +336,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
             /// 如果有正在播放的cell，直接停止遍历
             if (self.zf_playingIndexPath) {
                 indexPath = self.zf_playingIndexPath;
+                finalIndexPath = indexPath;
                 *stop = YES;
                 return;
             }
