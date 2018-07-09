@@ -352,7 +352,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
             self->_currentTime = CMTimeGetSeconds(time);
             self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
             if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
-            [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerPlaybackPlayTimeDidChangeNotification object:self];
         }
     }];
     
@@ -361,7 +360,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
         if (!self) return;
         self.playState = ZFPlayerPlayStatePlayStopped;
         if (self.playerDidToEnd) self.playerDidToEnd(self);
-        [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerPlaybackDidFinishNotification object:self];
     }];
 }
 
@@ -370,7 +368,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
          if ([keyPath isEqualToString:kStatus]) {
              if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
                  self.loadState = ZFPlayerLoadStatePlaythroughOK;
-                 [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerPlaybackIsPreparedToPlayDidChangeNotification object:self];
                  if (self.seekTime) {
                      [self seekToTime:self.seekTime completionHandler:nil];
                      self.seekTime = 0; // 滞空, 防止下次播放出错
@@ -381,7 +378,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
                  self.playState = ZFPlayerPlayStatePlayFailed;
                  NSError *error = self.player.currentItem.error;
                  if (self.playerPlayFailed) self.playerPlayFailed(self, error);
-                 [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerPlaybackErrorNotification object:self userInfo:@{ZFPlayerPlaybackErrorReasonUserInfoKey:error}];
              }
          } else if ([keyPath isEqualToString:kPlaybackBufferEmpty]) {
              // When the buffer is empty
@@ -398,7 +394,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
              NSTimeInterval bufferTime = [self availableDuration];
              self->_bufferTime = bufferTime;
              if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, bufferTime);
-             [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerPlaybackPlayTimeDidChangeNotification object:self];
          } else if ([keyPath isEqualToString:kPresentationSize]) {
              self->_presentationSize = self.playerItem.presentationSize;
          } else {
@@ -424,13 +419,11 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (void)setPlayState:(ZFPlayerPlaybackState)playState {
     _playState = playState;
-    [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerPlaybackStateDidChangeNotification object:self];
     if (self.playerPlayStatChanged) self.playerPlayStatChanged(self, playState);
 }
 
 - (void)setLoadState:(ZFPlayerLoadState)loadState {
     _loadState = loadState;
-    [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerLoadStateDidChangeNotification object:self];
     if (self.playerLoadStatChanged) self.playerLoadStatChanged(self, loadState);
 }
 

@@ -110,6 +110,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 /// The player load state.
 @property (nonatomic, readonly) ZFPlayerLoadState loadState;
 
+///------------------------------------
+/// The following block cannot be called outside, only for ZFPlayerController calls
+///------------------------------------
+
 /// The block invoked when the player is Ready to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 
@@ -130,6 +134,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 
 /// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
+
+///------------------------------------
+/// end
+///------------------------------------
 
 /// Prepares the current queue for playback, interrupting any active (non-mixible) audio sessions.
 - (void)prepareToPlay;
@@ -157,48 +165,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 
 /// Use this method to seek to a specified time for the current player and to be notified when the seek operation is complete.
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler;
-
-
-#pragma mark - Notifications
-
-#ifdef __cplusplus
-#define ZF_EXTERN extern "C" __attribute__((visibility ("default")))
-#else
-#define ZF_EXTERN extern __attribute__((visibility ("default")))
-#endif
-
-// -----------------------------------------------------------------------------
-//  MPMediaPlayback.h
-
-// Posted when the prepared state changes of an object conforming to the MPMediaPlayback protocol changes.
-// This supersedes MPMoviePlayerContentPreloadDidFinishNotification.
-ZF_EXTERN NSString *const ZFPlayerPlaybackIsPreparedToPlayDidChangeNotification;
-
-ZF_EXTERN NSString *const ZFPlayerPlaybackPlayTimeDidChangeNotification;
-
-ZF_EXTERN NSString *const ZFPlayerPlaybackBufferTimeDidChangeNotification;
-
-// -----------------------------------------------------------------------------
-//  MPMoviePlayerController.h
-//  Movie Player Notifications
-
-// Posted when the scaling mode changes.
-ZF_EXTERN NSString *const ZFPlayerPlayerScalingModeDidChangeNotification;
-
-// Posted when movie playback ends or a user exits playback.
-ZF_EXTERN NSString *const ZFPlayerPlaybackDidFinishNotification;
-
-ZF_EXTERN NSString *const ZFPlayerPlaybackErrorNotification;
-ZF_EXTERN NSString *const ZFPlayerPlaybackErrorReasonUserInfoKey; // NSNumber (IJKMPMovieFinishReason)
-
-// Posted when the playback state changes, either programatically or by the user.
-ZF_EXTERN NSString *const ZFPlayerPlaybackStateDidChangeNotification;
-
-// Posted when the network load state changes.
-ZF_EXTERN NSString *const ZFPlayerLoadStateDidChangeNotification;
-
-// Posted when the movie player begins or ends playing video via AirPlay.
-ZF_EXTERN NSString *const ZFPlayerIsAirPlayVideoActiveDidChangeNotification;
 
 @end
 

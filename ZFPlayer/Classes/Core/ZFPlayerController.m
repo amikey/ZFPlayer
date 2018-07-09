@@ -110,130 +110,68 @@
 
 - (void)playerManagerCallbcak {
     @weakify(self)
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerPlaybackIsPreparedToPlayDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    self.currentPlayerManager.playerPrepareToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         @strongify(self)
         self.currentPlayerManager.view.hidden = NO;
         [self.notification addNotification];
         if (self.allowOrentitaionRotation) [self addDeviceOrientationObserver];
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
-            [self.controlView videoPlayer:self prepareToPlay:self.currentPlayerManager.assetURL];
+            [self.controlView videoPlayer:self prepareToPlay:assetURL];
         }
-    }];
+        if (self.playerPrepareToPlay) self.playerPrepareToPlay(asset,assetURL);
+    };
     
-//    self.currentPlayerManager.playerPrepareToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
-//        @strongify(self)
-//        self.currentPlayerManager.view.hidden = NO;
-//        [self.notification addNotification];
-//        if (self.allowOrentitaionRotation) [self addDeviceOrientationObserver];
-//        if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
-//            [self.controlView videoPlayer:self prepareToPlay:assetURL];
-//        }
-//    };
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerPlaybackPlayTimeDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    self.currentPlayerManager.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         @strongify(self)
-        self.currentTime = self.currentPlayerManager.currentTime;
-        self.totalTime = self.currentPlayerManager.totalTime;
+        self.currentTime = currentTime;
+        self.totalTime = duration;
         if ([self.controlView respondsToSelector:@selector(videoPlayer:currentTime:totalTime:)]) {
-            [self.controlView videoPlayer:self currentTime:self.currentTime totalTime:self.totalTime];
+            [self.controlView videoPlayer:self currentTime:currentTime totalTime:duration];
         }
-    }];
+        if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(asset,currentTime,duration);
+    };
     
-//    self.currentPlayerManager.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
-//        @strongify(self)
-//        self.currentTime = currentTime;
-//        self.totalTime = duration;
-//        if ([self.controlView respondsToSelector:@selector(videoPlayer:currentTime:totalTime:)]) {
-//            [self.controlView videoPlayer:self currentTime:currentTime totalTime:duration];
-//        }
-//    };
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerPlaybackBufferTimeDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    self.currentPlayerManager.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval bufferTime) {
         @strongify(self)
-        self.bufferTime = self.currentPlayerManager.bufferTime;
+        self.bufferTime = bufferTime;
         if ([self.controlView respondsToSelector:@selector(videoPlayer:bufferTime:)]) {
-            [self.controlView videoPlayer:self bufferTime:self.bufferTime];
+            [self.controlView videoPlayer:self bufferTime:bufferTime];
         }
-    }];
+        if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(asset,bufferTime);
+     };
     
-//    self.currentPlayerManager.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval bufferTime) {
-//        @strongify(self)
-//        self.bufferTime = bufferTime;
-//        if ([self.controlView respondsToSelector:@selector(videoPlayer:bufferTime:)]) {
-//            [self.controlView videoPlayer:self bufferTime:bufferTime];
-//        }
-//    };
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerPlaybackPlayTimeDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        @strongify(self)
-        self.currentTime = self.currentPlayerManager.currentTime;
-        self.totalTime = self.currentPlayerManager.totalTime;
-        if ([self.controlView respondsToSelector:@selector(videoPlayer:currentTime:totalTime:)]) {
-            [self.controlView videoPlayer:self currentTime:self.currentTime totalTime:self.totalTime];
-        }
-    }];
-    
-//    self.currentPlayerManager.playerPlayStatChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
-//        @strongify(self)
-//        if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
-//            [self.controlView videoPlayer:self playStateChanged:playState];
-//        }
-//        [[NSNotificationCenter defaultCenter] postNotificationName:ZFPlayerPlaybackStateDidChangeNotification object:self];
-//    };
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerPlaybackStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    self.currentPlayerManager.playerPlayStatChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
         @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
-            [self.controlView videoPlayer:self playStateChanged:self.currentPlayerManager.playState];
+            [self.controlView videoPlayer:self playStateChanged:playState];
         }
-    }];
+        if (self.playerPlayStatChanged) self.playerPlayStatChanged(asset, playState);
+    };
     
-//    self.currentPlayerManager.playerLoadStatChanged = ^(id  _Nonnull asset, ZFPlayerLoadState loadState) {
-//        @strongify(self)
-//        if ([self.controlView respondsToSelector:@selector(videoPlayer:loadStateChanged:)]) {
-//            [self.controlView videoPlayer:self loadStateChanged:loadState];
-//        }
-//    };
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerLoadStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    self.currentPlayerManager.playerLoadStatChanged = ^(id  _Nonnull asset, ZFPlayerLoadState loadState) {
         @strongify(self)
         if ([self.controlView respondsToSelector:@selector(videoPlayer:loadStateChanged:)]) {
-            [self.controlView videoPlayer:self loadStateChanged:self.currentPlayerManager.loadState];
+            [self.controlView videoPlayer:self loadStateChanged:loadState];
         }
-    }];
+        if (self.playerLoadStatChanged) self.playerLoadStatChanged(asset, loadState);
+    };
     
-//    self.currentPlayerManager.playerDidToEnd = ^(id  _Nonnull asset) {
-//        @strongify(self)
-//        if (self.playerDidToEnd) self.playerDidToEnd(asset);
-//        if ([self.controlView respondsToSelector:@selector(videoPlayerPlayEnd:)]) {
-//            [self.controlView videoPlayerPlayEnd:self];
-//        }
-//    };
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerPlaybackDidFinishNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    self.currentPlayerManager.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (self.playerDidToEnd) self.playerDidToEnd(self.currentPlayerManager);
+        if (self.playerDidToEnd) self.playerDidToEnd(asset);
         if ([self.controlView respondsToSelector:@selector(videoPlayerPlayEnd:)]) {
             [self.controlView videoPlayerPlayEnd:self];
         }
-    }];
+        if (self.playerDidToEnd) self.playerDidToEnd(asset);
+    };
     
-//    self.currentPlayerManager.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
-//        @strongify(self)
-//        if ([self.controlView respondsToSelector:@selector(videoPlayerPlayFailed:error:)]) {
-//            [self.controlView videoPlayerPlayFailed:self error:error];
-//        }
-//        if (self.playerPlayFailed) self.playerPlayFailed(asset,error);
-//    };
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:ZFPlayerPlaybackDidFinishNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+    self.currentPlayerManager.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
         @strongify(self)
-        id error = [note.userInfo objectForKey:ZFPlayerPlaybackErrorReasonUserInfoKey];
-        if (self.playerPlayFailed) self.playerPlayFailed(self.currentPlayerManager,error);
         if ([self.controlView respondsToSelector:@selector(videoPlayerPlayFailed:error:)]) {
             [self.controlView videoPlayerPlayFailed:self error:error];
         }
-    }];
+        if (self.playerPlayFailed) self.playerPlayFailed(asset, error);
+    };
 }
 
 - (void)layoutPlayerSubViews {
@@ -445,6 +383,26 @@
     return YES;
 }
 
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSURL * _Nonnull))playerPrepareToPlay {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSTimeInterval, NSTimeInterval))playerPlayTimeChanged {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSTimeInterval))playerBufferTimeChanged {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerPlaybackState))playerPlayStatChanged {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerLoadState))playerLoadStatChanged {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
 - (void (^)(id<ZFPlayerMediaPlayback> _Nonnull))playerDidToEnd {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -511,6 +469,26 @@
 
 - (void)setPauseWhenAppResignActive:(BOOL)pauseWhenAppResignActive {
     objc_setAssociatedObject(self, @selector(pauseWhenAppResignActive), @(pauseWhenAppResignActive), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)setPlayerPrepareToPlay:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSURL * _Nonnull))playerPrepareToPlay {
+    objc_setAssociatedObject(self, @selector(playerPrepareToPlay), playerPrepareToPlay, OBJC_ASSOCIATION_COPY);
+}
+
+- (void)setPlayerPlayTimeChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSTimeInterval, NSTimeInterval))playerPlayTimeChanged {
+    objc_setAssociatedObject(self, @selector(playerPlayTimeChanged), playerPlayTimeChanged, OBJC_ASSOCIATION_COPY);
+}
+
+- (void)setPlayerBufferTimeChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSTimeInterval))playerBufferTimeChanged {
+    objc_setAssociatedObject(self, @selector(playerBufferTimeChanged), playerBufferTimeChanged, OBJC_ASSOCIATION_COPY);
+}
+
+- (void)setPlayerPlayStatChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerPlaybackState))playerPlayStatChanged {
+    objc_setAssociatedObject(self, @selector(playerPlayStatChanged), playerPlayStatChanged, OBJC_ASSOCIATION_COPY);
+}
+
+- (void)setPlayerLoadStatChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerLoadState))playerLoadStatChanged {
+    objc_setAssociatedObject(self, @selector(playerLoadStatChanged), playerLoadStatChanged, OBJC_ASSOCIATION_COPY);
 }
 
 - (void)setPlayerDidToEnd:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull))playerDidToEnd {

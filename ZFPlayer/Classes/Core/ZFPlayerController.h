@@ -146,11 +146,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// For example, when the player is playing, application goes into the background or pushes to another viewController
 @property (nonatomic, getter=isPauseByEvent) BOOL pauseByEvent;
 
-/// When the player is play end.
-@property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
+/// The block invoked when the player is Ready to play.
+@property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
+
+/// The block invoked when the player play progress changed.
+@property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval currentTime, NSTimeInterval duration);
+
+/// The block invoked when the player play buffer changed.
+@property (nonatomic, copy, nullable) void(^playerBufferTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval bufferTime);
+
+/// The block invoked when the player playback state changed.
+@property (nonatomic, copy, nullable) void(^playerPlayStatChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerPlaybackState playState);
+
+/// The block invoked when the player load state changed.
+@property (nonatomic, copy, nullable) void(^playerLoadStatChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerLoadState loadState);
 
 /// The block invoked when the player play failed.
 @property (nonatomic, copy, nullable) void(^playerPlayFailed)(id<ZFPlayerMediaPlayback> asset, id error);
+
+/// The block invoked when the player play end.
+@property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
 
 /// Play the next url ,while the `assetURLs` is not NULL.
 - (void)playTheNext;
