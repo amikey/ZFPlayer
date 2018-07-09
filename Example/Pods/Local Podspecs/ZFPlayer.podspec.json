@@ -72,6 +72,9 @@
         "ZFPlayer/Core": [
 
         ]
+      },
+      "pod_target_xcconfig": {
+        "ARCHS[sdk=iphonesimulator*]": "$(ARCHS_STANDARD_64_BIT)"
       }
     }
   ]

@@ -30,10 +30,10 @@
 #endif
 
 #if __has_include(<IJKMediaFramework/IJKMediaFramework.h>)
-#import <IJKMediaFramework/IJKMediaFramework.h>
 
 @interface ZFIJKPlayerManager ()
 @property (nonatomic, strong) IJKFFMoviePlayerController *player;
+@property (nonatomic, strong) IJKFFOptions *options;
 @property (nonatomic, assign) CGFloat lastVolume;
 @property (nonatomic, weak) NSTimer *timer;
 
@@ -80,7 +80,7 @@
     _isPreparedToPlay = YES;
     [self initializePlayer];
     self.loadState = ZFPlayerLoadStatePrepare;
-    if (_playerPrepareToPlay) _playerPrepareToPlay(self, self.assetURL);
+    if (self.playerPrepareToPlay) self.playerPrepareToPlay(self, self.assetURL);
     [self play];
 }
 
@@ -145,30 +145,30 @@
 #pragma mark - private method
 
 - (void)initializePlayer {
-    //IJKplayer属性参数设置
-    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
-    /// 帧速率（fps）可以改，确认非标准桢率会导致音画不同步，所以只能设定为15或者29.97）
-    [options setPlayerOptionIntValue:29.97 forKey:@"r"];
-
-    [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
-    /// 解码参数，画面更清晰
-    [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
-    /// 1(开启硬件解码,CPU消耗低) 0(软解,更稳定)
-    [options setOptionIntValue:0 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryPlayer];
-    /// 最大fps
-    [options setOptionIntValue:60 forKey:@"max-fps" ofCategory:kIJKFFOptionCategoryPlayer];
-    /// 设置音量大小，256为标准音量。（要设置成两倍音量时则输入512，依此类推）
-    [options setPlayerOptionIntValue:256 forKey:@"vol"];
-    /// 播放前的探测时间(达不到秒开，首屏显示慢，把播放前探测时间改为1)
-    [options setFormatOptionIntValue:1 forKey:@"analyzeduration"];
-    /// 超时时间，timeout参数只对http设置有效，若果你用rtmp设置timeout，ijkplayer内部会忽略timeout参数。rtmp的timeout参数含义和http的不一样。
-    [options setFormatOptionIntValue:30 * 1000 * 1000 forKey:@"timeout"];
-    //设置缓存大小，太大了没啥用,太小了视频就处于边播边加载的状态，目前是1M，后期可以调整
-    [options setPlayerOptionIntValue:1 * 1024 * 1024 forKey:@"max-buffer-size"];
-    /// 精准seek
-    [options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
+//    //IJKplayer属性参数设置
+//    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+//    /// 帧速率（fps）可以改，确认非标准桢率会导致音画不同步，所以只能设定为15或者29.97）
+//    [options setPlayerOptionIntValue:29.97 forKey:@"r"];
+//
+//    [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
+//    /// 解码参数，画面更清晰
+//    [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
+//    /// 1(开启硬件解码,CPU消耗低) 0(软解,更稳定)
+//    [options setOptionIntValue:0 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryPlayer];
+//    /// 最大fps
+//    [options setOptionIntValue:60 forKey:@"max-fps" ofCategory:kIJKFFOptionCategoryPlayer];
+//    /// 设置音量大小，256为标准音量。（要设置成两倍音量时则输入512，依此类推）
+//    [options setPlayerOptionIntValue:256 forKey:@"vol"];
+//    /// 播放前的探测时间(达不到秒开，首屏显示慢，把播放前探测时间改为1)
+//    [options setFormatOptionIntValue:1 forKey:@"analyzeduration"];
+//    /// 超时时间，timeout参数只对http设置有效，若果你用rtmp设置timeout，ijkplayer内部会忽略timeout参数。rtmp的timeout参数含义和http的不一样。
+//    [options setFormatOptionIntValue:30 * 1000 * 1000 forKey:@"timeout"];
+//    //设置缓存大小，太大了没啥用,太小了视频就处于边播边加载的状态，目前是1M，后期可以调整
+//    [options setPlayerOptionIntValue:1 * 1024 * 1024 forKey:@"max-buffer-size"];
+//    /// 精准seek
+//    [options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
     
-    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.assetURL withOptions:options];
+    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.assetURL withOptions:self.options];
     [self.player prepareToPlay];
     self.player.view.backgroundColor = [UIColor blackColor];
     self.player.shouldAutoplay = YES;
@@ -368,6 +368,15 @@
 
 - (float)rate {
     return _rate == 0 ?1:_rate;
+}
+
+- (IJKFFOptions *)options {
+    if (!_options) {
+        _options = [IJKFFOptions optionsByDefault];
+        /// 精准seek
+        [_options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
+    }
+    return _options;
 }
 
 #pragma mark - setter
