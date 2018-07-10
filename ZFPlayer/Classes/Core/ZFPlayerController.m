@@ -777,36 +777,36 @@
     scrollView.zf_enableScrollHook = YES;
     scrollView.zf_playerDidAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.zf_playerDidAppearInScrollView) self.zf_playerDidAppearInScrollView(indexPath);
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDidAppearInScrollView:)]) {
             [self.controlView playerDidAppearInScrollView:self];
         }
-        if (!self.stopWhileNotVisible) {
-            [self addPlayerViewToCell];
-        }
+        if (!self.stopWhileNotVisible) [self addPlayerViewToCell];
     };
     
     scrollView.zf_playerWillDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.zf_playerWillDisappearInScrollView) self.zf_playerWillDisappearInScrollView(indexPath);
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerWillDisappearInScrollView:)]) {
             [self.controlView playerWillDisappearInScrollView:self];
         }
     };
     
-    scrollView.zf_playerDisappearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+    scrollView.zf_playerDidDisappearHalfInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.zf_playerDidDisappearHalfInScrollView) self.zf_playerDidDisappearHalfInScrollView(indexPath);
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDisappearHalfInScrollView:)]) {
             [self.controlView playerDisappearHalfInScrollView:self];
         }
-        if (self.stopWhileNotVisible) {
-            [self stopCurrentPlayingCell];
-        }
+        if (self.stopWhileNotVisible) [self stopCurrentPlayingCell];
     };
     
     scrollView.zf_playerDidDisappearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
+        if (self.zf_playerDidDisappearInScrollView) self.zf_playerDidDisappearInScrollView(indexPath);
         if (self.isFullScreen) return;
         if ([self.controlView respondsToSelector:@selector(playerDidDisappearInScrollView:)]) {
             [self.controlView playerDidDisappearInScrollView:self];
@@ -857,6 +857,26 @@
     objc_setAssociatedObject(self, @selector(isSmallFloatViewShow), @(isSmallFloatViewShow), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (void)setZf_playerDidAppearInScrollView:(void (^)(NSIndexPath * _Nonnull))zf_playerDidAppearInScrollView {
+    objc_setAssociatedObject(self, @selector(zf_playerDidAppearInScrollView), zf_playerDidAppearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_playerWillDisappearInScrollView:(void (^)(NSIndexPath * _Nonnull))zf_playerWillDisappearInScrollView {
+    objc_setAssociatedObject(self, @selector(zf_playerWillDisappearInScrollView), zf_playerWillDisappearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_playerDidDisappearHalfInScrollView:(void (^)(NSIndexPath * _Nonnull))zf_playerDidDisappearHalfInScrollView {
+    objc_setAssociatedObject(self, @selector(zf_playerDidDisappearHalfInScrollView), zf_playerDidDisappearHalfInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_playerDidDisappearInScrollView:(void (^)(NSIndexPath * _Nonnull))zf_playerDidDisappearInScrollView {
+    objc_setAssociatedObject(self, @selector(zf_playerDidDisappearInScrollView), zf_playerDidDisappearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_scrollViewDidStopScrollCallback:(void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScrollCallback {
+    objc_setAssociatedObject(self, @selector(zf_scrollViewDidStopScrollCallback), zf_scrollViewDidStopScrollCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
 #pragma mark - getter
 
 - (UIScrollView *)scrollView {
@@ -901,6 +921,28 @@
 - (BOOL)shouldAutoPlay {
     return self.scrollView.zf_shouldAutoPlay;
 }
+
+- (void (^)(NSIndexPath * _Nonnull))zf_playerDidAppearInScrollView {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(NSIndexPath * _Nonnull))zf_playerWillDisappearInScrollView {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(NSIndexPath * _Nonnull))zf_playerDidDisappearHalfInScrollView {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(NSIndexPath * _Nonnull))zf_playerDidDisappearInScrollView {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScrollCallback {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+#pragma mark - Public method
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ _Nullable)(void))completionHandler {
     NSURL *assetURL;

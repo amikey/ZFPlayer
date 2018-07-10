@@ -31,6 +31,9 @@
 #import "ZFPlayer.h"
 #endif
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored"-Wdeprecated-declarations"
+
 /*!
  *  Refresh interval for timed observations of AVPlayer
  */
@@ -471,3 +474,5 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 @end
+
+#pragma clang diagnostic pop

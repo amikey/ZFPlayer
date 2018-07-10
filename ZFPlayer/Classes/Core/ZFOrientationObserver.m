@@ -23,10 +23,7 @@
 // THE SOFTWARE.
 
 #import "ZFOrientationObserver.h"
-// 屏幕的宽
-#define ScreenWidth                 [[UIScreen mainScreen] bounds].size.width
-// 屏幕的高
-#define ScreenHeight                [[UIScreen mainScreen] bounds].size.height
+#import "ZFPlayer.h"
 
 @interface UIWindow (CurrentViewController)
 
@@ -207,9 +204,9 @@ static UIWindow *kWindow;
     if(windowCount > 1) {
         UIWindow *keyboardWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:(windowCount-1)];
         if (UIInterfaceOrientationIsLandscape(orientation)) {
-            keyboardWindow.bounds = CGRectMake(0, 0, MAX(ScreenHeight, ScreenWidth), MIN(ScreenHeight, ScreenWidth));
+            keyboardWindow.bounds = CGRectMake(0, 0, MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth), MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth));
         } else {
-            keyboardWindow.bounds = CGRectMake(0, 0, MIN(ScreenHeight, ScreenWidth), MAX(ScreenHeight, ScreenWidth));
+            keyboardWindow.bounds = CGRectMake(0, 0, MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth), MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth));
         }
         keyboardWindow.transform = [self getTransformRotationAngle:orientation];
     }

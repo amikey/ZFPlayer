@@ -275,6 +275,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// if tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
 
+/// The block invoked When the player did appeared.
+@property (nonatomic, copy, nullable) void(^zf_playerDidAppearInScrollView)(NSIndexPath *indexPath);
+
+/// The block invoked When the player will disappear.
+@property (nonatomic, copy, nullable) void(^zf_playerWillDisappearInScrollView)(NSIndexPath *indexPath);
+
+/// The block invoked When the player did disappeared half.
+@property (nonatomic, copy, nullable) void(^zf_playerDidDisappearHalfInScrollView)(NSIndexPath *indexPath);
+
+/// The block invoked When the player did disappeared.
+@property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
+
+/// The block invoked When the player did stop scroll.
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);
+
 /// stop the current playing video on cell.
 - (void)stopCurrentPlayingCell;
 

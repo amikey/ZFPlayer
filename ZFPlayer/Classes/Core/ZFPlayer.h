@@ -74,11 +74,10 @@ FOUNDATION_EXPORT const unsigned char ZFPlayerVersionString[];
 #endif
 #endif
 
-// 屏幕的宽
-#define ZFPlayerScreenWidth                 [[UIScreen mainScreen] bounds].size.width
-// 屏幕的高
-#define ZFPlayerScreenHeight                [[UIScreen mainScreen] bounds].size.height
-
+// Screen width
+#define ZFPlayerScreenWidth     [[UIScreen mainScreen] bounds].size.width
+// Screen height
+#define ZFPlayerScreenHeight    [[UIScreen mainScreen] bounds].size.height
 
 #import "ZFPlayerController.h"
 #import "ZFPlayerGestureControl.h"
