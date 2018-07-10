@@ -33,7 +33,6 @@
 
 @property (nonatomic, strong, readonly) IJKFFOptions *options;
 
-
 @end
 
 #endif

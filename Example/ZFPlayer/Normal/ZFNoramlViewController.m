@@ -173,7 +173,6 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
-    self.player.currentPlayerManager.muted = !self.player.currentPlayerManager.muted;
 }
 
 #pragma mark - about keyboard orientation

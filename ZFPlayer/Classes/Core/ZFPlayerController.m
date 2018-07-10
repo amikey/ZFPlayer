@@ -112,6 +112,7 @@
     @weakify(self)
     self.currentPlayerManager.playerPrepareToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         @strongify(self)
+        [self layoutPlayerSubViews];
         self.currentPlayerManager.view.hidden = NO;
         [self.notification addNotification];
         if (self.allowOrentitaionRotation) [self addDeviceOrientationObserver];
@@ -175,14 +176,15 @@
 }
 
 - (void)layoutPlayerSubViews {
-    self.containerView.userInteractionEnabled = YES;
-    [self.containerView addSubview:self.currentPlayerManager.view];
-    [self.currentPlayerManager.view addSubview:self.controlView];
-    
-    self.currentPlayerManager.view.frame = self.controlView.bounds;
-    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.controlView.frame = self.currentPlayerManager.view.bounds;
-    self.controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    if (self.containerView && self.currentPlayerManager.view) {
+        [self.containerView addSubview:self.currentPlayerManager.view];
+        [self.currentPlayerManager.view addSubview:self.controlView];
+        
+        self.currentPlayerManager.view.frame = self.containerView.bounds;
+        self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.controlView.frame = self.currentPlayerManager.view.bounds;
+        self.controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    }
 }
 
 #pragma mark - getter
@@ -229,18 +231,12 @@
     if (!containerView) return;
     _containerView = containerView;
     containerView.userInteractionEnabled = YES;
-    [containerView addSubview:self.currentPlayerManager.view];
-    self.currentPlayerManager.view.frame = containerView.bounds;
-    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 - (void)setControlView:(UIView<ZFPlayerMediaControl> *)controlView {
     if (!controlView) return;
     _controlView = controlView;
     controlView.player = self;
-    [self.currentPlayerManager.view addSubview:controlView];
-    controlView.frame = self.currentPlayerManager.view.bounds;
-    controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 @end
@@ -340,10 +336,6 @@
     return NO;
 }
 
-- (BOOL)isWWANAutoPlay {
-   return [objc_getAssociatedObject(self, _cmd) boolValue];
-}
-
 - (BOOL)isPauseByEvent {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
@@ -419,18 +411,12 @@
 
 - (void)setAssetURL:(NSURL *)assetURL {
     objc_setAssociatedObject(self, @selector(assetURL), assetURL, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    if (self.currentPlayerManager.isPreparedToPlay) [self.currentPlayerManager stop];
-    if (!self.currentPlayerManager.view.superview) self.containerView = self.containerView;
+//    if (!self.currentPlayerManager.view.superview) self.containerView = self.containerView;
     self.currentPlayerManager.assetURL = assetURL;
 }
 
 - (void)setAssetURLs:(NSArray<NSURL *> * _Nullable)assetURLs {
     objc_setAssociatedObject(self, @selector(assetURLs), assetURLs, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
-    objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    if (self.scrollView) self.scrollView.zf_WWANAutoPlay = self.isWWANAutoPlay;
 }
 
 - (void)setVolume:(float)volume {
@@ -819,6 +805,11 @@
     };
 }
 
+- (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
+    objc_setAssociatedObject(self, @selector(isWWANAutoPlay), @(WWANAutoPlay), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (self.scrollView) self.scrollView.zf_WWANAutoPlay = self.isWWANAutoPlay;
+}
+
 - (void)setStopWhileNotVisible:(BOOL)stopWhileNotVisible {
     self.scrollView.zf_stopWhileNotVisible = stopWhileNotVisible;
     objc_setAssociatedObject(self, @selector(stopWhileNotVisible), @(stopWhileNotVisible), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -882,6 +873,10 @@
 - (UIScrollView *)scrollView {
     UIScrollView *scrollView = objc_getAssociatedObject(self, _cmd);
     return scrollView;
+}
+
+- (BOOL)isWWANAutoPlay {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 - (BOOL)stopWhileNotVisible {

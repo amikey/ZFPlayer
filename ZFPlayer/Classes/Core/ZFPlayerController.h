@@ -119,9 +119,6 @@ NS_ASSUME_NONNULL_BEGIN
 // 0...1.0, where 1.0 is maximum brightness. Only supported by main screen.
 @property (nonatomic) float brightness;
 
-/// WWAN network auto play, default is NO.
-@property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
-
 /// The play asset URL.
 @property (nonatomic) NSURL *assetURL;
 
@@ -256,6 +253,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The scrollView player should auto player, default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;
+
+/// WWAN network auto play, only support in scrollView mode, default is NO.
+@property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
 /// The list plays the container view of the player when the window is small after the player has slid off the screen.
 @property (nonatomic, readonly, nullable) ZFFloatView *smallFloatView;
