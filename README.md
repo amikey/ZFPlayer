@@ -139,7 +139,7 @@ Rotate the video the viewController must implement
 
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
-- QQ Group: 213375947（付费群）   213578903（免费群）
+- QQ Group: 213375947（付费群）   286529196（免费群）
                   
 
 ## License
