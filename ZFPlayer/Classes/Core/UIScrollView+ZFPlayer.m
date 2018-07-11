@@ -359,7 +359,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
         @strongify(self)
-        if ([ZFReachabilityManager sharedManager].isReachableViaWWAN) return;
+        if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.zf_WWANAutoPlay) return;
         if (!self.zf_playingIndexPath) {
             if (handler) handler(indexPath);
             self.zf_playingIndexPath = indexPath;

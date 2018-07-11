@@ -147,53 +147,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-///----------------
-/// @name Constants
-///----------------
-
-/**
- ## Network Reachability
-
- The following constants are provided by `AFNetworkReachabilityManager` as possible network reachability statuses.
-
- enum {
- AFNetworkReachabilityStatusUnknown,
- AFNetworkReachabilityStatusNotReachable,
- AFNetworkReachabilityStatusReachableViaWWAN,
- AFNetworkReachabilityStatusReachableViaWiFi,
- }
-
- `AFNetworkReachabilityStatusUnknown`
- The `baseURL` host reachability is not known.
-
- `AFNetworkReachabilityStatusNotReachable`
- The `baseURL` host cannot be reached.
-
- `AFNetworkReachabilityStatusReachableViaWWAN`
- The `baseURL` host can be reached via a cellular connection, such as EDGE or GPRS.
-
- `AFNetworkReachabilityStatusReachableViaWiFi`
- The `baseURL` host can be reached via a Wi-Fi connection.
-
- ### Keys for Notification UserInfo Dictionary
-
- Strings that are used as keys in a `userInfo` dictionary in a network reachability status change notification.
-
- `AFNetworkingReachabilityNotificationStatusItem`
- A key in the userInfo dictionary in a `AFNetworkingReachabilityDidChangeNotification` notification.
- The corresponding value is an `NSNumber` object representing the `AFNetworkReachabilityStatus` value for the current reachability status.
- */
-
 ///--------------------
 /// @name Notifications
 ///--------------------
 
-/**
- Posted when network reachability changes.
- This notification assigns no notification object. The `userInfo` dictionary contains an `NSNumber` object under the `AFNetworkingReachabilityNotificationStatusItem` key, representing the `AFNetworkReachabilityStatus` value for the current network reachability.
-
- @warning In order for network reachability to be monitored, include the `SystemConfiguration` framework in the active target's "Link Binary With Library" build phase, and add `#import <SystemConfiguration/SystemConfiguration.h>` to the header prefix of the project (`Prefix.pch`).
- */
 FOUNDATION_EXPORT NSString * const ZFReachabilityDidChangeNotification;
 FOUNDATION_EXPORT NSString * const ZFReachabilityNotificationStatusItem;
 

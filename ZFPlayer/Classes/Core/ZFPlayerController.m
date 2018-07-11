@@ -411,7 +411,6 @@
 
 - (void)setAssetURL:(NSURL *)assetURL {
     objc_setAssociatedObject(self, @selector(assetURL), assetURL, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//    if (!self.currentPlayerManager.view.superview) self.containerView = self.containerView;
     self.currentPlayerManager.assetURL = assetURL;
 }
 

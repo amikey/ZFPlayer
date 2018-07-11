@@ -254,11 +254,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// The scrollView player should auto player, default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;
 
-/// WWAN network auto play, only support in scrollView mode, default is NO.
+/// WWAN network auto play, only support in scrollView mode when the `shouldAutoPlay` is YES.
+/// default is NO.
 @property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
-/// The list plays the container view of the player when the window is small after the player has slid off the screen.
+/// The current playing cell has out off the screen, the player add the small container view.
 @property (nonatomic, readonly, nullable) ZFFloatView *smallFloatView;
+
+/// Whether the small window is displayed.
+@property (nonatomic, readonly) BOOL isSmallFloatViewShow;
 
 /// The indexPath is playing.
 @property (nonatomic, readonly, nullable) NSIndexPath *playingIndexPath;
@@ -266,11 +270,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The view tag that the player display in scrollView.
 @property (nonatomic, readonly) NSInteger containerViewTag;
 
-/// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
+/// The current playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;
-
-/// Whether the small window is displayed.
-@property (nonatomic, readonly) BOOL isSmallFloatViewShow;
 
 /// if tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;

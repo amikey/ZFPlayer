@@ -179,14 +179,14 @@ static NSString *const kPresentationSize         = @"presentationSize";
     } else {
         [self.player play];
         self.player.rate = self.rate;
-        _isPlaying = YES;
+        self->_isPlaying = YES;
         self.playState = ZFPlayerPlayStatePlaying;
     }
 }
 
 - (void)pause {
     [self.player pause];
-    _isPlaying = NO;
+    self->_isPlaying = NO;
     self.playState = ZFPlayerPlayStatePaused;
 }
 
@@ -201,6 +201,10 @@ static NSString *const kPresentationSize         = @"presentationSize";
     _isPlaying = NO;
     _player = nil;
     _assetURL = nil;
+    
+    self->_currentTime = 0;
+    self->_totalTime = 0;
+    self->_bufferTime = 0;
 }
 
 - (void)replay {
