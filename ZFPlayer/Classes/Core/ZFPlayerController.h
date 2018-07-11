@@ -273,8 +273,27 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;
 
+/// The current playing cell stop playing percent when the cell has out off the screen.
+/// the property is only used when the `stopWhileNotVisible` is YES.
+/// 0.0~1.0, defalut is 0.5.
+@property (nonatomic, assign) CGFloat playerDisapperaPercent;
+
+/// The current player add to cell when the player appear percent in the scrollView.
+/// the property is only used when the `stopWhileNotVisible` is NO.
+/// 0.0~1.0, defalut is 0.0.
+@property (nonatomic, assign) CGFloat playerApperaPercent;
+
 /// if tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
+
+/// The block invoked When the player appearing.
+@property (nonatomic, copy, nullable) void(^zf_playerAppearingInScrollView)(NSIndexPath *indexPath, CGFloat playerApperaPercent);
+
+/// The block invoked When the player disappearing.
+@property (nonatomic, copy, nullable) void(^zf_playerDisappearingInScrollView)(NSIndexPath *indexPath, CGFloat playerDisapperaPercent);
+
+/// The block invoked When the player will appeared.
+@property (nonatomic, copy, nullable) void(^zf_playerWillAppearInScrollView)(NSIndexPath *indexPath);
 
 /// The block invoked When the player did appeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidAppearInScrollView)(NSIndexPath *indexPath);
@@ -282,14 +301,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked When the player will disappear.
 @property (nonatomic, copy, nullable) void(^zf_playerWillDisappearInScrollView)(NSIndexPath *indexPath);
 
-/// The block invoked When the player did disappeared half.
-@property (nonatomic, copy, nullable) void(^zf_playerDidDisappearHalfInScrollView)(NSIndexPath *indexPath);
-
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
-
-/// The block invoked When the player did stop scroll.
-@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);
 
 /// stop the current playing video on cell.
 - (void)stopCurrentPlayingCell;

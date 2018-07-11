@@ -58,8 +58,11 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// The scroll derection of scrollView.
 @property (nonatomic, assign) ZFPlayerScrollDerection zf_scrollDerection;
 
-/// Does the currently playing cell stop playing when the cell has slid off the screen，defalut is YES.
+/// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic, assign) BOOL zf_stopWhileNotVisible;
+
+/// The block invoked When the player did stop scroll.
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);
 
 /// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped)
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
@@ -80,20 +83,23 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 
 @interface UIScrollView (ZFPlayerCannotCalled)
 
+/// The block invoked When the player appearing.
+@property (nonatomic, copy, nullable) void(^zf_playerAppearingInScrollView)(NSIndexPath *indexPath, CGFloat playerApperaPercent);
+
+/// The block invoked When the player disappearing.
+@property (nonatomic, copy, nullable) void(^zf_playerDisappearingInScrollView)(NSIndexPath *indexPath, CGFloat playerDisapperaPercent);
+
+/// The block invoked When the player will appeared.
+@property (nonatomic, copy, nullable) void(^zf_playerWillAppearInScrollView)(NSIndexPath *indexPath);
+
 /// The block invoked When the player did appeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidAppearInScrollView)(NSIndexPath *indexPath);
 
 /// The block invoked When the player will disappear.
 @property (nonatomic, copy, nullable) void(^zf_playerWillDisappearInScrollView)(NSIndexPath *indexPath);
 
-/// The block invoked When the player did disappeared half.
-@property (nonatomic, copy, nullable) void(^zf_playerDidDisappearHalfInScrollView)(NSIndexPath *indexPath);
-
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
-
-/// The block invoked When the player did stop scroll.
-@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);
 
 @end
 
