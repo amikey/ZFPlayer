@@ -56,6 +56,7 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
         [self setNeedsStatusBarAppearanceUpdate];
+        [UIViewController attemptRotationToDeviceOrientation];
         self.tableView.scrollsToTop = !isFullScreen;
     };
 }
@@ -93,6 +94,13 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
 
 - (BOOL)shouldAutorotate {
     return self.player.shouldAutorotate;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    if (self.player.isFullScreen && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) {
+        return UIInterfaceOrientationMaskLandscape;
+    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

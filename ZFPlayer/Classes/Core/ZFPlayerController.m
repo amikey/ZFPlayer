@@ -199,6 +199,7 @@
                 self.pauseByEvent = YES;
             }
             if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = YES;
+            [[UIApplication sharedApplication].keyWindow endEditing:YES];
         };
         _notification.didBecomeActive = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)

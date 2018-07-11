@@ -178,7 +178,10 @@
 #pragma mark - about keyboard orientation
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    if (self.player.isFullScreen) {
+        return UIInterfaceOrientationMaskLandscape;
+    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (ZFPlayerControlView *)controlView {

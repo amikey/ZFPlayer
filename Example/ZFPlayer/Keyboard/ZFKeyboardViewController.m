@@ -100,8 +100,10 @@
 
 /// 键盘支持横屏，这里必须设置支持多个方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    /// the keyborad support orientations
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    if (self.player.isFullScreen) {
+        return UIInterfaceOrientationMaskLandscape;
+    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (ZFPlayerControlView *)controlView {

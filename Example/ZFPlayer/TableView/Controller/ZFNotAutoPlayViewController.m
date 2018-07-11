@@ -52,6 +52,7 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
         [self setNeedsStatusBarAppearanceUpdate];
+        [UIViewController attemptRotationToDeviceOrientation];
         self.tableView.scrollsToTop = !isFullScreen;
     };
     
@@ -103,6 +104,13 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (BOOL)shouldAutorotate {
     return self.player.shouldAutorotate;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    if (self.player.isFullScreen && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) {
+        return UIInterfaceOrientationMaskLandscape;
+    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
