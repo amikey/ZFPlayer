@@ -371,13 +371,19 @@ static NSString *const kPresentationSize         = @"presentationSize";
     dispatch_async(dispatch_get_main_queue(), ^{
          if ([keyPath isEqualToString:kStatus]) {
              if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-                 self.loadState = ZFPlayerLoadStatePlaythroughOK;
+                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                     self.loadState = ZFPlayerLoadStatePlaythroughOK;
+                 });
                  if (self.seekTime) {
                      [self seekToTime:self.seekTime completionHandler:nil];
                      self.seekTime = 0; // 滞空, 防止下次播放出错
                  }
                  [self play];
                  self.player.muted = self.muted;
+                 /// Fix https://github.com/renzifeng/ZFPlayer/issues/475
+                 self->_currentTime = CMTimeGetSeconds(self.playerItem.currentTime);
+                 self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
+                 if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
              } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
                  self.playState = ZFPlayerPlayStatePlayFailed;
                  NSError *error = self.player.currentItem.error;
