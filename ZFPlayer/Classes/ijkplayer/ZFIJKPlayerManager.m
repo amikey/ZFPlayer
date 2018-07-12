@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #import "ZFIJKPlayerManager.h"
-#import "UIImageView+ZFCache.h"
 #if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
 #else
