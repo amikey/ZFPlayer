@@ -10,9 +10,11 @@
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/ZFIJKPlayerManager.h>
-//#import <ZFPlayer/KSMediaPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import "ZFSmallPlayViewController.h"
+
+static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240";
 
 @interface ZFNoramlViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -44,18 +46,19 @@
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
+    
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
         [self setNeedsStatusBarAppearanceUpdate];
     };
+    
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (self.player.isFullScreen) {
-            [self.player enterFullScreen:NO animated:YES];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.player.orientationObserver.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.player stop];
-            });
+        [self.player playTheNext];
+        if (!self.player.isLastAssetURL) {
+            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
+            [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
         } else {
             [self.player stop];
         }
@@ -125,19 +128,19 @@
 - (void)changeVideo:(UIButton *)sender {
     NSString *URLString = @"https://ylmtst.yejingying.com/asset/video/20180525184959_mW8WVQVd.mp4";
     self.player.assetURL = [NSURL URLWithString:URLString];
-    [self.controlView showTitle:@"抖音" coverURLString:@"https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" fullScreenMode:ZFFullScreenModePortrait];
+    [self.controlView showTitle:@"抖音" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModePortrait];
 }
 
 - (void)playClick:(UIButton *)sender {
     [self.player playTheIndex:0];
-    [self.controlView showTitle:@"视频标题" coverURLString:@"https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" fullScreenMode:ZFFullScreenModeLandscape];
+    [self.controlView showTitle:@"视频标题" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
 }
 
 - (void)nextClick:(UIButton *)sender {
     [self.player playTheNext];
     if (!self.player.isLastAssetURL) {
         NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
-        [self.controlView showTitle:title coverURLString:@"https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" fullScreenMode:ZFFullScreenModeLandscape];
+        [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
     } else {
         NSLog(@"最后一个视频了");
     }

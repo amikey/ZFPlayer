@@ -333,7 +333,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 }
 
 - (void)gestureEndedPan:(ZFPlayerGestureControl *)gestureControl panDirection:(ZFPanDirection)direction panLocation:(ZFPanLocation)location {
-    if (direction == ZFPanDirectionH) {
+    if (direction == ZFPanDirectionH && self.sumTime > 0 && self.player.totalTime > 0) {
         [self.player seekToTime:self.sumTime completionHandler:^(BOOL finished) {
             self.sumTime = 0;
         }];

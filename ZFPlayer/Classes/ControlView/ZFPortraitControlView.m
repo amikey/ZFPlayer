@@ -93,14 +93,17 @@
 }
 
 - (void)sliderTouchEnded:(float)value {
-    self.slider.isdragging = YES;
     if (self.player.totalTime > 0) {
         @weakify(self)
         [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
             @strongify(self)
-            self.slider.isdragging = NO;
-            [self.player.currentPlayerManager play];
+            if (finished) {
+                self.slider.isdragging = NO;
+                [self.player.currentPlayerManager play];
+            }
         }];
+    } else {
+        self.slider.isdragging = NO;
     }
     if (self.sliderValueChanged) self.sliderValueChanged(value);
 }
@@ -117,15 +120,18 @@
 }
 
 - (void)sliderTapped:(float)value {
-    self.slider.isdragging = YES;
     if (self.player.totalTime > 0) {
+        self.slider.isdragging = YES;
         @weakify(self)
         [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
             @strongify(self)
-            self.slider.isdragging = NO;
-            [self.player.currentPlayerManager play];
+            if (finished) {
+                self.slider.isdragging = NO;
+                [self.player.currentPlayerManager play];
+            }
         }];
     } else {
+        self.slider.isdragging = NO;
         self.slider.value = 0;
     }
 }

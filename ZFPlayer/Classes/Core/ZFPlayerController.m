@@ -169,10 +169,16 @@
 
 - (void)layoutPlayerSubViews {
     if (self.containerView && self.currentPlayerManager.view) {
-        [self.containerView addSubview:self.currentPlayerManager.view];
+        UIView *superview = nil;
+        if (self.isFullScreen) {
+            superview = self.orientationObserver.fullScreenContainerView;
+        } else {
+            superview = self.containerView;
+        }
+        [superview addSubview:self.currentPlayerManager.view];
         [self.currentPlayerManager.view addSubview:self.controlView];
         
-        self.currentPlayerManager.view.frame = self.containerView.bounds;
+        self.currentPlayerManager.view.frame = superview.bounds;
         self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.controlView.frame = self.currentPlayerManager.view.bounds;
         self.controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

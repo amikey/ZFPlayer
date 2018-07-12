@@ -25,6 +25,8 @@
 #import "ZFOrientationObserver.h"
 #import "ZFPlayer.h"
 
+#define SysVersion [[UIDevice currentDevice] systemVersion].floatValue
+
 @interface UIWindow (CurrentViewController)
 
 /*!
@@ -57,8 +59,6 @@
 
 @end
 
-static UIWindow *kWindow;
-
 @interface ZFOrientationObserver ()
 
 @property (nonatomic, weak) UIView *view;
@@ -80,7 +80,6 @@ static UIWindow *kWindow;
     if (self) {
         _duration = 0.25;
         _fullScreenMode = ZFFullScreenModeLandscape;
-        kWindow = [(id)[UIApplication sharedApplication].delegate valueForKey:@"window"];
     }
     return self;
 }
@@ -163,7 +162,7 @@ static UIWindow *kWindow;
     if ([self isNeedAdaptiveiOS8Rotation]) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             if (self.fullScreen) return;
-            superview = kWindow;
+            superview = self.fullScreenContainerView;
             self.fullScreen = YES;
         } else {
             if (!self.fullScreen) return;
@@ -184,7 +183,7 @@ static UIWindow *kWindow;
     }
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        superview = kWindow;
+        superview = self.fullScreenContainerView;
         if (!self.isFullScreen) { /// It's not set from the other side of the screen to this side
             self.view.frame = [self.view convertRect:self.view.frame toView:superview];
         }
@@ -196,21 +195,24 @@ static UIWindow *kWindow;
         else superview = self.containerView;
         self.fullScreen = NO;
     }
-    frame = [superview convertRect:superview.bounds toView:kWindow];
+    frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
     
     [UIApplication sharedApplication].statusBarOrientation = orientation;
-    /// 处理键盘
-    NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
-    if(windowCount > 1) {
-        UIWindow *keyboardWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:(windowCount-1)];
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            keyboardWindow.bounds = CGRectMake(0, 0, MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth), MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth));
-        } else {
-            keyboardWindow.bounds = CGRectMake(0, 0, MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth), MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth));
-        }
-        keyboardWindow.transform = [self getTransformRotationAngle:orientation];
-    }
 
+    /// 处理8.0系统键盘
+    if (SysVersion >= 8.0 && SysVersion < 9.0) {
+        NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
+        if(windowCount > 1) {
+            UIWindow *keyboardWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:(windowCount-1)];
+            if (UIInterfaceOrientationIsLandscape(orientation)) {
+                keyboardWindow.bounds = CGRectMake(0, 0, MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth), MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth));
+            } else {
+                keyboardWindow.bounds = CGRectMake(0, 0, MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth), MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth));
+            }
+            keyboardWindow.transform = [self getTransformRotationAngle:orientation];
+        }
+    }
+    
     if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
     [UIView animateWithDuration:animated?self.duration:0 animations:^{
         self.view.transform = [self getTransformRotationAngle:orientation];
@@ -268,7 +270,7 @@ static UIWindow *kWindow;
     if (self.fullScreenMode == ZFFullScreenModeLandscape) return;
     UIView *superview = nil;
     if (fullScreen) {
-        superview = kWindow;
+        superview = self.fullScreenContainerView;
         self.view.frame = [self.view convertRect:self.view.frame toView:superview];
         [superview addSubview:self.view];
         self.fullScreen = YES;
@@ -286,7 +288,7 @@ static UIWindow *kWindow;
             self.orientationWillChange(self, self.isFullScreen);
         }
     }
-    CGRect frame = [superview convertRect:superview.bounds toView:kWindow];
+    CGRect frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
     [UIView animateWithDuration:animated?self.duration:0 animations:^{
         self.view.frame = frame;
         [self.view layoutIfNeeded];
@@ -314,6 +316,13 @@ static UIWindow *kWindow;
     } else {
         [self addDeviceOrientationObserver];
     }
+}
+
+- (UIView *)fullScreenContainerView {
+    if (!_fullScreenContainerView) {
+        _fullScreenContainerView = [(id)[UIApplication sharedApplication].delegate valueForKey:@"window"];
+    }
+    return _fullScreenContainerView;
 }
 
 - (void)setFullScreen:(BOOL)fullScreen {

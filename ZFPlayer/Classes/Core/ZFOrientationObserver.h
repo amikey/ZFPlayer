@@ -54,10 +54,13 @@ typedef NS_ENUM(NSUInteger, ZFRotateType) {
 - (void)cellSmallModelRotateView:(UIView *)rotateView
                    containerView:(UIView *)containerView;
 
-/// Container view of a small screen state player
+/// Container view of a full screen state player.
+@property (nonatomic, strong) UIView *fullScreenContainerView;
+
+/// Container view of a small screen state player.
 @property (nonatomic, weak) UIView *containerView;
 
-/// If the full screen
+/// If the full screen.
 @property (nonatomic, readonly, getter=isFullScreen) BOOL fullScreen;
 
 /// Lock screen orientation
