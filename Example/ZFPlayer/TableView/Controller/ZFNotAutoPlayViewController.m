@@ -47,6 +47,8 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.controlView = self.controlView;
     self.player.assetURLs = self.urls;
     self.player.shouldAutoPlay = NO;
+    /// 1.0是完全消失的时候
+    self.player.playerDisapperaPercent = 1.0;
     
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
@@ -72,15 +74,6 @@ static NSString *kIdentifier = @"kIdentifier";
     CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
     CGFloat h = CGRectGetMaxY(self.view.frame);
     self.tableView.frame = CGRectMake(0, y, self.view.frame.size.width, h-y);
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    @weakify(self)
-    [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
-        @strongify(self)
-        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
-    }];
 }
 
 - (void)requestData {

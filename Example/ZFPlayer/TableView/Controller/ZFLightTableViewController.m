@@ -45,6 +45,8 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
     self.player.assetURLs = self.urls;
+    /// 0.8是消失80%时候
+    self.player.playerDisapperaPercent = 0.8;
     
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {

@@ -82,7 +82,6 @@
     [self initializePlayer];
     self.loadState = ZFPlayerLoadStatePrepare;
     if (self.playerPrepareToPlay) self.playerPrepareToPlay(self, self.assetURL);
-    [self play];
 }
 
 - (void)reloadPlayer {
@@ -109,7 +108,7 @@
 - (void)stop {
     [self removeMovieNotificationObservers];
     self.playState = ZFPlayerPlayStatePlayStopped;
-    [self.player stop];
+    [self.player shutdown];
     [self.player.view removeFromSuperview];
     self.player = nil;
     _assetURL = nil;
@@ -117,6 +116,9 @@
     self.timer = nil;
     _isPlaying = NO;
     _isPreparedToPlay = NO;
+    self->_currentTime = 0;
+    self->_totalTime = 0;
+    self->_bufferTime = 0;
 }
 
 - (void)replay {
@@ -129,9 +131,7 @@
 
 /// Replace the current playback address
 - (void)replaceCurrentAssetURL:(NSURL *)assetURL {
-    if (self.player) [self stop];
-    _assetURL = assetURL;
-    [self prepareToPlay];
+    self.assetURL = assetURL;
 }
 
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
@@ -148,7 +148,7 @@
 - (void)initializePlayer {
     self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.assetURL withOptions:self.options];
     [self.player prepareToPlay];
-    self.player.view.backgroundColor = [UIColor blackColor];
+//    self.player.view.backgroundColor = [UIColor blackColor];
     self.player.shouldAutoplay = YES;
     
     UIView *playerBgView = [UIView new];
@@ -219,37 +219,9 @@
     if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, self.bufferTime);
 }
 
-#pragma -
+#pragma - notification
 
-#pragma mark - 加载状态改变
-/**
- 视频加载状态改变了
- IJKMPMovieLoadStateUnknown == 0
- IJKMPMovieLoadStatePlayable == 1
- IJKMPMovieLoadStatePlaythroughOK == 2
- IJKMPMovieLoadStateStalled == 4
- */
-- (void)loadStateDidChange:(NSNotification*)notification {
-    IJKMPMovieLoadState loadState = self.player.loadState;
-    if (loadState & IJKMPMovieLoadStatePlaythroughOK) {
-        // 加载完成，即将播放，停止加载的动画，并将其移除
-         ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
-        self.loadState = ZFPlayerLoadStatePlayable;
-    } else if (loadState & IJKMPMovieLoadStateStalled) {
-        // 可能由于网速不好等因素导致了暂停，重新添加加载的动画
-        ZFPlayerLog(@"自动暂停了，loadStateDidChange: IJKMPMovieLoadStateStalled: %d\n", (int)loadState);
-        self.loadState = ZFPlayerLoadStateStalled;
-    } else if (loadState & IJKMPMovieLoadStatePlayable) {
-        ZFPlayerLog(@"加载状态变成了缓存数据足够开始播放，但是视频并没有缓存完全");
-        self.loadState = ZFPlayerLoadStatePlayable;
-    } else {
-        ZFPlayerLog(@"加载状态变成了未知状态");
-        self.loadState = ZFPlayerLoadStateUnknown;
-    }
-}
-
-#pragma mark - 播放状态改变
-
+/// 播放完成
 - (void)moviePlayBackFinish:(NSNotification *)notification {
     int reason = [[[notification userInfo] valueForKey:IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
     switch (reason) {
@@ -281,10 +253,39 @@
 // 准备开始播放了
 - (void)mediaIsPreparedToPlayDidChange:(NSNotification *)notification {
     ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
     });
+    [self play];
     ZFPlayerLog(@"mediaIsPrepareToPlayDidChange");
+}
+
+
+#pragma mark - 加载状态改变
+/**
+ 视频加载状态改变了
+ IJKMPMovieLoadStateUnknown == 0
+ IJKMPMovieLoadStatePlayable == 1
+ IJKMPMovieLoadStatePlaythroughOK == 2
+ IJKMPMovieLoadStateStalled == 4
+ */
+- (void)loadStateDidChange:(NSNotification*)notification {
+    IJKMPMovieLoadState loadState = self.player.loadState;
+    if ((loadState & IJKMPMovieLoadStatePlayable)) {
+        ZFPlayerLog(@"加载状态变成了缓存数据足够开始播放，但是视频并没有缓存完全");
+        self.loadState = ZFPlayerLoadStatePlayable;
+    } else if ((loadState & IJKMPMovieLoadStatePlaythroughOK)) {
+        self.loadState = ZFPlayerLoadStatePlaythroughOK;
+        // 加载完成，即将播放，停止加载的动画，并将其移除
+        ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
+    } else if ((loadState & IJKMPMovieLoadStateStalled)) {
+        // 可能由于网速不好等因素导致了暂停，重新添加加载的动画
+        ZFPlayerLog(@"网速不好等因素导致了暂停");
+        self.loadState = ZFPlayerLoadStateStalled;
+    } else {
+        ZFPlayerLog(@"加载状态变成了未知状态");
+        self.loadState = ZFPlayerLoadStateUnknown;
+    }
 }
 
 // 播放状态改变
@@ -378,8 +379,9 @@
 }
 
 - (void)setAssetURL:(NSURL *)assetURL {
+    if (self.player) [self stop];
     _assetURL = assetURL;
-    [self replaceCurrentAssetURL:assetURL];
+    [self prepareToPlay];
 }
 
 - (void)setRate:(float)rate {

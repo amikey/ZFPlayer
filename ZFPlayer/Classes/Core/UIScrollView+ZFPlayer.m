@@ -202,12 +202,14 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
         UIView *playerView = [cell viewWithTag:self.zf_containerViewTag];
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
         CGRect rect = [self convertRect:rect1 toView:self.superview];
-        CGFloat topSpacing = rect.origin.y - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
-        CGFloat bottomSpacing = CGRectGetMaxY(self.frame) - CGRectGetMaxY(rect) + CGRectGetMinY(self.frame) + self.contentInset.top;
+        /// playerView top to scrollView top space.
+        CGFloat topSpacing = CGRectGetMinY(rect) - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame) - self.contentInset.bottom;
+        /// playerView bottom to scrollView bottom space.
+        CGFloat bottomSpacing = CGRectGetMaxY(self.frame) - CGRectGetMaxY(rect) + CGRectGetMinY(self.frame) + self.contentInset.top - CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
         
-        /// 内容显示区域的高度
-        CGFloat contentInsetHeight = CGRectGetHeight(self.frame) - self.contentInset.top - self.contentInset.bottom;
-        
+        /// The height of the content area.
+        CGFloat contentInsetHeight = CGRectGetMaxY(self.frame) - CGRectGetMinY(self.frame) - self.contentInset.top - self.contentInset.bottom;
+
         CGFloat playerDisapperaPercent = 0;
         CGFloat playerApperaPercent = 0;
 
@@ -215,6 +217,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
             /// Player is disappearing.
             if (topSpacing <= 0 && CGRectGetHeight(rect) != 0) {
                 playerDisapperaPercent = -topSpacing/CGRectGetHeight(rect);
+                if (playerDisapperaPercent > 1.0) playerDisapperaPercent = 1.0;
                 if (self.zf_playerDisappearingInScrollView) self.zf_playerDisappearingInScrollView(self.zf_playingIndexPath, playerDisapperaPercent);
             }
             
@@ -226,13 +229,13 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
                 /// When the player did disappeared.
                 if (self.zf_playerDidDisappearInScrollView) self.zf_playerDidDisappearInScrollView(self.zf_playingIndexPath);
             } else if (topSpacing > 0 && topSpacing <= contentInsetHeight) {
-                /// In visable area
+                /// Player is appearing.
                 if (CGRectGetHeight(rect) != 0) {
                     playerApperaPercent = -(topSpacing-contentInsetHeight)/CGRectGetHeight(rect);
                     if (playerApperaPercent > 1.0) playerApperaPercent = 1.0;
                     if (self.zf_playerAppearingInScrollView) self.zf_playerAppearingInScrollView(self.zf_playingIndexPath, playerApperaPercent);
                 }
-                
+                /// In visable area
                 if (topSpacing <= contentInsetHeight && topSpacing > contentInsetHeight-CGRectGetHeight(rect)/2) {
                     /// When the player will appear.
                     if (self.zf_playerWillAppearInScrollView) self.zf_playerWillAppearInScrollView(self.zf_playingIndexPath);
@@ -246,6 +249,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
             /// Player is disappearing.
             if (bottomSpacing <= 0 && CGRectGetHeight(rect) != 0) {
                 playerDisapperaPercent = -bottomSpacing/CGRectGetHeight(rect);
+                if (playerDisapperaPercent > 1.0) playerDisapperaPercent = 1.0;
                 if (self.zf_playerDisappearingInScrollView) self.zf_playerDisappearingInScrollView(self.zf_playingIndexPath, playerDisapperaPercent);
             }
             
@@ -257,13 +261,13 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
                 /// When the player did disappeared.
                 if (self.zf_playerDidDisappearInScrollView) self.zf_playerDidDisappearInScrollView(self.zf_playingIndexPath);
             } else if (bottomSpacing > 0 && bottomSpacing <= contentInsetHeight) {
-                /// In visable area
+                /// Player is appearing.
                 if (CGRectGetHeight(rect) != 0) {
                     playerApperaPercent = -(bottomSpacing-contentInsetHeight)/CGRectGetHeight(rect);
                     if (playerApperaPercent > 1.0) playerApperaPercent = 1.0;
                     if (self.zf_playerAppearingInScrollView) self.zf_playerAppearingInScrollView(self.zf_playingIndexPath, playerApperaPercent);
                 }
-                
+                /// In visable area
                 if (bottomSpacing <= contentInsetHeight && bottomSpacing > contentInsetHeight-CGRectGetHeight(rect)/2) {
                     /// When the player will appear.
                     if (self.zf_playerWillAppearInScrollView) self.zf_playerWillAppearInScrollView(self.zf_playingIndexPath);
@@ -357,7 +361,9 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     __block NSIndexPath *finalIndexPath = nil;
     /// 最终距离中线的间距
     __block CGFloat finalSpace = 0;
+    @weakify(self)
     [cellsArray enumerateObjectsUsingBlock:^(UIView *cell, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
         UIView *playerView = [cell viewWithTag:self.zf_containerViewTag];
         if (!playerView) return;
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];

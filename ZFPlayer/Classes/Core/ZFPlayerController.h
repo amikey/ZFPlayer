@@ -273,15 +273,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;
 
-/// The current playing cell stop playing percent when the cell has out off the screen.
-/// the property is only used when the `stopWhileNotVisible` is YES.
+/// The current player scroll slides off the screen percent.
+/// the property used when the `stopWhileNotVisible` is YES, the current playing player stop percent.
+/// the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view percent.
 /// 0.0~1.0, defalut is 0.5.
-@property (nonatomic, assign) CGFloat playerDisapperaPercent;
+/// 0.0 is the player will disappear.
+/// 1.0 is the player did disappear.
+@property (nonatomic) CGFloat playerDisapperaPercent;
 
-/// The current player add to cell when the player appear percent in the scrollView.
+/// The current player scroll to the screen percent.
 /// the property is only used when the `stopWhileNotVisible` is NO.
 /// 0.0~1.0, defalut is 0.0.
-@property (nonatomic, assign) CGFloat playerApperaPercent;
+/// 0.0 is the player will appear.
+/// 1.0 is the player did appear.
+@property (nonatomic) CGFloat playerApperaPercent;
 
 /// if tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;

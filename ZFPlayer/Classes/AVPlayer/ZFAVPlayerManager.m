@@ -201,7 +201,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
     _isPlaying = NO;
     _player = nil;
     _assetURL = nil;
-    
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
@@ -217,9 +216,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 /// Replace the current playback address
 - (void)replaceCurrentAssetURL:(NSURL *)assetURL {
-    if (self.player) [self stop];
-    _assetURL = assetURL;
-    [self prepareToPlay];
+    self.assetURL = assetURL;
 }
 
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
@@ -435,8 +432,9 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 - (void)setAssetURL:(NSURL *)assetURL {
+    if (self.player) [self stop];
     _assetURL = assetURL;
-    [self replaceCurrentAssetURL:assetURL];
+    [self prepareToPlay];
 }
 
 - (void)setRate:(float)rate {

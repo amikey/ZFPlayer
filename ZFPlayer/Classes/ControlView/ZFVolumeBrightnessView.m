@@ -50,19 +50,13 @@
         [self addSubview:self.progressView];
         self.layer.cornerRadius = 4;
         self.layer.masksToBounds = YES;
-        [self configureVolume];
         [self hideTipView];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(volumeChanged:)
-                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
-                                                   object:nil];
     }
     return self;
 }
 
 - (void)dealloc {
-    [self.volumeView removeFromSuperview];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
+    [self removeSystemVolumeView];
 }
 
 - (void)layoutSubviews {
@@ -88,23 +82,18 @@
     self.progressView.frame = CGRectMake(min_x, min_y, min_w, min_h);
 }
 
-- (void)volumeChanged:(NSNotification *)notification {
-    float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
-    [self updateProgress:volume withVolumeBrightnessType:ZFVolumeBrightnessTypeVolume];
-}
-
 - (void)hideTipView {
     self.hidden = YES;
 }
 
-/**
- *  移除系统音量toast
- */
-- (void)configureVolume {
-    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    volumeView.frame = CGRectMake(-1000, -1000, 100, 100);
-    [[UIApplication sharedApplication].keyWindow addSubview:volumeView];
-    self.volumeView = volumeView;
+/// 添加系统音量view
+- (void)addSystemVolumeView {
+    [self.volumeView removeFromSuperview];
+}
+
+/// 移除系统音量view
+- (void)removeSystemVolumeView {
+    [[UIApplication sharedApplication].keyWindow addSubview:self.volumeView];
 }
 
 - (void)updateProgress:(CGFloat)progress withVolumeBrightnessType:(ZFVolumeBrightnessType)volumeBrightnessType {
@@ -146,6 +135,14 @@
         _iconImageView = [UIImageView new];
     }
     return _iconImageView;
+}
+
+- (MPVolumeView *)volumeView {
+    if (!_volumeView) {
+        _volumeView = [[MPVolumeView alloc] init];
+        _volumeView.frame = CGRectMake(-1000, -1000, 100, 100);
+    }
+    return _volumeView;
 }
 
 @end

@@ -36,12 +36,8 @@
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) ZFPlayerNotification *notification;
 @property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
-@property (nonatomic, strong, nullable) UIScrollView *scrollView;
+@property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, strong) UISlider *volumeViewSlider;
-@property (nonatomic, assign) NSTimeInterval currentTime;
-@property (nonatomic, assign) NSTimeInterval totalTime;
-@property (nonatomic, assign) NSTimeInterval bufferTime;
-/// The view tag that the player display in scrollView.
 @property (nonatomic, assign) NSInteger containerViewTag;
 
 @end
@@ -116,25 +112,22 @@
         self.currentPlayerManager.view.hidden = NO;
         [self.notification addNotification];
         if (self.allowOrentitaionRotation) [self addDeviceOrientationObserver];
+        if (self.playerPrepareToPlay) self.playerPrepareToPlay(asset,assetURL);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
             [self.controlView videoPlayer:self prepareToPlay:assetURL];
         }
-        if (self.playerPrepareToPlay) self.playerPrepareToPlay(asset,assetURL);
     };
     
     self.currentPlayerManager.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         @strongify(self)
-        self.currentTime = currentTime;
-        self.totalTime = duration;
+        if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(asset,currentTime,duration);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:currentTime:totalTime:)]) {
             [self.controlView videoPlayer:self currentTime:currentTime totalTime:duration];
         }
-        if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(asset,currentTime,duration);
     };
     
     self.currentPlayerManager.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval bufferTime) {
         @strongify(self)
-        self.bufferTime = bufferTime;
         if ([self.controlView respondsToSelector:@selector(videoPlayer:bufferTime:)]) {
             [self.controlView videoPlayer:self bufferTime:bufferTime];
         }
@@ -143,18 +136,18 @@
     
     self.currentPlayerManager.playerPlayStatChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
         @strongify(self)
+        if (self.playerPlayStatChanged) self.playerPlayStatChanged(asset, playState);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
             [self.controlView videoPlayer:self playStateChanged:playState];
         }
-        if (self.playerPlayStatChanged) self.playerPlayStatChanged(asset, playState);
     };
     
     self.currentPlayerManager.playerLoadStatChanged = ^(id  _Nonnull asset, ZFPlayerLoadState loadState) {
         @strongify(self)
+        if (self.playerLoadStatChanged) self.playerLoadStatChanged(asset, loadState);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:loadStateChanged:)]) {
             [self.controlView videoPlayer:self loadStateChanged:loadState];
         }
-        if (self.playerLoadStatChanged) self.playerLoadStatChanged(asset, loadState);
     };
     
     self.currentPlayerManager.playerDidToEnd = ^(id  _Nonnull asset) {
@@ -163,15 +156,14 @@
         if ([self.controlView respondsToSelector:@selector(videoPlayerPlayEnd:)]) {
             [self.controlView videoPlayerPlayEnd:self];
         }
-        if (self.playerDidToEnd) self.playerDidToEnd(asset);
     };
     
     self.currentPlayerManager.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
         @strongify(self)
+        if (self.playerPlayFailed) self.playerPlayFailed(asset, error);
         if ([self.controlView respondsToSelector:@selector(videoPlayerPlayFailed:error:)]) {
             [self.controlView videoPlayerPlayFailed:self error:error];
         }
-        if (self.playerPlayFailed) self.playerPlayFailed(asset, error);
     };
 }
 
@@ -243,6 +235,18 @@
 @end
 
 @implementation ZFPlayerController (ZFPlayerTimeControl)
+
+- (NSTimeInterval)currentTime {
+    return self.currentPlayerManager.currentTime;
+}
+
+- (NSTimeInterval)totalTime {
+    return self.currentPlayerManager.totalTime;
+}
+
+- (NSTimeInterval)bufferTime {
+    return self.currentPlayerManager.bufferTime;
+}
 
 - (float)progress {
     if (self.totalTime == 0) return 0;
@@ -763,6 +767,7 @@
     scrollView.zf_enableScrollHook = YES;
     
     scrollView.zf_playerWillAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
         if (self.isFullScreen) return;
         if (self.zf_playerWillAppearInScrollView) self.zf_playerWillAppearInScrollView(indexPath);
         if ([self.controlView respondsToSelector:@selector(playerDidAppearInScrollView:)]) {

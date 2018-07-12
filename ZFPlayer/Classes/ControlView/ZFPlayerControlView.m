@@ -78,8 +78,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 @property (nonatomic, strong) ZFVolumeBrightnessView *volumeBrightnessView;
 
-@property (nonatomic, strong) UIImage *placeholderImage;
-
 @end
 
 @implementation ZFPlayerControlView
@@ -91,6 +89,10 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         [self addAllSubViews];
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(volumeChanged:)
+                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
+                                                   object:nil];
     }
     return self;
 }
@@ -161,7 +163,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
     [self cancelAutoFadeOutControlView];
 }
 
@@ -230,6 +232,13 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     } completion:^(BOOL finished) {
         [self autoFadeOutControlView];
     }];
+}
+
+- (void)volumeChanged:(NSNotification *)notification {
+    float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
+    if (self.player.isFullScreen) {
+        [self.volumeBrightnessView updateProgress:volume withVolumeBrightnessType:ZFVolumeBrightnessTypeVolume];
+    }
 }
 
 #pragma mark - Public Method
@@ -316,7 +325,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
             [self.volumeBrightnessView updateProgress:self.player.brightness withVolumeBrightnessType:ZFVolumeBrightnessTypeumeBrightness];
         } else if (location == ZFPanLocationRight) { /// 调节声音
             self.player.volume -= (velocity.y) / 10000;
-            [self.volumeBrightnessView updateProgress:self.player.volume withVolumeBrightnessType:ZFVolumeBrightnessTypeVolume];
+            if (self.player.isFullScreen) {
+                [self.volumeBrightnessView updateProgress:self.player.volume withVolumeBrightnessType:ZFVolumeBrightnessTypeVolume];
+            }
         }
     }
 }
@@ -337,11 +348,12 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
-/// 播放之前状态
+/// 准备播放
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL {
     [self hideControlViewWithAnimated:NO];
 }
 
+/// 播放状态改变
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer playStateChanged:(ZFPlayerPlaybackState)state {
     if (state == ZFPlayerPlayStatePlaying) {
         [self.portraitControlView playBtnSelectedState:YES];
@@ -357,6 +369,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 加载状态改变
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state {
     if (state == ZFPlayerLoadStatePrepare) {
         self.coverImageView.hidden = NO;
@@ -370,18 +383,21 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 播放进度改变回调
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime {
     [self.portraitControlView videoPlayer:videoPlayer currentTime:currentTime totalTime:totalTime];
     [self.landScapeControlView videoPlayer:videoPlayer currentTime:currentTime totalTime:totalTime];
     self.bottomPgrogress.value = videoPlayer.progress;
 }
 
+/// 缓冲改变回调
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime {
     [self.portraitControlView videoPlayer:videoPlayer bufferTime:bufferTime];
     [self.landScapeControlView videoPlayer:videoPlayer bufferTime:bufferTime];
     self.bottomPgrogress.bufferValue = videoPlayer.bufferProgress;
 }
 
+/// 视频view即将旋转
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer orientationWillChange:(ZFOrientationObserver *)observer {
     self.portraitControlView.hidden = observer.isFullScreen;
     self.landScapeControlView.hidden = !observer.isFullScreen;
@@ -398,8 +414,15 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     } else {
         [self hideControlViewWithAnimated:NO];
     }
+    
+    if (observer.isFullScreen) {
+        [self.volumeBrightnessView removeSystemVolumeView];
+    } else {
+        [self.volumeBrightnessView addSystemVolumeView];
+    }
 }
 
+/// 视频view已经旋转
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer orientationDidChanged:(ZFOrientationObserver *)observer {
     if (self.controlViewAppeared) {
         [self showControlViewWithAnimated:NO];
@@ -408,10 +431,12 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 锁定旋转方向
 - (void)lockedVideoPlayer:(ZFPlayerController *)videoPlayer lockedScreen:(BOOL)locked {
     [self showControlViewWithAnimated:YES];
 }
 
+/// 列表滑动时视频view已经显示
 - (void)playerDidAppearInScrollView:(ZFPlayerController *)videoPlayer {
     if (!self.player.stopWhileNotVisible && !videoPlayer.isFullScreen) {
         self.floatControlView.hidden = YES;
@@ -419,6 +444,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 列表滑动时视频view已经消失
 - (void)playerDidDisappearInScrollView:(ZFPlayerController *)videoPlayer {
     if (!self.player.stopWhileNotVisible && !videoPlayer.isFullScreen) {
         self.floatControlView.hidden = NO;

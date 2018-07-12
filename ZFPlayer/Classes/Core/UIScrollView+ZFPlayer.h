@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 @interface UIScrollView (ZFPlayer)
 
 /// Rolling direction switch
-@property (nonatomic, assign) BOOL zf_enableScrollHook;
+@property (nonatomic) BOOL zf_enableScrollHook;
 
 /// The indexPath is playing
 @property (nonatomic, strong, nullable) NSIndexPath *zf_playingIndexPath;
@@ -47,19 +47,19 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 @property (nonatomic, strong, nullable) NSIndexPath *zf_shouldPlayIndexPath;
 
 /// WWANA networks play automatically,default NO.
-@property (nonatomic, assign, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
+@property (nonatomic, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
 
 /// The player should auto player,default is YES.
-@property (nonatomic, assign) BOOL zf_shouldAutoPlay;
+@property (nonatomic) BOOL zf_shouldAutoPlay;
 
 /// The view tag that the player display in scrollView.
-@property (nonatomic, assign) NSInteger zf_containerViewTag;
+@property (nonatomic) NSInteger zf_containerViewTag;
 
 /// The scroll derection of scrollView.
-@property (nonatomic, assign) ZFPlayerScrollDerection zf_scrollDerection;
+@property (nonatomic) ZFPlayerScrollDerection zf_scrollDerection;
 
 /// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
-@property (nonatomic, assign) BOOL zf_stopWhileNotVisible;
+@property (nonatomic) BOOL zf_stopWhileNotVisible;
 
 /// The block invoked When the player did stop scroll.
 @property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);

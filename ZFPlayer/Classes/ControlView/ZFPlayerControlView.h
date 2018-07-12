@@ -50,6 +50,8 @@
 @property (nonatomic, strong, readonly) ZFSliderView *bottomPgrogress;
 /// 封面图
 @property (nonatomic, strong, readonly) UIImageView *coverImageView;
+/// 占位图，默认是灰色
+@property (nonatomic, strong) UIImage *placeholderImage;
 
 - (void)showTitle:(NSString *)title
    coverURLString:(NSString *)coverUrl
