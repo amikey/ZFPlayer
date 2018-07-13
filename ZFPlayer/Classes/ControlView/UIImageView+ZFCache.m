@@ -145,20 +145,17 @@
     return dict;
 }
 
-- (void)setZf_cacheFaileTimes:(NSMutableDictionary *)zf_cacheFaileTimes
-{
+- (void)setZf_cacheFaileTimes:(NSMutableDictionary *)zf_cacheFaileTimes {
      objc_setAssociatedObject(self, @selector(zf_cacheFaileTimes), zf_cacheFaileTimes, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)zf_clearCache
-{
+- (void)zf_clearCache {
     [self.zf_cacheFaileTimes removeAllObjects];
     self.zf_cacheFaileTimes = nil;
 }
 
 - (void)zf_clearDiskCaches {
     NSString *directoryPath = [NSString zf_cachePath];
-    
     if ([[NSFileManager defaultManager] fileExistsAtPath:directoryPath isDirectory:nil]) {
         dispatch_queue_t ioQueue = dispatch_queue_create("com.hackemist.SDWebImageCache", DISPATCH_QUEUE_SERIAL);
         dispatch_async(ioQueue, ^{
@@ -170,7 +167,6 @@
                                                             error:nil];
         });
     }
-    
     [self zf_clearCache];
 }
 

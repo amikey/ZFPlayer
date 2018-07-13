@@ -223,8 +223,6 @@
 }
 
 - (void)showControlView {
-    self.topToolView.alpha = 1;
-    self.bottomToolView.alpha = 1;
     self.lockBtn.alpha = 1;
     self.isShow = YES;
     if (self.player.isLockedScreen) {
@@ -234,11 +232,14 @@
         self.topToolView.y = 0;
         self.bottomToolView.y = self.height - self.bottomToolView.height;
     }
-    self.lockBtn.left = iPhoneX ? 50: 15;
+    self.lockBtn.left = iPhoneX ? 50: 20;
     self.player.statusBarHidden = NO;
     if (self.player.isLockedScreen) {
         self.topToolView.alpha = 0;
         self.bottomToolView.alpha = 0;
+    } else {
+        self.topToolView.alpha = 1;
+        self.bottomToolView.alpha = 1;
     }
 }
 

@@ -394,5 +394,4 @@
     return _fullScreenBtn;
 }
 
-
 @end

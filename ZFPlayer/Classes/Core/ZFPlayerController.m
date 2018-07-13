@@ -203,7 +203,6 @@
             @strongify(self)
             if (self.isPauseByEvent) self.pauseByEvent = NO;
             if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = NO;
-
         };
         _notification.oldDeviceUnavailable = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)

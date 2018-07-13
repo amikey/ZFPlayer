@@ -320,7 +320,7 @@
 
 - (UIView *)fullScreenContainerView {
     if (!_fullScreenContainerView) {
-        _fullScreenContainerView = [(id)[UIApplication sharedApplication].delegate valueForKey:@"window"];
+        _fullScreenContainerView = [UIApplication sharedApplication].keyWindow;
     }
     return _fullScreenContainerView;
 }

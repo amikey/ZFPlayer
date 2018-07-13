@@ -53,6 +53,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         [self setNeedsStatusBarAppearanceUpdate];
     };
     
+    /// 播放完自动播放下一个
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
         [self.player playTheNext];
@@ -170,17 +171,15 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     return self.player.shouldAutorotate;
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.view endEditing:YES];
-}
-
-#pragma mark - about keyboard orientation
-
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     if (self.player.isFullScreen) {
         return UIInterfaceOrientationMaskLandscape;
     }
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 - (ZFPlayerControlView *)controlView {

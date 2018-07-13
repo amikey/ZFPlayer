@@ -62,7 +62,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 @property (nonatomic, strong) ZFSliderView *bottomPgrogress;
 /// 封面图
 @property (nonatomic, strong) UIImageView *coverImageView;
-
 /// 是否显示了控制层
 @property (nonatomic, assign, getter=isShowing) BOOL showing;
 /// 是否播放结束
@@ -167,7 +166,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [self cancelAutoFadeOutControlView];
 }
 
-///添加所有子控件
+/// 添加所有子控件
 - (void)addAllSubViews {
     [self addSubview:self.coverImageView];
     [self addSubview:self.portraitControlView];
@@ -204,6 +203,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 隐藏控制层
 - (void)hideControlViewWithAnimated:(BOOL)animated {
     [UIView animateWithDuration:animated?ZFPlayerControlViewAutoFadeOutTimeInterval:0 animations:^{
         if (self.player.isFullScreen) {
@@ -219,6 +219,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }];
 }
 
+/// 显示控制层
 - (void)showControlViewWithAnimated:(BOOL)animated  {
     [UIView animateWithDuration:animated?ZFPlayerControlViewAutoFadeOutTimeInterval:0 animations:^{
         if (self.player.isFullScreen) {
@@ -234,6 +235,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }];
 }
 
+/// 音量改变的通知
 - (void)volumeChanged:(NSNotification *)notification {
     float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
     if (self.player.isFullScreen) {
@@ -243,6 +245,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 #pragma mark - Public Method
 
+/// 重置控制层
 - (void)resetControlView {
     [self.portraitControlView resetControlView];
     [self.landScapeControlView resetControlView];
@@ -252,8 +255,14 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.failBtn.hidden = YES;
     self.portraitControlView.hidden = self.player.isFullScreen;
     self.landScapeControlView.hidden = !self.player.isFullScreen;
+    if (self.controlViewAppeared) {
+        [self showControlViewWithAnimated:NO];
+    } else {
+        [self hideControlViewWithAnimated:NO];
+    }
 }
 
+/// 设置标题、封面、全屏模式
 - (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
     [self resetControlView];
     [self layoutIfNeeded];
@@ -265,7 +274,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 #pragma mark - ZFPlayerControlViewDelegate
 
-/// 手势
+/// 手势筛选，返回NO不响应该手势
 - (BOOL)gestureTriggerCondition:(ZFPlayerGestureControl *)gestureControl gestureType:(ZFPlayerGestureType)gestureType gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer touch:(nonnull UITouch *)touch {
     CGPoint point = [touch locationInView:self];
     if (self.player.isSmallFloatViewShow && !self.player.isFullScreen && gestureType != ZFPlayerGestureTypeSingleTap) {
@@ -278,6 +287,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 单击手势事件
 - (void)gestureSingleTapped:(ZFPlayerGestureControl *)gestureControl {
     if (!self.player) return;
     if (self.player.isSmallFloatViewShow && !self.player.isFullScreen) {
@@ -291,6 +301,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 双击手势事件
 - (void)gestureDoubleTapped:(ZFPlayerGestureControl *)gestureControl {
     if (self.player.isFullScreen) {
         [self.landScapeControlView playOrPause];
@@ -299,12 +310,14 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 开始滑动手势事件
 - (void)gestureBeganPan:(ZFPlayerGestureControl *)gestureControl panDirection:(ZFPanDirection)direction panLocation:(ZFPanLocation)location {
     if (direction == ZFPanDirectionH) {
         self.sumTime = self.player.currentTime;
     }
 }
 
+/// 滑动中手势事件
 - (void)gestureChangedPan:(ZFPlayerGestureControl *)gestureControl panDirection:(ZFPanDirection)direction panLocation:(ZFPanLocation)location withVelocity:(CGPoint)velocity {
     if (direction == ZFPanDirectionH) {
         // 每次滑动需要叠加时间
@@ -332,6 +345,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 滑动结束手势事件
 - (void)gestureEndedPan:(ZFPlayerGestureControl *)gestureControl panDirection:(ZFPanDirection)direction panLocation:(ZFPanLocation)location {
     if (direction == ZFPanDirectionH && self.sumTime > 0 && self.player.totalTime > 0) {
         [self.player seekToTime:self.sumTime completionHandler:^(BOOL finished) {
@@ -340,6 +354,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     }
 }
 
+/// 捏合手势事件，这里改变了视频的填充模式
 - (void)gesturePinched:(ZFPlayerGestureControl *)gestureControl scale:(float)scale {
     if (scale > 1) {
         self.player.currentPlayerManager.scalingMode = ZFPlayerScalingModeAspectFill;
@@ -475,6 +490,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.fastView.hidden = YES;
 }
 
+/// 加载失败
 - (void)failBtnClick:(UIButton *)sender {
     [self.player.currentPlayerManager reloadPlayer];
 }
@@ -548,10 +564,10 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 - (UILabel *)fastTimeLabel {
     if (!_fastTimeLabel) {
-        _fastTimeLabel               = [[UILabel alloc] init];
-        _fastTimeLabel.textColor     = [UIColor whiteColor];
+        _fastTimeLabel = [[UILabel alloc] init];
+        _fastTimeLabel.textColor = [UIColor whiteColor];
         _fastTimeLabel.textAlignment = NSTextAlignmentCenter;
-        _fastTimeLabel.font          = [UIFont systemFontOfSize:14.0];
+        _fastTimeLabel.font = [UIFont systemFontOfSize:14.0];
     }
     return _fastTimeLabel;
 }

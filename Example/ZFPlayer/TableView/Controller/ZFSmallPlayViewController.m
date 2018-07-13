@@ -84,8 +84,8 @@ static NSString *kIdentifier = @"kIdentifier";
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-    CGFloat h = CGRectGetMaxY(self.view.frame);
-    self.tableView.frame = CGRectMake(0, y, self.view.frame.size.width, h-y);
+    CGFloat h = CGRectGetMaxY(self.view.frame)-y;
+    self.tableView.frame = CGRectMake(0, y, self.view.frame.size.width, h);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
