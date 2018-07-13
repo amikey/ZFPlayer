@@ -47,7 +47,7 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.assetURLs = self.urls;
     /// 0.8是消失80%时候
     self.player.playerDisapperaPercent = 0.8;
-    
+
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)

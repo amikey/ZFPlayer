@@ -99,6 +99,7 @@
     if (!_fullMaskView) {
         _fullMaskView = [UIView new];
         _fullMaskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        _fullMaskView.userInteractionEnabled = NO;
     }
     return _fullMaskView;
 }

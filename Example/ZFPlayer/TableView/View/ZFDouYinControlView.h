@@ -13,7 +13,6 @@
 
 - (void)resetControlView;
 
-- (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl;
-
+- (void)showCoverViewWithUrl:(NSString *)coverUrl;
 
 @end

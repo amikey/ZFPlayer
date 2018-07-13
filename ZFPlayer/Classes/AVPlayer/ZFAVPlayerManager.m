@@ -48,16 +48,12 @@ static NSString *const kPresentationSize         = @"presentationSize";
 @interface ZFPlayerPresentView : ZFPlayerView
 
 @property (nonatomic, strong) AVPlayer *player;
-@property (nonatomic, strong) UIImage *placeholder;
 /// default is AVLayerVideoGravityResizeAspect.
 @property (nonatomic, strong) AVLayerVideoGravity videoGravity;
-@property (nonatomic, strong, readonly) UIImageView *placeholderImageView;
 
 @end
 
 @implementation ZFPlayerPresentView
-
-@synthesize placeholderImageView = _placeholderImageView;
 
 + (Class)layerClass {
     return [AVPlayerLayer class];
@@ -70,7 +66,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self presentSetupView];
+        self.backgroundColor = [UIColor blackColor];
     }
     return self;
 }
@@ -80,12 +76,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
     self.avLayer.player = player;
 }
 
-- (void)setPlaceholder:(UIImage *)placeholder {
-    if (placeholder == _placeholder) return;
-    _placeholder = placeholder;
-    _placeholderImageView.image = placeholder;
-}
-
 - (void)setVideoGravity:(AVLayerVideoGravity)videoGravity {
     if (videoGravity == self.videoGravity) return;
     [self avLayer].videoGravity = videoGravity;
@@ -93,23 +83,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (AVLayerVideoGravity)videoGravity {
     return [self avLayer].videoGravity;
-}
-
-#pragma mark -
-
-- (void)presentSetupView {
-    self.backgroundColor = [UIColor blackColor];
-    [self addSubview:self.placeholderImageView];
-    self.placeholderImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-}
-
-- (UIImageView *)placeholderImageView {
-    if (!_placeholderImageView) {
-        _placeholderImageView = [UIImageView new];
-        _placeholderImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _placeholderImageView.clipsToBounds = YES;
-    }
-    return _placeholderImageView;
 }
 
 @end
@@ -204,6 +177,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
+    [self.view removeFromSuperview];
 }
 
 - (void)replay {

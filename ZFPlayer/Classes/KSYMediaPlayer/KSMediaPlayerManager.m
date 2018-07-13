@@ -124,10 +124,10 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 - (void)replay {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     [self seekToTime:0 completionHandler:^(BOOL finished) {
-        __strong typeof(weakSelf) strongSelf = self;
-        [strongSelf play];
+        @strongify(self)
+        [self play];
     }];
 }
 
@@ -154,11 +154,12 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (void)initializePlayer {
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
-    self.player.shouldAutoplay = YES;
+    self.player.view.backgroundColor = [UIColor blackColor];
+    self.player.shouldAutoplay = NO;
     [self addPlayerNotification];
 
     UIView *playerBgView = [UIView new];
-    [self.view insertSubview:playerBgView atIndex:0];
+    [self.view insertSubview:playerBgView atIndex:1];
     playerBgView.frame = self.view.bounds;
     playerBgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     

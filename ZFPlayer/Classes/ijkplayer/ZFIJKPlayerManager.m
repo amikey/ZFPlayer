@@ -36,6 +36,7 @@
 @property (nonatomic, strong) IJKFFOptions *options;
 @property (nonatomic, assign) CGFloat lastVolume;
 @property (nonatomic, weak) NSTimer *timer;
+@property (nonatomic, strong) UIView *playerBgView;
 
 @end
 
@@ -112,6 +113,9 @@
     self.player = nil;
     _assetURL = nil;
     [self.timer invalidate];
+
+    [self.playerBgView removeFromSuperview];
+    [self.view removeFromSuperview];
     self.timer = nil;
     _isPlaying = NO;
     _isPreparedToPlay = NO;
@@ -148,15 +152,14 @@
     self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.assetURL withOptions:self.options];
     [self.player prepareToPlay];
 //    self.player.view.backgroundColor = [UIColor blackColor];
-    self.player.shouldAutoplay = YES;
+    self.player.shouldAutoplay = NO;
     
-    UIView *playerBgView = [UIView new];
-    [self.view insertSubview:playerBgView atIndex:0];
-    playerBgView.frame = self.view.bounds;
-    playerBgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view insertSubview:self.playerBgView atIndex:1];
+    self.playerBgView.frame = self.view.bounds;
+    self.playerBgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [playerBgView addSubview:self.player.view];
-    self.player.view.frame = playerBgView.bounds;
+    [self.playerBgView addSubview:self.player.view];
+    self.player.view.frame = self.playerBgView.bounds;
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.scalingMode = _scalingMode;
     
@@ -309,9 +312,9 @@
             ZFPlayerLog(@"播放器的播放状态变了，现在是播放状态 %d: playing", (int)_player.playbackState);
             self.playState = ZFPlayerPlayStatePlaying;
             if (self.seekTime) {
-                self.player.currentPlaybackTime = self.seekTime;
+                [self seekToTime:self.seekTime completionHandler:nil];
                 self.seekTime = 0; // 滞空, 防止下次播放出错
-                [self.player play];
+                [self play];
             }
         }
             break;
@@ -363,6 +366,13 @@
         [_options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
     }
     return _options;
+}
+
+- (UIView *)playerBgView {
+    if (!_playerBgView) {
+        _playerBgView = [UIView new];
+    }
+    return _playerBgView;
 }
 
 #pragma mark - setter

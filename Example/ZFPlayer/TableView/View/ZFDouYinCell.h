@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ZFTableData.h"
 
-@interface ZFDouYinCell : UITableViewCell
+@interface ZFDouYinCell : UITableViewCell 
 
 @property (nonatomic, strong) ZFTableData *data;
 

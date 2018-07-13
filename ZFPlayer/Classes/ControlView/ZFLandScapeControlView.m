@@ -153,7 +153,7 @@
     self.slider.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.slider.centerY = self.playOrPauseBtn.centerY;
     
-    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 50: 20;
+    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 50: 18;
     min_y = 0;
     min_w = 40;
     min_h = 40;
@@ -232,7 +232,7 @@
         self.topToolView.y = 0;
         self.bottomToolView.y = self.height - self.bottomToolView.height;
     }
-    self.lockBtn.left = iPhoneX ? 50: 20;
+    self.lockBtn.left = iPhoneX ? 50: 18;
     self.player.statusBarHidden = NO;
     if (self.player.isLockedScreen) {
         self.topToolView.alpha = 0;

@@ -110,7 +110,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.portraitControlView.frame = self.bounds;
     self.landScapeControlView.frame = self.bounds;
     self.floatControlView.frame = self.bounds;
-    self.coverImageView.frame = self.bounds;
+    self.coverImageView.frame = self.player.currentPlayerManager.view.bounds;
 
     min_w = 80;
     min_h = 80;
@@ -168,7 +168,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 /// 添加所有子控件
 - (void)addAllSubViews {
-    [self addSubview:self.coverImageView];
+//    [self addSubview:self.coverImageView];
     [self addSubview:self.portraitControlView];
     [self addSubview:self.landScapeControlView];
     [self addSubview:self.floatControlView];
@@ -240,6 +240,8 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
     if (self.player.isFullScreen) {
         [self.volumeBrightnessView updateProgress:volume withVolumeBrightnessType:ZFVolumeBrightnessTypeVolume];
+    } else {
+        [self.volumeBrightnessView addSystemVolumeView];
     }
 }
 
@@ -347,7 +349,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 /// 滑动结束手势事件
 - (void)gestureEndedPan:(ZFPlayerGestureControl *)gestureControl panDirection:(ZFPanDirection)direction panLocation:(ZFPanLocation)location {
-    if (direction == ZFPanDirectionH && self.sumTime > 0 && self.player.totalTime > 0) {
+    if (direction == ZFPanDirectionH && self.sumTime >= 0 && self.player.totalTime > 0) {
         [self.player seekToTime:self.sumTime completionHandler:^(BOOL finished) {
             self.sumTime = 0;
         }];
@@ -501,6 +503,10 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     _player = player;
     self.landScapeControlView.player = player;
     self.portraitControlView.player = player;
+    /// 封面图加到播放视图底部了，解决播放时候黑屏闪一下问题
+    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:0];
+    self.coverImageView.frame = player.currentPlayerManager.view.bounds;
+    self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 #pragma mark - getter
