@@ -364,6 +364,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
              // When the buffer is empty
              if (self.playerItem.playbackBufferEmpty) {
                  self.loadState = ZFPlayerLoadStateStalled;
+                 [self bufferingSomeSecond];
              }
          } else if ([keyPath isEqualToString:kPlaybackLikelyToKeepUp]) {
              // When the buffer is good
