@@ -187,6 +187,10 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 - (void)scrollViewScrolling {
     if (!self.zf_enableScrollHook) return;
+    
+    
+    [self zf_filterShouldPlayCellWhileScrolling:nil];
+    
     CGFloat offsetY = self.contentOffset.y;
     self.zf_scrollDerection = (offsetY - self.zf_lastOffsetY > 0) ? ZFPlayerScrollDerectionUp : ZFPlayerScrollDerectionDown;
     self.zf_lastOffsetY = offsetY;
@@ -281,7 +285,6 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler {
     if (!self.zf_shouldAutoPlay) return;
-    if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.zf_WWANAutoPlay) return;
     NSArray *visiableCells = nil;
     NSIndexPath *indexPath = nil;
     if ([self isKindOfClass:[UITableView class]]) {
@@ -395,11 +398,14 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler {
     if (!self.zf_shouldAutoPlay) return;
-    if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.zf_WWANAutoPlay) return;
     @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
         @strongify(self)
-        if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.zf_WWANAutoPlay) return;
+        if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.zf_WWANAutoPlay) {
+            /// 移动网络
+            self.zf_shouldPlayIndexPath = indexPath;
+            return;
+        }
         if (!self.zf_playingIndexPath) {
             if (handler) handler(indexPath);
             self.zf_playingIndexPath = indexPath;
@@ -492,6 +498,10 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     return objc_getAssociatedObject(self, _cmd);
 }
 
+- (void (^)(NSIndexPath * _Nonnull))zf_shouldPlayIndexPathCallback {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
 #pragma mark - setter
 
 - (void)setZf_enableScrollHook:(BOOL)zf_enableScrollHook {
@@ -500,9 +510,11 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 - (void)setZf_playingIndexPath:(NSIndexPath *)zf_playingIndexPath {
     objc_setAssociatedObject(self, @selector(zf_playingIndexPath), zf_playingIndexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (zf_playingIndexPath) self.zf_shouldPlayIndexPath = zf_playingIndexPath;
 }
 
 - (void)setZf_shouldPlayIndexPath:(NSIndexPath *)zf_shouldPlayIndexPath {
+    if (self.zf_shouldPlayIndexPathCallback) self.zf_shouldPlayIndexPathCallback(zf_shouldPlayIndexPath);
     objc_setAssociatedObject(self, @selector(zf_shouldPlayIndexPath), zf_shouldPlayIndexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.shouldPlayIndexPath = zf_shouldPlayIndexPath;
 }
@@ -533,6 +545,10 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 - (void)setZf_scrollViewDidStopScrollCallback:(void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScrollCallback {
     objc_setAssociatedObject(self, @selector(zf_scrollViewDidStopScrollCallback), zf_scrollViewDidStopScrollCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_shouldPlayIndexPathCallback:(void (^)(NSIndexPath * _Nonnull))zf_shouldPlayIndexPathCallback {
+    objc_setAssociatedObject(self, @selector(zf_shouldPlayIndexPathCallback), zf_shouldPlayIndexPathCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 @end

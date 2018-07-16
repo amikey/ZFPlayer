@@ -47,6 +47,8 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.assetURLs = self.urls;
     /// 0.8是消失80%时候
     self.player.playerDisapperaPercent = 0.8;
+    /// 移动网络依然自动播放
+//    self.player.WWANAutoPlay = YES;
 
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
@@ -61,7 +63,7 @@ static NSString *kIdentifier = @"kIdentifier";
         if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
             [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
-        }else {
+        } else {
             [self.player stopCurrentPlayingCell];
         }
     };
@@ -79,10 +81,8 @@ static NSString *kIdentifier = @"kIdentifier";
     @weakify(self)
     [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
         @strongify(self)
-         [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
     }];
-    ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.tableView.zf_shouldPlayIndexPath];
-    [cell hideMaskView];
 }
 
 - (void)requestData {
@@ -158,23 +158,6 @@ static NSString *kIdentifier = @"kIdentifier";
     [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
 }
 
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    @weakify(self)
-    [scrollView zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
-        if ([indexPath compare:self.tableView.zf_shouldPlayIndexPath] != NSOrderedSame) {
-            @strongify(self)
-            /// 显示黑色蒙版
-            ZFTableViewCell *cell1 = [self.tableView cellForRowAtIndexPath:self.tableView.zf_shouldPlayIndexPath];
-            [cell1 showMaskView];
-            /// 隐藏黑色蒙版
-            ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-            [cell hideMaskView];
-        }
-    }];
-}
-
 #pragma mark - private method
 
 /// play the video
@@ -213,6 +196,18 @@ static NSString *kIdentifier = @"kIdentifier";
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+        };
+        
+        _tableView.zf_shouldPlayIndexPathCallback = ^(NSIndexPath * _Nonnull indexPath) {
+            @strongify(self)
+            if ([indexPath compare:self.tableView.zf_shouldPlayIndexPath] != NSOrderedSame) {
+                /// 显示黑色蒙版
+                ZFTableViewCell *cell1 = [self.tableView cellForRowAtIndexPath:self.tableView.zf_shouldPlayIndexPath];
+                [cell1 showMaskView];
+                /// 隐藏黑色蒙版
+                ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                [cell hideMaskView];
+            }
         };
     }
     return _tableView;
