@@ -187,10 +187,7 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 - (void)scrollViewScrolling {
     if (!self.zf_enableScrollHook) return;
-    
-    
-    [self zf_filterShouldPlayCellWhileScrolling:nil];
-    
+
     CGFloat offsetY = self.contentOffset.y;
     self.zf_scrollDerection = (offsetY - self.zf_lastOffsetY > 0) ? ZFPlayerScrollDerectionUp : ZFPlayerScrollDerectionDown;
     self.zf_lastOffsetY = offsetY;

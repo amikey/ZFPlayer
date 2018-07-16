@@ -48,8 +48,8 @@ static NSString *kIdentifier = @"kIdentifier";
     /// 0.8是消失80%时候
     self.player.playerDisapperaPercent = 0.8;
     /// 移动网络依然自动播放
-//    self.player.WWANAutoPlay = YES;
-
+    self.player.WWANAutoPlay = YES;
+    
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
@@ -130,6 +130,23 @@ static NSString *kIdentifier = @"kIdentifier";
     return UIStatusBarAnimationSlide;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    @weakify(self)
+    [scrollView zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
+        if ([indexPath compare:self.tableView.zf_shouldPlayIndexPath] != NSOrderedSame) {
+            @strongify(self)
+            /// 显示黑色蒙版
+            ZFTableViewCell *cell1 = [self.tableView cellForRowAtIndexPath:self.tableView.zf_shouldPlayIndexPath];
+            [cell1 showMaskView];
+            /// 隐藏黑色蒙版
+            ZFTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+            [cell hideMaskView];
+        }
+    }];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -166,7 +183,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.controlView showTitle:layout.data.title
                  coverURLString:layout.data.thumbnail_url
                  fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
+    [self.player playTheIndexPath:indexPath scrollToTop:NO];
 }
 
 #pragma mark - getter
