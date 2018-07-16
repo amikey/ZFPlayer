@@ -23,7 +23,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 @property (nonatomic, strong) UIButton *playBtn;
 @property (nonatomic, strong) UIButton *changeBtn;
 @property (nonatomic, strong) UIButton *nextBtn;
-
 @property (nonatomic, strong) NSArray <NSURL *>*assetURLs;
 
 @end

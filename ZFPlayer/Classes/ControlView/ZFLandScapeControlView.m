@@ -32,7 +32,6 @@
 #endif
 
 @interface ZFLandScapeControlView () <ZFSliderViewDelegate>
-
 /// 顶部工具栏
 @property (nonatomic, strong) UIView *topToolView;
 /// 返回按钮
@@ -43,9 +42,7 @@
 @property (nonatomic, strong) UIView *bottomToolView;
 /// 播放或暂停按钮
 @property (nonatomic, strong) UIButton *playOrPauseBtn;
-/// 下一个
-@property (nonatomic, strong) UIButton *nextBtn;
-/// 播放的当前时间label
+/// 播放的当前时间 
 @property (nonatomic, strong) UILabel *currentTimeLabel;
 /// 滑杆
 @property (nonatomic, strong) ZFSliderView *slider;
@@ -53,8 +50,6 @@
 @property (nonatomic, strong) UILabel *totalTimeLabel;
 /// 锁定屏幕按钮
 @property (nonatomic, strong) UIButton *lockBtn;
-
-@property (nonatomic, assign) double durationTime;
 
 @property (nonatomic, assign) BOOL isShow;
 
@@ -85,7 +80,6 @@
         
         /// statusBarFrame changed
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layOutControllerViews) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
-
     }
     return self;
 }
@@ -126,7 +120,7 @@
     min_w = min_view_w;
     self.bottomToolView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
-    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: 10;
+    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: min_margin;
     min_y = 5;
     min_w = 30;
     min_h = 30;
@@ -134,21 +128,21 @@
     
     min_x = self.playOrPauseBtn.right + 4;
     min_y = 0;
-    min_w = 50;
+    min_w = 62;
     min_h = 30;
     self.currentTimeLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.currentTimeLabel.centerY = self.playOrPauseBtn.centerY;
     
-    min_w = 50;
+    min_w = 62;
     min_x = self.bottomToolView.width - min_w - ((iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: min_margin);
     min_y = 0;
     min_h = 30;
     self.totalTimeLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.totalTimeLabel.centerY = self.playOrPauseBtn.centerY;
     
-    min_x = self.currentTimeLabel.right + min_margin;
+    min_x = self.currentTimeLabel.right + 4;
     min_y = 0;
-    min_w = self.totalTimeLabel.left - min_margin - min_x;
+    min_w = self.totalTimeLabel.left - min_x - 4;
     min_h = 30;
     self.slider.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.slider.centerY = self.playOrPauseBtn.centerY;
@@ -314,9 +308,7 @@
 
 #pragma mark - 
 
-/**
- 重置ControlView
- */
+/// 重置ControlView
 - (void)resetControlView {
     self.slider.value                = 0;
     self.slider.bufferValue          = 0;
@@ -328,9 +320,6 @@
     self.topToolView.alpha           = 1;
     self.bottomToolView.alpha        = 1;
 }
-
-#pragma mark - Setter
-
 
 #pragma mark - getter
 
@@ -376,14 +365,6 @@
         [_playOrPauseBtn setImage:ZFPlayer_Image(@"ZFPlayer_pause") forState:UIControlStateSelected];
     }
     return _playOrPauseBtn;
-}
-
-- (UIButton *)nextBtn {
-    if (!_nextBtn) {
-        _nextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_nextBtn setImage:ZFPlayer_Image(@"ZFPlayer_next") forState:UIControlStateNormal];
-    }
-    return _nextBtn;
 }
 
 - (UILabel *)currentTimeLabel {

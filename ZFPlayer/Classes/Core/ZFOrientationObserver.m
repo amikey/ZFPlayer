@@ -274,9 +274,6 @@
         self.view.frame = [self.view convertRect:self.view.frame toView:superview];
         [superview addSubview:self.view];
         self.fullScreen = YES;
-        if (self.orientationWillChange) {
-            self.orientationWillChange(self, self.isFullScreen);
-        }
     } else {
         if (self.roateType == ZFRotateTypeCell) {
             superview = [self.cell viewWithTag:self.playerViewTag];
@@ -284,10 +281,8 @@
             superview = self.containerView;
         }
         self.fullScreen = NO;
-        if (self.orientationWillChange) {
-            self.orientationWillChange(self, self.isFullScreen);
-        }
     }
+    if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
     CGRect frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
     [UIView animateWithDuration:animated?self.duration:0 animations:^{
         self.view.frame = frame;
@@ -295,9 +290,7 @@
     } completion:^(BOOL finished) {
         [superview addSubview:self.view];
         self.view.frame = superview.bounds;
-        if (self.orientationDidChanged) {
-            self.orientationDidChanged(self, self.isFullScreen);
-        }
+        if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
     }];
 }
 

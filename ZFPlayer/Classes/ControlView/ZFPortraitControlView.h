@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
 /// 播放或暂停按钮
 @property (nonatomic, strong, readonly) UIButton *playOrPauseBtn;
-/// 播放的当前时间label
+/// 播放的当前时间 
 @property (nonatomic, strong, readonly) UILabel *currentTimeLabel;
 /// 滑杆
 @property (nonatomic, strong, readonly) ZFSliderView *slider;
@@ -47,28 +47,30 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) UILabel *totalTimeLabel;
 /// 全屏按钮
 @property (nonatomic, strong, readonly) UIButton *fullScreenBtn;
-
+/// 播放器
 @property (nonatomic, weak) ZFPlayerController *player;
+/// slider滑动中
 @property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);
+/// slider滑动结束
 @property (nonatomic, copy, nullable) void(^sliderValueChanged)(CGFloat value);
 
+/// 重置控制层
 - (void)resetControlView;
-
+/// 显示控制层
 - (void)showControlView;
-
+/// 隐藏控制层
 - (void)hideControlView;
-
+/// 设置播放时间
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime;
-
+/// 设置缓冲时间
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime;
-
+/// 是否响应该手势
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch;
-
+/// 标题和全屏模式
 - (void)showTitle:(NSString *_Nullable)title fullScreenMode:(ZFFullScreenMode)fullScreenMode;
-
 /// 根据当前播放状态取反
 - (void)playOrPause;
-
+/// 播放按钮状态
 - (void)playBtnSelectedState:(BOOL)selected;
 
 @end

@@ -154,17 +154,11 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (void)initializePlayer {
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
-    self.player.view.backgroundColor = [UIColor blackColor];
     self.player.shouldAutoplay = NO;
     [self addPlayerNotification];
-
-    UIView *playerBgView = [UIView new];
-    [self.view insertSubview:playerBgView atIndex:1];
-    playerBgView.frame = self.view.bounds;
-    playerBgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [playerBgView addSubview:self.player.view];
-    self.player.view.frame = playerBgView.bounds;
+    [self.view insertSubview:self.player.view atIndex:1];
+    self.player.view.frame = self.view.bounds;
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.scalingMode = _scalingMode;
     self.player.controlStyle = MPMovieControlStyleNone;
@@ -284,7 +278,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 - (void)bufferChange:(NSNotification *)notify {
     if (self.player.loadState == MPMovieLoadStateStalled) { /// 播放器开始缓冲视频时发送该通知
         ZFPlayerLog(@"player start caching");
-        //    } else if (self.player.loadState == MPMovieLoadStatePlayable || self.player.loadState == MPMovieLoadStatePlaythroughOK) { /// 播放器结束缓冲视频时发送该通知
         self.loadState = ZFPlayerLoadStateStalled;
     } else {
         self.loadState = ZFPlayerLoadStatePlayable;
@@ -326,6 +319,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 - (ZFPlayerView *)view {
     if (!_view) {
         _view = [[ZFPlayerView alloc] init];
+        _view.backgroundColor = [UIColor blackColor];
     }
     return _view;
 }

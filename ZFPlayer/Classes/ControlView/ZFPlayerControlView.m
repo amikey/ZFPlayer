@@ -123,7 +123,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.failBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.failBtn.center = self.center;
     
-    min_w = 125;
+    min_w = 140;
     min_h = 80;
     self.fastView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.fastView.center = self.center;
@@ -350,9 +350,8 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 /// 滑动结束手势事件
 - (void)gestureEndedPan:(ZFPlayerGestureControl *)gestureControl panDirection:(ZFPanDirection)direction panLocation:(ZFPanLocation)location {
     if (direction == ZFPanDirectionH && self.sumTime >= 0 && self.player.totalTime > 0) {
-        [self.player seekToTime:self.sumTime completionHandler:^(BOOL finished) {
-            self.sumTime = 0;
-        }];
+        [self.player seekToTime:self.sumTime completionHandler:nil];
+        self.sumTime = 0;
     }
 }
 
@@ -574,6 +573,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         _fastTimeLabel.textColor = [UIColor whiteColor];
         _fastTimeLabel.textAlignment = NSTextAlignmentCenter;
         _fastTimeLabel.font = [UIFont systemFontOfSize:14.0];
+        _fastTimeLabel.adjustsFontSizeToFitWidth = YES;
     }
     return _fastTimeLabel;
 }

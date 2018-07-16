@@ -177,7 +177,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
-    [self.view removeFromSuperview];
 }
 
 - (void)replay {
@@ -345,9 +344,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     dispatch_async(dispatch_get_main_queue(), ^{
          if ([keyPath isEqualToString:kStatus]) {
              if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                     self.loadState = ZFPlayerLoadStatePlaythroughOK;
-                 });
+                    self.loadState = ZFPlayerLoadStatePlaythroughOK;
                  if (self.seekTime) {
                      [self seekToTime:self.seekTime completionHandler:nil];
                      self.seekTime = 0; // 滞空, 防止下次播放出错
@@ -391,6 +388,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 - (UIView *)view {
     if (!_view) {
         _view = [[ZFPlayerPresentView alloc] init];
+        _view.backgroundColor = [UIColor blackColor];
     }
     return _view;
 }

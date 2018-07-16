@@ -9,6 +9,8 @@
 #import "ZFLightTableViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
+#import <ZFPlayer/ZFIJKPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import "ZFTableViewCellLayout.h"
 #import "ZFTableViewCell.h"
@@ -21,12 +23,7 @@ static NSString *kIdentifier = @"kIdentifier";
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
-@property (nonatomic, strong) ZFAVPlayerManager *playerManager;
-
-@property (nonatomic, assign) NSInteger count;
-
 @property (nonatomic, strong) NSMutableArray *dataSource;
-
 @property (nonatomic, strong) NSMutableArray *urls;
 
 @end
@@ -39,10 +36,13 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     [self requestData];
     
-    self.playerManager = [[ZFAVPlayerManager alloc] init];
+    /// playerManager
+    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+//    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     
     /// player,tag值必须在cell里设置
-    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
+    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
     self.player.assetURLs = self.urls;
     /// 0.8是消失80%时候
@@ -183,7 +183,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.controlView showTitle:layout.data.title
                  coverURLString:layout.data.thumbnail_url
                  fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
-    [self.player playTheIndexPath:indexPath scrollToTop:NO];
+    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
 }
 
 #pragma mark - getter
@@ -215,6 +215,7 @@ static NSString *kIdentifier = @"kIdentifier";
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };
         
+        /// 明暗回调
         _tableView.zf_shouldPlayIndexPathCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
             if ([indexPath compare:self.tableView.zf_shouldPlayIndexPath] != NSOrderedSame) {

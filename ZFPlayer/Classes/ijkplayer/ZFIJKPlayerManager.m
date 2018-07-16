@@ -36,7 +36,6 @@
 @property (nonatomic, strong) IJKFFOptions *options;
 @property (nonatomic, assign) CGFloat lastVolume;
 @property (nonatomic, weak) NSTimer *timer;
-@property (nonatomic, strong) UIView *playerBgView;
 
 @end
 
@@ -114,8 +113,6 @@
     _assetURL = nil;
     [self.timer invalidate];
 
-    [self.playerBgView removeFromSuperview];
-    [self.view removeFromSuperview];
     self.timer = nil;
     _isPlaying = NO;
     _isPreparedToPlay = NO;
@@ -151,15 +148,10 @@
 - (void)initializePlayer {
     self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.assetURL withOptions:self.options];
     [self.player prepareToPlay];
-//    self.player.view.backgroundColor = [UIColor blackColor];
     self.player.shouldAutoplay = NO;
     
-    [self.view insertSubview:self.playerBgView atIndex:1];
-    self.playerBgView.frame = self.view.bounds;
-    self.playerBgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.playerBgView addSubview:self.player.view];
-    self.player.view.frame = self.playerBgView.bounds;
+    [self.view insertSubview:self.player.view atIndex:1];
+    self.player.view.frame = self.view.bounds;
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.scalingMode = _scalingMode;
     
@@ -351,6 +343,7 @@
 - (UIView *)view {
     if (!_view) {
         _view = [[ZFPlayerView alloc] init];
+        _view.backgroundColor = [UIColor blackColor];
     }
     return _view;
 }
@@ -366,13 +359,6 @@
         [_options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
     }
     return _options;
-}
-
-- (UIView *)playerBgView {
-    if (!_playerBgView) {
-        _playerBgView = [UIView new];
-    }
-    return _playerBgView;
 }
 
 #pragma mark - setter

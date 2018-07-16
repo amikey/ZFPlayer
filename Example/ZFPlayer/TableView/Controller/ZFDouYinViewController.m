@@ -9,7 +9,9 @@
 #import "ZFDouYinViewController.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
-#import "ZFPlayerControlView.h"
+#import <ZFPlayer/ZFIJKPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
+#import <ZFPlayer/ZFPlayerControlView.h>
 #import "ZFTableViewCellLayout.h"
 #import "ZFTableData.h"
 #import "ZFDouYinCell.h"
@@ -17,11 +19,9 @@
 
 static NSString *kIdentifier = @"kIdentifier";
 @interface ZFDouYinViewController ()  <UITableViewDelegate,UITableViewDataSource>
-
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) ZFDouYinControlView *controlView;
-@property (nonatomic, strong) ZFAVPlayerManager *playerManager;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSMutableArray *urls;
 
@@ -36,10 +36,12 @@ static NSString *kIdentifier = @"kIdentifier";
     [self requestData];
     
     /// playerManager
-    self.playerManager = [[ZFAVPlayerManager alloc] init];
+    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+//    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     
     /// player,tag值必须在cell里设置
-    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:self.playerManager containerViewTag:100];
+    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];
     self.player.assetURLs = self.urls;
     self.player.disableGestureTypes = ZFPlayerDisableGestureTypesDoubleTap | ZFPlayerDisableGestureTypesPan | ZFPlayerDisableGestureTypesPinch;
     self.player.controlView = self.controlView;
