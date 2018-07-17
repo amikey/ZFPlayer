@@ -109,11 +109,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 0...1.0
 /// Only affects audio volume for the device instance and not for the player.
-/// You can change device volume or player volume as needed,change the player volume you can folllow the `ZFPlayerMediaPlayback` protocol.
+/// You can change device volume or player volume as needed,change the player volume you can conform the `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic) float volume;
 
+/// The device muted.
 /// Only affects audio muting for the device instance and not for the player.
-/// You can change device mute or player mute as needed,change the player mute you can folllow the `ZFPlayerMediaPlayback` protocol.
+/// You can change device mute or player mute as needed,change the player mute you can conform the `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic, getter=isMuted) BOOL muted;
 
 // 0...1.0, where 1.0 is maximum brightness. Only supported by main screen.

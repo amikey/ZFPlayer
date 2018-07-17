@@ -251,6 +251,7 @@
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
     });
     [self play];
+    self.muted = self.muted;
     ZFPlayerLog(@"mediaIsPrepareToPlayDidChange");
 }
 

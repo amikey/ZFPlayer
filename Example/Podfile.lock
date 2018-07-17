@@ -1,18 +1,18 @@
 PODS:
-  - ZFPlayer (3.1.1.1):
-    - ZFPlayer/AVPlayer (= 3.1.1.1)
-    - ZFPlayer/ControlView (= 3.1.1.1)
-    - ZFPlayer/Core (= 3.1.1.1)
-    - ZFPlayer/ijkplayer (= 3.1.1.1)
-    - ZFPlayer/KSYMediaPlayer (= 3.1.1.1)
-  - ZFPlayer/AVPlayer (3.1.1.1):
+  - ZFPlayer (3.1.2):
+    - ZFPlayer/AVPlayer (= 3.1.2)
+    - ZFPlayer/ControlView (= 3.1.2)
+    - ZFPlayer/Core (= 3.1.2)
+    - ZFPlayer/ijkplayer (= 3.1.2)
+    - ZFPlayer/KSYMediaPlayer (= 3.1.2)
+  - ZFPlayer/AVPlayer (3.1.2):
     - ZFPlayer/Core
-  - ZFPlayer/ControlView (3.1.1.1):
+  - ZFPlayer/ControlView (3.1.2):
     - ZFPlayer/Core
-  - ZFPlayer/Core (3.1.1.1)
-  - ZFPlayer/ijkplayer (3.1.1.1):
+  - ZFPlayer/Core (3.1.2)
+  - ZFPlayer/ijkplayer (3.1.2):
     - ZFPlayer/Core
-  - ZFPlayer/KSYMediaPlayer (3.1.1.1):
+  - ZFPlayer/KSYMediaPlayer (3.1.2):
     - ZFPlayer/Core
 
 DEPENDENCIES:
@@ -23,7 +23,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ZFPlayer: c622e3134901ecb3879ca6981b7b1fe1ffe92cc3
+  ZFPlayer: 2c1e44572012595f033466beba6fe8981815f34b
 
 PODFILE CHECKSUM: 439ec0ff672a06a4e1c33be17b58703d4db438a1
 

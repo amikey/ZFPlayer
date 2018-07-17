@@ -243,6 +243,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
         self.seekTime = 0; // 滞空, 防止下次播放出错
     }
     [self play];
+    self.player.shouldMute = self.muted;
     /// 需要延迟改为ok状态，不然显示会有一点问题。
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
