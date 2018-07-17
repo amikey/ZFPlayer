@@ -16,7 +16,7 @@
 
 Before this, you used ZFPlayer, are you worried about encapsulating avplayer instead of using or modifying the source code to support other players, the control layer is not easy to customize, and so on? In order to solve these problems, I have wrote this player template, for player SDK you can conform the `ZFPlayerMediaPlayback` protocol, for control view you can conform the `ZFPlayerMediaControl` protocol, can custom the player and control view.
 
-在此之前你使用ZFPlayer，是不是在烦恼播放器SDK自定义，控制层自定义等等问题。作者公司多个项目分别使用不同播放器SDK和每个项目控制层都不一样，但是为了统一管理、统一调用和各种自定义，我特意写了这个播放器壳子，意在解决各种痛点。播放器SDK只要遵守`ZFPlayerMediaPlayback`协议，控制层只要遵守`ZFPlayerMediaControl`协议，完全可以实现自定义播放器和控制层。
+在3.X之前，是不是在烦恼播放器SDK自定义、控制层自定义等问题。作者公司多个项目分别使用不同播放器SDK以及每个项目控制层都不一样，但是为了统一管理、统一调用，我特意写了这个播放器壳子。播放器SDK只要遵守`ZFPlayerMediaPlayback`协议，控制层只要遵守`ZFPlayerMediaControl`协议，完全可以实现自定义播放器和控制层。
 
 ![ZFPlayer.png](https://upload-images.jianshu.io/upload_images/635942-5662bfec6d457cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -132,6 +132,7 @@ Rotate the video the viewController must implement
 ![Picture effect](https://upload-images.jianshu.io/upload_images/635942-1b0e23b7f5eabd9e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Reference
+
 - https://github.com/Bilibili/ijkplayer
 - https://github.com/changsanjiang/SJVideoPlayer
 
@@ -139,9 +140,13 @@ Rotate the video the viewController must implement
 
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
-- QQ Group: 213375947（付费群）   286529196（免费群）
-                  
+- QQ群: 213375947（付费群）   286529196（免费群）
 
+## 打赏作者
+
+如果ZFPlayer在开发中有帮助到你、如果你需要技术支持或者你有什么需求，都可以拼命打赏我！
+![](http://upload-images.jianshu.io/upload_images/635942-8fc0c357df8c4433.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+                  
 ## License
 
 ZFPlayer is available under the MIT license. See the LICENSE file for more info.
