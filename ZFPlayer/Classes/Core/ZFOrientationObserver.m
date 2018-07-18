@@ -80,6 +80,7 @@
     if (self) {
         _duration = 0.25;
         _fullScreenMode = ZFFullScreenModeLandscape;
+        _allowOrentitaionRotation = YES;
     }
     return self;
 }
@@ -125,7 +126,7 @@
 }
 
 - (void)handleDeviceOrientationChange {
-    if (self.fullScreenMode == ZFFullScreenModePortrait) return;
+    if (self.fullScreenMode == ZFFullScreenModePortrait || !self.allowOrentitaionRotation) return;
     if (UIDeviceOrientationIsValidInterfaceOrientation([UIDevice currentDevice].orientation)) {
         _currentOrientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
     } else {

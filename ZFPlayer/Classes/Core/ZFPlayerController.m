@@ -111,7 +111,7 @@
         [self layoutPlayerSubViews];
         self.currentPlayerManager.view.hidden = NO;
         [self.notification addNotification];
-        if (self.allowOrentitaionRotation) [self addDeviceOrientationObserver];
+        [self addDeviceOrientationObserver];
         if (self.playerPrepareToPlay) self.playerPrepareToPlay(asset,assetURL);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
             [self.controlView videoPlayer:self prepareToPlay:assetURL];
@@ -631,6 +631,7 @@
 
 - (void)setAllowOrentitaionRotation:(BOOL)allowOrentitaionRotation {
     objc_setAssociatedObject(self, @selector(allowOrentitaionRotation), @(allowOrentitaionRotation), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.orientationObserver.allowOrentitaionRotation = allowOrentitaionRotation;
 }
 
 @end
@@ -853,7 +854,7 @@
         UIView *cell = [self.scrollView zf_getCellForIndexPath:playingIndexPath];
         self.containerView = [cell viewWithTag:self.containerViewTag];
         [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
-        if (self.allowOrentitaionRotation) [self addDeviceOrientationObserver];
+        [self addDeviceOrientationObserver];
         self.scrollView.zf_playingIndexPath = playingIndexPath;
     }
 }

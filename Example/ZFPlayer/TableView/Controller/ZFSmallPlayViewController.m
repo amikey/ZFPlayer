@@ -26,6 +26,8 @@ static NSString *kIdentifier = @"kIdentifier";
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSMutableArray *urls;
 
+@property (nonatomic, strong) UIActivityIndicatorView *activity;
+
 @end
 
 @implementation ZFSmallPlayViewController
@@ -34,6 +36,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.activity];
     [self requestData];    
     /// playerManager
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
@@ -43,7 +46,7 @@ static NSString *kIdentifier = @"kIdentifier";
     /// player,tag值必须在cell里设置
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
-    self.player.assetURLs = self.urls;
+//    self.player.assetURLs = self.urls;
     /// 移动网络依然自动播放
     self.player.WWANAutoPlay = YES;
     
@@ -86,34 +89,40 @@ static NSString *kIdentifier = @"kIdentifier";
     CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
     CGFloat h = CGRectGetMaxY(self.view.frame)-y;
     self.tableView.frame = CGRectMake(0, y, self.view.frame.size.width, h);
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    @weakify(self)
-    [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
-        @strongify(self)
-        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
-    }];
+    self.activity.center = self.view.center;
 }
 
 - (void)requestData {
     self.urls = @[].mutableCopy;
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-    
-    self.dataSource = @[].mutableCopy;
-    NSArray *videoList = [rootDict objectForKey:@"list"];
-    for (NSDictionary *dataDic in videoList) {
-        ZFTableData *data = [[ZFTableData alloc] init];
-        [data setValuesForKeysWithDictionary:dataDic];
-        ZFTableViewCellLayout *layout = [[ZFTableViewCellLayout alloc] initWithData:data];
-        [self.dataSource addObject:layout];
-        NSString *URLString = [data.video_url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSURL *url = [NSURL URLWithString:URLString];
-        [self.urls addObject:url];
-    }
+    [self.activity startAnimating];
+    @weakify(self)
+    /// 模拟网络请求
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.activity stopAnimating];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"json"];
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        
+        self.dataSource = @[].mutableCopy;
+        NSArray *videoList = [rootDict objectForKey:@"list"];
+        for (NSDictionary *dataDic in videoList) {
+            ZFTableData *data = [[ZFTableData alloc] init];
+            [data setValuesForKeysWithDictionary:dataDic];
+            ZFTableViewCellLayout *layout = [[ZFTableViewCellLayout alloc] initWithData:data];
+            [self.dataSource addObject:layout];
+            NSString *URLString = [data.video_url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+            NSURL *url = [NSURL URLWithString:URLString];
+            [self.urls addObject:url];
+        }
+        self.player.assetURLs = self.urls;
+        [self.tableView reloadData];
+        
+        /// 找到可播放的cell
+        [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
+            @strongify(self)
+            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+        }];
+    });
 }
 
 - (BOOL)shouldAutorotate {
@@ -190,6 +199,7 @@ static NSString *kIdentifier = @"kIdentifier";
         [_tableView registerClass:[ZFTableViewCell class] forCellReuseIdentifier:kIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.tableFooterView = [UIView new];
         if (@available(iOS 11.0, *)) {
             _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
@@ -210,6 +220,14 @@ static NSString *kIdentifier = @"kIdentifier";
         _controlView = [ZFPlayerControlView new];
     }
     return _controlView;
+}
+
+- (UIActivityIndicatorView *)activity {
+    if (!_activity) {
+        _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _activity.hidesWhenStopped = YES;
+    }
+    return _activity;
 }
 
 @end

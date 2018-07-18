@@ -85,6 +85,10 @@ typedef NS_ENUM(NSUInteger, ZFRotateType) {
 /// Default is UIInterfaceOrientationPortrait.
 @property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
 
+/// Whether allow the video orientation rotate.
+/// default is YES.
+@property (nonatomic) BOOL allowOrentitaionRotation;
+
 /// Add the device orientation observer.
 - (void)addDeviceOrientationObserver;
 

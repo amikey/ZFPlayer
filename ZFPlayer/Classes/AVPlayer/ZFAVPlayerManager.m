@@ -349,7 +349,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
                      [self seekToTime:self.seekTime completionHandler:nil];
                      self.seekTime = 0; // 滞空, 防止下次播放出错
                  }
-                 [self play];
                  self.player.muted = self.muted;
                  /// Fix https://github.com/renzifeng/ZFPlayer/issues/475
                  self->_currentTime = CMTimeGetSeconds(self.playerItem.currentTime);
