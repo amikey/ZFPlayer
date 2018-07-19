@@ -16,6 +16,7 @@
 #import "ZFTableData.h"
 #import "ZFDouYinCell.h"
 #import "ZFDouYinControlView.h"
+#import "ZFUserCeneterViewController.h"
 
 static NSString *kIdentifier = @"kIdentifier";
 @interface ZFDouYinViewController ()  <UITableViewDelegate,UITableViewDataSource>
@@ -59,7 +60,17 @@ static NSString *kIdentifier = @"kIdentifier";
     };
     
     /// statusBarFrame changed
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layOutControllerViews) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layOutControllerViews) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+    [self.tableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:3 inSection:0];
+//        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
+        self.tableView.contentOffset = CGPointMake(0, 3*self.tableView.frame.size.height);
+        [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
+            @strongify(self)
+            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+        }];
+    });
 }
 
 - (void)dealloc {
@@ -73,17 +84,9 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (void)layOutControllerViews {
-//    [self.tableView reloadData];
-//    [self.tableView reloadRowsAtIndexPaths:@[self.tableView.zf_playingIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    @weakify(self)
-    [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
-        @strongify(self)
-        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
-    }];
+    if (self.player.playingIndexPath) {
+        [self.tableView reloadRowsAtIndexPaths:@[self.player.playingIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 - (void)requestData {
@@ -105,7 +108,8 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (void)userCenterClick {
-    
+    ZFUserCeneterViewController *userVC = [ZFUserCeneterViewController new];
+    [self.navigationController pushViewController:userVC animated:YES];
 }
 
 - (BOOL)shouldAutorotate {
@@ -126,6 +130,36 @@ static NSString *kIdentifier = @"kIdentifier";
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
     return UIStatusBarAnimationSlide;
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+    NSInteger index = (NSInteger)self.tableView.contentOffset.y/scrollView.frame.size.height;
+    
+    NSLog(@"=====%f",self.tableView.contentOffset.y);
+    //scroll是与整屏相比的偏移量，肯定是正的
+    CGFloat scroll = self.tableView.contentOffset.y - index*scrollView.frame.size.height;
+    //与上一个滑动点比较，区分上滑还是下滑
+    CGFloat offset = self.tableView.contentOffset.y - scrollView.zf_lastOffsetY;
+
+    if (offset > 0) {
+//        //上拉-44是mj_footer的高度，当拖拽超过44的时候会触发mj
+//        if (playIndex==_tableView.items.count-1&&scroll>44) {
+//            if (_tableView.updating==NO&&_tableView.mj_footer.state != MJRefreshStateNoMoreData) {
+//                //判断是否正在刷新，正在刷新就不再进行如下设置，以免重复加载
+//                _tableView.updating = YES;
+//                //进到这里说明用户正在上拉加载，触发mj,此时要关闭翻页功能否则页面回弹mj_footer就看不到了，setContentOffset也无效
+//                self.tableView.pagingEnabled = NO;
+//                [self.tableView.mj_footer beginRefreshing];
+//            }
+//        }
+    } else if (offset < 0) {
+//        if (_tableView.updating == YES) {
+            //如果用户上拉加载时，又进行下滑操作，就要打开翻页功能（可能加载时间长用户不想等又往上翻之前的cell）-这种情况少见但不排除，不做此操作的话，将请求延时十秒就会看到区别，但一旦用户有这种操作就会有闪屏问题，即用户在第10个cell上拉加载了，然后又下滑倒第5个cell，当拿到返回数据之后页面会从5自动滚动到第11个cell，造成闪屏，但在3G网络下经测试抖音也是这样，故就这样吧
+//            self.tableView.pagingEnabled = YES;
+//        }
+    }
+}
+
 
 #pragma mark - UITableViewDataSource
 
@@ -182,6 +216,7 @@ static NSString *kIdentifier = @"kIdentifier";
         @weakify(self)
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
+            self.tableView.contentOffset = CGPointMake(0, indexPath.row*self.tableView.frame.size.height);
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };
     }

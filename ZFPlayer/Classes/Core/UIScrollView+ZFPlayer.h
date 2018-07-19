@@ -35,16 +35,27 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
     ZFPlayerScrollDerectionDown       // Scroll Down
 };
 
+
+typedef NS_ENUM(NSUInteger, ZFPlayerScrollViewType) {
+    ZFPlayerScrollViewTypeTableView = 0,
+    ZFPlayerScrollViewTypeCollectionView,
+    ZFPlayerScrollViewTypeScrollView
+};
+
 @interface UIScrollView (ZFPlayer)
 
 /// Rolling direction switch
 @property (nonatomic) BOOL zf_enableScrollHook;
+
+@property (nonatomic, assign, readonly) CGFloat zf_lastOffsetY;
 
 /// The indexPath is playing
 @property (nonatomic, strong, nullable) NSIndexPath *zf_playingIndexPath;
 
 /// The indexPath that should play, the one that lights up.
 @property (nonatomic, strong, nullable) NSIndexPath *zf_shouldPlayIndexPath;
+
+@property (nonatomic, assign) NSInteger zf_playingIndex;
 
 /// WWANA networks play automatically,default NO.
 @property (nonatomic, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
@@ -57,6 +68,8 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 
 /// The scroll derection of scrollView.
 @property (nonatomic) ZFPlayerScrollDerection zf_scrollDerection;
+
+@property (nonatomic, assign) ZFPlayerScrollViewType zf_scrollViewType;
 
 /// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL zf_stopWhileNotVisible;

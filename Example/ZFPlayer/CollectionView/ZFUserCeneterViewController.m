@@ -76,7 +76,7 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
     if (!_collectionView) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat margin = 5;
-        CGFloat itemWidth = self.view.frame.size.width;
+        CGFloat itemWidth = self.view.frame.size.width/2-10;
         CGFloat itemHeight = itemWidth*9/16 + 30;
         layout.itemSize = CGSizeMake(itemWidth, itemHeight);
         layout.sectionInset = UIEdgeInsetsMake(10, margin, 10, margin);
