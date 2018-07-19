@@ -40,6 +40,7 @@
 		D209365920B79C1E0002C956 /* ZFKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D209365820B79C1E0002C956 /* ZFKeyboardViewController.m */; };
 		D243FCA020C53F950014F533 /* ZFDouYinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D243FC9F20C53F950014F533 /* ZFDouYinViewController.m */; };
 		D243FCA320C543D30014F533 /* ZFDouYinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D243FCA220C543D30014F533 /* ZFDouYinCell.m */; };
+		D2E520B021006F1500EF4AC9 /* ZFUserCeneterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E520AF21006F1500EF4AC9 /* ZFUserCeneterViewController.m */; };
 		D2EEFE6320BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */; };
 		D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EEFE6520BBF3890097D6D9 /* ZFSmallPlayViewController.m */; };
 /* End PBXBuildFile section */
@@ -115,6 +116,8 @@
 		D243FC9F20C53F950014F533 /* ZFDouYinViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFDouYinViewController.m; sourceTree = "<group>"; };
 		D243FCA120C543D30014F533 /* ZFDouYinCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFDouYinCell.h; sourceTree = "<group>"; };
 		D243FCA220C543D30014F533 /* ZFDouYinCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFDouYinCell.m; sourceTree = "<group>"; };
+		D2E520AE21006F1500EF4AC9 /* ZFUserCeneterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFUserCeneterViewController.h; sourceTree = "<group>"; };
+		D2E520AF21006F1500EF4AC9 /* ZFUserCeneterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFUserCeneterViewController.m; sourceTree = "<group>"; };
 		D2EEFE6120BBB03E0097D6D9 /* ZFNotAutoPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFNotAutoPlayViewController.h; sourceTree = "<group>"; };
 		D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFNotAutoPlayViewController.m; sourceTree = "<group>"; };
 		D2EEFE6420BBF3890097D6D9 /* ZFSmallPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFSmallPlayViewController.h; sourceTree = "<group>"; };
@@ -246,6 +249,8 @@
 			children = (
 				CCED248620DBF1950077E02A /* ZFCollectionViewController.h */,
 				CCED248720DBF1950077E02A /* ZFCollectionViewController.m */,
+				D2E520AE21006F1500EF4AC9 /* ZFUserCeneterViewController.h */,
+				D2E520AF21006F1500EF4AC9 /* ZFUserCeneterViewController.m */,
 				CCED248920DBF2740077E02A /* ZFCollectionViewCell.h */,
 				CCED248A20DBF2740077E02A /* ZFCollectionViewCell.m */,
 			);
@@ -525,6 +530,7 @@
 				CC112E9D20DBD6600051EE60 /* ZFOtherCell.m in Sources */,
 				D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */,
 				D209360020B658AE0002C956 /* ZFTableData.m in Sources */,
+				D2E520B021006F1500EF4AC9 /* ZFUserCeneterViewController.m in Sources */,
 				D243FCA320C543D30014F533 /* ZFDouYinCell.m in Sources */,
 				CC112E9A20DBD45E0051EE60 /* ZFMixViewController.m in Sources */,
 				D243FCA020C53F950014F533 /* ZFDouYinViewController.m in Sources */,

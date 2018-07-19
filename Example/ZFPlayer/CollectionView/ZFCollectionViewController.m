@@ -12,7 +12,7 @@
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
-//#import <ZFPlayer/KSMediaPlayerManager.h>
+#import <ZFPlayer/KSMediaPlayerManager.h>
 
 static NSString * const reuseIdentifier = @"collectionViewCell";
 

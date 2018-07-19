@@ -33,6 +33,8 @@ static NSString *kIdentifier = @"kIdentifier";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"个人中心" style:UIBarButtonItemStylePlain target:self action:@selector(userCenterClick)];
+
     [self requestData];
     
     /// playerManager
@@ -55,11 +57,24 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
         [self.player.currentPlayerManager replay];
     };
+    
+    /// statusBarFrame changed
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layOutControllerViews) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     self.tableView.frame = self.view.bounds;
+    self.tableView.rowHeight = self.tableView.frame.size.height;
+}
+
+- (void)layOutControllerViews {
+//    [self.tableView reloadData];
+//    [self.tableView reloadRowsAtIndexPaths:@[self.tableView.zf_playingIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -87,6 +102,10 @@ static NSString *kIdentifier = @"kIdentifier";
         NSURL *url = [NSURL URLWithString:URLString];
         [self.urls addObject:url];
     }
+}
+
+- (void)userCenterClick {
+    
 }
 
 - (BOOL)shouldAutorotate {
@@ -124,9 +143,9 @@ static NSString *kIdentifier = @"kIdentifier";
     [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.view.frame.size.height;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return self.tableView.frame.size.height;
+//}
 
 #pragma mark - ZFTableViewCellDelegate
 
