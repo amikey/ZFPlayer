@@ -81,22 +81,12 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.player.currentPlayerManager.isPreparedToPlay) {
-        [self.player addDeviceOrientationObserver];
-        if (self.player.isPauseByEvent) {
-            self.player.pauseByEvent = NO;
-        }
-    }
+    self.player.viewControllerDisappear = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if (self.player.currentPlayerManager.isPreparedToPlay) {
-        [self.player removeDeviceOrientationObserver];
-        if (self.player.currentPlayerManager.isPlaying) {
-            self.player.pauseByEvent = YES;
-        }
-    }
+    self.player.viewControllerDisappear = YES;
 }
 
 - (void)viewWillLayoutSubviews {
