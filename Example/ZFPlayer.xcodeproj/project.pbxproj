@@ -25,8 +25,6 @@
 		CC112E9A20DBD45E0051EE60 /* ZFMixViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC112E9920DBD45E0051EE60 /* ZFMixViewController.m */; };
 		CC112E9D20DBD6600051EE60 /* ZFOtherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC112E9C20DBD6600051EE60 /* ZFOtherCell.m */; };
 		CC47EB6B20C969EC0040419D /* ZFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC47EB6A20C969EC0040419D /* ZFViewController.m */; };
-		CCB08E092100C49A00110C62 /* ZFScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB08E082100C49A00110C62 /* ZFScrollViewController.m */; };
-		CCB08E0C2100D3CB00110C62 /* ZFDouYinScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB08E0B2100D3CB00110C62 /* ZFDouYinScrollView.m */; };
 		CCED248820DBF1950077E02A /* ZFCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCED248720DBF1950077E02A /* ZFCollectionViewController.m */; };
 		CCED248B20DBF2740077E02A /* ZFCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCED248A20DBF2740077E02A /* ZFCollectionViewCell.m */; };
 		CCED249720ED10000077E02A /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = CCED249620ED10000077E02A /* NullSafe.m */; };
@@ -90,10 +88,6 @@
 		CC112E9C20DBD6600051EE60 /* ZFOtherCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFOtherCell.m; sourceTree = "<group>"; };
 		CC47EB6920C969EC0040419D /* ZFViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFViewController.h; sourceTree = "<group>"; };
 		CC47EB6A20C969EC0040419D /* ZFViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFViewController.m; sourceTree = "<group>"; };
-		CCB08E072100C49A00110C62 /* ZFScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFScrollViewController.h; sourceTree = "<group>"; };
-		CCB08E082100C49A00110C62 /* ZFScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFScrollViewController.m; sourceTree = "<group>"; };
-		CCB08E0A2100D3CB00110C62 /* ZFDouYinScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFDouYinScrollView.h; sourceTree = "<group>"; };
-		CCB08E0B2100D3CB00110C62 /* ZFDouYinScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFDouYinScrollView.m; sourceTree = "<group>"; };
 		CCED248620DBF1950077E02A /* ZFCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFCollectionViewController.h; sourceTree = "<group>"; };
 		CCED248720DBF1950077E02A /* ZFCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFCollectionViewController.m; sourceTree = "<group>"; };
 		CCED248920DBF2740077E02A /* ZFCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFCollectionViewCell.h; sourceTree = "<group>"; };
@@ -278,8 +272,6 @@
 				CC112E9920DBD45E0051EE60 /* ZFMixViewController.m */,
 				D243FC9E20C53F950014F533 /* ZFDouYinViewController.h */,
 				D243FC9F20C53F950014F533 /* ZFDouYinViewController.m */,
-				CCB08E072100C49A00110C62 /* ZFScrollViewController.h */,
-				CCB08E082100C49A00110C62 /* ZFScrollViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -295,8 +287,6 @@
 				D243FCA220C543D30014F533 /* ZFDouYinCell.m */,
 				CCF66D7220C57BE5001B6121 /* ZFDouYinControlView.h */,
 				CCF66D7320C57BE5001B6121 /* ZFDouYinControlView.m */,
-				CCB08E0A2100D3CB00110C62 /* ZFDouYinScrollView.h */,
-				CCB08E0B2100D3CB00110C62 /* ZFDouYinScrollView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -470,6 +460,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example-resources.sh",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/../../ZFPlayer/Classes/ControlView/ZFPlayer.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -540,14 +531,12 @@
 				CC112E9D20DBD6600051EE60 /* ZFOtherCell.m in Sources */,
 				D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */,
 				D209360020B658AE0002C956 /* ZFTableData.m in Sources */,
-				CCB08E092100C49A00110C62 /* ZFScrollViewController.m in Sources */,
 				D2E520B021006F1500EF4AC9 /* ZFUserCeneterViewController.m in Sources */,
 				D243FCA320C543D30014F533 /* ZFDouYinCell.m in Sources */,
 				CC112E9A20DBD45E0051EE60 /* ZFMixViewController.m in Sources */,
 				D243FCA020C53F950014F533 /* ZFDouYinViewController.m in Sources */,
 				D209360220B658AE0002C956 /* NSString+Size.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				CCB08E0C2100D3CB00110C62 /* ZFDouYinScrollView.m in Sources */,
 				CC47EB6B20C969EC0040419D /* ZFViewController.m in Sources */,
 				D209365920B79C1E0002C956 /* ZFKeyboardViewController.m in Sources */,
 				CCED248B20DBF2740077E02A /* ZFCollectionViewCell.m in Sources */,

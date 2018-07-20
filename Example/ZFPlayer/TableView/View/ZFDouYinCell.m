@@ -26,8 +26,6 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) UIImage *placeholderImage;
-/// 加载loading
-@property (nonatomic, strong) ZFLoadingView *activity;
 
 @end
 
@@ -58,11 +56,6 @@
     CGFloat min_view_h = self.height;
     CGFloat margin = 30;
     
-    min_w = 44;
-    min_h = 44;
-    self.activity.frame = CGRectMake(min_x, min_y, min_w, min_h);
-    self.activity.center = self.center;
-    
     min_w = 40;
     min_h = min_w;
     min_x = min_view_w - min_w - 20;
@@ -86,16 +79,6 @@
     min_y = min_view_h - min_h - 50;
     min_w = self.likeBtn.left - margin;
     self.titleLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
-}
-
-- (ZFLoadingView *)activity {
-    if (!_activity) {
-        _activity = [[ZFLoadingView alloc] init];
-        _activity.lineWidth = 0.8;
-        _activity.duration = 1;
-        _activity.hidesWhenStopped = YES;
-    }
-    return _activity;
 }
 
 - (UILabel *)titleLabel {

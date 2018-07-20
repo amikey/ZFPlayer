@@ -194,22 +194,14 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     
     // Avoid being paused the first time you play it.
     if (self.contentOffset.y < 0) return;
-    if (!self.zf_playingIndexPath && (self.zf_scrollViewType == ZFPlayerScrollViewTypeTableView || self.zf_scrollViewType == ZFPlayerScrollViewTypeCollectionView)) {
+    if (!self.zf_playingIndexPath) return;
+    
+    UIView *cell = [self zf_getCellForIndexPath:self.zf_playingIndexPath];
+    if (!cell) {
+        if (self.zf_playerDidDisappearInScrollView) self.zf_playerDidDisappearInScrollView(self.zf_playingIndexPath);
         return;
     }
-    UIView *playerView = nil;
-    if (self.zf_playingIndexPath) {
-        UIView *cell = [self zf_getCellForIndexPath:self.zf_playingIndexPath];
-        if (!cell) {
-            if (self.zf_playerDidDisappearInScrollView) self.zf_playerDidDisappearInScrollView(self.zf_playingIndexPath);
-            return;
-        }
-        playerView = [cell viewWithTag:self.zf_containerViewTag];
-    }
-    if (self.zf_scrollViewType == ZFPlayerScrollViewTypeScrollView) {
-        playerView = [self viewWithTag:self.zf_containerViewTag];
-    }
-    
+    UIView *playerView = [cell viewWithTag:self.zf_containerViewTag];
     CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
     CGRect rect = [self convertRect:rect1 toView:self.superview];
     /// playerView top to scrollView top space.
@@ -286,7 +278,6 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
             }
         }
     }
-    
 }
 
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler {
@@ -508,23 +499,6 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (ZFPlayerScrollViewType)zf_scrollViewType {
-    NSNumber *number = objc_getAssociatedObject(self, _cmd);
-    if (number) return number.integerValue;
-    if ([self isKindOfClass:[UITableView class]]) {
-        self.zf_scrollViewType = ZFPlayerScrollViewTypeTableView;
-    } else if ([self isKindOfClass:[UICollectionView class]]) {
-        self.zf_scrollViewType = ZFPlayerScrollViewTypeCollectionView;
-    } else {
-        self.zf_scrollViewType = ZFPlayerScrollViewTypeScrollView;
-    }
-    return self.zf_scrollViewType;
-}
-
-- (NSInteger)zf_playingIndex {
-    return [objc_getAssociatedObject(self, _cmd) integerValue];
-}
-
 #pragma mark - setter
 
 - (void)setZf_enableScrollHook:(BOOL)zf_enableScrollHook {
@@ -572,14 +546,6 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 - (void)setZf_shouldPlayIndexPathCallback:(void (^)(NSIndexPath * _Nonnull))zf_shouldPlayIndexPathCallback {
     objc_setAssociatedObject(self, @selector(zf_shouldPlayIndexPathCallback), zf_shouldPlayIndexPathCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (void)setZf_scrollViewType:(ZFPlayerScrollViewType)zf_scrollViewType {
-    objc_setAssociatedObject(self, @selector(zf_scrollViewType), @(zf_scrollViewType), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (void)setZf_playingIndex:(NSInteger)zf_playingIndex {
-    objc_setAssociatedObject(self, @selector(zf_playingIndex), @(zf_playingIndex), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

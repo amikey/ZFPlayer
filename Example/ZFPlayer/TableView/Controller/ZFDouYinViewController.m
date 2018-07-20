@@ -17,6 +17,8 @@
 #import "ZFDouYinCell.h"
 #import "ZFDouYinControlView.h"
 #import "ZFUserCeneterViewController.h"
+#import "UINavigationController+FDFullscreenPopGesture.h"
+#import <MJRefresh/MJRefresh.h>
 
 static NSString *kIdentifier = @"kIdentifier";
 @interface ZFDouYinViewController ()  <UITableViewDelegate,UITableViewDataSource>
@@ -35,9 +37,12 @@ static NSString *kIdentifier = @"kIdentifier";
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"个人中心" style:UIBarButtonItemStylePlain target:self action:@selector(userCenterClick)];
-
+    self.fd_prefersNavigationBarHidden = YES;
     [self requestData];
     
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_header = header;
+
     /// playerManager
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
 //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
@@ -59,13 +64,27 @@ static NSString *kIdentifier = @"kIdentifier";
         [self.player.currentPlayerManager replay];
     };
     
-    /// statusBarFrame changed
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layOutControllerViews) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
-    [self.tableView reloadData];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:3 inSection:0];
-//        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
-        self.tableView.contentOffset = CGPointMake(0, 3*self.tableView.frame.size.height);
+    
+    /// 指定到某一行播放
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:16 inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
+        @strongify(self)
+        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+    }];
+}
+
+
+- (void)loadNewData {
+    [self.dataSource removeAllObjects];
+    [self.urls removeAllObjects];
+    @weakify(self)
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        /// 下拉时候一定要停止当前播放，不然有新数据，播放位置会错位。
+        [self.player stopCurrentPlayingCell];
+        [self requestData];
+        [self.tableView reloadData];
+        /// 找到可以播放的视频并播放
         [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
             @strongify(self)
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
@@ -73,29 +92,11 @@ static NSString *kIdentifier = @"kIdentifier";
     });
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
-}
-
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    self.tableView.frame = self.view.bounds;
-    self.tableView.rowHeight = self.tableView.frame.size.height;
-}
-
-- (void)layOutControllerViews {
-    if (self.player.playingIndexPath) {
-        [self.tableView reloadRowsAtIndexPaths:@[self.player.playingIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-}
-
 - (void)requestData {
-    self.urls = @[].mutableCopy;
     NSString *path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     
-    self.dataSource = @[].mutableCopy;
     NSArray *videoList = [rootDict objectForKey:@"list"];
     for (NSDictionary *dataDic in videoList) {
         ZFTableData *data = [[ZFTableData alloc] init];
@@ -105,6 +106,7 @@ static NSString *kIdentifier = @"kIdentifier";
         NSURL *url = [NSURL URLWithString:URLString];
         [self.urls addObject:url];
     }
+    [self.tableView.mj_header endRefreshing];
 }
 
 - (void)userCenterClick {
@@ -117,10 +119,7 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    if (self.player.isFullScreen) {
-        return UIStatusBarStyleLightContent;
-    }
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleLightContent;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -130,36 +129,6 @@ static NSString *kIdentifier = @"kIdentifier";
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
     return UIStatusBarAnimationSlide;
 }
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-
-    NSInteger index = (NSInteger)self.tableView.contentOffset.y/scrollView.frame.size.height;
-    
-    NSLog(@"=====%f",self.tableView.contentOffset.y);
-    //scroll是与整屏相比的偏移量，肯定是正的
-    CGFloat scroll = self.tableView.contentOffset.y - index*scrollView.frame.size.height;
-    //与上一个滑动点比较，区分上滑还是下滑
-    CGFloat offset = self.tableView.contentOffset.y - scrollView.zf_lastOffsetY;
-
-    if (offset > 0) {
-//        //上拉-44是mj_footer的高度，当拖拽超过44的时候会触发mj
-//        if (playIndex==_tableView.items.count-1&&scroll>44) {
-//            if (_tableView.updating==NO&&_tableView.mj_footer.state != MJRefreshStateNoMoreData) {
-//                //判断是否正在刷新，正在刷新就不再进行如下设置，以免重复加载
-//                _tableView.updating = YES;
-//                //进到这里说明用户正在上拉加载，触发mj,此时要关闭翻页功能否则页面回弹mj_footer就看不到了，setContentOffset也无效
-//                self.tableView.pagingEnabled = NO;
-//                [self.tableView.mj_footer beginRefreshing];
-//            }
-//        }
-    } else if (offset < 0) {
-//        if (_tableView.updating == YES) {
-            //如果用户上拉加载时，又进行下滑操作，就要打开翻页功能（可能加载时间长用户不想等又往上翻之前的cell）-这种情况少见但不排除，不做此操作的话，将请求延时十秒就会看到区别，但一旦用户有这种操作就会有闪屏问题，即用户在第10个cell上拉加载了，然后又下滑倒第5个cell，当拿到返回数据之后页面会从5自动滚动到第11个cell，造成闪屏，但在3G网络下经测试抖音也是这样，故就这样吧
-//            self.tableView.pagingEnabled = YES;
-//        }
-    }
-}
-
 
 #pragma mark - UITableViewDataSource
 
@@ -176,10 +145,6 @@ static NSString *kIdentifier = @"kIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return self.tableView.frame.size.height;
-//}
 
 #pragma mark - ZFTableViewCellDelegate
 
@@ -204,19 +169,32 @@ static NSString *kIdentifier = @"kIdentifier";
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.pagingEnabled = YES;
         [_tableView registerClass:[ZFDouYinCell class] forCellReuseIdentifier:kIdentifier];
+        _tableView.backgroundColor = [UIColor lightGrayColor];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.showsVerticalScrollIndicator = NO;
         if (@available(iOS 11.0, *)) {
             _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
+        _tableView.frame = self.view.bounds;
+        _tableView.rowHeight = _tableView.frame.size.height;
+        
         /// 停止的时候找出最合适的播放
         @weakify(self)
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
-            self.tableView.contentOffset = CGPointMake(0, indexPath.row*self.tableView.frame.size.height);
+            if (indexPath.row == self.dataSource.count-1) {
+                /// 加载下一页数据
+                [self requestData];
+                self.player.assetURLs = self.urls;
+                [self.tableView reloadData];
+            }
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };
     }
@@ -230,5 +208,18 @@ static NSString *kIdentifier = @"kIdentifier";
     return _controlView;
 }
 
+- (NSMutableArray *)dataSource {
+    if (!_dataSource) {
+        _dataSource = @[].mutableCopy;
+    }
+    return _dataSource;
+}
+
+- (NSMutableArray *)urls {
+    if (!_urls) {
+        _urls = @[].mutableCopy;
+    }
+    return _urls;
+}
 
 @end
