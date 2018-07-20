@@ -144,6 +144,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// For example, when the player is playing, application goes into the background or pushes to another viewController
 @property (nonatomic, getter=isPauseByEvent) BOOL pauseByEvent;
 
+/// The current player controller is disappear, not dealloc
+@property (nonatomic, getter=isViewControllerDisappear) BOOL viewControllerDisappear;
+
 /// The block invoked when the player is Ready to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 

@@ -193,6 +193,7 @@
         @weakify(self)
         _notification.willResignActive = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
+            if (self.isViewControllerDisappear) return;
             if (self.pauseWhenAppResignActive && self.currentPlayerManager.isPlaying) {
                 self.pauseByEvent = YES;
             }
@@ -201,6 +202,7 @@
         };
         _notification.didBecomeActive = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
+            if (self.isViewControllerDisappear) return;
             if (self.isPauseByEvent) self.pauseByEvent = NO;
             if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = NO;
         };
@@ -417,6 +419,10 @@
     return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
 
+- (BOOL)isViewControllerDisappear {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
 #pragma mark - setter
 
 - (void)setAssetURL:(NSURL *)assetURL {
@@ -496,6 +502,18 @@
 
 - (void)setCurrentPlayIndex:(NSInteger)currentPlayIndex {
     objc_setAssociatedObject(self, @selector(currentPlayIndex), @(currentPlayIndex), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)setViewControllerDisappear:(BOOL)viewControllerDisappear {
+    objc_setAssociatedObject(self, @selector(isViewControllerDisappear), @(viewControllerDisappear), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (!self.currentPlayerManager.isPreparedToPlay) return;
+    if (viewControllerDisappear) {
+        [self removeDeviceOrientationObserver];
+        if (self.currentPlayerManager.isPlaying) self.pauseByEvent = YES;
+    } else {
+        if (self.isPauseByEvent) self.pauseByEvent = NO;
+        [self addDeviceOrientationObserver];
+    }
 }
 
 @end
