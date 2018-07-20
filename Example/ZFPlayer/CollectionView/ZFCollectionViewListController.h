@@ -1,5 +1,5 @@
 //
-//  ZFUserCeneterViewController.h
+//  ZFCollectionViewListController.h
 //  ZFPlayer_Example
 //
 //  Created by 紫枫 on 2018/7/19.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZFUserCeneterViewController : UIViewController
+@interface ZFCollectionViewListController : UIViewController
 
 @end

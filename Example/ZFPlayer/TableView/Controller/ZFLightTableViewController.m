@@ -208,6 +208,9 @@ static NSString *kIdentifier = @"kIdentifier";
             [[UITableViewCell appearance] setLayoutMargins:UIEdgeInsetsZero];
             [[UITableViewCell appearance] setPreservesSuperviewLayoutMargins:NO];
         }
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
         /// 停止的时候找出最合适的播放
         @weakify(self)
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {

@@ -16,7 +16,6 @@
 #import "ZFTableData.h"
 #import "ZFDouYinCell.h"
 #import "ZFDouYinControlView.h"
-#import "ZFUserCeneterViewController.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
 #import <MJRefresh/MJRefresh.h>
 
@@ -36,7 +35,6 @@ static NSString *kIdentifier = @"kIdentifier";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"个人中心" style:UIBarButtonItemStylePlain target:self action:@selector(userCenterClick)];
     self.fd_prefersNavigationBarHidden = YES;
     [self requestData];
     
@@ -63,17 +61,7 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
         [self.player.currentPlayerManager replay];
     };
-    
-    
-    /// 指定到某一行播放
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:16 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
-    [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
-        @strongify(self)
-        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
-    }];
 }
-
 
 - (void)loadNewData {
     [self.dataSource removeAllObjects];
@@ -109,10 +97,24 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.tableView.mj_header endRefreshing];
 }
 
-- (void)userCenterClick {
-    ZFUserCeneterViewController *userVC = [ZFUserCeneterViewController new];
-    [self.navigationController pushViewController:userVC animated:YES];
+- (void)playTheIndex:(NSInteger)index {
+    @weakify(self)
+    /// 指定到某一行播放
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
+        @strongify(self)
+        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+    }];
+    /// 如果是最后一行，去请求新数据
+    if (index == self.dataSource.count-1) {
+        /// 加载下一页数据
+        [self requestData];
+        self.player.assetURLs = self.urls;
+        [self.tableView reloadData];
+    }
 }
+
 
 - (BOOL)shouldAutorotate {
     return NO;

@@ -1,12 +1,12 @@
 //
-//  ZFUserCeneterViewController.m
+//  ZFCollectionViewListController.m
 //  ZFPlayer_Example
 //
 //  Created by 紫枫 on 2018/7/19.
 //  Copyright © 2018年 紫枫. All rights reserved.
 //
 
-#import "ZFUserCeneterViewController.h"
+#import "ZFCollectionViewListController.h"
 #import "ZFCollectionViewCell.h"
 #import "ZFTableData.h"
 #import <ZFPlayer/ZFPlayer.h>
@@ -16,18 +16,19 @@
 #import "ZFDouYinViewController.h"
 
 static NSString * const reuseIdentifier = @"collectionViewCell";
-@interface ZFUserCeneterViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface ZFCollectionViewListController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic, strong) NSMutableArray <ZFTableData *>*dataSource;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @end
 
-@implementation ZFUserCeneterViewController
+@implementation ZFCollectionViewListController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.collectionView];
+    self.navigationItem.title = @"点击跳转播放";
     [self requestData];
 }
 
@@ -64,20 +65,22 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ZFCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.data = self.dataSource[indexPath.row];
+    cell.playBtn.hidden = YES;
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     ZFDouYinViewController *douYinVC = [[ZFDouYinViewController alloc] init];
-//    self
+    [douYinVC playTheIndex:indexPath.item];
+    [self.navigationController pushViewController:douYinVC animated:YES];
 }
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat margin = 5;
-        CGFloat itemWidth = self.view.frame.size.width/2-10;
-        CGFloat itemHeight = itemWidth*9/16 + 30;
+        CGFloat itemWidth = self.view.frame.size.width/3-10;
+        CGFloat itemHeight = itemWidth*4/3;
         layout.itemSize = CGSizeMake(itemWidth, itemHeight);
         layout.sectionInset = UIEdgeInsetsMake(10, margin, 10, margin);
         layout.minimumLineSpacing = 5;

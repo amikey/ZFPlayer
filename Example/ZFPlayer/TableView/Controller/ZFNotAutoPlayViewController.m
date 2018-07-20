@@ -172,6 +172,9 @@ static NSString *kIdentifier = @"kIdentifier";
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
     }
     return _tableView;
 }

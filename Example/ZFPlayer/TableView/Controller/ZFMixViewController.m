@@ -181,6 +181,9 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
         /// 停止的时候找出最合适的播放(只能找到设置了tag值cell)
         @weakify(self)
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {

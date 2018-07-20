@@ -10,4 +10,6 @@
 
 @interface ZFDouYinViewController : UIViewController
 
+- (void)playTheIndex:(NSInteger)index;
+
 @end

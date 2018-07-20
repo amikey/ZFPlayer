@@ -7,6 +7,8 @@
 //
 
 #import "ZFViewController.h"
+#import "ZFDouYinViewController.h"
+
 static NSString *kIdentifier = @"kIdentifier";
 
 @interface ZFViewController () <UITableViewDelegate,UITableViewDataSource>
@@ -30,7 +32,8 @@ static NSString *kIdentifier = @"kIdentifier";
                     @"列表明暗播放",
                     @"多种cell混合样式",
                     @"抖音样式",
-                    @"CollectionView"];
+                    @"CollectionView",
+                    @"瀑布流"];
     
     self.viewControllers = @[@"ZFKeyboardViewController",
                              @"ZFNoramlViewController",
@@ -40,7 +43,8 @@ static NSString *kIdentifier = @"kIdentifier";
                              @"ZFLightTableViewController",
                              @"ZFMixViewController",
                              @"ZFDouYinViewController",
-                             @"ZFCollectionViewController"];
+                             @"ZFCollectionViewController",
+                             @"ZFCollectionViewListController"];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -68,6 +72,9 @@ static NSString *kIdentifier = @"kIdentifier";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *vcString = self.viewControllers[indexPath.row];
     UIViewController *viewController = [[NSClassFromString(vcString) alloc] init];
+    if ([vcString isEqualToString:@"ZFDouYinViewController"]) {
+        [(ZFDouYinViewController *)viewController playTheIndex:0];
+    }
     viewController.navigationItem.title = self.titles[indexPath.row];
     [self.navigationController pushViewController:viewController animated:YES];
 }
