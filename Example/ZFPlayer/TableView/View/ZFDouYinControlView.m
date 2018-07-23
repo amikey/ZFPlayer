@@ -67,6 +67,8 @@
 
 - (void)resetControlView {
     self.playBtn.hidden = YES;
+    self.sliderView.value = 0;
+    self.sliderView.bufferValue = 0;
 }
 
 /// 加载状态改变
