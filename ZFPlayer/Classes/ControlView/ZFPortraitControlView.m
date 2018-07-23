@@ -137,7 +137,7 @@
 #pragma mark - action
 
 - (void)backBtnClickAction:(UIButton *)sender {
-
+    
 }
 
 - (void)playPauseButtonClickAction:(UIButton *)sender {
@@ -222,7 +222,7 @@
     min_h = 30;
     self.slider.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.slider.centerY = self.currentTimeLabel.centerY;
- 
+    
     if (!self.isShow) {
         self.topToolView.y = -self.topToolView.height;
         self.bottomToolView.y = self.height;

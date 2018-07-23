@@ -112,7 +112,7 @@
     self.player = nil;
     _assetURL = nil;
     [self.timer invalidate];
-
+    
     self.timer = nil;
     _isPlaying = NO;
     _isPreparedToPlay = NO;

@@ -59,13 +59,13 @@
                   context:(void *)context {
     NSObject *target = _target;
     if (target == nil) return;
-
+    
     BOOL removed = [self removeEntryOfObserver:observer forKeyPath:keyPath];
     if (removed) {
         // duplicated register
         NSLog(@"duplicated observer");
     }
-
+    
     @try {
         [target addObserver:observer
                  forKeyPath:keyPath
@@ -85,13 +85,13 @@
                   forKeyPath:(NSString *)keyPath {
     NSObject *target = _target;
     if (target == nil) return;
-
+    
     BOOL removed = [self removeEntryOfObserver:observer forKeyPath:keyPath];
     if (removed) {
         // duplicated register
         NSLog(@"duplicated observer");
     }
-
+    
     @try {
         if (removed) {
             [target removeObserver:observer
@@ -117,7 +117,7 @@
             NSLog(@"ZFKVO: failed to remove observer for %@\n", entry.keyPath);
         }
     }];
-
+    
     [_observerArray removeAllObjects];
 }
 
@@ -132,7 +132,7 @@
             *stop = YES;
         }
     }];
-
+    
     if (foundIndex >= 0) {
         [_observerArray removeObjectAtIndex:foundIndex];
         return YES;

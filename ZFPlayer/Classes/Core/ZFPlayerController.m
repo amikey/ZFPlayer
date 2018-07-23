@@ -132,7 +132,7 @@
             [self.controlView videoPlayer:self bufferTime:bufferTime];
         }
         if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(asset,bufferTime);
-     };
+    };
     
     self.currentPlayerManager.playerPlayStatChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
         @strongify(self)

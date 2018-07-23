@@ -318,7 +318,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
                            forKeyPath:kPresentationSize
                               options:NSKeyValueObservingOptionNew
                               context:nil];
-
+    
     CMTime interval = CMTimeMakeWithSeconds(kTimeRefreshInterval, NSEC_PER_SEC);
     @weakify(self)
     _timeObserver = [self.player addPeriodicTimeObserverForInterval:interval queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
@@ -342,44 +342,44 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     dispatch_async(dispatch_get_main_queue(), ^{
-         if ([keyPath isEqualToString:kStatus]) {
-             if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-                    self.loadState = ZFPlayerLoadStatePlaythroughOK;
-                 if (self.seekTime) {
-                     [self seekToTime:self.seekTime completionHandler:nil];
-                     self.seekTime = 0; // 滞空, 防止下次播放出错
-                 }
-                 self.player.muted = self.muted;
-                 /// Fix https://github.com/renzifeng/ZFPlayer/issues/475
-                 self->_currentTime = CMTimeGetSeconds(self.playerItem.currentTime);
-                 self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
-                 if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
-             } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
-                 self.playState = ZFPlayerPlayStatePlayFailed;
-                 NSError *error = self.player.currentItem.error;
-                 if (self.playerPlayFailed) self.playerPlayFailed(self, error);
-             }
-         } else if ([keyPath isEqualToString:kPlaybackBufferEmpty]) {
-             // When the buffer is empty
-             if (self.playerItem.playbackBufferEmpty) {
-                 self.loadState = ZFPlayerLoadStateStalled;
-                 [self bufferingSomeSecond];
-             }
-         } else if ([keyPath isEqualToString:kPlaybackLikelyToKeepUp]) {
-             // When the buffer is good
-             if (self.playerItem.playbackLikelyToKeepUp) {
-                 self.loadState = ZFPlayerLoadStatePlayable;
-             }
-         } else if ([keyPath isEqualToString:kLoadedTimeRanges]) {
-             if (self.isPlaying && self.playerItem.playbackLikelyToKeepUp) [self play];
-             NSTimeInterval bufferTime = [self availableDuration];
-             self->_bufferTime = bufferTime;
-             if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, bufferTime);
-         } else if ([keyPath isEqualToString:kPresentationSize]) {
-             self->_presentationSize = self.playerItem.presentationSize;
-         } else {
-             [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-         }
+        if ([keyPath isEqualToString:kStatus]) {
+            if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+                self.loadState = ZFPlayerLoadStatePlaythroughOK;
+                if (self.seekTime) {
+                    [self seekToTime:self.seekTime completionHandler:nil];
+                    self.seekTime = 0; // 滞空, 防止下次播放出错
+                }
+                self.player.muted = self.muted;
+                /// Fix https://github.com/renzifeng/ZFPlayer/issues/475
+                self->_currentTime = CMTimeGetSeconds(self.playerItem.currentTime);
+                self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
+                if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
+            } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
+                self.playState = ZFPlayerPlayStatePlayFailed;
+                NSError *error = self.player.currentItem.error;
+                if (self.playerPlayFailed) self.playerPlayFailed(self, error);
+            }
+        } else if ([keyPath isEqualToString:kPlaybackBufferEmpty]) {
+            // When the buffer is empty
+            if (self.playerItem.playbackBufferEmpty) {
+                self.loadState = ZFPlayerLoadStateStalled;
+                [self bufferingSomeSecond];
+            }
+        } else if ([keyPath isEqualToString:kPlaybackLikelyToKeepUp]) {
+            // When the buffer is good
+            if (self.playerItem.playbackLikelyToKeepUp) {
+                self.loadState = ZFPlayerLoadStatePlayable;
+            }
+        } else if ([keyPath isEqualToString:kLoadedTimeRanges]) {
+            if (self.isPlaying && self.playerItem.playbackLikelyToKeepUp) [self play];
+            NSTimeInterval bufferTime = [self availableDuration];
+            self->_bufferTime = bufferTime;
+            if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, bufferTime);
+        } else if ([keyPath isEqualToString:kPresentationSize]) {
+            self->_presentationSize = self.playerItem.presentationSize;
+        } else {
+            [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        }
     });
 }
 

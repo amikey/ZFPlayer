@@ -111,7 +111,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.landScapeControlView.frame = self.bounds;
     self.floatControlView.frame = self.bounds;
     self.coverImageView.frame = self.player.currentPlayerManager.view.bounds;
-
+    
     min_w = 80;
     min_h = 80;
     self.activity.frame = CGRectMake(min_x, min_y, min_w, min_h);
@@ -168,7 +168,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 /// 添加所有子控件
 - (void)addAllSubViews {
-//    [self addSubview:self.coverImageView];
     [self addSubview:self.portraitControlView];
     [self addSubview:self.landScapeControlView];
     [self addSubview:self.floatControlView];
@@ -519,7 +518,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
             [self cancelAutoFadeOutControlView];
         };
         _portraitControlView.sliderValueChanged = ^(CGFloat value) {
-             @strongify(self)
+            @strongify(self)
             [self autoFadeOutControlView];
         };
     }

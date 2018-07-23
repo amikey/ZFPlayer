@@ -199,7 +199,7 @@
     frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
     
     [UIApplication sharedApplication].statusBarOrientation = orientation;
-
+    
     /// 处理8.0系统键盘
     if (SysVersion >= 8.0 && SysVersion < 9.0) {
         NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
