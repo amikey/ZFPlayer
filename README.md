@@ -140,11 +140,12 @@ Rotate the video the viewController must implement
 
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
-- QQ群: 213375947（付费群）   286529196（免费群）
+- QQ群: 213375947（付费群） 286529196（免费群）
 
 ## 打赏作者
 
 如果ZFPlayer在开发中有帮助到你、如果你需要技术支持或者你有什么需求，都可以拼命打赏我！
+
 ![](http://upload-images.jianshu.io/upload_images/635942-8fc0c357df8c4433.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
                   
 ## License
