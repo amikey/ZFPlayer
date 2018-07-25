@@ -393,6 +393,8 @@
         self.lastVolume = self.player.playbackVolume;
         self.player.playbackVolume = 0;
     } else {
+        /// Fix first called the lastVolume is 0.
+        if (self.lastVolume == 0) self.lastVolume = self.player.playbackVolume;
         self.player.playbackVolume = self.lastVolume;
     }
 }

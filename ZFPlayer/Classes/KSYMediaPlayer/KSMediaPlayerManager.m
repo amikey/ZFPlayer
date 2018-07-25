@@ -154,7 +154,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (void)initializePlayer {
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
-    self.player.shouldAutoplay = NO;
+    self.player.shouldAutoplay = YES;
     [self addPlayerNotification];
     
     [self.view insertSubview:self.player.view atIndex:1];

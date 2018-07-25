@@ -244,7 +244,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (void)initializePlayer {
     _asset = [AVURLAsset assetWithURL:self.assetURL];
-    _playerItem = [AVPlayerItem playerItemWithAsset:_asset automaticallyLoadedAssetKeys:@[@"duration"]];
+    _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
     _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
     [self enableAudioTracks:YES inPlayerItem:_playerItem];
@@ -325,9 +325,8 @@ static NSString *const kPresentationSize         = @"presentationSize";
         @strongify(self)
         if (!self) return;
         NSArray *loadedRanges = self.playerItem.seekableTimeRanges;
-        if (loadedRanges.count > 0 && self.playerItem.duration.timescale != 0) {
-            self->_currentTime = CMTimeGetSeconds(time);
-            self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
+        NSLog(@"%f",CMTimeGetSeconds(time));
+        if (loadedRanges.count > 0) {
             if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
         }
     }];
@@ -349,11 +348,13 @@ static NSString *const kPresentationSize         = @"presentationSize";
                     [self seekToTime:self.seekTime completionHandler:nil];
                     self.seekTime = 0; // 滞空, 防止下次播放出错
                 }
+                if (self.isPlaying) [self play];
                 self.player.muted = self.muted;
-                /// Fix https://github.com/renzifeng/ZFPlayer/issues/475
-                self->_currentTime = CMTimeGetSeconds(self.playerItem.currentTime);
-                self->_totalTime = CMTimeGetSeconds(self.playerItem.duration);
-                if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
+                NSArray *loadedRanges = self.playerItem.seekableTimeRanges;
+                if (loadedRanges.count > 0) {
+                    /// Fix https://github.com/renzifeng/ZFPlayer/issues/475
+                    if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
+                }
             } else if (self.player.currentItem.status == AVPlayerItemStatusFailed) {
                 self.playState = ZFPlayerPlayStatePlayFailed;
                 NSError *error = self.player.currentItem.error;
@@ -383,6 +384,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     });
 }
 
+
 #pragma mark - getter
 
 - (UIView *)view {
@@ -395,6 +397,22 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (float)rate {
     return _rate == 0 ?1:_rate;
+}
+
+- (NSTimeInterval)totalTime {
+    NSTimeInterval sec = CMTimeGetSeconds(self.player.currentItem.duration);
+    if (isnan(sec)) {
+        return 0;
+    }
+    return sec;
+}
+
+- (NSTimeInterval)currentTime {
+    NSTimeInterval sec = CMTimeGetSeconds(self.playerItem.currentTime);
+    if (isnan(sec)) {
+        return 0;
+    }
+    return sec;
 }
 
 #pragma mark - setter

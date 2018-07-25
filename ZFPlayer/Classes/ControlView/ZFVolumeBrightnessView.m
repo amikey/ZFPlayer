@@ -56,7 +56,7 @@
 }
 
 - (void)dealloc {
-    [self removeSystemVolumeView];
+    [self addSystemVolumeView];
 }
 
 - (void)layoutSubviews {

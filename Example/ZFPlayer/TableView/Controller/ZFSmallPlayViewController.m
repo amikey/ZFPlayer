@@ -81,6 +81,7 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    self.tableView.delegate = nil;
     [self.player stopCurrentPlayingCell];
 }
 
