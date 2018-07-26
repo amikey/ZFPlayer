@@ -35,6 +35,9 @@
 // 获取日志输出状态
 + (BOOL)getLogEnable;
 
+/// 版本
++ (NSString *)version;
+
 // 日志输出方法
 + (void)logWithFunction:(const char *)function lineNumber:(int)lineNumber formatString:(NSString *)formatString;
 
