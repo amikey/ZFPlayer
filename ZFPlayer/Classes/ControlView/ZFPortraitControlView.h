@@ -29,8 +29,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ZFPortraitControlView : UIView 
-/// 返回按钮
-@property (nonatomic, strong, readonly) UIButton *backBtn;
 /// 底部工具栏
 @property (nonatomic, strong, readonly) UIView *bottomToolView;
 /// 顶部工具栏

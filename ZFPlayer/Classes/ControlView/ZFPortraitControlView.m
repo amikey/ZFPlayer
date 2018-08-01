@@ -32,8 +32,6 @@
 #endif
 
 @interface ZFPortraitControlView () <ZFSliderViewDelegate>
-/// 返回按钮
-@property (nonatomic, strong) UIButton *backBtn;
 /// 底部工具栏
 @property (nonatomic, strong) UIView *bottomToolView;
 /// 顶部工具栏
@@ -79,7 +77,6 @@
 }
 
 - (void)makeSubViewsAction {
-    [self.backBtn addTarget:self action:@selector(backBtnClickAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.playOrPauseBtn addTarget:self action:@selector(playPauseButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.fullScreenBtn addTarget:self action:@selector(fullScreenButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -135,10 +132,6 @@
 }
 
 #pragma mark - action
-
-- (void)backBtnClickAction:(UIButton *)sender {
-    
-}
 
 - (void)playPauseButtonClickAction:(UIButton *)sender {
     [self playOrPause];
@@ -245,7 +238,6 @@
     self.totalTimeLabel.text         = @"00:00";
     self.backgroundColor             = [UIColor clearColor];
     self.playOrPauseBtn.selected     = YES;
-    self.backBtn.alpha               = 1;
     self.titleLabel.text             = @"";
 }
 
@@ -300,14 +292,6 @@
 
 #pragma mark - getter
 
-- (UIButton *)backBtn {
-    if (!_backBtn) {
-        _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_backBtn setImage:ZFPlayer_Image(@"ZFPlayer_back_full") forState:UIControlStateNormal];
-    }
-    return _backBtn;
-}
-
 - (UIView *)topToolView {
     if (!_topToolView) {
         _topToolView = [[UIView alloc] init];
@@ -350,7 +334,6 @@
         _currentTimeLabel.textColor = [UIColor whiteColor];
         _currentTimeLabel.font = [UIFont systemFontOfSize:14.0f];
         _currentTimeLabel.textAlignment = NSTextAlignmentCenter;
-        _currentTimeLabel.text = @"00:00";
     }
     return _currentTimeLabel;
 }
@@ -374,7 +357,6 @@
         _totalTimeLabel.textColor = [UIColor whiteColor];
         _totalTimeLabel.font = [UIFont systemFontOfSize:14.0f];
         _totalTimeLabel.textAlignment = NSTextAlignmentCenter;
-        _totalTimeLabel.text = @"00:00";
     }
     return _totalTimeLabel;
 }

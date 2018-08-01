@@ -35,7 +35,6 @@
 
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) ZFPlayerNotification *notification;
-@property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, strong) UISlider *volumeViewSlider;
 @property (nonatomic, assign) NSInteger containerViewTag;
@@ -91,16 +90,16 @@
 
 - (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(nonnull UIView *)containerView {
     ZFPlayerController *player = [self init];
-    player.currentPlayerManager = playerManager;
     player.containerView = containerView;
+    player.currentPlayerManager = playerManager;
     return player;
 }
 
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag {
     ZFPlayerController *player = [self init];
     player.scrollView = scrollView;
-    player.currentPlayerManager = playerManager;
     player.containerViewTag = containerViewTag;
+    player.currentPlayerManager = playerManager;
     return player;
 }
 
@@ -134,17 +133,17 @@
         if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(asset,bufferTime);
     };
     
-    self.currentPlayerManager.playerPlayStatChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
+    self.currentPlayerManager.playerPlayStateChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
         @strongify(self)
-        if (self.playerPlayStatChanged) self.playerPlayStatChanged(asset, playState);
+        if (self.playerPlayStateChanged) self.playerPlayStateChanged(asset, playState);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
             [self.controlView videoPlayer:self playStateChanged:playState];
         }
     };
     
-    self.currentPlayerManager.playerLoadStatChanged = ^(id  _Nonnull asset, ZFPlayerLoadState loadState) {
+    self.currentPlayerManager.playerLoadStateChanged = ^(id  _Nonnull asset, ZFPlayerLoadState loadState) {
         @strongify(self)
-        if (self.playerLoadStatChanged) self.playerLoadStatChanged(asset, loadState);
+        if (self.playerLoadStateChanged) self.playerLoadStateChanged(asset, loadState);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:loadStateChanged:)]) {
             [self.controlView videoPlayer:self loadStateChanged:loadState];
         }
@@ -220,11 +219,20 @@
 
 - (void)setCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)currentPlayerManager {
     if (!currentPlayerManager) return;
+    if (_currentPlayerManager.isPreparedToPlay) {
+        [_currentPlayerManager stop];
+        [_currentPlayerManager.view removeFromSuperview];
+        [self.orientationObserver removeDeviceOrientationObserver];
+        [self.gestureControl removeGestureToView:self.currentPlayerManager.view];
+    }
     _currentPlayerManager = currentPlayerManager;
     _currentPlayerManager.view.hidden = YES;
     self.gestureControl.disableTypes = self.disableGestureTypes;
     [self.gestureControl addGestureToView:currentPlayerManager.view];
     [self playerManagerCallbcak];
+    [self.orientationObserver updateRotateView:currentPlayerManager.view containerView:self.containerView];
+    self.controlView.player = self;
+    [self layoutPlayerSubViews];
 }
 
 - (void)setContainerView:(UIView *)containerView {
@@ -281,18 +289,10 @@
     }
     [self.currentPlayerManager stop];
     [self.currentPlayerManager.view removeFromSuperview];
-    self.currentPlayerManager.view.hidden = YES;
 }
 
-- (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)manager {
-    if (self.currentPlayerManager.isPreparedToPlay) {
-        [self.notification removeNotification];
-        [self.orientationObserver removeDeviceOrientationObserver];
-        [self stop];
-    }
-    [self.gestureControl removeGestureToView:self.currentPlayerManager.view];
-    self.currentPlayerManager = manager;
-    [self layoutPlayerSubViews];
+- (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager {
+    self.currentPlayerManager = playerManager;
 }
 
 - (void)playTheNext {
@@ -399,11 +399,11 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerPlaybackState))playerPlayStatChanged {
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerPlaybackState))playerPlayStateChanged {
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerLoadState))playerLoadStatChanged {
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerLoadState))playerLoadStateChanged {
     return objc_getAssociatedObject(self, _cmd);
 }
 
@@ -484,12 +484,12 @@
     objc_setAssociatedObject(self, @selector(playerBufferTimeChanged), playerBufferTimeChanged, OBJC_ASSOCIATION_COPY);
 }
 
-- (void)setPlayerPlayStatChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerPlaybackState))playerPlayStatChanged {
-    objc_setAssociatedObject(self, @selector(playerPlayStatChanged), playerPlayStatChanged, OBJC_ASSOCIATION_COPY);
+- (void)setPlayerPlayStateChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerPlaybackState))playerPlayStateChanged {
+    objc_setAssociatedObject(self, @selector(playerPlayStateChanged), playerPlayStateChanged, OBJC_ASSOCIATION_COPY);
 }
 
-- (void)setPlayerLoadStatChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerLoadState))playerLoadStatChanged {
-    objc_setAssociatedObject(self, @selector(playerLoadStatChanged), playerLoadStatChanged, OBJC_ASSOCIATION_COPY);
+- (void)setPlayerLoadStateChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, ZFPlayerLoadState))playerLoadStateChanged {
+    objc_setAssociatedObject(self, @selector(playerLoadStateChanged), playerLoadStateChanged, OBJC_ASSOCIATION_COPY);
 }
 
 - (void)setPlayerDidToEnd:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull))playerDidToEnd {
@@ -563,11 +563,10 @@
 #pragma mark - getter
 
 - (ZFOrientationObserver *)orientationObserver {
-    if (!self.currentPlayerManager.view && !self.containerView) return nil;
     @weakify(self)
     ZFOrientationObserver *orientationObserver = objc_getAssociatedObject(self, _cmd);
     if (!orientationObserver) {
-        orientationObserver = [[ZFOrientationObserver alloc] initWithRotateView:self.currentPlayerManager.view containerView:self.containerView];
+        orientationObserver = [[ZFOrientationObserver alloc] init];
         orientationObserver.orientationWillChange = ^(ZFOrientationObserver * _Nonnull observer, BOOL isFullScreen) {
             @strongify(self)
             if (self.orientationWillChange) self.orientationWillChange(self, isFullScreen);

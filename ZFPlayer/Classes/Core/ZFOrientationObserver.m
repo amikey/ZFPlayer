@@ -81,17 +81,15 @@
         _duration = 0.25;
         _fullScreenMode = ZFFullScreenModeLandscape;
         _allowOrentitaionRotation = YES;
+        _roateType = ZFRotateTypeNormal;
     }
     return self;
 }
 
-- (instancetype)initWithRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
-    if ([self init]) {
-        _roateType = ZFRotateTypeNormal;
-        _view = rotateView;
-        _containerView = containerView;
-    }
-    return self;
+- (void)updateRotateView:(UIView *)rotateView
+           containerView:(UIView *)containerView {
+    self.view = rotateView;
+    self.containerView = containerView;
 }
 
 - (void)cellModelRotateView:(UIView *)rotateView rotateViewAtCell:(UIView *)cell playerViewTag:(NSInteger)playerViewTag {

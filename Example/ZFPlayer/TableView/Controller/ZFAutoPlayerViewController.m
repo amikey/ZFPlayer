@@ -66,14 +66,6 @@ static NSString *kIdentifier = @"kIdentifier";
         [UIViewController attemptRotationToDeviceOrientation];
         self.tableView.scrollsToTop = !isFullScreen;
     };
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.tableView setContentOffset:CGPointMake(0, 700) animated:NO];
-        [self.tableView zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath *indexPath) {
-            @strongify(self)
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
-        }];
-    });
 }
 
 - (void)viewWillLayoutSubviews {
