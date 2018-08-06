@@ -194,9 +194,9 @@ static NSString *const kPresentationSize         = @"presentationSize";
 }
 
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
-    CMTime seekTime = CMTimeMake(time, 1); //kCMTimeZero
+    CMTime seekTime = CMTimeMake(time, 1);
     [_playerItem cancelPendingSeeks];
-    [_player seekToTime:seekTime toleranceBefore:CMTimeMake(1,1) toleranceAfter:CMTimeMake(1,1) completionHandler:completionHandler];
+    [_player seekToTime:seekTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
 }
 
 - (UIImage *)thumbnailImageAtCurrentTime {

@@ -41,7 +41,6 @@ typedef NS_ENUM(NSUInteger, ZFRotateType) {
 
 @interface ZFOrientationObserver : NSObject
 
-
 - (void)updateRotateView:(UIView *)rotateView
            containerView:(UIView *)containerView;
 

@@ -289,6 +289,7 @@
     }
     [self.currentPlayerManager stop];
     [self.currentPlayerManager.view removeFromSuperview];
+    self.currentPlayerManager.view.hidden = YES;
 }
 
 - (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager {

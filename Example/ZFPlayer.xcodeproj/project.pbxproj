@@ -404,6 +404,11 @@
 					6003F589195388D20070C39A = {
 						DevelopmentTeam = R2U8SE68WE;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
