@@ -107,7 +107,6 @@
     @weakify(self)
     self.currentPlayerManager.playerPrepareToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         @strongify(self)
-        [self layoutPlayerSubViews];
         self.currentPlayerManager.view.hidden = NO;
         [self.notification addNotification];
         [self addDeviceOrientationObserver];
@@ -171,7 +170,7 @@
         UIView *superview = nil;
         if (self.isFullScreen) {
             superview = self.orientationObserver.fullScreenContainerView;
-        } else {
+        } else if (self.containerView) {
             superview = self.containerView;
         }
         [superview addSubview:self.currentPlayerManager.view];
@@ -245,6 +244,7 @@
     if (!controlView) return;
     _controlView = controlView;
     controlView.player = self;
+    [self layoutPlayerSubViews];
 }
 
 @end
@@ -874,6 +874,7 @@
         [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
         [self addDeviceOrientationObserver];
         self.scrollView.zf_playingIndexPath = playingIndexPath;
+        [self layoutPlayerSubViews];
     }
 }
 

@@ -60,7 +60,7 @@ static NSString *kIdentifier = @"kIdentifier";
     
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
+        if (self.player.playingIndexPath.row < self.urls.count - 1) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
             [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
         } else {
@@ -179,11 +179,11 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
+    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
     ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
     [self.controlView showTitle:layout.data.title
                  coverURLString:layout.data.thumbnail_url
                  fullScreenMode:layout.isVerticalVideo?ZFFullScreenModePortrait:ZFFullScreenModeLandscape];
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
 }
 
 #pragma mark - getter

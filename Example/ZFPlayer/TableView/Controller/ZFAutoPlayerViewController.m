@@ -52,10 +52,10 @@ static NSString *kIdentifier = @"kIdentifier";
     @weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        if (self.player.playingIndexPath.row < self.urls.count - 1 && !self.player.isFullScreen) {
+        if (self.player.playingIndexPath.row < self.urls.count - 1) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
             [self playTheVideoAtIndexPath:indexPath scrollToTop:YES];
-        } else if (self.player.isFullScreen) {
+        } else {
             [self.player stopCurrentPlayingCell];
         }
     };
