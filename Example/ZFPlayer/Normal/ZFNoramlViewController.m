@@ -122,9 +122,9 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 }
 
 - (void)changeVideo:(UIButton *)sender {
-    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
     /// 切换playerManager
-    self.player.currentPlayerManager = playerManager;
+//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+//    self.player.currentPlayerManager = playerManager;
 //    [self.player replaceCurrentPlayerManager:playerManager];
     
     NSString *URLString = @"https://www.apple.com/105/media/cn/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/bruce/mac-bruce-tpl-cn-2018_1280x720h.mp4";

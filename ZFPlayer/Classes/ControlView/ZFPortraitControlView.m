@@ -262,7 +262,8 @@
 }
 
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch {
-    if (point.y > self.bottomToolView.y || [touch.view isKindOfClass:[UIButton class]]) {
+    CGRect sliderRect = [self.bottomToolView convertRect:self.slider.frame toView:self];
+    if (CGRectContainsPoint(sliderRect, point)) {
         return NO;
     }
     if (type == ZFPlayerGestureTypePan && self.player.scrollView) {

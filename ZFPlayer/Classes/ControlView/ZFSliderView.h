@@ -81,5 +81,3 @@
 - (void)setThumbImage:(UIImage *)image forState:(UIControlState)state;
 
 @end
-
-
