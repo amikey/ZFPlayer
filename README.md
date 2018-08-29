@@ -140,7 +140,8 @@ Rotate the video the viewController must implement
 
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
-- QQ群: 213375947（付费群） 286529196（免费群）
+- QQ群: 
+![](https://upload-images.jianshu.io/upload_images/635942-c20708c913c591a0.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 打赏作者
 
