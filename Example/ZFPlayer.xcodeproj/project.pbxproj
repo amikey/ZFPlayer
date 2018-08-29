@@ -40,6 +40,7 @@
 		D209365920B79C1E0002C956 /* ZFKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D209365820B79C1E0002C956 /* ZFKeyboardViewController.m */; };
 		D243FCA020C53F950014F533 /* ZFDouYinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D243FC9F20C53F950014F533 /* ZFDouYinViewController.m */; };
 		D243FCA320C543D30014F533 /* ZFDouYinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D243FCA220C543D30014F533 /* ZFDouYinCell.m */; };
+		D2B982712136405500B4A0B9 /* ZFFullScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B982702136405500B4A0B9 /* ZFFullScreenViewController.m */; };
 		D2E520B021006F1500EF4AC9 /* ZFCollectionViewListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E520AF21006F1500EF4AC9 /* ZFCollectionViewListController.m */; };
 		D2EEFE6320BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EEFE6220BBB03E0097D6D9 /* ZFNotAutoPlayViewController.m */; };
 		D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EEFE6520BBF3890097D6D9 /* ZFSmallPlayViewController.m */; };
@@ -116,6 +117,8 @@
 		D243FC9F20C53F950014F533 /* ZFDouYinViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFDouYinViewController.m; sourceTree = "<group>"; };
 		D243FCA120C543D30014F533 /* ZFDouYinCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFDouYinCell.h; sourceTree = "<group>"; };
 		D243FCA220C543D30014F533 /* ZFDouYinCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFDouYinCell.m; sourceTree = "<group>"; };
+		D2B9826F2136405500B4A0B9 /* ZFFullScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFFullScreenViewController.h; sourceTree = "<group>"; };
+		D2B982702136405500B4A0B9 /* ZFFullScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFFullScreenViewController.m; sourceTree = "<group>"; };
 		D2E520AE21006F1500EF4AC9 /* ZFCollectionViewListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFCollectionViewListController.h; sourceTree = "<group>"; };
 		D2E520AF21006F1500EF4AC9 /* ZFCollectionViewListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFCollectionViewListController.m; sourceTree = "<group>"; };
 		D2EEFE6120BBB03E0097D6D9 /* ZFNotAutoPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFNotAutoPlayViewController.h; sourceTree = "<group>"; };
@@ -186,6 +189,7 @@
 		6003F593195388D20070C39A /* Example for ZFPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				D2B9826E2136403E00B4A0B9 /* FullScreenViewController */,
 				CCED248520DBF1730077E02A /* CollectionView */,
 				D209365620B79BCC0002C956 /* Keyboard */,
 				D209360720B659070002C956 /* Normal */,
@@ -339,6 +343,15 @@
 				D209365820B79C1E0002C956 /* ZFKeyboardViewController.m */,
 			);
 			path = Keyboard;
+			sourceTree = "<group>";
+		};
+		D2B9826E2136403E00B4A0B9 /* FullScreenViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D2B9826F2136405500B4A0B9 /* ZFFullScreenViewController.h */,
+				D2B982702136405500B4A0B9 /* ZFFullScreenViewController.m */,
+			);
+			path = FullScreenViewController;
 			sourceTree = "<group>";
 		};
 		E3FD7B3AA53BD2041778220B /* Pods */ = {
@@ -534,6 +547,7 @@
 				CCED249720ED10000077E02A /* NullSafe.m in Sources */,
 				D209360A20B659190002C956 /* ZFNoramlViewController.m in Sources */,
 				CC112E9D20DBD6600051EE60 /* ZFOtherCell.m in Sources */,
+				D2B982712136405500B4A0B9 /* ZFFullScreenViewController.m in Sources */,
 				D2EEFE6620BBF3890097D6D9 /* ZFSmallPlayViewController.m in Sources */,
 				D209360020B658AE0002C956 /* ZFTableData.m in Sources */,
 				D2E520B021006F1500EF4AC9 /* ZFCollectionViewListController.m in Sources */,

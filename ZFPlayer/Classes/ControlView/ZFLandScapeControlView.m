@@ -283,9 +283,15 @@
 
 - (void)backBtnClickAction:(UIButton *)sender {
     self.lockBtn.selected = NO;
-    [self.player enterFullScreen:NO animated:YES];
+//    [self.player enterFullScreen:NO animated:YES];
     self.player.lockedScreen = NO;
     self.lockBtn.selected = NO;
+    if (self.player.orientationObserver.supportInterfaceOrientation & ZFInterfaceOrientationMaskPortrait) {
+        [self.player enterFullScreen:NO animated:YES];
+    }
+    if (self.backBtnClickCallback) {
+        self.backBtnClickCallback();
+    }
 }
 
 - (void)playPauseButtonClickAction:(UIButton *)sender {

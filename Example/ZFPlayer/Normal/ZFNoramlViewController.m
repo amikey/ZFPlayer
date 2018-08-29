@@ -57,13 +57,14 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     /// 播放完自动播放下一个
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        [self.player playTheNext];
-        if (!self.player.isLastAssetURL) {
-            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
-            [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
-        } else {
-            [self.player stop];
-        }
+        [self.player.currentPlayerManager replay];
+//        [self.player playTheNext];
+//        if (!self.player.isLastAssetURL) {
+//            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
+//            [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
+//        } else {
+//            [self.player stop];
+//        }
     };
     
     self.assetURLs = @[[NSURL URLWithString:@"https://www.apple.com/105/media/us/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-tpl-cc-us-20170912_1280x720h.mp4"],

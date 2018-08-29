@@ -31,25 +31,6 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"
 
-UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class replacedClass, SEL replacedSel, SEL noneSel){
-    Method originalMethod = class_getInstanceMethod(originalClass, originalSel);
-    Method replacedMethod = class_getInstanceMethod(replacedClass, replacedSel);
-    if (!originalMethod) {
-        Method noneMethod = class_getInstanceMethod(replacedClass, noneSel);
-        class_addMethod(originalClass, originalSel, method_getImplementation(noneMethod), method_getTypeEncoding(noneMethod));
-        return;
-    }
-    BOOL addMethod = class_addMethod(originalClass, replacedSel, method_getImplementation(replacedMethod), method_getTypeEncoding(replacedMethod));
-    if (addMethod) {
-        /// 如果父类实现，但是当前类未实就崩溃。以下两行的代码是把当前类加进去这个方法，并取到当前类的originalMethod。
-        /// The following two lines of code add the current class to the method and take it to the originalMethod of the current class if the superclass implements it, but the current class fails to implement it.
-        class_addMethod(originalClass, originalSel, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
-        Method originalMethod = class_getInstanceMethod(originalClass, originalSel);
-        Method newMethod = class_getInstanceMethod(originalClass, replacedSel);
-        method_exchangeImplementations(originalMethod, newMethod);
-    }
-}
-
 @interface UIScrollView ()
 
 @property (nonatomic, assign) CGFloat zf_lastOffsetY;
@@ -58,120 +39,39 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 @implementation UIScrollView (ZFPlayer)
 
-+ (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        SEL selectors[] = {
-            @selector(setDelegate:)
-        };
-        for (NSInteger index = 0; index < sizeof(selectors) / sizeof(SEL); ++index) {
-            SEL originalSelector = selectors[index];
-            SEL swizzledSelector = NSSelectorFromString([@"zf_" stringByAppendingString:NSStringFromSelector(originalSelector)]);
-            Method originalMethod = class_getInstanceMethod(self, originalSelector);
-            Method swizzledMethod = class_getInstanceMethod(self, swizzledSelector);
-            if (class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))) {
-                class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
-            } else {
-                method_exchangeImplementations(originalMethod, swizzledMethod);
-            }
-        }
-    });
-}
-
-- (void)zf_setDelegate:(id<UIScrollViewDelegate>)delegate {
-    if (([self isKindOfClass:[UITableView class]] || [self isKindOfClass:[UICollectionView class]]) && [delegate conformsToProtocol:@protocol(UIScrollViewDelegate)]) {
-        SEL originalSelectors[] = {
-            @selector(scrollViewDidEndDecelerating:),
-            @selector(scrollViewDidEndDragging:willDecelerate:),
-            @selector(scrollViewDidScrollToTop:),
-            @selector(scrollViewWillBeginDragging:),
-            @selector(scrollViewDidScroll:)
-        };
-        
-        SEL replacedSelectors[] = {
-            @selector(zf_scrollViewDidEndDecelerating:),
-            @selector(zf_scrollViewDidEndDragging:willDecelerate:),
-            @selector(zf_scrollViewDidScrollToTop:),
-            @selector(zf_scrollViewWillBeginDragging:),
-            @selector(zf_scrollViewDidScroll:)
-        };
-        
-        SEL noneSelectors[] = {
-            @selector(add_scrollViewDidEndDecelerating:),
-            @selector(add_scrollViewDidEndDragging:willDecelerate:),
-            @selector(add_scrollViewDidScrollToTop:),
-            @selector(add_scrollViewWillBeginDragging:),
-            @selector(add_scrollViewDidScroll:)
-        };
-        
-        for (NSInteger index = 0; index < sizeof(originalSelectors) / sizeof(SEL); ++index) {
-            Hook_Method([delegate class], originalSelectors[index], [self class], replacedSelectors[index], noneSelectors[index]);
-        }
-    }
-    [self zf_setDelegate:delegate];
-}
-
 #pragma mark - Replace_Method
 
-- (void)zf_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [scrollView add_scrollViewDidEndDecelerating:scrollView];
-    [self zf_scrollViewDidEndDecelerating:scrollView];
-}
-
-- (void)zf_scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [scrollView add_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-    [self zf_scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-}
-
-- (void)zf_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [scrollView add_scrollViewDidScrollToTop:scrollView];
-    [self zf_scrollViewDidScrollToTop:scrollView];
-}
-
-- (void)zf_scrollViewDidScroll:(UIScrollView *)scrollView {
-    [scrollView add_scrollViewDidScroll:scrollView];
-    [self zf_scrollViewDidScroll:scrollView];
-}
-
-- (void)zf_scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [scrollView add_scrollViewWillBeginDragging:scrollView];
-    [self zf_scrollViewWillBeginDragging:scrollView];
-}
-
-#pragma mark - Add_Method
-
-- (void)add_scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+- (void)zf_scrollViewDidEndDecelerating {
+    BOOL scrollToScrollStop = !self.tracking && !self.dragging && !self.decelerating;
     if (scrollToScrollStop) {
-        [scrollView zf_scrollViewDidStopScroll];
+        [self _scrollViewDidStopScroll];
     }
 }
 
-- (void)add_scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+- (void)zf_scrollViewDidEndDraggingWillDecelerate:(BOOL)decelerate {
     if (!decelerate) {
-        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+        BOOL dragToDragStop = self.tracking && !self.dragging && !self.decelerating;
         if (dragToDragStop) {
-            [scrollView zf_scrollViewDidStopScroll];
+            [self _scrollViewDidStopScroll];
         }
     }
 }
 
-- (void)add_scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-    [scrollView zf_scrollViewDidStopScroll];
+- (void)zf_scrollViewDidScrollToTop {
+    [self _scrollViewDidStopScroll];
 }
 
-- (void)add_scrollViewDidScroll:(UIScrollView *)scrollView {
-    [scrollView scrollViewScrolling];
+- (void)zf_scrollViewDidScroll {
+    [self _scrollViewScrolling];
 }
 
-- (void)add_scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [scrollView scrollViewBeginDragging];
+- (void)zf_scrollViewWillBeginDragging {
+    [self _scrollViewBeginDragging];
 }
 
 #pragma mark - scrollView did stop scroll
 
-- (void)zf_scrollViewDidStopScroll {
-    if (!self.zf_enableScrollHook) return;
+- (void)_scrollViewDidStopScroll {
     @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
@@ -180,14 +80,11 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
     }];
 }
 
-- (void)scrollViewBeginDragging {
-    if (!self.zf_enableScrollHook) return;
+- (void)_scrollViewBeginDragging {
     self.zf_lastOffsetY = self.contentOffset.y;
 }
 
-- (void)scrollViewScrolling {
-    if (!self.zf_enableScrollHook) return;
-    
+- (void)_scrollViewScrolling {
     CGFloat offsetY = self.contentOffset.y;
     self.zf_scrollDerection = (offsetY - self.zf_lastOffsetY > 0) ? ZFPlayerScrollDerectionUp : ZFPlayerScrollDerectionDown;
     self.zf_lastOffsetY = offsetY;
@@ -452,10 +349,6 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 
 #pragma mark - getter
 
-- (BOOL)zf_enableScrollHook {
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
-}
-
 - (NSIndexPath *)zf_playingIndexPath {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -500,10 +393,6 @@ UIKIT_STATIC_INLINE void Hook_Method(Class originalClass, SEL originalSel, Class
 }
 
 #pragma mark - setter
-
-- (void)setZf_enableScrollHook:(BOOL)zf_enableScrollHook {
-    objc_setAssociatedObject(self, @selector(zf_enableScrollHook), @(zf_enableScrollHook), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
 
 - (void)setZf_playingIndexPath:(NSIndexPath *)zf_playingIndexPath {
     objc_setAssociatedObject(self, @selector(zf_playingIndexPath), zf_playingIndexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

@@ -80,6 +80,7 @@
     if (self) {
         _duration = 0.25;
         _fullScreenMode = ZFFullScreenModeLandscape;
+        _supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
         _allowOrentitaionRotation = YES;
         _roateType = ZFRotateTypeNormal;
     }
@@ -138,15 +139,21 @@
     
     switch (_currentOrientation) {
         case UIInterfaceOrientationPortrait: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:YES];
+            if ([self isSupportedPortrait]) {
+                [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:YES];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeLeft: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeLeft animated:YES];
+            if ([self isSupportedLandscapeLeft]) {
+                [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeLeft animated:YES];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeRight: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
+             if ([self isSupportedLandscapeRight]) {
+                 [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
+             }
         }
             break;
         default: break;
@@ -322,6 +329,23 @@
         [self enterPortraitFullScreen:NO animated:animated];
     }
 }
+
+/// 是否支持 Portrait
+- (BOOL)isSupportedPortrait {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskPortrait;
+}
+
+/// 是否支持 LandscapeLeft
+- (BOOL)isSupportedLandscapeLeft {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeLeft;
+}
+
+/// 是否支持 LandscapeRight
+- (BOOL)isSupportedLandscapeRight {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeRight;
+}
+
+#pragma mark - setter
 
 - (void)setLockedScreen:(BOOL)lockedScreen {
     _lockedScreen = lockedScreen;

@@ -53,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) void(^sliderValueChanging)(CGFloat value,BOOL forward);
 /// slider滑动结束
 @property (nonatomic, copy, nullable) void(^sliderValueChanged)(CGFloat value);
+/// 返回按钮点击回调
+@property (nonatomic, copy) void(^backBtnClickCallback)(void);
 
 /// 重置控制层
 - (void)resetControlView;

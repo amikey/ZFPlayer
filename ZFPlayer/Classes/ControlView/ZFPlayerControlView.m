@@ -673,4 +673,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     return _placeholderImage;
 }
 
+- (void)setBackBtnClickCallback:(void (^)(void))backBtnClickCallback {
+    _backBtnClickCallback = [backBtnClickCallback copy];
+    self.landScapeControlView.backBtnClickCallback = _backBtnClickCallback;
+}
+
 @end

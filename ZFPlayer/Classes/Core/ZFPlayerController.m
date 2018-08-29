@@ -33,7 +33,6 @@
 
 @interface ZFPlayerController ()
 
-@property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) ZFPlayerNotification *notification;
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, strong) UISlider *volumeViewSlider;
@@ -788,7 +787,6 @@
     objc_setAssociatedObject(self, @selector(scrollView), scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.scrollView.zf_WWANAutoPlay = self.isWWANAutoPlay;
     @weakify(self)
-    scrollView.zf_enableScrollHook = YES;
     
     scrollView.zf_playerWillAppearInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
@@ -1038,7 +1036,6 @@
             if (completionHandler) completionHandler();
             self.playingIndexPath = indexPath;
             self.assetURL = assetURL;
-            [self.scrollView zf_scrollViewDidStopScroll];
         }];
     } else {
         if (completionHandler) completionHandler();

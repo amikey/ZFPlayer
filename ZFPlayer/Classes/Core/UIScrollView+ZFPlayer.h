@@ -37,9 +37,6 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 
 @interface UIScrollView (ZFPlayer)
 
-/// Rolling direction switch
-@property (nonatomic) BOOL zf_enableScrollHook;
-
 @property (nonatomic, assign, readonly) CGFloat zf_lastOffsetY;
 
 /// The indexPath is playing
@@ -81,8 +78,24 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// Scroll to indexPath with animations.
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler;
 
-/// ScrollView did stop scroll.
-- (void)zf_scrollViewDidStopScroll;
+///------------------------------------
+/// The following method must be implemented in UIScrollViewDelegate.
+///------------------------------------
+
+- (void)zf_scrollViewDidEndDecelerating;
+
+- (void)zf_scrollViewDidEndDraggingWillDecelerate:(BOOL)decelerate;
+
+- (void)zf_scrollViewDidScrollToTop;
+
+- (void)zf_scrollViewDidScroll;
+
+- (void)zf_scrollViewWillBeginDragging;
+
+///------------------------------------
+/// end
+///------------------------------------
+
 
 @end
 

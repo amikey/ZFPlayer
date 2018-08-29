@@ -132,7 +132,20 @@ static NSString *kIdentifier = @"kIdentifier";
 
 #pragma mark - UIScrollViewDelegate
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [scrollView zf_scrollViewDidEndDecelerating];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [scrollView zf_scrollViewDidEndDraggingWillDecelerate:decelerate];
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    [scrollView zf_scrollViewDidScrollToTop];
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [scrollView zf_scrollViewDidScroll];
     @weakify(self)
     [scrollView zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
         if ([indexPath compare:self.tableView.zf_shouldPlayIndexPath] != NSOrderedSame) {
@@ -145,6 +158,10 @@ static NSString *kIdentifier = @"kIdentifier";
             [cell hideMaskView];
         }
     }];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [scrollView zf_scrollViewWillBeginDragging];
 }
 
 #pragma mark - UITableViewDataSource

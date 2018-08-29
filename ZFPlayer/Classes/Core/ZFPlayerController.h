@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZFPlayerController : NSObject
 
 /// The video contrainerView in normal model.
-@property (nonatomic, readonly) UIView *containerView;
+@property (nonatomic, strong) UIView *containerView;
 
 /// The currentPlayerManager must conform `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
