@@ -71,6 +71,8 @@
 
 @property (nonatomic, assign) ZFRotateType roateType;
 
+@property (nonatomic, strong) UIView *blackView;
+
 @end
 
 @implementation ZFOrientationObserver
@@ -78,7 +80,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _duration = 0.25;
+        _duration = 0.30;
         _fullScreenMode = ZFFullScreenModeLandscape;
         _supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
         _allowOrentitaionRotation = YES;
@@ -108,6 +110,7 @@
 
 - (void)dealloc {
     [self removeDeviceOrientationObserver];
+    [self.blackView removeFromSuperview];
 }
 
 - (void)addDeviceOrientationObserver {
@@ -175,6 +178,7 @@
             if (self.roateType == ZFRotateTypeCell) superview = [self.cell viewWithTag:self.playerViewTag];
             else superview = self.containerView;
             self.fullScreen = NO;
+            if (self.blackView.superview != nil) [self.blackView removeFromSuperview];
         }
         if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
         
@@ -185,6 +189,10 @@
                 [self.view layoutIfNeeded];
                 [self interfaceOrientation:orientation];
             } completion:^(BOOL finished) {
+                if (self.fullScreen) {
+                    [superview insertSubview:self.blackView belowSubview:self.view];
+                    self.blackView.frame = superview.bounds;
+                }
                 if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
             }];
         } else {
@@ -193,6 +201,10 @@
             [UIView animateWithDuration:0 animations:^{
                 [self interfaceOrientation:orientation];
             }];
+            if (self.fullScreen) {
+                [superview insertSubview:self.blackView belowSubview:self.view];
+                self.blackView.frame = superview.bounds;
+            }
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
         }
         return;
@@ -210,11 +222,15 @@
         if (self.roateType == ZFRotateTypeCell) superview = [self.cell viewWithTag:self.playerViewTag];
         else superview = self.containerView;
         self.fullScreen = NO;
+        if (self.blackView.superview != nil) [self.blackView removeFromSuperview];
     }
     frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [UIApplication sharedApplication].statusBarOrientation = orientation;
-    
+#pragma clang diagnostic pop
+
     /// 处理8.0系统键盘
     if (SysVersion >= 8.0 && SysVersion < 9.0) {
         NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
@@ -240,6 +256,10 @@
         } completion:^(BOOL finished) {
             [superview addSubview:self.view];
             self.view.frame = superview.bounds;
+            if (self.fullScreen) {
+                [superview insertSubview:self.blackView belowSubview:self.view];
+                self.blackView.frame = superview.bounds;
+            }
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
         }];
     } else {
@@ -247,6 +267,10 @@
         [superview addSubview:self.view];
         self.view.frame = superview.bounds;
         [self.view layoutIfNeeded];
+        if (self.fullScreen) {
+            [superview insertSubview:self.blackView belowSubview:self.view];
+            self.blackView.frame = superview.bounds;
+        }
         if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
     }
 }
@@ -343,6 +367,14 @@
 /// 是否支持 LandscapeRight
 - (BOOL)isSupportedLandscapeRight {
     return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeRight;
+}
+
+- (UIView *)blackView {
+    if (!_blackView) {
+        _blackView = [UIView new];
+        _blackView.backgroundColor = [UIColor blackColor];
+    }
+    return _blackView;
 }
 
 #pragma mark - setter

@@ -18,10 +18,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 
 @interface ZFFullScreenViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
-@property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
-@property (nonatomic, strong) UIButton *playBtn;
-@property (nonatomic, strong) NSArray <NSURL *>*assetURLs;
 
 @end
 
@@ -29,10 +26,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStylePlain target:self action:@selector(pushNewVC)];
-    [self.view addSubview:self.containerView];
+    self.view.backgroundColor = [UIColor blackColor];
     @weakify(self)
     self.controlView.backBtnClickCallback = ^{
         @strongify(self)
@@ -61,31 +55,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.player.viewControllerDisappear = YES;
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    CGFloat x = 0;
-    CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-    CGFloat w = CGRectGetWidth(self.view.frame);
-    CGFloat h = w*9/16;
-    self.containerView.frame = CGRectMake(x, y, w, h);
-    
-    w = 44;
-    h = w;
-    x = (CGRectGetWidth(self.containerView.frame)-w)/2;
-    y = (CGRectGetHeight(self.containerView.frame)-h)/2;
-    self.playBtn.frame = CGRectMake(x, y, w, h);
-}
-
-- (void)playClick:(UIButton *)sender {
-    [self.player playTheIndex:0];
-    [self.controlView showTitle:@"视频标题" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
-}
-
-- (void)pushNewVC {
-    ZFSmallPlayViewController *vc = [[ZFSmallPlayViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if (self.player.isFullScreen) {
         return UIStatusBarStyleLightContent;
@@ -109,29 +78,16 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     return UIInterfaceOrientationMaskLandscape;
 }
 
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationLandscapeRight;
+}
+
 - (ZFPlayerControlView *)controlView {
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
         _controlView.fastViewAnimated = YES;
     }
     return _controlView;
-}
-
-- (UIView *)containerView {
-    if (!_containerView) {
-        _containerView = [UIView new];
-        _containerView.backgroundColor = [UIColor orangeColor];
-    }
-    return _containerView;
-}
-
-- (UIButton *)playBtn {
-    if (!_playBtn) {
-        _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playBtn setImage:[UIImage imageNamed:@"new_allPlay_44x44_"] forState:UIControlStateNormal];
-        [_playBtn addTarget:self action:@selector(playClick:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _playBtn;
 }
 
 @end
