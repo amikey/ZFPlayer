@@ -354,6 +354,10 @@
     return _options;
 }
 
+- (CGSize)presentationSize {
+    return self.player.naturalSize;
+}
+
 #pragma mark - setter
 
 - (void)setPlayState:(ZFPlayerPlaybackState)playState {

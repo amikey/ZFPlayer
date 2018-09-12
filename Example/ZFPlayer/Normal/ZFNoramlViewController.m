@@ -13,12 +13,14 @@
 #import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import "ZFSmallPlayViewController.h"
+#import "UIImageView+ZFCache.h"
+#import "ZFUtilities.h"
 
 static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240";
 
 @interface ZFNoramlViewController ()
 @property (nonatomic, strong) ZFPlayerController *player;
-@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) UIImageView *containerView;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 @property (nonatomic, strong) UIButton *playBtn;
 @property (nonatomic, strong) UIButton *changeBtn;
@@ -181,7 +183,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
-    self.player.currentPlayerManager.muted = !self.player.currentPlayerManager.muted;
+//    self.player.currentPlayerManager.muted = !self.player.currentPlayerManager.muted;
 }
 
 - (ZFPlayerControlView *)controlView {
@@ -192,10 +194,10 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     return _controlView;
 }
 
-- (UIView *)containerView {
+- (UIImageView *)containerView {
     if (!_containerView) {
-        _containerView = [UIView new];
-        _containerView.backgroundColor = [UIColor purpleColor];
+        _containerView = [UIImageView new];
+        [_containerView setImageWithURLString:kVideoCover placeholder:[ZFUtilities imageWithColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1] size:CGSizeMake(1, 1)]];
     }
     return _containerView;
 }

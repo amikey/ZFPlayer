@@ -329,6 +329,10 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     return _rate == 0 ?1:_rate;
 }
 
+- (CGSize)presentationSize {
+    return self.player.naturalSize;
+}
+
 #pragma mark - setter
 
 - (void)setPlayState:(ZFPlayerPlaybackState)playState {

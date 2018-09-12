@@ -37,8 +37,7 @@
 /*!
  *  Refresh interval for timed observations of AVPlayer
  */
-static float const kTimeRefreshInterval = 0.5;
-
+static float const kTimeRefreshInterval          = 0.5;
 static NSString *const kStatus                   = @"status";
 static NSString *const kLoadedTimeRanges         = @"loadedTimeRanges";
 static NSString *const kPlaybackBufferEmpty      = @"playbackBufferEmpty";
@@ -383,13 +382,11 @@ static NSString *const kPresentationSize         = @"presentationSize";
     });
 }
 
-
 #pragma mark - getter
 
 - (UIView *)view {
     if (!_view) {
         _view = [[ZFPlayerPresentView alloc] init];
-        _view.backgroundColor = [UIColor blackColor];
     }
     return _view;
 }
