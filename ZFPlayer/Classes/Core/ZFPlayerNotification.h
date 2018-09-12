@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, ZFPlayerBackgroundState) {
 
 @property (nonatomic, copy, nullable) void(^categoryChange)(ZFPlayerNotification *registrar);
 
-@property (nonatomic, copy, readwrite, nullable) void(^volumeChanged)(float volume);
+@property (nonatomic, copy, nullable) void(^volumeChanged)(float volume);
 
 - (void)addNotification;
 

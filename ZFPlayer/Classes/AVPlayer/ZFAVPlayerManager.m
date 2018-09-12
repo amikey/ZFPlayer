@@ -25,11 +25,7 @@
 #import "ZFAVPlayerManager.h"
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#if __has_include(<ZFPlayer/ZFPlayer.h>)
-#import <ZFPlayer/ZFPlayer.h>
-#else
 #import "ZFPlayer.h"
-#endif
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"

@@ -25,11 +25,7 @@
 #import "ZFPortraitControlView.h"
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
-#if __has_include(<ZFPlayer/ZFPlayer.h>)
-#import <ZFPlayer/ZFPlayer.h>
-#else
 #import "ZFPlayer.h"
-#endif
 
 @interface ZFPortraitControlView () <ZFSliderViewDelegate>
 /// 底部工具栏

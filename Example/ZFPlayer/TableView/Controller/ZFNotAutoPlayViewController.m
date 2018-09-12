@@ -12,6 +12,7 @@
 #import <ZFPlayer/ZFPlayerControlView.h>
 #import <ZFPlayer/KSMediaPlayerManager.h>
 #import <ZFPlayer/ZFIJKPlayerManager.h>
+#import "ZFPlayerDetailViewController.h"
 #import "ZFTableViewCell.h"
 #import "ZFTableData.h"
 
@@ -156,7 +157,15 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+    ZFPlayerDetailViewController *detailVC = [ZFPlayerDetailViewController new];
+    detailVC.player = self.player;
+    @weakify(self)
+    detailVC.detailVCPopCallback = ^{
+        @strongify(self)
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        self.player.containerView = [cell viewWithTag:100];
+    };
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

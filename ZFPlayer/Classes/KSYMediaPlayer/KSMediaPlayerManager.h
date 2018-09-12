@@ -26,10 +26,7 @@
 #import <Foundation/Foundation.h>
 #import "ZFPlayerMediaPlayback.h"
 
-#if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
-
 @interface KSMediaPlayerManager : NSObject <ZFPlayerMediaPlayback>
 
 @end
 
-#endif
