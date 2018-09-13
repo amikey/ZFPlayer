@@ -102,8 +102,8 @@
     self.playerViewTag = playerViewTag;
 }
 
-- (void)cellSmallModelRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
-    self.roateType = ZFRotateTypeCellSmall;
+- (void)cellOtherModelRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
+    self.roateType = ZFRotateTypeCellOther;
     self.view = rotateView;
     self.containerView = containerView;
 }

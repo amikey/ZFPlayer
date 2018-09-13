@@ -94,6 +94,23 @@
     return player;
 }
 
+- (void)updateScrollViewPlayerToCell {
+    if (self.currentPlayerManager.view && self.playingIndexPath && self.containerViewTag) {
+        UIView *cell = [self.scrollView zf_getCellForIndexPath:self.playingIndexPath];
+        self.containerView = [cell viewWithTag:self.containerViewTag];
+        [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
+        [self layoutPlayerSubViews];
+    }
+}
+
+- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView {
+    if (self.currentPlayerManager.view && self.containerView) {
+        self.containerView = containerView;
+        [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.containerView];
+        [self layoutPlayerSubViews];
+    }
+}
+
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag {
     ZFPlayerController *player = [self init];
     player.scrollView = scrollView;
@@ -779,7 +796,7 @@
     [self.smallFloatView addSubview:self.currentPlayerManager.view];
     self.currentPlayerManager.view.frame = self.smallFloatView.bounds;
     self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.orientationObserver cellSmallModelRotateView:self.currentPlayerManager.view containerView:self.smallFloatView];
+    [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.smallFloatView];
 }
 
 #pragma mark - setter

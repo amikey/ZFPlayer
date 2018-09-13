@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, ZFFullScreenMode) {
 typedef NS_ENUM(NSUInteger, ZFRotateType) {
     ZFRotateTypeNormal,         // Normal
     ZFRotateTypeCell,           // Cell
-    ZFRotateTypeCellSmall       // Cell mode small window
+    ZFRotateTypeCellOther       // Cell mode add to other view
 };
 
 /**
@@ -62,8 +62,8 @@ typedef NS_OPTIONS(NSUInteger, ZFInterfaceOrientationMask) {
            rotateViewAtCell:(UIView *)cell
               playerViewTag:(NSInteger)playerViewTag;
 
-/// cell small window rotation
-- (void)cellSmallModelRotateView:(UIView *)rotateView
+/// cell other view rotation
+- (void)cellOtherModelRotateView:(UIView *)rotateView
                    containerView:(UIView *)containerView;
 
 /// Container view of a full screen state player.

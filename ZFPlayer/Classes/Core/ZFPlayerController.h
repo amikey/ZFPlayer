@@ -81,6 +81,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag;
 
+- (void)updateScrollViewPlayerToCell;
+
+- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
+
 @end
 
 @interface ZFPlayerController (ZFPlayerTimeControl)

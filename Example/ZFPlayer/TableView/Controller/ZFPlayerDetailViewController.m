@@ -19,7 +19,9 @@
 static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240";
 
 @interface ZFPlayerDetailViewController ()
+
 @property (nonatomic, strong) UIImageView *containerView;
+@property (nonatomic, strong) UIButton *playBtn;
 
 @end
 
@@ -29,7 +31,8 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.containerView];
-    self.player.containerView = self.containerView;
+    [self.containerView addSubview:self.playBtn];
+    [self.player updateNoramlPlayerWithContainerView:self.containerView];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -39,6 +42,12 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     CGFloat w = CGRectGetWidth(self.view.frame);
     CGFloat h = w*9/16;
     self.containerView.frame = CGRectMake(x, y, w, h);
+    
+    w = 44;
+    h = w;
+    x = (CGRectGetWidth(self.containerView.frame)-w)/2;
+    y = (CGRectGetHeight(self.containerView.frame)-h)/2;
+    self.playBtn.frame = CGRectMake(x, y, w, h);
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
@@ -47,6 +56,13 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
             self.detailVCPopCallback();
         }
     }
+}
+
+- (void)playClick:(UIButton *)sender {
+    if (self.detailVCPlayCallback) {
+        self.detailVCPlayCallback();
+    }
+    [self.player updateNoramlPlayerWithContainerView:self.containerView];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -81,6 +97,15 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         [_containerView setImageWithURLString:kVideoCover placeholder:[ZFUtilities imageWithColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1] size:CGSizeMake(1, 1)]];
     }
     return _containerView;
+}
+
+- (UIButton *)playBtn {
+    if (!_playBtn) {
+        _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_playBtn setImage:[UIImage imageNamed:@"new_allPlay_44x44_"] forState:UIControlStateNormal];
+        [_playBtn addTarget:self action:@selector(playClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _playBtn;
 }
 
 @end

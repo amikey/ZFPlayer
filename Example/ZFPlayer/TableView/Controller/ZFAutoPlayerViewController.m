@@ -167,13 +167,27 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    /// 如果正在播放的index和当前点击的index不同，则停止当前播放的index
+    if (self.player.playingIndexPath != indexPath) {
+        [self.player stopCurrentPlayingCell];
+    }
+    /// 如果没有播放，则点击进详情页会自动播放
+    if (!self.player.currentPlayerManager.isPlaying) {
+        [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+    }
+    /// 到详情页
     ZFPlayerDetailViewController *detailVC = [ZFPlayerDetailViewController new];
     detailVC.player = self.player;
     @weakify(self)
+    /// 详情页返回的回调
     detailVC.detailVCPopCallback = ^{
         @strongify(self)
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        self.player.containerView = [cell viewWithTag:100];
+        [self.player updateScrollViewPlayerToCell];
+    };
+    /// 详情页点击播放的回调
+    detailVC.detailVCPlayCallback = ^{
+        @strongify(self)
+        [self zf_playTheVideoAtIndexPath:indexPath];
     };
     [self.navigationController pushViewController:detailVC animated:YES];
 }
