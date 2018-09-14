@@ -69,6 +69,15 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 //        }
     };
     
+    NSLog(@"SCREEN_HEIGHTL = %f,SCREEN_WIDTHL = %f",ZFPlayer_ScreenHeight,ZFPlayer_ScreenWidth);
+    NSLog(@"%d",(int)((ZFPlayer_ScreenHeight/ZFPlayer_ScreenWidth)*100));
+    if ((int)((ZFPlayer_ScreenHeight/ZFPlayer_ScreenWidth)*100) == 216) {
+        NSLog(@"YES,we can use it!");
+    }else{
+        NSLog(@"NO,we can`t use it!");
+    }
+    
+    
     self.assetURLs = @[[NSURL URLWithString:@"https://www.apple.com/105/media/us/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-tpl-cc-us-20170912_1280x720h.mp4"],
                        [NSURL URLWithString:@"https://www.apple.com/105/media/cn/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/bruce/mac-bruce-tpl-cn-2018_1280x720h.mp4"],
                        [NSURL URLWithString:@"https://www.apple.com/105/media/us/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/peter/mac-peter-tpl-cc-us-2018_1280x720h.mp4"],
