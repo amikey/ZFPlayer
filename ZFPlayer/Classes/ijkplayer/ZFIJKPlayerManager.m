@@ -46,6 +46,7 @@
 @synthesize loadState                      = _loadState;
 @synthesize assetURL                       = _assetURL;
 @synthesize playerPrepareToPlay            = _playerPrepareToPlay;
+@synthesize playerReadyToPlay              = _playerReadyToPlay;
 @synthesize playerPlayStateChanged         = _playerPlayStateChanged;
 @synthesize playerLoadStateChanged         = _playerLoadStateChanged;
 @synthesize seekTime                       = _seekTime;
@@ -240,6 +241,7 @@
     [self play];
     self.muted = self.muted;
     ZFPlayerLog(@"mediaIsPrepareToPlayDidChange");
+    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
 }
 
 

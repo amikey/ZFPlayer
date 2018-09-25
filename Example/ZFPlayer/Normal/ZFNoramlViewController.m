@@ -70,6 +70,10 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         [self.player stop];
     };
     
+    self.player.playerReadyToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
+        NSLog(@"======开始播放了");
+    };
+    
     NSLog(@"SCREEN_HEIGHTL = %f,SCREEN_WIDTHL = %f",ZFPlayer_ScreenHeight,ZFPlayer_ScreenWidth);
     NSLog(@"%d",(int)((ZFPlayer_ScreenHeight/ZFPlayer_ScreenWidth)*100));
     if ((int)((ZFPlayer_ScreenHeight/ZFPlayer_ScreenWidth)*100) == 216) {
@@ -85,7 +89,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
                        [NSURL URLWithString:@"https://www.apple.com/105/media/us/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/grimes/mac-grimes-tpl-cc-us-2018_1280x720h.mp4"],
                        [NSURL URLWithString:@"http://flv3.bn.netease.com/tvmrepo/2018/6/H/9/EDJTRBEH9/SD/EDJTRBEH9-mobile.mp4"],
                        [NSURL URLWithString:@"http://flv3.bn.netease.com/tvmrepo/2018/6/9/R/EDJTRAD9R/SD/EDJTRAD9R-mobile.mp4"],
-                       [NSURL URLWithString:@"http://dlhls.cdn.zhanqi.tv/zqlive/34338_PVMT5.m3u8"],
+                       [NSURL URLWithString:@"http://www.flashls.org/playlists/test_001/stream_1000k_48k_640x360.m3u8"],
                        [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-video/7_517c8948b166655ad5cfb563cc7fbd8e.mp4"],
                        [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-smallvideo/68_20df3a646ab5357464cd819ea987763a.mp4"],
                        [NSURL URLWithString:@"http://tb-video.bdstatic.com/tieba-smallvideo/118_570ed13707b2ccee1057099185b115bf.mp4"],

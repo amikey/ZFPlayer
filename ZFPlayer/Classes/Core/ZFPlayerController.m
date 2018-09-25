@@ -133,6 +133,11 @@
         }
     };
     
+    self.currentPlayerManager.playerReadyToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
+        @strongify(self)
+        if (self.playerReadyToPlay) self.playerReadyToPlay(asset,assetURL);
+    };
+    
     self.currentPlayerManager.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         @strongify(self)
         if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(asset,currentTime,duration);
@@ -409,6 +414,10 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSURL * _Nonnull))playerReadyToPlay {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
 - (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSTimeInterval, NSTimeInterval))playerPlayTimeChanged {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -492,6 +501,10 @@
 
 - (void)setPlayerPrepareToPlay:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSURL * _Nonnull))playerPrepareToPlay {
     objc_setAssociatedObject(self, @selector(playerPrepareToPlay), playerPrepareToPlay, OBJC_ASSOCIATION_COPY);
+}
+
+- (void)setPlayerReadyToPlay:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSURL * _Nonnull))playerReadyToPlay {
+    objc_setAssociatedObject(self, @selector(playerReadyToPlay), playerReadyToPlay, OBJC_ASSOCIATION_COPY);
 }
 
 - (void)setPlayerPlayTimeChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, NSTimeInterval, NSTimeInterval))playerPlayTimeChanged {

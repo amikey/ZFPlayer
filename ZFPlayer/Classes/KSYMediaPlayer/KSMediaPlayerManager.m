@@ -51,6 +51,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 @synthesize loadState                      = _loadState;
 @synthesize assetURL                       = _assetURL;
 @synthesize playerPrepareToPlay            = _playerPrepareToPlay;
+@synthesize playerReadyToPlay              = _playerReadyToPlay;
 @synthesize playerPlayStateChanged         = _playerPlayStateChanged;
 @synthesize playerLoadStateChanged         = _playerLoadStateChanged;
 @synthesize seekTime                       = _seekTime;
@@ -240,6 +241,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     }
     [self play];
     self.player.shouldMute = self.muted;
+    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
     /// 需要延迟改为ok状态，不然显示会有一点问题。
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
@@ -283,7 +285,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 /// 播放器首帧出现
 - (void)videoFirstFrame:(NSNotification *)notify {
-    
+
 }
 
 /// 播放状态改变

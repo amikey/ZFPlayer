@@ -115,8 +115,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 /// If you point the controlView, The following block cannot be called outside, only for `ZFPlayerController` calls.
 ///------------------------------------
 
-/// The block invoked when the player is Ready to play.
+/// The block invoked when the player is Prepare to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
+
+/// The block invoked when the player is Ready to play.
+@property (nonatomic, copy, nullable) void(^playerReadyToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 
 /// The block invoked when the player play progress changed.
 @property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval currentTime, NSTimeInterval duration);

@@ -108,6 +108,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 @synthesize loadState                      = _loadState;
 @synthesize assetURL                       = _assetURL;
 @synthesize playerPrepareToPlay            = _playerPrepareToPlay;
+@synthesize playerReadyToPlay              = _playerReadyToPlay;
 @synthesize playerPlayStateChanged         = _playerPlayStateChanged;
 @synthesize playerLoadStateChanged         = _playerLoadStateChanged;
 @synthesize seekTime                       = _seekTime;
@@ -162,6 +163,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 - (void)stop {
     [_playerItemKVO safelyRemoveAllObservers];
     self.playState = ZFPlayerPlayStatePlayStopped;
+    self.loadState = ZFPlayerLoadStateUnknown;
     if (self.player.rate != 0) [self.player pause];
     [self.player removeTimeObserver:_timeObserver];
     _timeObserver = nil;
@@ -337,10 +339,15 @@ static NSString *const kPresentationSize         = @"presentationSize";
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([keyPath isEqualToString:kStatus]) {
             if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+                /// 第一次初始化
+                if (self.loadState == ZFPlayerLoadStatePrepare) {
+                    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
+                }
+                
                 self.loadState = ZFPlayerLoadStatePlaythroughOK;
                 if (self.seekTime) {
                     [self seekToTime:self.seekTime completionHandler:nil];
-                    self.seekTime = 0; // 滞空, 防止下次播放出错
+                    self.seekTime = 0;
                 }
                 if (self.isPlaying) [self play];
                 self.player.muted = self.muted;

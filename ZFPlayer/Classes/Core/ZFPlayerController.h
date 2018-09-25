@@ -151,8 +151,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current player controller is disappear, not dealloc
 @property (nonatomic, getter=isViewControllerDisappear) BOOL viewControllerDisappear;
 
-/// The block invoked when the player is Ready to play.
+/// The block invoked when the player is Prepare to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
+
+/// The block invoked when the player is Ready to play.
+@property (nonatomic, copy, nullable) void(^playerReadyToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 
 /// The block invoked when the player play progress changed.
 @property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval currentTime, NSTimeInterval duration);
