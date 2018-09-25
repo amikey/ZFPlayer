@@ -59,7 +59,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     /// 播放完自动播放下一个
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-        [self.player.currentPlayerManager replay];
+//        [self.player.currentPlayerManager replay];
 //        [self.player playTheNext];
 //        if (!self.player.isLastAssetURL) {
 //            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
@@ -67,6 +67,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 //        } else {
 //            [self.player stop];
 //        }
+        [self.player stop];
     };
     
     NSLog(@"SCREEN_HEIGHTL = %f,SCREEN_WIDTHL = %f",ZFPlayer_ScreenHeight,ZFPlayer_ScreenWidth);

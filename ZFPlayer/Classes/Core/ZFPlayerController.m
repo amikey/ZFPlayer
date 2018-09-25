@@ -126,6 +126,7 @@
         self.currentPlayerManager.view.hidden = NO;
         [self.notification addNotification];
         [self addDeviceOrientationObserver];
+        [self layoutPlayerSubViews];
         if (self.playerPrepareToPlay) self.playerPrepareToPlay(asset,assetURL);
         if ([self.controlView respondsToSelector:@selector(videoPlayer:prepareToPlay:)]) {
             [self.controlView videoPlayer:self prepareToPlay:assetURL];
@@ -306,7 +307,6 @@
     }
     [self.currentPlayerManager stop];
     [self.currentPlayerManager.view removeFromSuperview];
-    self.currentPlayerManager.view.hidden = YES;
 }
 
 - (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager {
