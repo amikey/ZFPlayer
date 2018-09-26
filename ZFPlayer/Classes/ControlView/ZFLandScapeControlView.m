@@ -117,7 +117,7 @@
     min_w = min_view_w;
     self.bottomToolView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
-    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: min_margin;
+    min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: 15;
     min_y = 32;
     min_w = 30;
     min_h = 30;
