@@ -140,7 +140,7 @@ Rotate the video the viewController must implement
 
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
-- QQ群: (付费群，伸手党闪)
+- QQ群: (付费群)
 
 ![](https://upload-images.jianshu.io/upload_images/635942-c20708c913c591a0.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -148,8 +148,8 @@ Rotate the video the viewController must implement
 
 如果ZFPlayer在开发中有帮助到你、如果你需要技术支持或者你需要定制功能，都可以拼命打赏我！
 
-![](http://upload-images.jianshu.io/upload_images/635942-8fc0c357df8c4433.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-                  
+![支付2.jpg](https://upload-images.jianshu.io/upload_images/635942-555f4058de228328.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)      
+
 ## License
 
 ZFPlayer is available under the MIT license. See the LICENSE file for more info.
