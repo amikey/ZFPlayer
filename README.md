@@ -148,7 +148,7 @@ Rotate the video the viewController must implement
 
 如果ZFPlayer在开发中有帮助到你、如果你需要技术支持或者你需要定制功能，都可以拼命打赏我！
 
-![支付2.jpg](https://upload-images.jianshu.io/upload_images/635942-555f4058de228328.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)      
+![支付.jpg](https://upload-images.jianshu.io/upload_images/635942-b9b836cfbb7a5e44.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## License
 
