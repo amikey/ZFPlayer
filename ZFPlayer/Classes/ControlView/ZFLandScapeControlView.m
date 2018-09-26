@@ -94,11 +94,11 @@
     min_x = 0;
     min_y = 0;
     min_w = min_view_w;
-    min_h = 80;
+    min_h = iPhoneX ? 110 : 80;
     self.topToolView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
     min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: 15;
-    min_y = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 15: [UIApplication sharedApplication].statusBarFrame.size.height > 0 ? [UIApplication sharedApplication].statusBarFrame.size.height : 20;
+    min_y = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 15: (iPhoneX ? 40 : 20);
     min_w = 40;
     min_h = 40;
     self.backBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
@@ -111,13 +111,14 @@
     self.titleLabel.centerY = self.backBtn.centerY;
     
     min_h = 73;
+    min_h = iPhoneX ? 100 : 73;
     min_x = 0;
     min_y = min_view_h - min_h;
     min_w = min_view_w;
     self.bottomToolView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
     min_x = (iPhoneX && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) ? 44: min_margin;
-    min_y = iPhoneX ?5:32;
+    min_y = 32;
     min_w = 30;
     min_h = 30;
     self.playOrPauseBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
@@ -275,11 +276,28 @@
     self.lockBtn.hidden = fullScreenMode == ZFFullScreenModePortrait;
 }
 
+/// 调节播放进度slider和当前时间更新
+- (void)sliderValueChanged:(CGFloat)value currentTimeString:(NSString *)timeString {
+    self.slider.value = value;
+    self.currentTimeLabel.text = timeString;
+    self.slider.isdragging = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.slider.sliderBtn.transform = CGAffineTransformMakeScale(1.2, 1.2);
+    }];
+}
+
+/// 滑杆结束滑动
+- (void)sliderChangeEnded {
+    self.slider.isdragging = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.slider.sliderBtn.transform = CGAffineTransformIdentity;
+    }];
+}
+
 #pragma mark - action
 
 - (void)backBtnClickAction:(UIButton *)sender {
     self.lockBtn.selected = NO;
-//    [self.player enterFullScreen:NO animated:YES];
     self.player.lockedScreen = NO;
     self.lockBtn.selected = NO;
     if (self.player.orientationObserver.supportInterfaceOrientation & ZFInterfaceOrientationMaskPortrait) {

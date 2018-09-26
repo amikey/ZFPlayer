@@ -287,6 +287,24 @@
     self.player.orientationObserver.fullScreenMode = fullScreenMode;
 }
 
+/// 调节播放进度slider和当前时间更新
+- (void)sliderValueChanged:(CGFloat)value currentTimeString:(NSString *)timeString {
+    self.slider.value = value;
+    self.currentTimeLabel.text = timeString;
+    self.slider.isdragging = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.slider.sliderBtn.transform = CGAffineTransformMakeScale(1.2, 1.2);
+    }];
+}
+
+/// 滑杆结束滑动
+- (void)sliderChangeEnded {
+    self.slider.isdragging = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.slider.sliderBtn.transform = CGAffineTransformIdentity;
+    }];
+}
+
 #pragma mark - getter
 
 - (UIView *)topToolView {

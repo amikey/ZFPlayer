@@ -74,6 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playOrPause;
 /// 播放按钮状态
 - (void)playBtnSelectedState:(BOOL)selected;
+/// 调节播放进度slider和当前时间更新
+- (void)sliderValueChanged:(CGFloat)value currentTimeString:(NSString *)timeString;
+/// 滑杆结束滑动
+- (void)sliderChangeEnded;
 
 @end
 

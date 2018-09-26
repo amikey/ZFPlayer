@@ -34,10 +34,6 @@ static const CGFloat kProgressH = 2.0;
 /** 拖动slider动画的时间*/
 static const CGFloat kAnimate = 0.3;
 
-@interface ZFSliderButton : UIButton
-
-@end
-
 @implementation ZFSliderButton
 
 // 重写此方法将按钮的点击范围扩大
@@ -171,7 +167,7 @@ static const CGFloat kAnimate = 0.3;
 
 - (void)setValue:(float)value {
     _value = value;
-    CGFloat finishValue  = self.bgProgressView.width * value;
+    CGFloat finishValue = self.bgProgressView.width * value;
     self.sliderProgressView.width = finishValue;
     self.sliderBtn.left = (self.width - self.sliderBtn.width) * value;
     self.lastPoint = self.sliderBtn.center;
