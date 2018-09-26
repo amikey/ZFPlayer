@@ -238,23 +238,23 @@
 }
 
 - (void)showControlView {
-    self.topToolView.alpha = 1;
-    self.bottomToolView.alpha = 1;
-    self.isShow = YES;
-    self.topToolView.y = 0;
-    self.bottomToolView.y = self.height - self.bottomToolView.height;
-    self.playOrPauseBtn.alpha = 1;
-    self.player.statusBarHidden = NO;
+    self.topToolView.alpha           = 1;
+    self.bottomToolView.alpha        = 1;
+    self.isShow                      = YES;
+    self.topToolView.y               = 0;
+    self.bottomToolView.y            = self.height - self.bottomToolView.height;
+    self.playOrPauseBtn.alpha        = 1;
+    self.player.statusBarHidden      = NO;
 }
 
 - (void)hideControlView {
-    self.isShow = NO;
-    self.topToolView.y = -self.topToolView.height;
-    self.bottomToolView.y = self.height;
-    self.playOrPauseBtn.alpha = 0;
-    self.player.statusBarHidden = NO;
-    self.topToolView.alpha = 0;
-    self.bottomToolView.alpha = 0;
+    self.isShow                      = NO;
+    self.topToolView.y               = -self.topToolView.height;
+    self.bottomToolView.y            = self.height;
+    self.playOrPauseBtn.alpha        = 0;
+    self.player.statusBarHidden      = NO;
+    self.topToolView.alpha           = 0;
+    self.bottomToolView.alpha        = 0;
 }
 
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch {

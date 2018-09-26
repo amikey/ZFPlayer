@@ -48,7 +48,7 @@
 
 - (NSInteger)zf_selectedIndex {
     NSInteger index = [self zf_selectedIndex];
-    if (index > self.viewControllers.count) { return 0; }
+    if (index > self.viewControllers.count) return 0;
     return index;
 }
 

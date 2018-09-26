@@ -213,36 +213,51 @@
     }
 }
 
+#pragma mark -
+
+/// 重置ControlView
+- (void)resetControlView {
+    self.slider.value                = 0;
+    self.slider.bufferValue          = 0;
+    self.currentTimeLabel.text       = @"00:00";
+    self.totalTimeLabel.text         = @"00:00";
+    self.backgroundColor             = [UIColor clearColor];
+    self.playOrPauseBtn.selected     = YES;
+    self.titleLabel.text             = @"";
+    self.topToolView.alpha           = 1;
+    self.bottomToolView.alpha        = 1;
+}
+
 - (void)showControlView {
-    self.lockBtn.alpha = 1;
-    self.isShow = YES;
+    self.lockBtn.alpha               = 1;
+    self.isShow                      = YES;
     if (self.player.isLockedScreen) {
-        self.topToolView.y = -self.topToolView.height;
-        self.bottomToolView.y = self.height;
+        self.topToolView.y           = -self.topToolView.height;
+        self.bottomToolView.y        = self.height;
     } else {
-        self.topToolView.y = 0;
-        self.bottomToolView.y = self.height - self.bottomToolView.height;
+        self.topToolView.y           = 0;
+        self.bottomToolView.y        = self.height - self.bottomToolView.height;
     }
-    self.lockBtn.left = iPhoneX ? 50: 18;
-    self.player.statusBarHidden = NO;
+    self.lockBtn.left                = iPhoneX ? 50: 18;
+    self.player.statusBarHidden      = NO;
     if (self.player.isLockedScreen) {
-        self.topToolView.alpha = 0;
-        self.bottomToolView.alpha = 0;
+        self.topToolView.alpha       = 0;
+        self.bottomToolView.alpha    = 0;
     } else {
-        self.topToolView.alpha = 1;
-        self.bottomToolView.alpha = 1;
+        self.topToolView.alpha       = 1;
+        self.bottomToolView.alpha    = 1;
     }
 }
 
 - (void)hideControlView {
-    self.isShow = NO;
-    self.topToolView.y = -self.topToolView.height;
-    self.bottomToolView.y = self.height;
-    self.lockBtn.left = iPhoneX ? -82: -47;
-    self.topToolView.alpha = 0;
-    self.bottomToolView.alpha = 0;
-    self.lockBtn.alpha = 0;
-    self.player.statusBarHidden = YES;
+    self.isShow                      = NO;
+    self.topToolView.y               = -self.topToolView.height;
+    self.bottomToolView.y            = self.height;
+    self.lockBtn.left                = iPhoneX ? -82: -47;
+    self.topToolView.alpha           = 0;
+    self.bottomToolView.alpha        = 0;
+    self.lockBtn.alpha               = 0;
+    self.player.statusBarHidden      = YES;
 }
 
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch {
@@ -325,21 +340,6 @@
 - (void)lockButtonClickAction:(UIButton *)sender {
     sender.selected = !sender.selected;
     self.player.lockedScreen = sender.selected;
-}
-
-#pragma mark - 
-
-/// 重置ControlView
-- (void)resetControlView {
-    self.slider.value                = 0;
-    self.slider.bufferValue          = 0;
-    self.currentTimeLabel.text       = @"00:00";
-    self.totalTimeLabel.text         = @"00:00";
-    self.backgroundColor             = [UIColor clearColor];
-    self.playOrPauseBtn.selected     = YES;
-    self.titleLabel.text             = @"";
-    self.topToolView.alpha           = 1;
-    self.bottomToolView.alpha        = 1;
 }
 
 #pragma mark - getter
