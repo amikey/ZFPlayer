@@ -166,6 +166,7 @@ static const CGFloat kAnimate = 0.3;
 }
 
 - (void)setValue:(float)value {
+    if (isnan(value)) return;
     _value = value;
     CGFloat finishValue = self.bgProgressView.width * value;
     self.sliderProgressView.width = finishValue;
