@@ -59,7 +59,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     /// 播放完自动播放下一个
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
-//        [self.player.currentPlayerManager replay];
+        [self.player.currentPlayerManager replay];
 //        [self.player playTheNext];
 //        if (!self.player.isLastAssetURL) {
 //            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
@@ -67,21 +67,12 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 //        } else {
 //            [self.player stop];
 //        }
-        [self.player stop];
+//        [self.player stop];
     };
     
     self.player.playerReadyToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         NSLog(@"======开始播放了");
     };
-    
-    NSLog(@"SCREEN_HEIGHTL = %f,SCREEN_WIDTHL = %f",ZFPlayer_ScreenHeight,ZFPlayer_ScreenWidth);
-    NSLog(@"%d",(int)((ZFPlayer_ScreenHeight/ZFPlayer_ScreenWidth)*100));
-    if ((int)((ZFPlayer_ScreenHeight/ZFPlayer_ScreenWidth)*100) == 216) {
-        NSLog(@"YES,we can use it!");
-    }else{
-        NSLog(@"NO,we can`t use it!");
-    }
-    
     
     self.assetURLs = @[[NSURL URLWithString:@"https://www.apple.com/105/media/us/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-tpl-cc-us-20170912_1280x720h.mp4"],
                        [NSURL URLWithString:@"https://www.apple.com/105/media/cn/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/bruce/mac-bruce-tpl-cn-2018_1280x720h.mp4"],

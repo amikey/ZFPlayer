@@ -150,6 +150,19 @@
     min_h = 40;
     self.lockBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.lockBtn.centerY = self.centerY;
+    
+    if (!self.isShow) {
+        self.topToolView.y = -self.topToolView.height;
+        self.bottomToolView.y = self.height;
+    } else {
+        if (self.player.isLockedScreen) {
+            self.topToolView.y = -self.topToolView.height;
+            self.bottomToolView.y = self.height;
+        } else {
+            self.topToolView.y = 0;
+            self.bottomToolView.y = self.height - self.bottomToolView.height;
+        }
+    }
 }
 
 - (void)makeSubViewsAction {
@@ -226,6 +239,7 @@
     self.titleLabel.text             = @"";
     self.topToolView.alpha           = 1;
     self.bottomToolView.alpha        = 1;
+    self.isShow                      = NO;
 }
 
 - (void)showControlView {
@@ -254,10 +268,10 @@
     self.topToolView.y               = -self.topToolView.height;
     self.bottomToolView.y            = self.height;
     self.lockBtn.left                = iPhoneX ? -82: -47;
+    self.player.statusBarHidden      = YES;
     self.topToolView.alpha           = 0;
     self.bottomToolView.alpha        = 0;
     self.lockBtn.alpha               = 0;
-    self.player.statusBarHidden      = YES;
 }
 
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch {

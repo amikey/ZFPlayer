@@ -251,8 +251,8 @@
     self.isShow                      = NO;
     self.topToolView.y               = -self.topToolView.height;
     self.bottomToolView.y            = self.height;
-    self.playOrPauseBtn.alpha        = 0;
     self.player.statusBarHidden      = NO;
+    self.playOrPauseBtn.alpha        = 0;
     self.topToolView.alpha           = 0;
     self.bottomToolView.alpha        = 0;
 }

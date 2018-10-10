@@ -97,9 +97,11 @@ static const CGFloat kAnimate = 0.3;
     self.sliderProgressView.centerY = self.height * 0.5;
     self.sliderBtn.centerY          = self.height * 0.5;
     
-    /// 修复slider  bufferProgressP错位问题
+    /// 修复slider  bufferProgress错位问题
     CGFloat finishValue = self.bgProgressView.width * self.bufferValue;
     self.bufferProgressView.width = finishValue;
+    self.sliderProgressView.left = kProgressMargin;
+    self.bufferProgressView.left = kProgressMargin;
     
     CGFloat progressValue  = self.bgProgressView.width * self.value;
     self.sliderProgressView.width = progressValue;
@@ -175,6 +177,7 @@ static const CGFloat kAnimate = 0.3;
 }
 
 - (void)setBufferValue:(float)bufferValue {
+    if (isnan(bufferValue)) return;
     _bufferValue = bufferValue;
     CGFloat finishValue = self.bgProgressView.width * bufferValue;
     self.bufferProgressView.width = finishValue;
@@ -198,6 +201,7 @@ static const CGFloat kAnimate = 0.3;
 }
 
 - (void)setSliderHeight:(CGFloat)sliderHeight {
+    if (isnan(sliderHeight)) return;
     _sliderHeight = sliderHeight;
     self.bgProgressView.height     = sliderHeight;
     self.bufferProgressView.height = sliderHeight;
