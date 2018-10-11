@@ -25,7 +25,7 @@
 #import "ZFLandScapeControlView.h"
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
-#import "ZFPlayer.h"
+#import <ZFPlayer/ZFPlayer.h>
 
 @interface ZFLandScapeControlView () <ZFSliderViewDelegate>
 /// 顶部工具栏

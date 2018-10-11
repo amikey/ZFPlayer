@@ -32,7 +32,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFVolumeBrightnessView.h"
 #import "ZFSmallFloatControlView.h"
-#import "ZFPlayer.h"
+#import <ZFPlayer/ZFPlayer.h>
 
 static const CGFloat ZFPlayerAnimationTimeInterval              = 12.5f;
 static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
@@ -358,15 +358,16 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 /// 滑动结束手势事件
 - (void)gestureEndedPan:(ZFPlayerGestureControl *)gestureControl panDirection:(ZFPanDirection)direction panLocation:(ZFPanLocation)location {
+    @weakify(self)
     if (direction == ZFPanDirectionH && self.sumTime >= 0 && self.player.totalTime > 0) {
-        [self.player seekToTime:self.sumTime completionHandler:nil];
+        [self.player seekToTime:self.sumTime completionHandler:^(BOOL finished) {
+            @strongify(self)
+            /// 左右滑动调节播放进度
+            [self.portraitControlView sliderChangeEnded];
+            [self.landScapeControlView sliderChangeEnded];
+            [self autoFadeOutControlView];
+        }];
         self.sumTime = 0;
-    }
-    /// 左右滑动调节播放进度
-    if (direction == ZFPanDirectionH) {
-        [self.portraitControlView sliderChangeEnded];
-        [self.landScapeControlView sliderChangeEnded];
-        [self autoFadeOutControlView];
     }
 }
 

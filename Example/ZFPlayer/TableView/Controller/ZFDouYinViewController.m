@@ -140,7 +140,7 @@ static NSString *kIdentifier = @"kIdentifier";
     return UIStatusBarAnimationSlide;
 }
 
-#pragma mark - UIScrollViewDelegate
+#pragma mark - UIScrollViewDelegate  列表播放必须实现
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [scrollView zf_scrollViewDidEndDecelerating];

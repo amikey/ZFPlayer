@@ -28,6 +28,7 @@ Before this, you used ZFPlayer, are you worried about encapsulating avplayer ins
 ## Installation
 
 ZFPlayer is available through [CocoaPods](https://cocoapods.org). To install it,use player template simply add the following line to your Podfile:
+只有Core文件夹下代码，使用AVPlayer、IJK、KSY都需要pod单独模块，或者使用自定义播放器管理类，从3.2.0版本开始只提供framework版本，如需定制功能请单独联系作者。
 
 ```objc
 pod 'ZFPlayer', '~> 3.0'

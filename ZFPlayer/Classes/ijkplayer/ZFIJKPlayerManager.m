@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #import "ZFIJKPlayerManager.h"
-#import "ZFPlayer.h"
+#import <ZFPlayer/ZFPlayer.h>
 #if __has_include(<IJKMediaFramework/IJKMediaFramework.h>)
 
 @interface ZFIJKPlayerManager ()

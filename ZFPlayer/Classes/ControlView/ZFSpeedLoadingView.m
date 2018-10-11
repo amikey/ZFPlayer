@@ -8,7 +8,7 @@
 #import "ZFSpeedLoadingView.h"
 #import "ZFNetworkSpeedMonitor.h"
 #import "UIView+ZFFrame.h"
-#import "ZFPlayer.h"
+#import <ZFPlayer/ZFPlayer.h>
 
 @interface ZFSpeedLoadingView ()
 

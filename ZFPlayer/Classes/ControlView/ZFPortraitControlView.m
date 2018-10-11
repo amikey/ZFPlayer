@@ -25,7 +25,7 @@
 #import "ZFPortraitControlView.h"
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
-#import "ZFPlayer.h"
+#import <ZFPlayer/ZFPlayer.h>
 
 @interface ZFPortraitControlView () <ZFSliderViewDelegate>
 /// 底部工具栏

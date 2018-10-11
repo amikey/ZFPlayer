@@ -154,6 +154,7 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (BOOL)prefersStatusBarHidden {
+    /// 如果只是支持iOS9+ 那直接return NO即可，这里为了适配iOS8
     return self.player.isStatusBarHidden;
 }
 
@@ -161,7 +162,7 @@ static NSString *kIdentifier = @"kIdentifier";
     return UIStatusBarAnimationSlide;
 }
 
-#pragma mark - UIScrollViewDelegate
+#pragma mark - UIScrollViewDelegate 列表播放必须实现
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [scrollView zf_scrollViewDidEndDecelerating];

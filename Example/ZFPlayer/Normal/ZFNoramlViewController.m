@@ -41,7 +41,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     [self.containerView addSubview:self.playBtn];
     [self.view addSubview:self.changeBtn];
     [self.view addSubview:self.nextBtn];
-
+    
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
 //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
 //    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
@@ -56,7 +56,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         [self setNeedsStatusBarAppearanceUpdate];
     };
     
-    /// 播放完自动播放下一个
+    /// 播放完成
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
         [self.player.currentPlayerManager replay];
@@ -143,6 +143,8 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 - (void)playClick:(UIButton *)sender {
     [self.player playTheIndex:0];
     [self.controlView showTitle:@"视频标题" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
+    self.controlView.coverImageView.image = [UIImage imageNamed:@"logo"];
+
 }
 
 - (void)nextClick:(UIButton *)sender {
@@ -168,6 +170,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 }
 
 - (BOOL)prefersStatusBarHidden {
+    /// 如果只是支持iOS9+ 那直接return NO即可，这里为了适配iOS8
     return self.player.isStatusBarHidden;
 }
 
