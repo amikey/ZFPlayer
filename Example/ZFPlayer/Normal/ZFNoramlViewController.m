@@ -143,8 +143,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 - (void)playClick:(UIButton *)sender {
     [self.player playTheIndex:0];
     [self.controlView showTitle:@"视频标题" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
-    self.controlView.coverImageView.image = [UIImage imageNamed:@"logo"];
-
 }
 
 - (void)nextClick:(UIButton *)sender {

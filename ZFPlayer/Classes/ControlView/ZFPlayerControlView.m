@@ -34,7 +34,7 @@
 #import "ZFSmallFloatControlView.h"
 #import <ZFPlayer/ZFPlayer.h>
 
-static const CGFloat ZFPlayerAnimationTimeInterval              = 12.5f;
+static const CGFloat ZFPlayerAnimationTimeInterval              = 2.5f;
 static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 
 @interface ZFPlayerControlView () <ZFSliderViewDelegate>
