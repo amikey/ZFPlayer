@@ -81,8 +81,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag;
 
+/**
+ Update the list player's view to the cell
+ */
 - (void)updateScrollViewPlayerToCell;
 
+/**
+ Update the normal player View to the target view
+
+ @param containerView target View
+ */
 - (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
 
 @end

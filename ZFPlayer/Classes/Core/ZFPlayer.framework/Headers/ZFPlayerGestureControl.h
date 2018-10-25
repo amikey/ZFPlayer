@@ -67,16 +67,33 @@ typedef NS_OPTIONS(NSUInteger, ZFPlayerDisableGestureTypes) {
 @interface ZFPlayerGestureControl : NSObject
 
 @property (nonatomic, copy, nullable) BOOL(^triggerCondition)(ZFPlayerGestureControl *control, ZFPlayerGestureType type, UIGestureRecognizer *gesture, UITouch *touch);
+
 @property (nonatomic, copy, nullable) void(^singleTapped)(ZFPlayerGestureControl *control);
+
 @property (nonatomic, copy, nullable) void(^doubleTapped)(ZFPlayerGestureControl *control);
+
 @property (nonatomic, copy, nullable) void(^beganPan)(ZFPlayerGestureControl *control, ZFPanDirection direction, ZFPanLocation location);
+
 @property (nonatomic, copy, nullable) void(^changedPan)(ZFPlayerGestureControl *control, ZFPanDirection direction, ZFPanLocation location, CGPoint velocity);
+
 @property (nonatomic, copy, nullable) void(^endedPan)(ZFPlayerGestureControl *control, ZFPanDirection direction, ZFPanLocation location);
+
 @property (nonatomic, copy, nullable) void(^pinched)(ZFPlayerGestureControl *control, float scale);
 
+@property (nonatomic, strong, readonly) UITapGestureRecognizer *singleTap;
+
+@property (nonatomic, strong, readonly) UITapGestureRecognizer *doubleTap;
+
+@property (nonatomic, strong, readonly) UIPanGestureRecognizer *panGR;
+
+@property (nonatomic, strong, readonly) UIPinchGestureRecognizer *pinchGR;
+
 @property (nonatomic, readonly) ZFPanDirection panDirection;
+
 @property (nonatomic, readonly) ZFPanLocation panLocation;
+
 @property (nonatomic, readonly) ZFPanMovingDirection panMovingDirection;
+
 @property (nonatomic) ZFPlayerDisableGestureTypes disableTypes;
 
 - (void)addGestureToView:(UIView *)view;

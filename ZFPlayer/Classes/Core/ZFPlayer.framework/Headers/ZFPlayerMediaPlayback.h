@@ -111,8 +111,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 @property (nonatomic, readonly) ZFPlayerLoadState loadState;
 
 ///------------------------------------
-/// If you don't point the controlView, you can called the following block.
-/// If you point the controlView, The following block cannot be called outside, only for `ZFPlayerController` calls.
+/// If you don't appoint the controlView, you can called the following blocks.
+/// If you appoint the controlView, The following block cannot be called outside, only for `ZFPlayerController` calls.
 ///------------------------------------
 
 /// The block invoked when the player is Prepare to play.

@@ -54,6 +54,7 @@ typedef NS_OPTIONS(NSUInteger, ZFInterfaceOrientationMask) {
 
 @interface ZFOrientationObserver : NSObject
 
+/// update rotateView and containerView
 - (void)updateRotateView:(UIView *)rotateView
            containerView:(UIView *)containerView;
 
@@ -116,6 +117,7 @@ typedef NS_OPTIONS(NSUInteger, ZFInterfaceOrientationMask) {
 /// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
 
+/// Exit fullScreen
 - (void)exitFullScreenWithAnimated:(BOOL)animated;
 
 @end

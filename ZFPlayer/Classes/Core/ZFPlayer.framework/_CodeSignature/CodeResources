@@ -18,7 +18,7 @@
 		</data>
 		<key>Headers/ZFOrientationObserver.h</key>
 		<data>
-		HqgbaNXVaFtFYdll0o4uZw8nj4U=
+		+sCf1uE409QvYFhgWf5+19Fc15E=
 		</data>
 		<key>Headers/ZFPlayer.h</key>
 		<data>
@@ -26,11 +26,11 @@
 		</data>
 		<key>Headers/ZFPlayerController.h</key>
 		<data>
-		iP/irarfw6E1N+bi5v6SkNN8Blw=
+		cHf21ys4hB1wJixLme+cfT7oTiI=
 		</data>
 		<key>Headers/ZFPlayerGestureControl.h</key>
 		<data>
-		tYy3/7vrIsWeL9//emzJqoxB+Vw=
+		RHf7qDezC4BtkqQ6awwatgr0S4M=
 		</data>
 		<key>Headers/ZFPlayerLogManager.h</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Headers/ZFPlayerMediaPlayback.h</key>
 		<data>
-		WK4zW+yyD42cuS05k00FSdjm8zc=
+		hNvuao1987TwQV2nl0Oo5mfGY14=
 		</data>
 		<key>Headers/ZFPlayerNotification.h</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		OuNgB4pQeHVo4Ki6i1YYGAk/AgI=
+		MTtzQSWhaWSs9ZxHJL5NcLnoz4g=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -104,11 +104,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			HqgbaNXVaFtFYdll0o4uZw8nj4U=
+			+sCf1uE409QvYFhgWf5+19Fc15E=
 			</data>
 			<key>hash2</key>
 			<data>
-			Av78FmuE5kw3ke9WedRLVuOjpYXQYSD2hDB5WBjkEzk=
+			rhosZtIaVcVgPMxjG/o+9uluGKhbXdt1vzqy2TZF/hI=
 			</data>
 		</dict>
 		<key>Headers/ZFPlayer.h</key>
@@ -126,22 +126,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			iP/irarfw6E1N+bi5v6SkNN8Blw=
+			cHf21ys4hB1wJixLme+cfT7oTiI=
 			</data>
 			<key>hash2</key>
 			<data>
-			jQJRCVXQA0nobxNIZSoDPQMdLnUfvUgQacqiuSAZ2uo=
+			uY3664JXTrS4FvDDSyYWmVLcY0LByGpyoS1gjDuWoiM=
 			</data>
 		</dict>
 		<key>Headers/ZFPlayerGestureControl.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			tYy3/7vrIsWeL9//emzJqoxB+Vw=
+			RHf7qDezC4BtkqQ6awwatgr0S4M=
 			</data>
 			<key>hash2</key>
 			<data>
-			OIz0Z1fhdbdy9um2bYxCmiAaGqbTVfgsa0fGUPgSpjI=
+			CqD57VS/AC24WYLUh7ViMoOrxZTpnyp0gfT6H0Q+xHs=
 			</data>
 		</dict>
 		<key>Headers/ZFPlayerLogManager.h</key>
@@ -170,11 +170,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			WK4zW+yyD42cuS05k00FSdjm8zc=
+			hNvuao1987TwQV2nl0Oo5mfGY14=
 			</data>
 			<key>hash2</key>
 			<data>
-			WEYL2RRLfs8BhlzrM1PVCewnU3Mg/FQmRtrZ/zmwg/A=
+			Fq8fZXuha5cGXJ118OiDeEJ0wzZd2h2hVUQYDrYCy6w=
 			</data>
 		</dict>
 		<key>Headers/ZFPlayerNotification.h</key>
