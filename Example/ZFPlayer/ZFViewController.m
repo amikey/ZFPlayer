@@ -26,6 +26,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     self.titles = @[@"键盘支持横屏",
                     @"普通样式",
+                    @"列表HeaderView",
                     @"列表点击播放",
                     @"列表自动播放",
                     @"列表小窗播放",
@@ -38,6 +39,7 @@ static NSString *kIdentifier = @"kIdentifier";
     
     self.viewControllers = @[@"ZFKeyboardViewController",
                              @"ZFNoramlViewController",
+                             @"ZFTableHeaderViewController",
                              @"ZFNotAutoPlayViewController",
                              @"ZFAutoPlayerViewController",
                              @"ZFSmallPlayViewController",

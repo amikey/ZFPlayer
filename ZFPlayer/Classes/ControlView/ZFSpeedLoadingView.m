@@ -57,8 +57,8 @@
     CGFloat min_y = 0;
     CGFloat min_w = 0;
     CGFloat min_h = 0;
-    CGFloat min_view_w = self.width;
-    CGFloat min_view_h = self.height;
+    CGFloat min_view_w = self.zf_width;
+    CGFloat min_view_h = self.zf_height;
     
     min_w = min_view_w;
     min_h = min_view_h;
@@ -70,7 +70,7 @@
     self.loadingView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
     min_x = 0;
-    min_y = self.loadingView.bottom+5;
+    min_y = self.loadingView.zf_bottom+5;
     min_w = min_view_w;
     min_h = 20;
     self.speedTextLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);

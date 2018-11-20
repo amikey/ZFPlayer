@@ -98,8 +98,8 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     CGFloat min_y = 0;
     CGFloat min_w = 0;
     CGFloat min_h = 0;
-    CGFloat min_view_w = self.width;
-    CGFloat min_view_h = self.height;
+    CGFloat min_view_w = self.zf_width;
+    CGFloat min_view_h = self.zf_height;
     
     min_w = min_view_w;
     min_h = min_view_h;
@@ -111,8 +111,8 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     min_w = 80;
     min_h = 80;
     self.activity.frame = CGRectMake(min_x, min_y, min_w, min_h);
-    self.activity.centerX = self.centerX;
-    self.activity.centerY = self.centerY + 10;
+    self.activity.zf_centerX = self.zf_centerX;
+    self.activity.zf_centerY = self.zf_centerY + 10;
     
     min_w = 150;
     min_h = 30;
@@ -125,20 +125,20 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     self.fastView.center = self.center;
     
     min_w = 32;
-    min_x = (self.fastView.width - min_w) / 2;
+    min_x = (self.fastView.zf_width - min_w) / 2;
     min_y = 5;
     min_h = 32;
     self.fastImageView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
     min_x = 0;
-    min_y = self.fastImageView.bottom + 2;
-    min_w = self.fastView.width;
+    min_y = self.fastImageView.zf_bottom + 2;
+    min_w = self.fastView.zf_width;
     min_h = 20;
     self.fastTimeLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
     min_x = 12;
-    min_y = self.fastTimeLabel.bottom + 5;
-    min_w = self.fastView.width - 2 * min_x;
+    min_y = self.fastTimeLabel.zf_bottom + 5;
+    min_w = self.fastView.zf_width - 2 * min_x;
     min_h = 10;
     self.fastProgressView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     

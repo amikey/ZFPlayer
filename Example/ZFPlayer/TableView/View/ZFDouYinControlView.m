@@ -45,8 +45,8 @@
     CGFloat min_y = 0;
     CGFloat min_w = 0;
     CGFloat min_h = 0;
-    CGFloat min_view_w = self.width;
-    CGFloat min_view_h = self.height;
+    CGFloat min_view_w = self.zf_width;
+    CGFloat min_view_h = self.zf_height;
     
     min_w = 44;
     min_h = 44;

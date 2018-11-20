@@ -22,7 +22,8 @@
   "subspecs": [
     {
       "name": "Core",
-      "vendored_frameworks": "ZFPlayer/Classes/Core/ZFPlayer.framework",
+      "source_files": "ZFPlayer/Classes/Core/**/*",
+      "public_header_files": "ZFPlayer/Classes/Core/**/*.h",
       "frameworks": [
         "UIKit",
         "MediaPlayer",
