@@ -158,12 +158,15 @@ ZFPlayer is available under the MIT license. See the LICENSE file for more info.
 ## Question
 
 1、demo运行不了？
+
 答：下载后本demo可以直接编译运行，不需要`pod install`，`pod install`后会出错，因为依赖其他播放器SDK较大，所以默认没有添加进来。如果你想用，那请修改一podspec文件，具体怎么修改自己一查便知，然后再pod install。
 
 2、为啥我podfile这样写`pod 'ZFPlayer', '~> 3.0'`和demo里不一样，缺少好多类
+
 答：作者秉着插件化的思想来开发此开源库，首先作者的思想是提供一个播放器壳子，关于播放器的核心SDK、还有控制层是完全支持自定义的，所以默认只有Core文件夹下的代码，如果你想使用作者提供的AVPlayer、IJKPlayer等都可单独在podfile写，提供的默认控制层亦是如此，具体看上边readme吧。
 
 3、之前是免费加群，为什么现在要付费加群？
+
 答：之前是免费群每天找作者解决问题的太多了，作者还有自己的工作要干，为了过滤一些伸手党，所以变为付费入群。群内比较活跃，作者、群友都可帮忙解决，如果你有问题都可以加群交流。如果你QQ上没有钱，那你可以扫上边的码，备注写上QQ号，作者看到后会加你然后拉你入群。
 
 
