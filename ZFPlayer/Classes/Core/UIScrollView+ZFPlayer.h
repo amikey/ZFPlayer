@@ -37,6 +37,9 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
     ZFPlayerScrollDerectionRight       // Scroll right
 };
 
+/*
+ * The scrollView derection.
+ */
 typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDerection) {
     ZFPlayerScrollViewDerectionVertical,
     ZFPlayerScrollViewDerectionHorizontal
@@ -50,7 +53,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDerection) {
 /// When the ZFPlayerScrollViewDerection is ZFPlayerScrollViewDerectionHorizontal,the property has value.
 @property (nonatomic, readonly) CGFloat zf_lastOffsetX;
 
-/// The indexPath is playing
+/// The indexPath is playing.
 @property (nonatomic, nullable) NSIndexPath *zf_playingIndexPath;
 
 /// The indexPath that should play, the one that lights up.
@@ -69,6 +72,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDerection) {
 @property (nonatomic) ZFPlayerScrollViewDerection zf_scrollViewDerection;
 
 /// The scroll derection of scrollView while scrolling.
+/// When the ZFPlayerScrollViewDerection is ZFPlayerScrollViewDerectionVertical，this value can only be ZFPlayerScrollDerectionUp or ZFPlayerScrollDerectionDown.
+/// When the ZFPlayerScrollViewDerection is ZFPlayerScrollViewDerectionVertical，this value can only be ZFPlayerScrollDerectionLeft or ZFPlayerScrollDerectionRight.
 @property (nonatomic, readonly) ZFPlayerScrollDerection zf_scrollDerection;
 
 /// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
@@ -80,13 +85,13 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDerection) {
 /// The block invoked When the player should play.
 @property (nonatomic, copy, nullable) void(^zf_shouldPlayIndexPathCallback)(NSIndexPath *indexPath);
 
-/// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped)
+/// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped).
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
 
-/// Filter the cell that should be played while scrolling (you can use this to filter the highlighted cell)
+/// Filter the cell that should be played while scrolling (you can use this to filter the highlighted cell).
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler;
 
-/// Get the cell according to indexPath
+/// Get the cell according to indexPath.
 - (UIView *)zf_getCellForIndexPath:(NSIndexPath *)indexPath;
 
 /// Scroll to indexPath with animations.
