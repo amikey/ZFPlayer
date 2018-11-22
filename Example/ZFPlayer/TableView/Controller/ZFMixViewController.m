@@ -44,8 +44,8 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
     /// player,tag值必须在cell里设置
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
-    /// 0.8是消失80%时候
-    self.player.playerDisapperaPercent = 0.8;
+    /// 1.0是消失100%时候
+    self.player.playerDisapperaPercent = 1.0;
     
     @weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
@@ -237,6 +237,7 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
             @strongify(self)
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };
+//        _tableView.contentInset = UIEdgeInsetsMake(300, 0, 0, 0);
     }
     return _tableView;
 }

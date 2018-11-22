@@ -30,20 +30,31 @@ NS_ASSUME_NONNULL_BEGIN
  * The scroll derection of scrollView.
  */
 typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
-    ZFPlayerScrollDerectionNone = 0,
-    ZFPlayerScrollDerectionUp,        // Scroll up
-    ZFPlayerScrollDerectionDown       // Scroll Down
+    ZFPlayerScrollDerectionNone,
+    ZFPlayerScrollDerectionUp,         // Scroll up
+    ZFPlayerScrollDerectionDown,       // Scroll Down
+    ZFPlayerScrollDerectionLeft,       // Scroll left
+    ZFPlayerScrollDerectionRight       // Scroll right
+};
+
+typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDerection) {
+    ZFPlayerScrollViewDerectionVertical,
+    ZFPlayerScrollViewDerectionHorizontal
 };
 
 @interface UIScrollView (ZFPlayer)
 
-@property (nonatomic, assign, readonly) CGFloat zf_lastOffsetY;
+/// When the ZFPlayerScrollViewDerection is ZFPlayerScrollViewDerectionVertical,the property has value.
+@property (nonatomic, readonly) CGFloat zf_lastOffsetY;
+
+/// When the ZFPlayerScrollViewDerection is ZFPlayerScrollViewDerectionHorizontal,the property has value.
+@property (nonatomic, readonly) CGFloat zf_lastOffsetX;
 
 /// The indexPath is playing
-@property (nonatomic, strong, nullable) NSIndexPath *zf_playingIndexPath;
+@property (nonatomic, nullable) NSIndexPath *zf_playingIndexPath;
 
 /// The indexPath that should play, the one that lights up.
-@property (nonatomic, strong, nullable) NSIndexPath *zf_shouldPlayIndexPath;
+@property (nonatomic, nullable) NSIndexPath *zf_shouldPlayIndexPath;
 
 /// WWANA networks play automatically,default NO.
 @property (nonatomic, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
@@ -54,8 +65,11 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// The view tag that the player display in scrollView.
 @property (nonatomic) NSInteger zf_containerViewTag;
 
-/// The scroll derection of scrollView.
-@property (nonatomic) ZFPlayerScrollDerection zf_scrollDerection;
+/// The scrollView scroll direction, default is ZFPlayerScrollViewDerectionVertical.
+@property (nonatomic) ZFPlayerScrollViewDerection zf_scrollViewDerection;
+
+/// The scroll derection of scrollView while scrolling.
+@property (nonatomic, readonly) ZFPlayerScrollDerection zf_scrollDerection;
 
 /// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL zf_stopWhileNotVisible;
