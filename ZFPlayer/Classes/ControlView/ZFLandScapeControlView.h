@@ -55,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) void(^sliderValueChanged)(CGFloat value);
 /// 返回按钮点击回调
 @property (nonatomic, copy) void(^backBtnClickCallback)(void);
+/// 如果是暂停状态，seek完是否播放，默认YES
+@property (nonatomic, assign) BOOL seekToPlay;
 
 /// 重置控制层
 - (void)resetControlView;

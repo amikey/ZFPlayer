@@ -487,23 +487,16 @@
 }
 
 - (BOOL)isTableView {
-    if ([self isKindOfClass:[UITableView class]]) {
-        return YES;
-    }
-    return NO;
+    return [self isKindOfClass:[UITableView class]];
 }
 
 - (BOOL)isCollectionView {
-    if ([self isKindOfClass:[UICollectionView class]]) {
-        return YES;
-    }
-    return NO;
+    return [self isKindOfClass:[UICollectionView class]];
 }
 
 #pragma mark - public method
 
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler {
-    if (!self.zf_shouldAutoPlay) return;
     if (self.zf_scrollViewDerection == ZFPlayerScrollViewDerectionVertical) {
         [self _findCorrectCellWhenScrollViewDerectionVertical:handler];
     } else {

@@ -189,9 +189,11 @@
             @strongify(self)
             if (finished) {
                 self.slider.isdragging = NO;
-                [self.player.currentPlayerManager play];
             }
         }];
+        if (self.seekToPlay) {
+            [self.player.currentPlayerManager play];
+        }
     } else {
         self.slider.isdragging = NO;
     }

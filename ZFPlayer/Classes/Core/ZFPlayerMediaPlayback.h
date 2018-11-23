@@ -28,7 +28,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ZFPlayerPlaybackState) {
-    ZFPlayerPlayStateUnknown = 0,
+    ZFPlayerPlayStateUnknown,
     ZFPlayerPlayStatePlaying,
     ZFPlayerPlayStatePaused,
     ZFPlayerPlayStatePlayFailed,

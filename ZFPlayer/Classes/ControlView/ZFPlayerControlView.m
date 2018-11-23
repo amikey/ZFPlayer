@@ -84,6 +84,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         [self addAllSubViews];
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
+        self.seekToPlay = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(volumeChanged:)
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
@@ -201,6 +202,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 /// 隐藏控制层
 - (void)hideControlViewWithAnimated:(BOOL)animated {
     self.controlViewAppeared = NO;
+    if (self.controlViewAppearedCallback) {
+        self.controlViewAppearedCallback(NO);
+    }
     [UIView animateWithDuration:animated?ZFPlayerControlViewAutoFadeOutTimeInterval:0 animations:^{
         if (self.player.isFullScreen) {
             [self.landScapeControlView hideControlView];
@@ -217,6 +221,10 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
 /// 显示控制层
 - (void)showControlViewWithAnimated:(BOOL)animated {
     self.controlViewAppeared = YES;
+    if (self.controlViewAppearedCallback) {
+        self.controlViewAppearedCallback(YES);
+    }
+    [self autoFadeOutControlView];
     [UIView animateWithDuration:animated?ZFPlayerControlViewAutoFadeOutTimeInterval:0 animations:^{
         if (self.player.isFullScreen) {
             [self.landScapeControlView showControlView];
@@ -227,7 +235,6 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         }
     } completion:^(BOOL finished) {
         self.bottomPgrogress.hidden = YES;
-        [self autoFadeOutControlView];
     }];
 }
 
@@ -367,6 +374,9 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
             [self.landScapeControlView sliderChangeEnded];
             [self autoFadeOutControlView];
         }];
+        if (self.seekToPlay) {
+            [self.player.currentPlayerManager play];
+        }
         self.sumTime = 0;
     }
 }
@@ -391,9 +401,15 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         [self.portraitControlView playBtnSelectedState:YES];
         [self.landScapeControlView playBtnSelectedState:YES];
         self.failBtn.hidden = YES;
+        /// 开始播放时候判断是否显示loading
+        if (videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled || videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStatePrepare) {
+            [self.activity startAnimating];
+        }
     } else if (state == ZFPlayerPlayStatePaused) {
         [self.portraitControlView playBtnSelectedState:NO];
         [self.landScapeControlView playBtnSelectedState:NO];
+        /// 暂停的时候隐藏loading
+        [self.activity stopAnimating];
         self.failBtn.hidden = YES;
     } else if (state == ZFPlayerPlayStatePlayFailed) {
         self.failBtn.hidden = NO;
@@ -408,7 +424,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     } else if (state == ZFPlayerLoadStatePlaythroughOK) {
         self.coverImageView.hidden = YES;
     }
-    if (state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) {
+    if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.playState == ZFPlayerPlayStatePlaying) {
         [self.activity startAnimating];
     } else {
         [self.activity stopAnimating];
@@ -541,6 +557,12 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:0];
     self.coverImageView.frame = player.currentPlayerManager.view.bounds;
     self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+}
+
+- (void)setSeekToPlay:(BOOL)seekToPlay {
+    _seekToPlay = seekToPlay;
+    self.portraitControlView.seekToPlay = seekToPlay;
+    self.landScapeControlView.seekToPlay = seekToPlay;
 }
 
 #pragma mark - getter
