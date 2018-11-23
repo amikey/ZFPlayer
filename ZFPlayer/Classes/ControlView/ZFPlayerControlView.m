@@ -34,9 +34,6 @@
 #import "ZFSmallFloatControlView.h"
 #import <ZFPlayer/ZFPlayer.h>
 
-static const CGFloat ZFPlayerAnimationTimeInterval              = 2.5f;
-static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
-
 @interface ZFPlayerControlView () <ZFSliderViewDelegate>
 /// 竖屏控制层的View
 @property (nonatomic, strong) ZFPortraitControlView *portraitControlView;
@@ -85,6 +82,8 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
         self.seekToPlay = YES;
+        self.autoFadeTimeInterval = 0.25;
+        self.autoHiddenTimeInterval = 2.5;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(volumeChanged:)
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
@@ -188,7 +187,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         @strongify(self)
         [self hideControlViewWithAnimated:YES];
     });
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ZFPlayerAnimationTimeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(),self.afterBlock);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.autoHiddenTimeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(),self.afterBlock);
 }
 
 /// 取消延时隐藏controlView的方法
@@ -205,7 +204,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
     if (self.controlViewAppearedCallback) {
         self.controlViewAppearedCallback(NO);
     }
-    [UIView animateWithDuration:animated?ZFPlayerControlViewAutoFadeOutTimeInterval:0 animations:^{
+    [UIView animateWithDuration:animated ? self.autoFadeTimeInterval : 0 animations:^{
         if (self.player.isFullScreen) {
             [self.landScapeControlView hideControlView];
         } else {
@@ -225,7 +224,7 @@ static const CGFloat ZFPlayerControlViewAutoFadeOutTimeInterval = 0.25f;
         self.controlViewAppearedCallback(YES);
     }
     [self autoFadeOutControlView];
-    [UIView animateWithDuration:animated?ZFPlayerControlViewAutoFadeOutTimeInterval:0 animations:^{
+    [UIView animateWithDuration:animated ? self.autoFadeTimeInterval : 0 animations:^{
         if (self.player.isFullScreen) {
             [self.landScapeControlView showControlView];
         } else {

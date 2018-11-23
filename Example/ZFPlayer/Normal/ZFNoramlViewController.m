@@ -196,6 +196,8 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
         _controlView.fastViewAnimated = YES;
+        _controlView.autoHiddenTimeInterval = 5;
+        _controlView.autoFadeTimeInterval = 0.5;
     }
     return _controlView;
 }

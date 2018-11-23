@@ -230,32 +230,6 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [UIApplication sharedApplication].statusBarOrientation = orientation;
 #pragma clang diagnostic pop
-
-//    NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
-//    if(windowCount > 1) {
-//        CGFloat keyboardW = 0;
-//        CGFloat keyboardH = 0;
-//        if (self.fullScreen) {
-//            keyboardW = MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth);
-//            keyboardH = MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth);
-//        } else {
-//            keyboardW = MIN(ZFPlayerScreenHeight, ZFPlayerScreenWidth);
-//            keyboardH = MAX(ZFPlayerScreenHeight, ZFPlayerScreenWidth);
-//        }
-//        if(windowCount == 3) { //ios9以上，UIRemoteKeyboardWindow
-//            UIWindow *keyboardWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:2];
-//            keyboardWindow.bounds = CGRectMake(0, 0, keyboardW, keyboardH);
-//            keyboardWindow.center = CGPointMake([[UIScreen mainScreen] bounds].size.width*0.5f,[[UIScreen mainScreen] bounds].size.height*0.5f);
-//
-////            keyboardWindow.transform = [self getTransformRotationAngle:orientation];
-//        }
-//        UIWindow *keyboardWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:1];
-//        keyboardWindow.bounds = CGRectMake(0, 0, keyboardW, keyboardH);
-//        keyboardWindow.center = CGPointMake([[UIScreen mainScreen] bounds].size.width*0.5f,[[UIScreen mainScreen] bounds].size.height*0.5f);
-//
-////        keyboardWindow.transform = [self getTransformRotationAngle:orientation];
-//    }
-    
     
     /// 处理8.0系统键盘
     if (SysVersion >= 8.0 && SysVersion < 9.0) {
@@ -270,7 +244,6 @@
             keyboardWindow.transform = [self getTransformRotationAngle:orientation];
         }
     }
-
     
     if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
     if (animated) {
