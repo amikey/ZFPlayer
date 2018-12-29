@@ -42,9 +42,9 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     [self.view addSubview:self.changeBtn];
     [self.view addSubview:self.nextBtn];
     
-//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
 //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
-    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
+//    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
