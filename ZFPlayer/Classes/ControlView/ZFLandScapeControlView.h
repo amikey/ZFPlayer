@@ -70,6 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime;
 /// 是否响应该手势
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch;
+/// 视频尺寸改变
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer presentationSizeChanged:(CGSize)size;
 /// 标题和全屏模式
 - (void)showTitle:(NSString *_Nullable)title fullScreenMode:(ZFFullScreenMode)fullScreenMode;
 /// 根据当前播放状态取反

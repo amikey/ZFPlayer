@@ -423,7 +423,7 @@
     } else if (state == ZFPlayerLoadStatePlaythroughOK) {
         self.coverImageView.hidden = YES;
     }
-    if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.playState == ZFPlayerPlayStatePlaying) {
+    if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.isPlaying) {
         [self.activity startAnimating];
     } else {
         [self.activity stopAnimating];
@@ -442,6 +442,10 @@
     [self.portraitControlView videoPlayer:videoPlayer bufferTime:bufferTime];
     [self.landScapeControlView videoPlayer:videoPlayer bufferTime:bufferTime];
     self.bottomPgrogress.bufferValue = videoPlayer.bufferProgress;
+}
+
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer presentationSizeChanged:(CGSize)size {
+    [self.landScapeControlView videoPlayer:videoPlayer presentationSizeChanged:size];
 }
 
 /// 视频view即将旋转

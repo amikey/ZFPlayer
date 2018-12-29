@@ -175,6 +175,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
 
+// The block invoked when video size changed.
+@property (nonatomic, copy, nullable) void(^presentationSizeChanged)(id<ZFPlayerMediaPlayback> asset, CGSize size);
+
 /// Play the next url ,while the `assetURLs` is not NULL.
 - (void)playTheNext;
 

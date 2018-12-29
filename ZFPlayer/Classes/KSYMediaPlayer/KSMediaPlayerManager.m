@@ -63,6 +63,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 @synthesize isPreparedToPlay               = _isPreparedToPlay;
 @synthesize scalingMode                    = _scalingMode;
 @synthesize playerPlayFailed               = _playerPlayFailed;
+@synthesize presentationSizeChanged        = _presentationSizeChanged;
 
 - (void)dealloc {
     [self destory];
@@ -89,7 +90,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     self.loadState = ZFPlayerLoadStatePrepare;
     [self initializePlayer];
     if (self.playerPrepareToPlay) self.playerPrepareToPlay(self, self.assetURL);
-    [self.player prepareToPlay];
+    [self play];
 }
 
 - (void)play {
@@ -151,6 +152,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (void)initializePlayer {
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
+    [self.player prepareToPlay];
     self.player.shouldAutoplay = YES;
     [self addPlayerNotification];
     
@@ -271,7 +273,10 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 /// 视频的尺寸变化了
 - (void)sizeAvailableChange:(NSNotification *)notify {
-    // 如果想要在宽大于高的时候横屏播放，你可以在这里旋转
+    self->_presentationSize = self.player.naturalSize;
+    if (self.presentationSizeChanged) {
+        self.presentationSizeChanged(self, self->_presentationSize);
+    }
 }
 
 - (void)bufferChange:(NSNotification *)notify {
@@ -325,10 +330,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (float)rate {
     return _rate == 0 ?1:_rate;
-}
-
-- (CGSize)presentationSize {
-    return self.player.naturalSize;
 }
 
 #pragma mark - setter

@@ -287,6 +287,10 @@
     return YES;
 }
 
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer presentationSizeChanged:(CGSize)size {
+    self.lockBtn.hidden = self.player.orientationObserver.fullScreenMode == ZFFullScreenModePortrait;
+}
+
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime {
     if (!self.slider.isdragging) {
         NSString *currentTimeString = [ZFUtilities convertTimeSecond:currentTime];

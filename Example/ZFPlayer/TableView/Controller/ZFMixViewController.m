@@ -148,10 +148,10 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row % 2 == 1) {
+    if (indexPath.row % 3 == 1) {
         ZFTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
         [cell setDelegate:self withIndexPath:indexPath];
-        NSInteger index = (indexPath.row-1)/2;
+        NSInteger index = (indexPath.row-1)/3;
         cell.layout = self.dataSource[index];
         [cell setNormalMode];
         return cell;
@@ -161,7 +161,7 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row % 2 == 0) return;
+    if (indexPath.row % 3 != 1)  return;
     /// 如果正在播放的index和当前点击的index不同，则停止当前播放的index
     if (self.player.playingIndexPath != indexPath) {
         [self.player stopCurrentPlayingCell];
@@ -188,12 +188,12 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row % 2 == 1) {
-        NSInteger index = (indexPath.row-1)/2;
+    if (indexPath.row % 3 == 1) {
+        NSInteger index = (indexPath.row-1)/3;
         ZFTableViewCellLayout *layout = self.dataSource[index];
         return layout.height;
     }
-    return 200;
+    return 250;
 }
 
 #pragma mark - ZFTableViewCellDelegate
@@ -206,7 +206,7 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    NSInteger index = (indexPath.row-1)/2;
+    NSInteger index = (indexPath.row-1)/3;
     ZFTableViewCellLayout *layout = self.dataSource[index];
     [self.player playTheIndexPath:indexPath assetURL:[NSURL URLWithString:layout.data.video_url] scrollToTop:scrollToTop];
     [self.controlView showTitle:layout.data.title
@@ -237,7 +237,6 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
             @strongify(self)
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         };
-//        _tableView.contentInset = UIEdgeInsetsMake(300, 0, 0, 0);
     }
     return _tableView;
 }

@@ -42,9 +42,9 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     [self.view addSubview:self.changeBtn];
     [self.view addSubview:self.nextBtn];
     
-    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
 //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
-//    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
+    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
@@ -137,19 +137,19 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     
     NSString *URLString = @"https://www.apple.com/105/media/cn/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/bruce/mac-bruce-tpl-cn-2018_1280x720h.mp4";
     self.player.assetURL = [NSURL URLWithString:URLString];
-    [self.controlView showTitle:@"Apple" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModePortrait];
+    [self.controlView showTitle:@"Apple" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeAutomatic];
 }
 
 - (void)playClick:(UIButton *)sender {
     [self.player playTheIndex:0];
-    [self.controlView showTitle:@"视频标题" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
+    [self.controlView showTitle:@"视频标题" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeAutomatic];
 }
 
 - (void)nextClick:(UIButton *)sender {
-    [self.player playTheNext];
     if (!self.player.isLastAssetURL) {
+        [self.player playTheNext];
         NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
-        [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
+        [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeAutomatic];
     } else {
         NSLog(@"最后一个视频了");
     }

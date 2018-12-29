@@ -58,6 +58,7 @@
 @synthesize isPreparedToPlay               = _isPreparedToPlay;
 @synthesize scalingMode                    = _scalingMode;
 @synthesize playerPlayFailed               = _playerPlayFailed;
+@synthesize presentationSizeChanged        = _presentationSizeChanged;
 
 - (void)dealloc {
     [self stop];
@@ -75,6 +76,7 @@
     if (!_assetURL) return;
     _isPreparedToPlay = YES;
     [self initializePlayer];
+    [self play];
     self.loadState = ZFPlayerLoadStatePrepare;
     if (self.playerPrepareToPlay) self.playerPrepareToPlay(self, self.assetURL);
 }
@@ -175,6 +177,12 @@
                                              selector:@selector(moviePlayBackStateDidChange:)
                                                  name:IJKMPMoviePlayerPlaybackStateDidChangeNotification
                                                object:_player];
+    
+    /// 视频的尺寸变化了
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sizeAvailableChange:)
+                                                 name:IJKMPMovieNaturalSizeAvailableNotification
+                                               object:self.player];
 }
 
 - (void)removeMovieNotificationObservers {
@@ -190,7 +198,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:IJKMPMoviePlayerPlaybackStateDidChangeNotification
                                                   object:_player];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:IJKMPMovieNaturalSizeAvailableNotification
+                                                  object:_player];
 }
 
 - (void)update {
@@ -238,8 +248,19 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
     });
-    [self play];
-    self.muted = self.muted;
+    if (self.isPlaying) {
+        [self play];
+        self.muted = self.muted;
+        if (self.seekTime) {
+            [self seekToTime:self.seekTime completionHandler:nil];
+            self.seekTime = 0; // 滞空, 防止下次播放出错
+            [self play];
+        }
+    }
+//    else {
+//        [self pause];
+//    }
+    
     ZFPlayerLog(@"mediaIsPrepareToPlayDidChange");
     if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
 }
@@ -292,12 +313,12 @@
             
         case IJKMPMoviePlaybackStatePlaying: {
             ZFPlayerLog(@"播放器的播放状态变了，现在是播放状态 %d: playing", (int)_player.playbackState);
-            self.playState = ZFPlayerPlayStatePlaying;
-            if (self.seekTime) {
-                [self seekToTime:self.seekTime completionHandler:nil];
-                self.seekTime = 0; // 滞空, 防止下次播放出错
-                [self play];
-            }
+//            self.playState = ZFPlayerPlayStatePlaying;
+//            if (self.seekTime) {
+//                [self seekToTime:self.seekTime completionHandler:nil];
+//                self.seekTime = 0; // 滞空, 防止下次播放出错
+//                [self play];
+//            }
         }
             break;
             
@@ -327,6 +348,13 @@
     }
 }
 
+/// 视频的尺寸变化了
+- (void)sizeAvailableChange:(NSNotification *)notify {
+    self->_presentationSize = self.player.naturalSize;
+    if (self.presentationSizeChanged) {
+        self.presentationSizeChanged(self, self->_presentationSize);
+    }
+}
 
 #pragma mark - getter
 
@@ -349,10 +377,6 @@
         [_options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
     }
     return _options;
-}
-
-- (CGSize)presentationSize {
-    return self.player.naturalSize;
 }
 
 #pragma mark - setter

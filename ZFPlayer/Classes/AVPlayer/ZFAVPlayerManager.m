@@ -120,6 +120,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 @synthesize isPreparedToPlay               = _isPreparedToPlay;
 @synthesize scalingMode                    = _scalingMode;
 @synthesize playerPlayFailed               = _playerPlayFailed;
+@synthesize presentationSizeChanged        = _presentationSizeChanged;
 
 - (instancetype)init {
     self = [super init];
@@ -133,9 +134,9 @@ static NSString *const kPresentationSize         = @"presentationSize";
     if (!_assetURL) return;
     _isPreparedToPlay = YES;
     [self initializePlayer];
+    [self play];
     self.loadState = ZFPlayerLoadStatePrepare;
     if (_playerPrepareToPlay) _playerPrepareToPlay(self, self.assetURL);
-    [self play];
 }
 
 - (void)reloadPlayer {
@@ -379,6 +380,9 @@ static NSString *const kPresentationSize         = @"presentationSize";
             if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, bufferTime);
         } else if ([keyPath isEqualToString:kPresentationSize]) {
             self->_presentationSize = self.playerItem.presentationSize;
+            if (self.presentationSizeChanged) {
+                self.presentationSizeChanged(self, self->_presentationSize);
+            }
         } else {
             [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         }

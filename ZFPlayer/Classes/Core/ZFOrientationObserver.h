@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Full screen mode
 typedef NS_ENUM(NSUInteger, ZFFullScreenMode) {
+    ZFFullScreenModeAutomatic,  // Determine full screen mode automatically
     ZFFullScreenModeLandscape,  // Landscape full screen mode
     ZFFullScreenModePortrait    // Portrait full screen Model
 };

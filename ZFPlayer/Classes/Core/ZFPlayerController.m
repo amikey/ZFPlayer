@@ -185,6 +185,21 @@
             [self.controlView videoPlayerPlayFailed:self error:error];
         }
     };
+    
+    self.currentPlayerManager.presentationSizeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, CGSize size){
+        @strongify(self)
+        if (self.orientationObserver.fullScreenMode == ZFFullScreenModeAutomatic) {
+            if (size.width > size.height) {
+                self.orientationObserver.fullScreenMode = ZFFullScreenModeLandscape;
+            } else {
+                self.orientationObserver.fullScreenMode = ZFFullScreenModePortrait;
+            }
+        }
+        if (self.presentationSizeChanged) self.presentationSizeChanged(asset, size);
+        if ([self.controlView respondsToSelector:@selector(videoPlayer:presentationSizeChanged:)]) {
+            [self.controlView videoPlayer:self presentationSizeChanged:size];
+        }
+    };
 }
 
 - (void)layoutPlayerSubViews {
@@ -442,6 +457,10 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
+- (void (^)(id<ZFPlayerMediaPlayback> _Nonnull, CGSize ))presentationSizeChanged {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
 - (NSInteger)currentPlayIndex {
     return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
@@ -529,6 +548,10 @@
 
 - (void)setPlayerPlayFailed:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, id _Nonnull))playerPlayFailed {
     objc_setAssociatedObject(self, @selector(playerPlayFailed), playerPlayFailed, OBJC_ASSOCIATION_COPY);
+}
+
+- (void)setPresentationSizeChanged:(void (^)(id<ZFPlayerMediaPlayback> _Nonnull, CGSize))presentationSizeChanged {
+    objc_setAssociatedObject(self, @selector(presentationSizeChanged), presentationSizeChanged, OBJC_ASSOCIATION_COPY);
 }
 
 - (void)setCurrentPlayIndex:(NSInteger)currentPlayIndex {
