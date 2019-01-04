@@ -1072,6 +1072,20 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
+#pragma mark - Private method
+
+- (void)playTheIndexPath:(NSIndexPath *)indexPath {
+    self.playingIndexPath = indexPath;
+    NSURL *assetURL;
+    if (self.sectionAssetURLs.count) {
+        assetURL = self.sectionAssetURLs[indexPath.section][indexPath.row];
+    } else if (self.assetURLs.count) {
+        assetURL = self.assetURLs[indexPath.row];
+        self.currentPlayIndex = indexPath.row;
+    }
+    self.assetURL = assetURL;
+}
+
 #pragma mark - Public method
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ _Nullable)(void))completionHandler {
@@ -1098,17 +1112,14 @@
 }
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    self.playingIndexPath = indexPath;
-    NSURL *assetURL;
-    if (self.sectionAssetURLs.count) {
-        assetURL = self.sectionAssetURLs[indexPath.section][indexPath.row];
-    } else if (self.assetURLs.count) {
-        assetURL = self.assetURLs[indexPath.row];
-        self.currentPlayIndex = indexPath.row;
-    }
-    self.assetURL = assetURL;
     if (scrollToTop) {
-        [self.scrollView zf_scrollToRowAtIndexPath:indexPath completionHandler:nil];
+        @weakify(self)
+        [self.scrollView zf_scrollToRowAtIndexPath:indexPath completionHandler:^{
+            @strongify(self)
+            [self playTheIndexPath:indexPath];
+        }];
+    } else {
+        [self playTheIndexPath:indexPath];
     }
 }
 
