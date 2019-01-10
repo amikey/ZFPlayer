@@ -151,6 +151,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current player controller is disappear, not dealloc
 @property (nonatomic, getter=isViewControllerDisappear) BOOL viewControllerDisappear;
 
+/// You can custom the AVAudioSession,
+/// default is NO.
+@property (nonatomic, assign) BOOL customAudioSession;
+
 /// The block invoked when the player is Prepare to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 

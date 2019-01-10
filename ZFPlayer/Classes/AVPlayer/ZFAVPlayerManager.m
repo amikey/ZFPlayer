@@ -412,7 +412,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (NSTimeInterval)currentTime {
     NSTimeInterval sec = CMTimeGetSeconds(self.playerItem.currentTime);
-    if (isnan(sec)) {
+    if (isnan(sec) || sec < 0) {
         return 0;
     }
     return sec;

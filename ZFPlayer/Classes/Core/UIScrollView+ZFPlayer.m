@@ -35,7 +35,7 @@
 
 @property (nonatomic) CGFloat zf_lastOffsetY;
 @property (nonatomic) CGFloat zf_lastOffsetX;
-@property (nonatomic) ZFPlayerScrollDerection zf_scrollDerection;
+@property (nonatomic) ZFPlayerScrollDirection zf_scrollDirection;
 
 @end
 
@@ -53,7 +53,7 @@
 }
 
 - (void)_scrollViewBeginDragging {
-    if (self.zf_scrollViewDerection == ZFPlayerScrollViewDerectionVertical) {
+    if (self.zf_scrollViewDirection == ZFPlayerScrollViewDirectionVertical) {
         self.zf_lastOffsetY = self.contentOffset.y;
     } else {
         self.zf_lastOffsetX = self.contentOffset.x;
@@ -63,9 +63,9 @@
 /**
   The percentage of scrolling processed in vertical scrolling.
  */
-- (void)_scrollViewScrollingDerectionVertical {
+- (void)_scrollViewScrollingDirectionVertical {
     CGFloat offsetY = self.contentOffset.y;
-    self.zf_scrollDerection = (offsetY - self.zf_lastOffsetY > 0) ? ZFPlayerScrollDerectionUp : ZFPlayerScrollDerectionDown;
+    self.zf_scrollDirection = (offsetY - self.zf_lastOffsetY > 0) ? ZFPlayerScrollDirectionUp : ZFPlayerScrollDirectionDown;
     self.zf_lastOffsetY = offsetY;
     
     // Avoid being paused the first time you play it.
@@ -90,7 +90,7 @@
     CGFloat playerDisapperaPercent = 0;
     CGFloat playerApperaPercent = 0;
     
-    if (self.zf_scrollDerection == ZFPlayerScrollDerectionUp) { /// Scroll up
+    if (self.zf_scrollDirection == ZFPlayerScrollDirectionUp) { /// Scroll up
         /// Player is disappearing.
         if (topSpacing <= 0 && CGRectGetHeight(rect) != 0) {
             playerDisapperaPercent = -topSpacing/CGRectGetHeight(rect);
@@ -122,7 +122,7 @@
             }
         }
         
-    } else if (self.zf_scrollDerection == ZFPlayerScrollDerectionDown) { /// Scroll Down
+    } else if (self.zf_scrollDirection == ZFPlayerScrollDirectionDown) { /// Scroll Down
         /// Player is disappearing.
         if (bottomSpacing <= 0 && CGRectGetHeight(rect) != 0) {
             playerDisapperaPercent = -bottomSpacing/CGRectGetHeight(rect);
@@ -159,9 +159,9 @@
 /**
  The percentage of scrolling processed in horizontal scrolling.
  */
-- (void)_scrollViewScrollingDerectionHorizontal {
+- (void)_scrollViewScrollingDirectionHorizontal {
     CGFloat offsetX = self.contentOffset.x;
-    self.zf_scrollDerection = (offsetX - self.zf_lastOffsetX > 0) ? ZFPlayerScrollDerectionLeft : ZFPlayerScrollDerectionRight;
+    self.zf_scrollDirection = (offsetX - self.zf_lastOffsetX > 0) ? ZFPlayerScrollDirectionLeft : ZFPlayerScrollDirectionRight;
     self.zf_lastOffsetX = offsetX;
     
     // Avoid being paused the first time you play it.
@@ -186,7 +186,7 @@
     CGFloat playerDisapperaPercent = 0;
     CGFloat playerApperaPercent = 0;
     
-    if (self.zf_scrollDerection == ZFPlayerScrollDerectionLeft) { /// Scroll left
+    if (self.zf_scrollDirection == ZFPlayerScrollDirectionLeft) { /// Scroll left
         /// Player is disappearing.
         if (leftSpacing <= 0 && CGRectGetWidth(rect) != 0) {
             playerDisapperaPercent = -leftSpacing/CGRectGetWidth(rect);
@@ -218,7 +218,7 @@
             }
         }
         
-    } else if (self.zf_scrollDerection == ZFPlayerScrollDerectionRight) { /// Scroll right
+    } else if (self.zf_scrollDirection == ZFPlayerScrollDirectionRight) { /// Scroll right
         /// Player is disappearing.
         if (rightSpacing <= 0 && CGRectGetWidth(rect) != 0) {
             playerDisapperaPercent = -rightSpacing/CGRectGetWidth(rect);
@@ -253,9 +253,9 @@
 }
 
 /**
- Find the playing cell while the scrollDerection is vertical.
+ Find the playing cell while the scrollDirection is vertical.
  */
-- (void)_findCorrectCellWhenScrollViewDerectionVertical:(void (^ __nullable)(NSIndexPath *indexPath))handler {
+- (void)_findCorrectCellWhenScrollViewDirectionVertical:(void (^ __nullable)(NSIndexPath *indexPath))handler {
     if (!self.zf_shouldAutoPlay) return;
     NSArray *visiableCells = nil;
     NSIndexPath *indexPath = nil;
@@ -324,7 +324,7 @@
     }
     
     NSArray *cells = nil;
-    if (self.zf_scrollDerection == ZFPlayerScrollDerectionUp) {
+    if (self.zf_scrollDirection == ZFPlayerScrollDirectionUp) {
         cells = visiableCells;
     } else {
         cells = [visiableCells reverseObjectEnumerator].allObjects;
@@ -370,9 +370,9 @@
 }
 
 /**
- Find the playing cell while the scrollDerection is horizontal.
+ Find the playing cell while the scrollDirection is horizontal.
  */
-- (void)_findCorrectCellWhenScrollViewDerectionHorizontal:(void (^ __nullable)(NSIndexPath *indexPath))handler {
+- (void)_findCorrectCellWhenScrollViewDirectionHorizontal:(void (^ __nullable)(NSIndexPath *indexPath))handler {
     if (!self.zf_shouldAutoPlay) return;
     NSArray *visiableCells = nil;
     NSIndexPath *indexPath = nil;
@@ -441,7 +441,7 @@
     }
     
     NSArray *cells = nil;
-    if (self.zf_scrollDerection == ZFPlayerScrollDerectionUp) {
+    if (self.zf_scrollDirection == ZFPlayerScrollDirectionUp) {
         cells = visiableCells;
     } else {
         cells = [visiableCells reverseObjectEnumerator].allObjects;
@@ -497,10 +497,10 @@
 #pragma mark - public method
 
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler {
-    if (self.zf_scrollViewDerection == ZFPlayerScrollViewDerectionVertical) {
-        [self _findCorrectCellWhenScrollViewDerectionVertical:handler];
+    if (self.zf_scrollViewDirection == ZFPlayerScrollViewDirectionVertical) {
+        [self _findCorrectCellWhenScrollViewDirectionVertical:handler];
     } else {
-        [self _findCorrectCellWhenScrollViewDerectionHorizontal:handler];
+        [self _findCorrectCellWhenScrollViewDirectionHorizontal:handler];
     }
 }
 
@@ -585,10 +585,10 @@
 }
 
 - (void)zf_scrollViewDidScroll {
-    if (self.zf_scrollViewDerection == ZFPlayerScrollViewDerectionVertical) {
-        [self _scrollViewScrollingDerectionVertical];
+    if (self.zf_scrollViewDirection == ZFPlayerScrollViewDirectionVertical) {
+        [self _scrollViewScrollingDirectionVertical];
     } else {
-        [self _scrollViewScrollingDerectionHorizontal];
+        [self _scrollViewScrollingDirectionHorizontal];
     }
 }
 
@@ -610,7 +610,7 @@
     return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
 
-- (ZFPlayerScrollDerection)zf_scrollDerection {
+- (ZFPlayerScrollDirection)zf_scrollDirection {
     return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
 
@@ -629,7 +629,7 @@
     return YES;
 }
 
-- (ZFPlayerScrollViewDerection)zf_scrollViewDerection {
+- (ZFPlayerScrollViewDirection)zf_scrollViewDirection {
     return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
 
@@ -666,8 +666,8 @@
     objc_setAssociatedObject(self, @selector(zf_containerViewTag), @(zf_containerViewTag), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setZf_scrollDerection:(ZFPlayerScrollDerection)zf_scrollDerection {
-    objc_setAssociatedObject(self, @selector(zf_scrollDerection), @(zf_scrollDerection), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setZf_scrollDirection:(ZFPlayerScrollDirection)zf_scrollDirection {
+    objc_setAssociatedObject(self, @selector(zf_scrollDirection), @(zf_scrollDirection), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setZf_stopWhileNotVisible:(BOOL)zf_stopWhileNotVisible {
@@ -678,8 +678,8 @@
     objc_setAssociatedObject(self, @selector(zf_isWWANAutoPlay), @(zf_WWANAutoPlay), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setZf_scrollViewDerection:(ZFPlayerScrollViewDerection)zf_scrollViewDerection {
-    objc_setAssociatedObject(self, @selector(zf_scrollViewDerection), @(zf_scrollViewDerection), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setZf_scrollViewDirection:(ZFPlayerScrollViewDirection)zf_scrollViewDirection {
+    objc_setAssociatedObject(self, @selector(zf_scrollViewDirection), @(zf_scrollViewDirection), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setZf_shouldAutoPlay:(BOOL)zf_shouldAutoPlay {

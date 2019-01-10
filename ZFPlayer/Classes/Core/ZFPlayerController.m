@@ -68,9 +68,6 @@
             break;
         }
     }
-    // Apps using this category don't mute when the phone's mute button is turned on, but play sound when the phone is silent
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionAllowBluetooth error:nil];
-    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 
 - (void)dealloc {
@@ -136,6 +133,11 @@
     self.currentPlayerManager.playerReadyToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
         @strongify(self)
         if (self.playerReadyToPlay) self.playerReadyToPlay(asset,assetURL);
+        if (!self.customAudioSession) {
+            // Apps using this category don't mute when the phone's mute button is turned on, but play sound when the phone is silent
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionAllowBluetooth error:nil];
+            [[AVAudioSession sharedInstance] setActive:YES error:nil];
+        }
     };
     
     self.currentPlayerManager.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
@@ -469,6 +471,10 @@
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
+- (BOOL)customAudioSession {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
 #pragma mark - setter
 
 - (void)setAssetURL:(NSURL *)assetURL {
@@ -568,6 +574,10 @@
         if (self.isPauseByEvent) self.pauseByEvent = NO;
         [self addDeviceOrientationObserver];
     }
+}
+
+- (void)setCustomAudioSession:(BOOL)customAudioSession {
+    objc_setAssociatedObject(self, @selector(customAudioSession), @(customAudioSession), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

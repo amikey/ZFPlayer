@@ -190,7 +190,7 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
         _collectionView.dataSource = self;
         _collectionView.backgroundColor = [UIColor whiteColor];
         /// 横向滚动 这行代码必须写
-        _collectionView.zf_scrollViewDerection = ZFPlayerScrollViewDerectionHorizontal;
+        _collectionView.zf_scrollViewDirection = ZFPlayerScrollViewDirectionHorizontal;
         [_collectionView registerClass:[ZFCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
         _collectionView.pagingEnabled = YES;
         if (@available(iOS 11.0, *)) {
