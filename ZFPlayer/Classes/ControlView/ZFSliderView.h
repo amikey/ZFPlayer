@@ -77,6 +77,8 @@
 /// 向前还是向后拖动
 @property (nonatomic, assign) BOOL isForward;
 
+@property (nonatomic, assign) CGSize thumbSize;
+
 //@property (nonatomic, assign) CGFloat ignoreMargin;
 
 // 设置滑块背景色

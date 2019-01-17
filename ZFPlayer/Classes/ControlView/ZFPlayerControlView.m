@@ -669,7 +669,7 @@
         _bottomPgrogress.minimumTrackTintColor = [UIColor whiteColor];
         _bottomPgrogress.bufferTrackTintColor  = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
         _bottomPgrogress.sliderHeight = 1;
-        _bottomPgrogress.isHideSliderBlock = NO;
+        _bottomPgrogress.isHideSliderBlock = YES;
     }
     return _bottomPgrogress;
 }
