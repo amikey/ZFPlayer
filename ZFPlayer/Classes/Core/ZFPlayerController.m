@@ -26,7 +26,6 @@
 #import <objc/runtime.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
-#import "ZFPlayerNotification.h"
 #import "UIScrollView+ZFPlayer.h"
 #import "ZFReachabilityManager.h"
 #import "ZFPlayer.h"
@@ -89,23 +88,6 @@
     player.containerView = containerView;
     player.currentPlayerManager = playerManager;
     return player;
-}
-
-- (void)updateScrollViewPlayerToCell {
-    if (self.currentPlayerManager.view && self.playingIndexPath && self.containerViewTag) {
-        UIView *cell = [self.scrollView zf_getCellForIndexPath:self.playingIndexPath];
-        self.containerView = [cell viewWithTag:self.containerViewTag];
-        [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
-        [self layoutPlayerSubViews];
-    }
-}
-
-- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView {
-    if (self.currentPlayerManager.view && self.containerView) {
-        self.containerView = containerView;
-        [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.containerView];
-        [self layoutPlayerSubViews];
-    }
 }
 
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag {
@@ -1098,6 +1080,15 @@
 
 #pragma mark - Public method
 
+- (void)stopCurrentPlayingCell {
+    if (self.scrollView.zf_playingIndexPath) {
+        [self stop];
+        self.isSmallFloatViewShow = NO;
+        self.scrollView.zf_playingIndexPath = nil;
+        if (self.smallFloatView) self.smallFloatView.hidden = YES;
+    }
+}
+
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ _Nullable)(void))completionHandler {
     NSURL *assetURL;
     if (self.sectionAssetURLs.count) {
@@ -1141,12 +1132,20 @@
     }
 }
 
-- (void)stopCurrentPlayingCell {
-    if (self.scrollView.zf_playingIndexPath) {
-        [self stop];
-        self.isSmallFloatViewShow = NO;
-        self.scrollView.zf_playingIndexPath = nil;
-        if (self.smallFloatView) self.smallFloatView.hidden = YES;
+- (void)updateScrollViewPlayerToCell {
+    if (self.currentPlayerManager.view && self.playingIndexPath && self.containerViewTag) {
+        UIView *cell = [self.scrollView zf_getCellForIndexPath:self.playingIndexPath];
+        self.containerView = [cell viewWithTag:self.containerViewTag];
+        [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
+        [self layoutPlayerSubViews];
+    }
+}
+
+- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView {
+    if (self.currentPlayerManager.view && self.containerView) {
+        self.containerView = containerView;
+        [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.containerView];
+        [self layoutPlayerSubViews];
     }
 }
 

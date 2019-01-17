@@ -50,7 +50,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.playBtn.frame = CGRectMake(x, y, w, h);
 }
 
-- (void)willMoveToParentViewController:(UIViewController *)parent {
+- (void)didMoveToParentViewController:(UIViewController *)parent {
     if (!parent) {
         if (self.detailVCPopCallback) {
             self.detailVCPopCallback();

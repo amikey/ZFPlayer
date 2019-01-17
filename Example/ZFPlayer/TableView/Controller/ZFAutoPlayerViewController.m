@@ -15,6 +15,7 @@
 #import "ZFPlayerDetailViewController.h"
 #import "ZFTableViewCell.h"
 #import "ZFTableData.h"
+#import <AVFoundation/AVFoundation.h>
 
 static NSString *kIdentifier = @"kIdentifier";
 

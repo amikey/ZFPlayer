@@ -28,6 +28,7 @@
 #import "ZFOrientationObserver.h"
 #import "ZFPlayerMediaControl.h"
 #import "ZFPlayerGestureControl.h"
+#import "ZFPlayerNotification.h"
 #import "ZFFloatView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -42,6 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The custom controlView must conform `ZFPlayerMediaControl` protocol.
 @property (nonatomic, strong) UIView<ZFPlayerMediaControl> *controlView;
+
+/// The notification manager class.
+@property (nonatomic, strong, readonly) ZFPlayerNotification *notification;
 
 /*!
  @method            playerWithPlayerManager:
@@ -80,10 +84,6 @@ NS_ASSUME_NONNULL_BEGIN
  @result            An instance of ZFPlayerController.
  */
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag;
-
-- (void)updateScrollViewPlayerToCell;
-
-- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
 
 @end
 
@@ -343,6 +343,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// `scrollToTop` scroll the current cell to top with animations.
 /// Scroll completion callback.
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
+
+- (void)updateScrollViewPlayerToCell;
+
+- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
 
 @end
 
