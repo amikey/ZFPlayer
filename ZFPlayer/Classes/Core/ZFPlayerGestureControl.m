@@ -43,7 +43,7 @@
     self.targetView = view;
     self.targetView.multipleTouchEnabled = YES;
     [self.singleTap requireGestureRecognizerToFail:self.doubleTap];
-    [self.doubleTap requireGestureRecognizerToFail:self.panGR];
+    [self.singleTap  requireGestureRecognizerToFail:self.panGR];
     [self.targetView addGestureRecognizer:self.singleTap];
     [self.targetView addGestureRecognizer:self.doubleTap];
     [self.targetView addGestureRecognizer:self.panGR];

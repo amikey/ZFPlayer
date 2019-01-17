@@ -34,15 +34,6 @@
 
 @implementation ZFPlayerNotification
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-       
-    }
-    return self;
-}
-
-
 - (void)addNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(audioSessionRouteChangeNotification:)

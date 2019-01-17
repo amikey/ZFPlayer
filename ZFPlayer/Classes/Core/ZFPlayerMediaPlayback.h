@@ -28,7 +28,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ZFPlayerPlaybackState) {
-    ZFPlayerPlayStateUnknown = 0,
+    ZFPlayerPlayStateUnknown,
     ZFPlayerPlayStatePlaying,
     ZFPlayerPlayStatePaused,
     ZFPlayerPlayStatePlayFailed,
@@ -111,11 +111,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 @property (nonatomic, readonly) ZFPlayerLoadState loadState;
 
 ///------------------------------------
-/// The following block cannot be called outside, only for ZFPlayerController calls
+/// If you don't appoint the controlView, you can called the following blocks.
+/// If you appoint the controlView, The following block cannot be called outside, only for `ZFPlayerController` calls.
 ///------------------------------------
 
-/// The block invoked when the player is Ready to play.
+/// The block invoked when the player is Prepare to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
+
+/// The block invoked when the player is Ready to play.
+@property (nonatomic, copy, nullable) void(^playerReadyToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 
 /// The block invoked when the player play progress changed.
 @property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval currentTime, NSTimeInterval duration);
@@ -124,16 +128,19 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 @property (nonatomic, copy, nullable) void(^playerBufferTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval bufferTime);
 
 /// The block invoked when the player playback state changed.
-@property (nonatomic, copy, nullable) void(^playerPlayStatChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerPlaybackState playState);
+@property (nonatomic, copy, nullable) void(^playerPlayStateChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerPlaybackState playState);
 
 /// The block invoked when the player load state changed.
-@property (nonatomic, copy, nullable) void(^playerLoadStatChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerLoadState loadState);
+@property (nonatomic, copy, nullable) void(^playerLoadStateChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerLoadState loadState);
 
 /// The block invoked when the player play failed.
 @property (nonatomic, copy, nullable) void(^playerPlayFailed)(id<ZFPlayerMediaPlayback> asset, id error);
 
 /// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
+
+// The block invoked when video size changed.
+@property (nonatomic, copy, nullable) void(^presentationSizeChanged)(id<ZFPlayerMediaPlayback> asset, CGSize size);
 
 ///------------------------------------
 /// end
@@ -167,7 +174,5 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 - (void)replaceCurrentAssetURL:(NSURL *)assetURL __attribute__((deprecated("use the property `assetURL` instead.")));;
 
 @end
-
-
 
 NS_ASSUME_NONNULL_END

@@ -25,8 +25,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
-
+/// iPhoneX  iPhoneXS  iPhoneXS Max  iPhoneXR 机型判断
+#define iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? ((NSInteger)(([[UIScreen mainScreen] currentMode].size.height/[[UIScreen mainScreen] currentMode].size.width)*100) == 216) : NO)
 // 图片路径
 #define ZFPlayer_SrcName(file)               [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
 

@@ -28,6 +28,7 @@
 #import "ZFOrientationObserver.h"
 #import "ZFPlayerMediaControl.h"
 #import "ZFPlayerGestureControl.h"
+#import "ZFPlayerNotification.h"
 #import "ZFFloatView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,13 +36,16 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZFPlayerController : NSObject
 
 /// The video contrainerView in normal model.
-@property (nonatomic, readonly) UIView *containerView;
+@property (nonatomic, strong) UIView *containerView;
 
 /// The currentPlayerManager must conform `ZFPlayerMediaPlayback` protocol.
-@property (nonatomic, readonly) id<ZFPlayerMediaPlayback> currentPlayerManager;
+@property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
 
 /// The custom controlView must conform `ZFPlayerMediaControl` protocol.
 @property (nonatomic, strong) UIView<ZFPlayerMediaControl> *controlView;
+
+/// The notification manager class.
+@property (nonatomic, strong, readonly) ZFPlayerNotification *notification;
 
 /*!
  @method            playerWithPlayerManager:
@@ -147,8 +151,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current player controller is disappear, not dealloc
 @property (nonatomic, getter=isViewControllerDisappear) BOOL viewControllerDisappear;
 
-/// The block invoked when the player is Ready to play.
+/// You can custom the AVAudioSession,
+/// default is NO.
+@property (nonatomic, assign) BOOL customAudioSession;
+
+/// The block invoked when the player is Prepare to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
+
+/// The block invoked when the player is Ready to play.
+@property (nonatomic, copy, nullable) void(^playerReadyToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 
 /// The block invoked when the player play progress changed.
 @property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval currentTime, NSTimeInterval duration);
@@ -157,16 +168,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) void(^playerBufferTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval bufferTime);
 
 /// The block invoked when the player playback state changed.
-@property (nonatomic, copy, nullable) void(^playerPlayStatChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerPlaybackState playState);
+@property (nonatomic, copy, nullable) void(^playerPlayStateChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerPlaybackState playState);
 
 /// The block invoked when the player load state changed.
-@property (nonatomic, copy, nullable) void(^playerLoadStatChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerLoadState loadState);
+@property (nonatomic, copy, nullable) void(^playerLoadStateChanged)(id<ZFPlayerMediaPlayback> asset, ZFPlayerLoadState loadState);
 
 /// The block invoked when the player play failed.
 @property (nonatomic, copy, nullable) void(^playerPlayFailed)(id<ZFPlayerMediaPlayback> asset, id error);
 
 /// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
+
+// The block invoked when video size changed.
+@property (nonatomic, copy, nullable) void(^presentationSizeChanged)(id<ZFPlayerMediaPlayback> asset, CGSize size);
 
 /// Play the next url ,while the `assetURLs` is not NULL.
 - (void)playTheNext;
@@ -329,6 +343,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// `scrollToTop` scroll the current cell to top with animations.
 /// Scroll completion callback.
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
+
+- (void)updateScrollViewPlayerToCell;
+
+- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
 
 @end
 

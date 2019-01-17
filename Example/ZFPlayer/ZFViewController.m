@@ -26,17 +26,21 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     self.titles = @[@"键盘支持横屏",
                     @"普通样式",
+                    @"列表HeaderView",
                     @"列表点击播放",
                     @"列表自动播放",
                     @"列表小窗播放",
                     @"列表明暗播放",
-                    @"多种cell混合样式",
+                    @"混合cell样式",
                     @"抖音样式",
-                    @"CollectionView",
-                    @"瀑布流"];
+                    @"竖向滚动CollectionView",
+                    @"横向滚动CollectionView",
+                    @"瀑布流",
+                    @"横屏播放"];
     
     self.viewControllers = @[@"ZFKeyboardViewController",
                              @"ZFNoramlViewController",
+                             @"ZFTableHeaderViewController",
                              @"ZFNotAutoPlayViewController",
                              @"ZFAutoPlayerViewController",
                              @"ZFSmallPlayViewController",
@@ -44,7 +48,9 @@ static NSString *kIdentifier = @"kIdentifier";
                              @"ZFMixViewController",
                              @"ZFDouYinViewController",
                              @"ZFCollectionViewController",
-                             @"ZFCollectionViewListController"];
+                             @"ZFHorizontalCollectionViewController",
+                             @"ZFCollectionViewListController",
+                             @"ZFFullScreenViewController"];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -53,7 +59,11 @@ static NSString *kIdentifier = @"kIdentifier";
 }
 
 - (BOOL)shouldAutorotate {
-    return NO;
+    return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - UITableViewDataSource
@@ -76,7 +86,11 @@ static NSString *kIdentifier = @"kIdentifier";
         [(ZFDouYinViewController *)viewController playTheIndex:0];
     }
     viewController.navigationItem.title = self.titles[indexPath.row];
-    [self.navigationController pushViewController:viewController animated:YES];
+    if ([vcString isEqualToString:@"ZFFullScreenViewController"]) {
+        [self.navigationController pushViewController:viewController animated:NO];
+    } else {
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 - (UITableView *)tableView {

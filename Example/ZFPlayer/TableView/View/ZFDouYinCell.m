@@ -52,8 +52,8 @@
     CGFloat min_y = 0;
     CGFloat min_w = 0;
     CGFloat min_h = 0;
-    CGFloat min_view_w = self.width;
-    CGFloat min_view_h = self.height;
+    CGFloat min_view_w = self.zf_width;
+    CGFloat min_view_h = self.zf_height;
     CGFloat margin = 30;
     
     min_w = 40;
@@ -77,7 +77,7 @@
     min_x = 20;
     min_h = 20;
     min_y = min_view_h - min_h - 50;
-    min_w = self.likeBtn.left - margin;
+    min_w = self.likeBtn.zf_left - margin;
     self.titleLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
 }
 

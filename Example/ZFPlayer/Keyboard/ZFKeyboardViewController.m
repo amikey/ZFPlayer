@@ -50,7 +50,15 @@
     playerManager.assetURL = [NSURL URLWithString:URLString];
     
     [self.controlView showTitle:@"视频标题" coverURLString:@"https://upload-images.jianshu.io/upload_images/635942-14593722fe3f0695.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" fullScreenMode:ZFFullScreenModeLandscape];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGRect frame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSLog(@"%@",NSStringFromCGRect(frame));
+}
+
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
@@ -62,8 +70,8 @@
     
     w = 200;
     h = 35;
-    x = (self.containerView.width - w)/2;
-    y = (self.containerView.height - h)/2;
+    x = (self.containerView.zf_width - w)/2;
+    y = (self.containerView.zf_height - h)/2;
     self.textField.frame = CGRectMake(x, y, w, h);
 
     w = 44;

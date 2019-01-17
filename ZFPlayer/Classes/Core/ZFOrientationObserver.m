@@ -71,6 +71,8 @@
 
 @property (nonatomic, assign) ZFRotateType roateType;
 
+@property (nonatomic, strong) UIView *blackView;
+
 @end
 
 @implementation ZFOrientationObserver
@@ -78,20 +80,19 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _duration = 0.25;
+        _duration = 0.30;
         _fullScreenMode = ZFFullScreenModeLandscape;
+        _supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
         _allowOrentitaionRotation = YES;
+        _roateType = ZFRotateTypeNormal;
     }
     return self;
 }
 
-- (instancetype)initWithRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
-    if ([self init]) {
-        _roateType = ZFRotateTypeNormal;
-        _view = rotateView;
-        _containerView = containerView;
-    }
-    return self;
+- (void)updateRotateView:(UIView *)rotateView
+           containerView:(UIView *)containerView {
+    self.view = rotateView;
+    self.containerView = containerView;
 }
 
 - (void)cellModelRotateView:(UIView *)rotateView rotateViewAtCell:(UIView *)cell playerViewTag:(NSInteger)playerViewTag {
@@ -101,14 +102,15 @@
     self.playerViewTag = playerViewTag;
 }
 
-- (void)cellSmallModelRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
-    self.roateType = ZFRotateTypeCellSmall;
+- (void)cellOtherModelRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
+    self.roateType = ZFRotateTypeCellOther;
     self.view = rotateView;
     self.containerView = containerView;
 }
 
 - (void)dealloc {
     [self removeDeviceOrientationObserver];
+    [self.blackView removeFromSuperview];
 }
 
 - (void)addDeviceOrientationObserver {
@@ -140,15 +142,21 @@
     
     switch (_currentOrientation) {
         case UIInterfaceOrientationPortrait: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:YES];
+            if ([self isSupportedPortrait]) {
+                [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:YES];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeLeft: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeLeft animated:YES];
+            if ([self isSupportedLandscapeLeft]) {
+                [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeLeft animated:YES];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeRight: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
+             if ([self isSupportedLandscapeRight]) {
+                 [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
+             }
         }
             break;
         default: break;
@@ -170,16 +178,35 @@
             if (self.roateType == ZFRotateTypeCell) superview = [self.cell viewWithTag:self.playerViewTag];
             else superview = self.containerView;
             self.fullScreen = NO;
+            if (self.blackView.superview != nil) [self.blackView removeFromSuperview];
         }
         if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
+        
         [superview addSubview:self.view];
-        [UIView animateWithDuration:animated?self.duration:0 animations:^{
+        if (animated) {
+            [UIView animateWithDuration:self.duration animations:^{
+                self.view.frame = superview.bounds;
+                [self.view layoutIfNeeded];
+                [self interfaceOrientation:orientation];
+            } completion:^(BOOL finished) {
+                if (self.fullScreen) {
+                    [superview insertSubview:self.blackView belowSubview:self.view];
+                    self.blackView.frame = superview.bounds;
+                }
+                if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
+            }];
+        } else {
             self.view.frame = superview.bounds;
             [self.view layoutIfNeeded];
-            [self interfaceOrientation:orientation];
-        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0 animations:^{
+                [self interfaceOrientation:orientation];
+            }];
+            if (self.fullScreen) {
+                [superview insertSubview:self.blackView belowSubview:self.view];
+                self.blackView.frame = superview.bounds;
+            }
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
-        }];
+        }
         return;
     }
     
@@ -195,11 +222,15 @@
         if (self.roateType == ZFRotateTypeCell) superview = [self.cell viewWithTag:self.playerViewTag];
         else superview = self.containerView;
         self.fullScreen = NO;
+        if (self.blackView.superview != nil) [self.blackView removeFromSuperview];
     }
     frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [UIApplication sharedApplication].statusBarOrientation = orientation;
-
+#pragma clang diagnostic pop
+    
     /// 处理8.0系统键盘
     if (SysVersion >= 8.0 && SysVersion < 9.0) {
         NSInteger windowCount = [[[UIApplication sharedApplication] windows] count];
@@ -215,17 +246,33 @@
     }
     
     if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
-    [UIView animateWithDuration:animated?self.duration:0 animations:^{
-        self.view.transform = [self getTransformRotationAngle:orientation];
-        [UIView animateWithDuration:animated?self.duration:0 animations:^{
-            self.view.frame = frame;
-            [self.view layoutIfNeeded];
+    if (animated) {
+        [UIView animateWithDuration:self.duration animations:^{
+            self.view.transform = [self getTransformRotationAngle:orientation];
+            [UIView animateWithDuration:self.duration animations:^{
+                self.view.frame = frame;
+                [self.view layoutIfNeeded];
+            }];
+        } completion:^(BOOL finished) {
+            [superview addSubview:self.view];
+            self.view.frame = superview.bounds;
+            if (self.fullScreen) {
+                [superview insertSubview:self.blackView belowSubview:self.view];
+                self.blackView.frame = superview.bounds;
+            }
+            if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
         }];
-    } completion:^(BOOL finished) {
+    } else {
+        self.view.transform = [self getTransformRotationAngle:orientation];
         [superview addSubview:self.view];
         self.view.frame = superview.bounds;
+        [self.view layoutIfNeeded];
+        if (self.fullScreen) {
+            [superview insertSubview:self.blackView belowSubview:self.view];
+            self.blackView.frame = superview.bounds;
+        }
         if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
-    }];
+    }
 }
 
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation {
@@ -254,9 +301,6 @@
 
 /// Gets the rotation Angle of the transformation.
 - (CGAffineTransform)getTransformRotationAngle:(UIInterfaceOrientation)orientation {
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) && orientation == UIInterfaceOrientationPortrait) {
-        return CGAffineTransformIdentity;
-    }
     if (orientation == UIInterfaceOrientationPortrait) {
         return CGAffineTransformIdentity;
     } else if (orientation == UIInterfaceOrientationLandscapeLeft){
@@ -285,14 +329,21 @@
     }
     if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
     CGRect frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
-    [UIView animateWithDuration:animated?self.duration:0 animations:^{
-        self.view.frame = frame;
-        [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
+    if (animated) {
+        [UIView animateWithDuration:self.duration animations:^{
+            self.view.frame = frame;
+            [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            [superview addSubview:self.view];
+            self.view.frame = superview.bounds;
+            if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
+        }];
+    } else {
         [superview addSubview:self.view];
         self.view.frame = superview.bounds;
+        [self.view layoutIfNeeded];
         if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
-    }];
+    }
 }
 
 - (void)exitFullScreenWithAnimated:(BOOL)animated {
@@ -302,6 +353,31 @@
         [self enterPortraitFullScreen:NO animated:animated];
     }
 }
+
+/// 是否支持 Portrait
+- (BOOL)isSupportedPortrait {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskPortrait;
+}
+
+/// 是否支持 LandscapeLeft
+- (BOOL)isSupportedLandscapeLeft {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeLeft;
+}
+
+/// 是否支持 LandscapeRight
+- (BOOL)isSupportedLandscapeRight {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeRight;
+}
+
+- (UIView *)blackView {
+    if (!_blackView) {
+        _blackView = [UIView new];
+        _blackView.backgroundColor = [UIColor blackColor];
+    }
+    return _blackView;
+}
+
+#pragma mark - setter
 
 - (void)setLockedScreen:(BOOL)lockedScreen {
     _lockedScreen = lockedScreen;
@@ -330,4 +406,3 @@
 }
 
 @end
-

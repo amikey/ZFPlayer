@@ -23,12 +23,8 @@
 // THE SOFTWARE.
 
 #import "KSMediaPlayerManager.h"
-#import "ZFPlayerView.h"
-#if __has_include(<ZFPlayer/ZFPlayer.h>)
+#import <ZFPlayer/ZFPlayerView.h>
 #import <ZFPlayer/ZFPlayer.h>
-#else
-#import "ZFPlayer.h"
-#endif
 
 #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
 #import <KSYMediaPlayer/KSYMediaPlayer.h>
@@ -55,8 +51,9 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 @synthesize loadState                      = _loadState;
 @synthesize assetURL                       = _assetURL;
 @synthesize playerPrepareToPlay            = _playerPrepareToPlay;
-@synthesize playerPlayStatChanged          = _playerPlayStatChanged;
-@synthesize playerLoadStatChanged          = _playerLoadStatChanged;
+@synthesize playerReadyToPlay              = _playerReadyToPlay;
+@synthesize playerPlayStateChanged         = _playerPlayStateChanged;
+@synthesize playerLoadStateChanged         = _playerLoadStateChanged;
 @synthesize seekTime                       = _seekTime;
 @synthesize muted                          = _muted;
 @synthesize volume                         = _volume;
@@ -66,6 +63,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 @synthesize isPreparedToPlay               = _isPreparedToPlay;
 @synthesize scalingMode                    = _scalingMode;
 @synthesize playerPlayFailed               = _playerPlayFailed;
+@synthesize presentationSizeChanged        = _presentationSizeChanged;
 
 - (void)dealloc {
     [self destory];
@@ -92,7 +90,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     self.loadState = ZFPlayerLoadStatePrepare;
     [self initializePlayer];
     if (self.playerPrepareToPlay) self.playerPrepareToPlay(self, self.assetURL);
-    [self.player prepareToPlay];
+    [self play];
 }
 
 - (void)play {
@@ -154,7 +152,8 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (void)initializePlayer {
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
-    self.player.shouldAutoplay = NO;
+    [self.player prepareToPlay];
+    self.player.shouldAutoplay = YES;
     [self addPlayerNotification];
     
     [self.view insertSubview:self.player.view atIndex:1];
@@ -224,7 +223,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([keyPath isEqualToString:kCurrentPlaybackTime]) {
-            self->_currentTime = self.player.currentPlaybackTime;
+            self->_currentTime = self.player.currentPlaybackTime > 0 ?: 0;
             self->_totalTime = self.player.duration;
             self->_bufferTime = self.player.playableDuration;
             if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self->_currentTime, self->_totalTime);
@@ -244,6 +243,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     }
     [self play];
     self.player.shouldMute = self.muted;
+    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
     /// 需要延迟改为ok状态，不然显示会有一点问题。
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
@@ -273,7 +273,10 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 /// 视频的尺寸变化了
 - (void)sizeAvailableChange:(NSNotification *)notify {
-    // 如果想要在宽大于高的时候横屏播放，你可以在这里旋转
+    self->_presentationSize = self.player.naturalSize;
+    if (self.presentationSizeChanged) {
+        self.presentationSizeChanged(self, self->_presentationSize);
+    }
 }
 
 - (void)bufferChange:(NSNotification *)notify {
@@ -287,7 +290,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 /// 播放器首帧出现
 - (void)videoFirstFrame:(NSNotification *)notify {
-    
+
 }
 
 /// 播放状态改变
@@ -333,12 +336,12 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (void)setPlayState:(ZFPlayerPlaybackState)playState {
     _playState = playState;
-    if (self.playerPlayStatChanged) self.playerPlayStatChanged(self, playState);
+    if (self.playerPlayStateChanged) self.playerPlayStateChanged(self, playState);
 }
 
 - (void)setLoadState:(ZFPlayerLoadState)loadState {
     _loadState = loadState;
-    if (self.playerLoadStatChanged) self.playerLoadStatChanged(self, loadState);
+    if (self.playerLoadStateChanged) self.playerLoadStateChanged(self, loadState);
 }
 
 - (void)setAssetURL:(NSURL *)assetURL {

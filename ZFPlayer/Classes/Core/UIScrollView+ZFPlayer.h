@@ -27,26 +27,37 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*
- * The scroll derection of scrollView.
+ * The scroll direction of scrollView.
  */
-typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
-    ZFPlayerScrollDerectionNone = 0,
-    ZFPlayerScrollDerectionUp,        // Scroll up
-    ZFPlayerScrollDerectionDown       // Scroll Down
+typedef NS_ENUM(NSUInteger, ZFPlayerScrollDirection) {
+    ZFPlayerScrollDirectionNone,
+    ZFPlayerScrollDirectionUp,         // Scroll up
+    ZFPlayerScrollDirectionDown,       // Scroll Down
+    ZFPlayerScrollDirectionLeft,       // Scroll left
+    ZFPlayerScrollDirectionRight       // Scroll right
+};
+
+/*
+ * The scrollView direction.
+ */
+typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
+    ZFPlayerScrollViewDirectionVertical,
+    ZFPlayerScrollViewDirectionHorizontal
 };
 
 @interface UIScrollView (ZFPlayer)
 
-/// Rolling direction switch
-@property (nonatomic) BOOL zf_enableScrollHook;
+/// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical,the property has value.
+@property (nonatomic, readonly) CGFloat zf_lastOffsetY;
 
-@property (nonatomic, assign, readonly) CGFloat zf_lastOffsetY;
+/// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionHorizontal,the property has value.
+@property (nonatomic, readonly) CGFloat zf_lastOffsetX;
 
-/// The indexPath is playing
-@property (nonatomic, strong, nullable) NSIndexPath *zf_playingIndexPath;
+/// The indexPath is playing.
+@property (nonatomic, nullable) NSIndexPath *zf_playingIndexPath;
 
 /// The indexPath that should play, the one that lights up.
-@property (nonatomic, strong, nullable) NSIndexPath *zf_shouldPlayIndexPath;
+@property (nonatomic, nullable) NSIndexPath *zf_shouldPlayIndexPath;
 
 /// WWANA networks play automatically,default NO.
 @property (nonatomic, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
@@ -57,8 +68,13 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// The view tag that the player display in scrollView.
 @property (nonatomic) NSInteger zf_containerViewTag;
 
-/// The scroll derection of scrollView.
-@property (nonatomic) ZFPlayerScrollDerection zf_scrollDerection;
+/// The scrollView scroll direction, default is ZFPlayerScrollViewDirectionVertical.
+@property (nonatomic) ZFPlayerScrollViewDirection zf_scrollViewDirection;
+
+/// The scroll direction of scrollView while scrolling.
+/// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical，this value can only be ZFPlayerScrollDirectionUp or ZFPlayerScrollDirectionDown.
+/// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical，this value can only be ZFPlayerScrollDirectionLeft or ZFPlayerScrollDirectionRight.
+@property (nonatomic, readonly) ZFPlayerScrollDirection zf_scrollDirection;
 
 /// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL zf_stopWhileNotVisible;
@@ -69,20 +85,40 @@ typedef NS_ENUM(NSUInteger, ZFPlayerScrollDerection) {
 /// The block invoked When the player should play.
 @property (nonatomic, copy, nullable) void(^zf_shouldPlayIndexPathCallback)(NSIndexPath *indexPath);
 
-/// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped)
+/// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped).
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
 
-/// Filter the cell that should be played while scrolling (you can use this to filter the highlighted cell)
+/// Filter the cell that should be played while scrolling (you can use this to filter the highlighted cell).
 - (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler;
 
-/// Get the cell according to indexPath
+/// Get the cell according to indexPath.
 - (UIView *)zf_getCellForIndexPath:(NSIndexPath *)indexPath;
 
 /// Scroll to indexPath with animations.
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler;
 
-/// ScrollView did stop scroll.
-- (void)zf_scrollViewDidStopScroll;
+/// add in 3.2.4 version.
+/// Scroll to indexPath with animations.
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated completionHandler:(void (^ __nullable)(void))completionHandler;
+
+///------------------------------------
+/// The following method must be implemented in UIScrollViewDelegate.
+///------------------------------------
+
+- (void)zf_scrollViewDidEndDecelerating;
+
+- (void)zf_scrollViewDidEndDraggingWillDecelerate:(BOOL)decelerate;
+
+- (void)zf_scrollViewDidScrollToTop;
+
+- (void)zf_scrollViewDidScroll;
+
+- (void)zf_scrollViewWillBeginDragging;
+
+///------------------------------------
+/// end
+///------------------------------------
+
 
 @end
 

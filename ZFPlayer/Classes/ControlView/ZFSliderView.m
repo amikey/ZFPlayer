@@ -34,10 +34,6 @@ static const CGFloat kProgressH = 2.0;
 /** 拖动slider动画的时间*/
 static const CGFloat kAnimate = 0.3;
 
-@interface ZFSliderButton : UIButton
-
-@end
-
 @implementation ZFSliderButton
 
 // 重写此方法将按钮的点击范围扩大
@@ -91,23 +87,25 @@ static const CGFloat kAnimate = 0.3;
     
     // 初始化frame
     if (self.sliderBtn.hidden) {
-        self.bgProgressView.width   = self.width;
+        self.bgProgressView.zf_width   = self.zf_width;
     } else {
-        self.bgProgressView.width   = self.width - kProgressMargin * 2;
+        self.bgProgressView.zf_width   = self.zf_width - kProgressMargin * 2;
     }
     
-    self.bgProgressView.centerY     = self.height * 0.5;
-    self.bufferProgressView.centerY = self.height * 0.5;
-    self.sliderProgressView.centerY = self.height * 0.5;
-    self.sliderBtn.centerY          = self.height * 0.5;
+    self.bgProgressView.zf_centerY     = self.zf_height * 0.5;
+    self.bufferProgressView.zf_centerY = self.zf_height * 0.5;
+    self.sliderProgressView.zf_centerY = self.zf_height * 0.5;
+    self.sliderBtn.zf_centerY          = self.zf_height * 0.5;
     
-    /// 修复slider  bufferProgressP错位问题
-    CGFloat finishValue = self.bgProgressView.width * self.bufferValue;
-    self.bufferProgressView.width = finishValue;
+    /// 修复slider  bufferProgress错位问题
+    CGFloat finishValue = self.bgProgressView.zf_width * self.bufferValue;
+    self.bufferProgressView.zf_width = finishValue;
+    self.sliderProgressView.zf_left = kProgressMargin;
+    self.bufferProgressView.zf_left = kProgressMargin;
     
-    CGFloat progressValue  = self.bgProgressView.width * self.value;
-    self.sliderProgressView.width = progressValue;
-    self.sliderBtn.left = (self.width - self.sliderBtn.width) * self.value;
+    CGFloat progressValue  = self.bgProgressView.zf_width * self.value;
+    self.sliderProgressView.zf_width = progressValue;
+    self.sliderBtn.zf_left = (self.zf_width - self.sliderBtn.zf_width) * self.value;
 }
 
 /**
@@ -128,6 +126,10 @@ static const CGFloat kAnimate = 0.3;
     // 添加点击手势
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
     [self addGestureRecognizer:self.tapGesture];
+    
+    // 添加滑动手势
+    UIPanGestureRecognizer *sliderGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sliderGesture:)];
+    [self addGestureRecognizer:sliderGesture];
 }
 
 #pragma mark - Setter
@@ -166,17 +168,18 @@ static const CGFloat kAnimate = 0.3;
 }
 
 - (void)setValue:(float)value {
+    if (isnan(value)) return;
     _value = value;
-    CGFloat finishValue  = self.bgProgressView.width * value;
-    self.sliderProgressView.width = finishValue;
-    self.sliderBtn.left = (self.width - self.sliderBtn.width) * value;
+    self.sliderBtn.zf_left = (self.zf_width - self.sliderBtn.zf_width) * value;
+    self.sliderProgressView.frame = CGRectMake(self.bgProgressView.zf_x, self.bgProgressView.zf_y, self.sliderBtn.zf_centerX, self.bgProgressView.zf_height);
     self.lastPoint = self.sliderBtn.center;
 }
 
 - (void)setBufferValue:(float)bufferValue {
+    if (isnan(bufferValue)) return;
     _bufferValue = bufferValue;
-    CGFloat finishValue = self.bgProgressView.width * bufferValue;
-    self.bufferProgressView.width = finishValue;
+    CGFloat finishValue = self.bgProgressView.zf_width * bufferValue;
+    self.bufferProgressView.zf_width = finishValue;
 }
 
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state {
@@ -197,10 +200,11 @@ static const CGFloat kAnimate = 0.3;
 }
 
 - (void)setSliderHeight:(CGFloat)sliderHeight {
+    if (isnan(sliderHeight)) return;
     _sliderHeight = sliderHeight;
-    self.bgProgressView.height     = sliderHeight;
-    self.bufferProgressView.height = sliderHeight;
-    self.sliderProgressView.height = sliderHeight;
+    self.bgProgressView.zf_height     = sliderHeight;
+    self.bufferProgressView.zf_height = sliderHeight;
+    self.sliderProgressView.zf_height = sliderHeight;
 }
 
 - (void)setIsHideSliderBlock:(BOOL)isHideSliderBlock {
@@ -208,14 +212,33 @@ static const CGFloat kAnimate = 0.3;
     // 隐藏滑块，滑杆不可点击
     if (isHideSliderBlock) {
         self.sliderBtn.hidden = YES;
-        self.bgProgressView.left     = 0;
-        self.bufferProgressView.left = 0;
-        self.sliderProgressView.left = 0;
+        self.bgProgressView.zf_left     = 0;
+        self.bufferProgressView.zf_left = 0;
+        self.sliderProgressView.zf_left = 0;
         self.allowTapped = NO;
     }
 }
 
 #pragma mark - User Action
+
+- (void)sliderGesture:(UIGestureRecognizer *)gesture {
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan: {
+            [self sliderBtnTouchBegin:self.sliderBtn];
+        }
+            break;
+        case UIGestureRecognizerStateChanged: {
+            [self sliderBtnDragMoving:self.sliderBtn point:[gesture locationInView:self]];
+        }
+            break;
+        case UIGestureRecognizerStateEnded: {
+            [self sliderBtnTouchEnded:self.sliderBtn];
+        }
+            break;
+        default:
+            break;
+    }
+}
 
 - (void)sliderBtnTouchBegin:(UIButton *)btn {
     if ([self.delegate respondsToSelector:@selector(sliderTouchBegan:)]) {
@@ -239,11 +262,11 @@ static const CGFloat kAnimate = 0.3;
     }
 }
 
-- (void)sliderBtnDragMoving:(UIButton *)btn event:(UIEvent *)event {
+- (void)sliderBtnDragMoving:(UIButton *)btn point:(CGPoint)touchPoint {
     // 点击的位置
-    CGPoint point = [event.allTouches.anyObject locationInView:self];
+    CGPoint point = touchPoint;
     // 获取进度值 由于btn是从 0-(self.width - btn.width)
-    float value = (point.x - btn.width * 0.5) / (self.width - btn.width);
+    float value = (point.x - btn.zf_width * 0.5) / (self.zf_width - btn.zf_width);
     // value的值需在0-1之间
     value = value >= 1.0 ? 1.0 : value <= 0.0 ? 0.0 : value;
     if (self.value == value) return;
@@ -257,7 +280,7 @@ static const CGFloat kAnimate = 0.3;
 - (void)tapped:(UITapGestureRecognizer *)tap {
     CGPoint point = [tap locationInView:self];
     // 获取进度
-    float value = (point.x - self.bgProgressView.left) * 1.0 / self.bgProgressView.width;
+    float value = (point.x - self.bgProgressView.zf_left) * 1.0 / self.bgProgressView.zf_width;
     value = value >= 1.0 ? 1.0 : value <= 0 ? 0 : value;
     [self setValue:value];
     if ([self.delegate respondsToSelector:@selector(sliderTapped:)]) {
@@ -301,11 +324,6 @@ static const CGFloat kAnimate = 0.3;
     if (!_sliderBtn) {
         _sliderBtn = [ZFSliderButton buttonWithType:UIButtonTypeCustom];
         [_sliderBtn setAdjustsImageWhenHighlighted:NO];
-        [_sliderBtn addTarget:self action:@selector(sliderBtnTouchBegin:) forControlEvents:UIControlEventTouchDown];
-        [_sliderBtn addTarget:self action:@selector(sliderBtnTouchEnded:) forControlEvents:UIControlEventTouchCancel];
-        [_sliderBtn addTarget:self action:@selector(sliderBtnTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
-        [_sliderBtn addTarget:self action:@selector(sliderBtnTouchEnded:) forControlEvents:UIControlEventTouchUpOutside];
-        [_sliderBtn addTarget:self action:@selector(sliderBtnDragMoving:event:) forControlEvents:UIControlEventTouchDragInside];
     }
     return _sliderBtn;
 }
