@@ -202,7 +202,7 @@
 
 - (void)sliderValueChanged:(float)value {
     if (self.player.totalTime == 0) {
-        self.slider.value = 0;
+        [self.slider setSliderProgress:0 animated:NO];
         return;
     }
     self.slider.isdragging = YES;
@@ -219,12 +219,14 @@
             @strongify(self)
             if (finished) {
                 self.slider.isdragging = NO;
-                [self.player.currentPlayerManager play];
             }
         }];
+        if (self.seekToPlay) {
+            [self.player.currentPlayerManager play];
+        }
     } else {
         self.slider.isdragging = NO;
-        self.slider.value = 0;
+        [self.slider setSliderProgress:0 animated:NO];
     }
 }
 
@@ -232,8 +234,8 @@
 
 /// 重置ControlView
 - (void)resetControlView {
-    self.slider.value                = 0;
-    self.slider.bufferValue          = 0;
+    [self.slider setBufferProgress:0 animated:NO];
+    [self.slider setSliderProgress:0 animated:NO];
     self.currentTimeLabel.text       = @"00:00";
     self.totalTimeLabel.text         = @"00:00";
     self.backgroundColor             = [UIColor clearColor];
@@ -297,12 +299,12 @@
         self.currentTimeLabel.text = currentTimeString;
         NSString *totalTimeString = [ZFUtilities convertTimeSecond:totalTime];
         self.totalTimeLabel.text = totalTimeString;
-        self.slider.value = videoPlayer.progress;
+        [self.slider setSliderProgress:videoPlayer.progress animated:YES];
     }
 }
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime {
-    self.slider.bufferValue = videoPlayer.bufferProgress;
+    [self.slider setBufferProgress:videoPlayer.bufferProgress animated:YES];
 }
 
 - (void)showTitle:(NSString *)title fullScreenMode:(ZFFullScreenMode)fullScreenMode {
@@ -313,7 +315,7 @@
 
 /// 调节播放进度slider和当前时间更新
 - (void)sliderValueChanged:(CGFloat)value currentTimeString:(NSString *)timeString {
-    self.slider.value = value;
+    [self.slider setSliderProgress:value animated:NO];
     self.currentTimeLabel.text = timeString;
     self.slider.isdragging = YES;
     [UIView animateWithDuration:0.3 animations:^{

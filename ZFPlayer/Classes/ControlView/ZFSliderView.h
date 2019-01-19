@@ -28,13 +28,13 @@
 
 @optional
 // 滑块滑动开始
-- (void)sliderTouchBegan:(float)value;
+- (void)sliderTouchBegan:(CGFloat)value;
 // 滑块滑动中
-- (void)sliderValueChanged:(float)value;
+- (void)sliderValueChanged:(CGFloat)value;
 // 滑块滑动结束
-- (void)sliderTouchEnded:(float)value;
+- (void)sliderTouchEnded:(CGFloat)value;
 // 滑杆点击
-- (void)sliderTapped:(float)value;
+- (void)sliderTapped:(CGFloat)value;
 
 @end
 
@@ -54,16 +54,19 @@
 @property (nonatomic, strong) UIColor *minimumTrackTintColor;
 /** 缓存进度颜色 */
 @property (nonatomic, strong) UIColor *bufferTrackTintColor;
+/** loading进度颜色 */
+@property (nonatomic, strong) UIColor *loadingTintColor;
+
 /** 默认滑杆的图片 */
 @property (nonatomic, strong) UIImage *maximumTrackImage;
 /** 滑杆进度的图片 */
 @property (nonatomic, strong) UIImage *minimumTrackImage;
 /** 缓存进度的图片 */
 @property (nonatomic, strong) UIImage *bufferTrackImage;
-/** 滑杆进度 */
-@property (nonatomic, assign) float value;
-/** 缓存进度 */
-@property (nonatomic, assign) float bufferValue;
+///** 滑杆进度 */
+//@property (nonatomic, assign) float value;
+///** 缓存进度 */
+//@property (nonatomic, assign) float bufferValue;
 /** 是否允许点击，默认是YES */
 @property (nonatomic, assign) BOOL allowTapped;
 /** 是否允许点击，默认是YES */
@@ -79,10 +82,23 @@
 
 @property (nonatomic, assign) CGSize thumbSize;
 
-//@property (nonatomic, assign) CGFloat ignoreMargin;
+/**
+ *  Starts animation of the spinner.
+ */
+- (void)startAnimating;
+
+/**
+ *  Stops animation of the spinnner.
+ */
+- (void)stopAnimating;
+
+- (void)setSliderProgress:(CGFloat)progress animated:(BOOL)animated;
+
+- (void)setBufferProgress:(CGFloat)progress animated:(BOOL)animated;
 
 // 设置滑块背景色
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state;
+
 // 设置滑块图片
 - (void)setThumbImage:(UIImage *)image forState:(UIControlState)state;
 

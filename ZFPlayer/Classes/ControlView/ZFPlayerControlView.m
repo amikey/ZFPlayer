@@ -83,7 +83,7 @@
         self.floatControlView.hidden = YES;
         self.seekToPlay = YES;
         self.autoFadeTimeInterval = 0.25;
-        self.autoHiddenTimeInterval = 2.5;
+        self.autoHiddenTimeInterval = 12.5;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(volumeChanged:)
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
@@ -254,8 +254,8 @@
     [self.portraitControlView resetControlView];
     [self.landScapeControlView resetControlView];
     [self cancelAutoFadeOutControlView];
-    self.bottomPgrogress.value = 0;
-    self.bottomPgrogress.bufferValue = 0;
+    [self.bottomPgrogress setBufferProgress:0 animated:NO];
+    [self.bottomPgrogress setSliderProgress:0 animated:NO];
     self.floatControlView.hidden = YES;
     self.failBtn.hidden = YES;
     self.portraitControlView.hidden = self.player.isFullScreen;
@@ -433,15 +433,15 @@
 /// 播放进度改变回调
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer currentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime {
     [self.portraitControlView videoPlayer:videoPlayer currentTime:currentTime totalTime:totalTime];
-    [self.landScapeControlView videoPlayer:videoPlayer currentTime:currentTime totalTime:totalTime];
-    self.bottomPgrogress.value = videoPlayer.progress;
+//    [self.landScapeControlView videoPlayer:videoPlayer currentTime:currentTime totalTime:totalTime];
+//    [self.bottomPgrogress setSliderProgress:videoPlayer.progress animated:YES];
 }
 
 /// 缓冲改变回调
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime {
     [self.portraitControlView videoPlayer:videoPlayer bufferTime:bufferTime];
-    [self.landScapeControlView videoPlayer:videoPlayer bufferTime:bufferTime];
-    self.bottomPgrogress.bufferValue = videoPlayer.bufferProgress;
+//    [self.landScapeControlView videoPlayer:videoPlayer bufferTime:bufferTime];
+//    [self.bottomPgrogress setBufferProgress:videoPlayer.bufferProgress animated:YES];
 }
 
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer presentationSizeChanged:(CGSize)size {
@@ -506,7 +506,7 @@
 #pragma mark - Private Method
 
 - (void)sliderValueChangingValue:(CGFloat)value isForward:(BOOL)forward {
-    self.fastProgressView.value = value;
+//    self.fastProgressView.value = value;
     /// 显示控制层
     [self showControlViewWithAnimated:NO];
     [self cancelAutoFadeOutControlView];

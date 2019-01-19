@@ -78,10 +78,10 @@
     } else if (state == ZFPlayerLoadStatePlaythroughOK) {
         self.coverImageView.hidden = YES;
     }
-    if (state == ZFPlayerLoadStateStalled) {
-        [self.activity startAnimating];
+    if (state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) {
+        [self.sliderView startAnimating];
     } else {
-        [self.activity stopAnimating];
+        [self.sliderView stopAnimating];
     }
 }
 
@@ -140,7 +140,7 @@
         _sliderView.minimumTrackTintColor = [UIColor whiteColor];
         _sliderView.bufferTrackTintColor  = [UIColor clearColor];
         _sliderView.sliderHeight = 1;
-        _sliderView.isHideSliderBlock = NO;
+        _sliderView.isHideSliderBlock = YES;
     }
     return _sliderView;
 }

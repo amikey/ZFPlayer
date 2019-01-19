@@ -285,12 +285,12 @@
     return self.currentPlayerManager.bufferTime;
 }
 
-- (float)progress {
+- (CGFloat)progress {
     if (self.totalTime == 0) return 0;
     return self.currentTime/self.totalTime;
 }
 
-- (float)bufferProgress {
+- (CGFloat)bufferProgress {
     if (self.totalTime == 0) return 0;
     return self.bufferTime/self.totalTime;
 }
