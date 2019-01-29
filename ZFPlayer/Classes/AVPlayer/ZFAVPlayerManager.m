@@ -159,6 +159,8 @@ static NSString *const kPresentationSize         = @"presentationSize";
     [self.player pause];
     self->_isPlaying = NO;
     self.playState = ZFPlayerPlayStatePaused;
+    [_playerItem cancelPendingSeeks];
+    [_asset cancelLoading];
 }
 
 - (void)stop {
@@ -167,12 +169,14 @@ static NSString *const kPresentationSize         = @"presentationSize";
     self.loadState = ZFPlayerLoadStateUnknown;
     if (self.player.rate != 0) [self.player pause];
     [self.player removeTimeObserver:_timeObserver];
+    [self.player replaceCurrentItemWithPlayerItem:nil];
     _timeObserver = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:_itemEndObserver name:AVPlayerItemDidPlayToEndTimeNotification object:self.playerItem];
     _itemEndObserver = nil;
     _isPlaying = NO;
     _player = nil;
     _assetURL = nil;
+    _playerItem = nil;
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
@@ -193,7 +197,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
     CMTime seekTime = CMTimeMake(time, 1);
-    [_playerItem cancelPendingSeeks];
     [_player seekToTime:seekTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
 }
 
@@ -245,7 +248,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
     _asset = [AVURLAsset assetWithURL:self.assetURL];
     _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
-    _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
     [self enableAudioTracks:YES inPlayerItem:_playerItem];
     
     ZFPlayerPresentView *presentView = (ZFPlayerPresentView *)self.view;

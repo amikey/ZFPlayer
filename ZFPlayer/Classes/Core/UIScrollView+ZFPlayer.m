@@ -311,7 +311,7 @@
         }
         
         // Last visible cell indexPath
-        indexPath = collectionView.indexPathsForVisibleItems.lastObject;
+        indexPath = sortedIndexPaths.lastObject;
         if (self.contentOffset.y + self.frame.size.height >= self.contentSize.height && (!self.zf_playingIndexPath || [indexPath compare:self.zf_playingIndexPath] == NSOrderedSame)) {
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
             UIView *playerView = [cell viewWithTag:self.zf_containerViewTag];
@@ -428,7 +428,7 @@
         }
         
         // Last visible cell indexPath
-        indexPath = collectionView.indexPathsForVisibleItems.lastObject;
+        indexPath = sortedIndexPaths.lastObject;
         if (self.contentOffset.x + self.frame.size.width >= self.contentSize.width && (!self.zf_playingIndexPath || [indexPath compare:self.zf_playingIndexPath] == NSOrderedSame)) {
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
             UIView *playerView = [cell viewWithTag:self.zf_containerViewTag];
