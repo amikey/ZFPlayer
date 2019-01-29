@@ -223,7 +223,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([keyPath isEqualToString:kCurrentPlaybackTime]) {
-            self->_currentTime = self.player.currentPlaybackTime > 0 ?: 0;
+            self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
             self->_totalTime = self.player.duration;
             self->_bufferTime = self.player.playableDuration;
             if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self->_currentTime, self->_totalTime);

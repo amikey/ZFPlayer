@@ -60,14 +60,13 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
         [self.player.currentPlayerManager replay];
-//        [self.player playTheNext];
-//        if (!self.player.isLastAssetURL) {
-//            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
-//            [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
-//        } else {
-//            [self.player stop];
-//        }
-//        [self.player stop];
+        [self.player playTheNext];
+        if (!self.player.isLastAssetURL) {
+            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
+            [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
+        } else {
+            [self.player stop];
+        }
     };
     
     self.player.playerReadyToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
@@ -130,11 +129,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 }
 
 - (void)changeVideo:(UIButton *)sender {
-    /// 切换playerManager
-//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-//    self.player.currentPlayerManager = playerManager;
-//    [self.player replaceCurrentPlayerManager:playerManager];
-    
     NSString *URLString = @"https://www.apple.com/105/media/cn/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/bruce/mac-bruce-tpl-cn-2018_1280x720h.mp4";
     self.player.assetURL = [NSURL URLWithString:URLString];
     [self.controlView showTitle:@"Apple" coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeAutomatic];
@@ -185,11 +179,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         return UIInterfaceOrientationMaskLandscape;
     }
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.view endEditing:YES];
-//    self.player.currentPlayerManager.muted = !self.player.currentPlayerManager.muted;
 }
 
 - (ZFPlayerControlView *)controlView {

@@ -204,7 +204,7 @@
 }
 
 - (void)update {
-    self->_currentTime = self.player.currentPlaybackTime > 0 ?: 0;
+    self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
     self->_totalTime = self.player.duration;
     self->_bufferTime = self.player.playableDuration;
     if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
