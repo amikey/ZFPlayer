@@ -142,6 +142,21 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
+/// The current player scroll slides off the screen percent.
+/// the property used when the `stopWhileNotVisible` is YES, stop the current playing player.
+/// the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view.
+/// 0.0~1.0, defalut is 0.5.
+/// 0.0 is the player will disappear.
+/// 1.0 is the player did disappear.
+@property (nonatomic) CGFloat zf_playerDisapperaPercent;
+
+/// The current player scroll to the screen percent.
+/// the property is only used when the `stopWhileNotVisible` is NO.
+/// 0.0~1.0, defalut is 0.0.
+/// 0.0 is the player will appear.
+/// 1.0 is the player did appear.
+@property (nonatomic) CGFloat zf_playerApperaPercent;
+
 @end
 
 @interface UIScrollView (ZFPlayerDeprecated)

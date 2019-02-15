@@ -292,8 +292,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL stopWhileNotVisible;
 
 /// The current player scroll slides off the screen percent.
-/// the property used when the `stopWhileNotVisible` is YES, the current playing player stop percent.
-/// the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view percent.
+/// the property used when the `stopWhileNotVisible` is YES, stop the current playing player.
+/// the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view.
 /// 0.0~1.0, defalut is 0.5.
 /// 0.0 is the player will disappear.
 /// 1.0 is the player did disappear.

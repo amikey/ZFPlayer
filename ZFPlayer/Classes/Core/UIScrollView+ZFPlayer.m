@@ -343,12 +343,15 @@
         if (!playerView) return;
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
         CGRect rect = [self convertRect:rect1 toView:self.superview];
+        /// playerView top to scrollView top space.
         CGFloat topSpacing = CGRectGetMinY(rect) - CGRectGetMinY(self.frame) - CGRectGetMinY(playerView.frame);
-        CGFloat bottomSpacing = CGRectGetMaxY(self.frame) - CGRectGetMaxY(rect) + CGRectGetMinY(self.frame);
+        /// playerView bottom to scrollView bottom space.
+        CGFloat bottomSpacing = CGRectGetMaxY(self.frame) - CGRectGetMaxY(rect) + CGRectGetMinY(playerView.frame);
         CGFloat centerSpacing = ABS(scrollViewMidY - CGRectGetMidY(rect));
         NSIndexPath *indexPath = [self zf_getIndexPathForCell:cell];
+        
         /// Play when the video playback section is visible.
-        if ((topSpacing >= -CGRectGetHeight(rect)/2) && (bottomSpacing >= -CGRectGetHeight(rect)/2)) {
+        if ((topSpacing >= -self.zf_playerDisapperaPercent * CGRectGetHeight(rect)) && (bottomSpacing >= -self.zf_playerDisapperaPercent * CGRectGetHeight(rect))) {
             /// If you have a cell that is playing, stop the traversal.
             if (self.zf_playingIndexPath) {
                 indexPath = self.zf_playingIndexPath;
@@ -460,12 +463,15 @@
         if (!playerView) return;
         CGRect rect1 = [playerView convertRect:playerView.frame toView:self];
         CGRect rect = [self convertRect:rect1 toView:self.superview];
+        /// playerView left to scrollView top space.
         CGFloat leftSpacing = CGRectGetMinX(rect) - CGRectGetMinX(self.frame) - CGRectGetMinX(playerView.frame);
-        CGFloat rightSpacing = CGRectGetMaxX(self.frame) - CGRectGetMaxX(rect) + CGRectGetMinX(self.frame);
+        /// playerView right to scrollView top space.
+        CGFloat rightSpacing = CGRectGetMaxX(self.frame) - CGRectGetMaxX(rect) + CGRectGetMinX(playerView.frame);
         CGFloat centerSpacing = ABS(scrollViewMidX - CGRectGetMidX(rect));
         NSIndexPath *indexPath = [self zf_getIndexPathForCell:cell];
+        
         /// Play when the video playback section is visible.
-        if ((leftSpacing >= -CGRectGetWidth(rect)/2) && (rightSpacing >= -CGRectGetWidth(rect)/2)) {
+        if ((leftSpacing >= -self.zf_playerDisapperaPercent * CGRectGetWidth(rect)) && (rightSpacing >= -self.zf_playerDisapperaPercent * CGRectGetWidth(rect))) {
             /// If you have a cell that is playing, stop the traversal.
             if (self.zf_playingIndexPath) {
                 indexPath = self.zf_playingIndexPath;
@@ -732,6 +738,14 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
+- (CGFloat)zf_playerApperaPercent {
+    return [objc_getAssociatedObject(self, _cmd) floatValue];
+}
+
+- (CGFloat)zf_playerDisapperaPercent {
+    return [objc_getAssociatedObject(self, _cmd) floatValue];
+}
+
 #pragma mark - setter
 
 - (void)setZf_playerDisappearingInScrollView:(void (^)(NSIndexPath * _Nonnull, CGFloat))zf_playerDisappearingInScrollView {
@@ -756,6 +770,14 @@
 
 - (void)setZf_playerDidDisappearInScrollView:(void (^)(NSIndexPath * _Nonnull))zf_playerDidDisappearInScrollView {
     objc_setAssociatedObject(self, @selector(zf_playerDidDisappearInScrollView), zf_playerDidDisappearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_playerApperaPercent:(CGFloat)zf_playerApperaPercent {
+    objc_setAssociatedObject(self, @selector(zf_playerApperaPercent), @(zf_playerApperaPercent), OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_playerDisapperaPercent:(CGFloat)zf_playerDisapperaPercent {
+    objc_setAssociatedObject(self, @selector(zf_playerDisapperaPercent), @(zf_playerDisapperaPercent), OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 @end
