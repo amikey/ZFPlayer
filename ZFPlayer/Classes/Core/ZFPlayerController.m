@@ -938,11 +938,13 @@
 }
 
 - (void)setPlayerDisapperaPercent:(CGFloat)playerDisapperaPercent {
+    playerDisapperaPercent = MIN(MAX(0.0, playerDisapperaPercent), 1.0);
     self.scrollView.zf_playerDisapperaPercent = playerDisapperaPercent;
     objc_setAssociatedObject(self, @selector(playerDisapperaPercent), @(playerDisapperaPercent), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)setPlayerApperaPercent:(CGFloat)playerApperaPercent {
+    playerApperaPercent = MIN(MAX(0.0, playerApperaPercent), 1.0);
     self.scrollView.zf_playerApperaPercent = playerApperaPercent;
     objc_setAssociatedObject(self, @selector(playerApperaPercent), @(playerApperaPercent), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
