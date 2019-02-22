@@ -33,7 +33,7 @@
 /*!
  *  Refresh interval for timed observations of AVPlayer
  */
-static float const kTimeRefreshInterval          = 0.5;
+static float const kTimeRefreshInterval          = 0.1;
 static NSString *const kStatus                   = @"status";
 static NSString *const kLoadedTimeRanges         = @"loadedTimeRanges";
 static NSString *const kPlaybackBufferEmpty      = @"playbackBufferEmpty";
@@ -177,6 +177,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     _player = nil;
     _assetURL = nil;
     _playerItem = nil;
+    _isPreparedToPlay = NO;
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
@@ -257,7 +258,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
         _playerItem.canUseNetworkResourcesForLiveStreamingWhilePaused = NO;
     }
     if (@available(iOS 10.0, *)) {
-        _playerItem.preferredForwardBufferDuration = 1;
+        _playerItem.preferredForwardBufferDuration = 5;
         _player.automaticallyWaitsToMinimizeStalling = NO;
     }
     [self itemObserving];
@@ -325,6 +326,10 @@ static NSString *const kPresentationSize         = @"presentationSize";
         @strongify(self)
         if (!self) return;
         NSArray *loadedRanges = self.playerItem.seekableTimeRanges;
+        /// 大于0才把状态改为可以播放，解决黑屏问题
+        if (CMTimeGetSeconds(time) > 0 && CMTimeGetSeconds(time) < 1) {
+            self.loadState = ZFPlayerLoadStatePlaythroughOK;
+        }
         if (loadedRanges.count > 0) {
             if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
         }
@@ -346,8 +351,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
                 if (self.loadState == ZFPlayerLoadStatePrepare) {
                     if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
                 }
-                
-                self.loadState = ZFPlayerLoadStatePlaythroughOK;
                 if (self.seekTime) {
                     [self seekToTime:self.seekTime completionHandler:nil];
                     self.seekTime = 0;

@@ -150,9 +150,9 @@
     
     [self.view insertSubview:self.player.view atIndex:1];
     self.player.view.frame = self.view.bounds;
+    self.player.view.backgroundColor = [UIColor clearColor];
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.scalingMode = _scalingMode;
-    
+    self.scalingMode = self->_scalingMode;
     [self addPlayerNotificationObservers];
 }
 
@@ -204,6 +204,9 @@
 }
 
 - (void)update {
+    if (self.player.currentPlaybackTime > 0 && self.player.currentPlaybackTime < 1) {
+        self.loadState = ZFPlayerLoadStatePlaythroughOK;
+    }
     self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
     self->_totalTime = self.player.duration;
     self->_bufferTime = self.player.playableDuration;
@@ -245,9 +248,6 @@
 // 准备开始播放了
 - (void)mediaIsPreparedToPlayDidChange:(NSNotification *)notification {
     ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.loadState = ZFPlayerLoadStatePlaythroughOK;
-    });
     if (self.isPlaying) {
         [self play];
         self.muted = self.muted;
@@ -257,10 +257,6 @@
             [self play];
         }
     }
-//    else {
-//        [self pause];
-//    }
-    
     ZFPlayerLog(@"mediaIsPrepareToPlayDidChange");
     if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
 }
@@ -298,7 +294,7 @@
     if (self.player.playbackState == IJKMPMoviePlaybackStatePlaying) {
         // 视频开始播放的时候开启计时器
         if (!self.timer) {
-            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(update) userInfo:nil repeats:YES];
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(update) userInfo:nil repeats:YES];
             [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
         }
     }
@@ -313,12 +309,6 @@
             
         case IJKMPMoviePlaybackStatePlaying: {
             ZFPlayerLog(@"播放器的播放状态变了，现在是播放状态 %d: playing", (int)_player.playbackState);
-//            self.playState = ZFPlayerPlayStatePlaying;
-//            if (self.seekTime) {
-//                [self seekToTime:self.seekTime completionHandler:nil];
-//                self.seekTime = 0; // 滞空, 防止下次播放出错
-//                [self play];
-//            }
         }
             break;
             
@@ -361,7 +351,6 @@
 - (UIView *)view {
     if (!_view) {
         _view = [[ZFPlayerView alloc] init];
-        _view.backgroundColor = [UIColor blackColor];
     }
     return _view;
 }

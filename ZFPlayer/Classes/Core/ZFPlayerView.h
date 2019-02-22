@@ -26,4 +26,6 @@
 
 @interface ZFPlayerView : UIView
 
+@property (nonatomic, strong, readonly) UIImageView *bgImgView;
+
 @end

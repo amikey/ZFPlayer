@@ -38,8 +38,8 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     [self requestData];
     
-    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+//    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
 //    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     
     /// player的tag值必须在cell里设置

@@ -52,10 +52,13 @@ Pod::Spec.new do |s|
         ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
         ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
         ksyMediaPlayer.dependency 'ZFPlayer/Core'
-        ksyMediaPlayer.dependency 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod'
-        ksyMediaPlayer.pod_target_xcconfig = {
-            'ARCHS[sdk=iphonesimulator*]' => '$(ARCHS_STANDARD_64_BIT)'
-        }
+        #ksyMediaPlayer.dependency 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod'
+        #ksyMediaPlayer.pod_target_xcconfig = {
+        #    'ARCHS[sdk=iphonesimulator*]' => '$(ARCHS_STANDARD_64_BIT)'
+        #}
+        ksyMediaPlayer.vendored_frameworks = 'ZFPlayer/Classes/KSYMediaPlayer/Frameworks/*.framework'
+        ksyMediaPlayer.frameworks = 'VideoToolbox'
+        ksyMediaPlayer.ios.library = 'z', 'iconv', 'c++', 'bz2'
     end
     
 end

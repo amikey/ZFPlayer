@@ -70,6 +70,10 @@
 
 @property (nonatomic, strong) ZFVolumeBrightnessView *volumeBrightnessView;
 
+@property (nonatomic, strong) UIImageView *bgImgView;
+
+@property (nonatomic, strong) UIView *effectView;
+
 @end
 
 @implementation ZFPlayerControlView
@@ -82,6 +86,7 @@
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
         self.seekToPlay = YES;
+        self.effectViewShow = YES;
         self.autoFadeTimeInterval = 0.25;
         self.autoHiddenTimeInterval = 2.5;
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -106,7 +111,9 @@
     self.portraitControlView.frame = self.bounds;
     self.landScapeControlView.frame = self.bounds;
     self.floatControlView.frame = self.bounds;
-    self.coverImageView.frame = self.player.currentPlayerManager.view.bounds;
+    self.coverImageView.frame = self.bounds;
+    self.bgImgView.frame = self.bounds;
+    self.effectView.frame = self.bounds;
     
     min_w = 80;
     min_h = 80;
@@ -154,7 +161,6 @@
     min_h = 40;
     self.volumeBrightnessView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.volumeBrightnessView.center = self.center;
-    
 }
 
 - (void)dealloc {
@@ -167,10 +173,8 @@
     [self addSubview:self.portraitControlView];
     [self addSubview:self.landScapeControlView];
     [self addSubview:self.floatControlView];
-    
     [self addSubview:self.activity];
     [self addSubview:self.failBtn];
-    
     [self addSubview:self.fastView];
     [self.fastView addSubview:self.fastImageView];
     [self.fastView addSubview:self.fastTimeLabel];
@@ -275,6 +279,7 @@
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.coverImageView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
+    [self.player.currentPlayerManager.view.bgImgView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
 }
 
 /// 设置标题、UIImage封面、全屏模式
@@ -285,6 +290,7 @@
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
     self.coverImageView.image = image;
+    self.player.currentPlayerManager.view.bgImgView.image = image;
 }
 
 #pragma mark - ZFPlayerControlViewDelegate
@@ -420,8 +426,15 @@
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state {
     if (state == ZFPlayerLoadStatePrepare) {
         self.coverImageView.hidden = NO;
+//        self.effectView.hidden = YES;
     } else if (state == ZFPlayerLoadStatePlaythroughOK) {
         self.coverImageView.hidden = YES;
+        if (self.effectViewShow) {
+            self.effectView.hidden = NO;
+        } else {
+            self.effectView.hidden = YES;
+            self.player.currentPlayerManager.view.backgroundColor = [UIColor blackColor];
+        }
     }
     if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.isPlaying) {
         [self.activity startAnimating];
@@ -556,9 +569,16 @@
     _player = player;
     self.landScapeControlView.player = player;
     self.portraitControlView.player = player;
-    /// 封面图加到播放视图底部了，解决播放时候黑屏闪一下问题
-    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:0];
+    /// 解决播放时候黑屏闪一下问题
+    [player.currentPlayerManager.view insertSubview:self.bgImgView atIndex:0];
+    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:1];
+    [self.bgImgView addSubview:self.effectView];
+    
     self.coverImageView.frame = player.currentPlayerManager.view.bounds;
+    self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.bgImgView.frame = player.currentPlayerManager.view.bounds;
+    self.bgImgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.effectView.frame = self.bgImgView.bounds;
     self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
@@ -569,6 +589,28 @@
 }
 
 #pragma mark - getter
+
+- (UIImageView *)bgImgView {
+    if (!_bgImgView) {
+        _bgImgView = [[UIImageView alloc] init];
+        _bgImgView.userInteractionEnabled = YES;
+    }
+    return _bgImgView;
+}
+
+- (UIView *)effectView {
+    if (!_effectView) {
+        if (@available(iOS 8.0, *)) {
+            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            _effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+        } else {
+            UIToolbar *effectView = [[UIToolbar alloc] init];
+            effectView.barStyle = UIBarStyleBlackTranslucent;
+            _effectView = effectView;
+        }
+    }
+    return _effectView;
+}
 
 - (ZFPortraitControlView *)portraitControlView {
     if (!_portraitControlView) {

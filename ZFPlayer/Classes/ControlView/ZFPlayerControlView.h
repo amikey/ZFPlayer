@@ -49,10 +49,16 @@
 @property (nonatomic, strong, readonly) ZFSliderView *bottomPgrogress;
 /// 封面图
 @property (nonatomic, strong, readonly) UIImageView *coverImageView;
+/// 高斯模糊的背景图
+@property (nonatomic, strong, readonly) UIImageView *bgImgView;
+/// 高斯模糊视图
+@property (nonatomic, strong, readonly) UIView *effectView;
 /// 占位图，默认是灰色
 @property (nonatomic, strong) UIImage *placeholderImage;
-/// 快进视图是否显示动画，默认NO。
+/// 快进视图是否显示动画，默认NO.
 @property (nonatomic, assign) BOOL fastViewAnimated;
+/// 视频之外区域是否高斯模糊显示，默认YES.
+@property (nonatomic, assign) BOOL effectViewShow;
 /// 直接进入全屏模式，只支持全屏模式
 @property (nonatomic, assign) BOOL fullScreenOnly;
 /// 如果是暂停状态，seek完是否播放，默认YES
