@@ -407,7 +407,7 @@
         [self.landScapeControlView playBtnSelectedState:YES];
         self.failBtn.hidden = YES;
         /// 开始播放时候判断是否显示loading
-        if (videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled || videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStatePrepare) {
+        if (videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled) {
             [self.activity startAnimating];
         }
     } else if (state == ZFPlayerPlayStatePaused) {
@@ -427,7 +427,7 @@
     if (state == ZFPlayerLoadStatePrepare) {
         self.coverImageView.hidden = NO;
 //        self.effectView.hidden = YES;
-    } else if (state == ZFPlayerLoadStatePlaythroughOK) {
+    } else if (state == ZFPlayerLoadStatePlaythroughOK || state == ZFPlayerLoadStatePlayable) {
         self.coverImageView.hidden = YES;
         if (self.effectViewShow) {
             self.effectView.hidden = NO;
@@ -436,7 +436,7 @@
             self.player.currentPlayerManager.view.backgroundColor = [UIColor blackColor];
         }
     }
-    if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.isPlaying) {
+    if (state == ZFPlayerLoadStateStalled && videoPlayer.currentPlayerManager.isPlaying) {
         [self.activity startAnimating];
     } else {
         [self.activity stopAnimating];
@@ -720,8 +720,8 @@
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _coverImageView.clipsToBounds = YES;
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
+//        _coverImageView.clipsToBounds = YES;
     }
     return _coverImageView;
 }
