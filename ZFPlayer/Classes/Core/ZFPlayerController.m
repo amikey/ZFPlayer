@@ -476,7 +476,9 @@
 
 - (void)setMuted:(BOOL)muted {
     if (muted) {
-        self.lastVolumeValue = self.volumeViewSlider.value;
+        if (self.volumeViewSlider.value > 0) {
+            self.lastVolumeValue = self.volumeViewSlider.value;
+        }
         self.volumeViewSlider.value = 0;
     } else {
         self.volumeViewSlider.value = self.lastVolumeValue;

@@ -52,6 +52,9 @@ Pod::Spec.new do |s|
         ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
         ksyMediaPlayer.dependency 'ZFPlayer/Core'
         ksyMediaPlayer.dependency 'KSYMediaPlayer'
+        ksyMediaPlayer.pod_target_xcconfig = {
+            'ARCHS[sdk=iphonesimulator*]' => '$(ARCHS_STANDARD_64_BIT)'
+        }
     end
     
 end
