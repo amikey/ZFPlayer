@@ -35,7 +35,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     ZFKVOController *_playerItemKVO;
 }
 @property (nonatomic, strong) KSYMoviePlayerController *player;
-@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, assign) BOOL isReadyToPlay;
 
 @end
 
@@ -120,8 +120,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
-    [self.timer invalidate];
-    self.timer = nil;
+    self.isReadyToPlay = NO;
 }
 
 - (void)replay {
@@ -216,19 +215,19 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
                                                  name:MPMoviePlayerSuggestReloadNotification
                                                object:self.player];
     
-//    [_playerItemKVO safelyRemoveAllObservers];
-//    _playerItemKVO = [[ZFKVOController alloc] initWithTarget:_player];
-//    [_playerItemKVO safelyAddObserver:self
-//                           forKeyPath:kCurrentPlaybackTime
-//                              options:NSKeyValueObservingOptionNew
-//                              context:nil];
+    [_playerItemKVO safelyRemoveAllObservers];
+    _playerItemKVO = [[ZFKVOController alloc] initWithTarget:_player];
+    [_playerItemKVO safelyAddObserver:self
+                           forKeyPath:kCurrentPlaybackTime
+                              options:NSKeyValueObservingOptionNew
+                              context:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([keyPath isEqualToString:kCurrentPlaybackTime]) {
-            NSLog(@"%f",self.player.currentPlaybackTime);
-            if (self.player.currentPlaybackTime > 0 && self.player.currentPlaybackTime < 1) {
+            if (self.player.currentPlaybackTime > 0 && !self.isReadyToPlay) {
+                self.isReadyToPlay = YES;
                 self.loadState = ZFPlayerLoadStatePlaythroughOK;
             }
             self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
@@ -238,18 +237,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
             if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, self->_bufferTime);
         }
     });
-}
-
-- (void)update {
-    NSLog(@"%f",self.player.currentPlaybackTime);
-    if (self.player.currentPlaybackTime > 0 && self.player.currentPlaybackTime < 1) {
-        self.loadState = ZFPlayerLoadStatePlaythroughOK;
-    }
-    self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
-    self->_totalTime = self.player.duration;
-    self->_bufferTime = self.player.playableDuration;
-    if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self->_currentTime, self->_totalTime);
-    if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, self->_bufferTime);
 }
 
 #pragma mark - Notification
@@ -264,11 +251,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     [self play];
     self.player.shouldMute = self.muted;
     if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
-    // 视频开始播放的时候开启计时器
-    if (!self.timer) {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(update) userInfo:nil repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-    }
 }
 
 /// 播放完成通知。视频正常播放完成时触发。

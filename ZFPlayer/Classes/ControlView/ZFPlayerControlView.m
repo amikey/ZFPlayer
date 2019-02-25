@@ -279,7 +279,7 @@
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.coverImageView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
-    [self.player.currentPlayerManager.view.bgImgView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
+    [self.bgImgView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
 }
 
 /// 设置标题、UIImage封面、全屏模式
@@ -290,7 +290,7 @@
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
     self.coverImageView.image = image;
-    self.player.currentPlayerManager.view.bgImgView.image = image;
+    self.bgImgView.image = image;
 }
 
 #pragma mark - ZFPlayerControlViewDelegate
@@ -426,7 +426,6 @@
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state {
     if (state == ZFPlayerLoadStatePrepare) {
         self.coverImageView.hidden = NO;
-//        self.effectView.hidden = YES;
     } else if (state == ZFPlayerLoadStatePlaythroughOK || state == ZFPlayerLoadStatePlayable) {
         self.coverImageView.hidden = YES;
         if (self.effectViewShow) {
@@ -571,9 +570,8 @@
     self.portraitControlView.player = player;
     /// 解决播放时候黑屏闪一下问题
     [player.currentPlayerManager.view insertSubview:self.bgImgView atIndex:0];
-    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:1];
     [self.bgImgView addSubview:self.effectView];
-    
+    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:1];
     self.coverImageView.frame = player.currentPlayerManager.view.bounds;
     self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.bgImgView.frame = player.currentPlayerManager.view.bounds;
@@ -586,6 +584,15 @@
     _seekToPlay = seekToPlay;
     self.portraitControlView.seekToPlay = seekToPlay;
     self.landScapeControlView.seekToPlay = seekToPlay;
+}
+
+- (void)setEffectViewShow:(BOOL)effectViewShow {
+    _effectViewShow = effectViewShow;
+    if (effectViewShow) {
+        self.bgImgView.hidden = NO;
+    } else {
+        self.bgImgView.hidden = YES;
+    }
 }
 
 #pragma mark - getter
@@ -721,7 +728,6 @@
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
         _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
-//        _coverImageView.clipsToBounds = YES;
     }
     return _coverImageView;
 }

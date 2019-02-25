@@ -36,7 +36,7 @@ static NSString *kIdentifier = @"kIdentifier";
                     @"竖向滚动CollectionView",
                     @"横向滚动CollectionView",
                     @"瀑布流",
-                    @"横屏播放"];
+                    @"全屏播放"];
     
     self.viewControllers = @[@"ZFKeyboardViewController",
                              @"ZFNoramlViewController",

@@ -31,6 +31,7 @@
 @property (nonatomic, strong) IJKFFOptions *options;
 @property (nonatomic, assign) CGFloat lastVolume;
 @property (nonatomic, weak) NSTimer *timer;
+@property (nonatomic, assign) BOOL isReadyToPlay;
 
 @end
 
@@ -117,6 +118,7 @@
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
+    self.isReadyToPlay = NO;
 }
 
 - (void)replay {
@@ -204,7 +206,8 @@
 }
 
 - (void)update {
-    if (self.player.currentPlaybackTime > 0 && self.player.currentPlaybackTime < 1) {
+    if (self.player.currentPlaybackTime > 0 && !self.isReadyToPlay) {
+        self.isReadyToPlay = YES;
         self.loadState = ZFPlayerLoadStatePlaythroughOK;
     }
     self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;

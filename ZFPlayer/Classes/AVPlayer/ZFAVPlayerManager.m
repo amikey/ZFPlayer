@@ -92,6 +92,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
 @property (nonatomic, strong, readonly) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, assign) BOOL isBuffering;
+@property (nonatomic, assign) BOOL isReadyToPlay;
 
 @end
 
@@ -181,6 +182,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
+    self.isReadyToPlay = NO;
 }
 
 - (void)replay {
@@ -327,7 +329,8 @@ static NSString *const kPresentationSize         = @"presentationSize";
         if (!self) return;
         NSArray *loadedRanges = self.playerItem.seekableTimeRanges;
         /// 大于0才把状态改为可以播放，解决黑屏问题
-        if (CMTimeGetSeconds(time) > 0 && CMTimeGetSeconds(time) < 1) {
+        if (CMTimeGetSeconds(time) > 0 && !self.isReadyToPlay) {
+            self.isReadyToPlay = YES;
             self.loadState = ZFPlayerLoadStatePlaythroughOK;
         }
         if (loadedRanges.count > 0) {
