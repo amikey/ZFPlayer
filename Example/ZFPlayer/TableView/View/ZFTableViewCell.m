@@ -146,7 +146,6 @@
         _coverImageView.userInteractionEnabled = YES;
         _coverImageView.tag = 100;
         _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
-//        _coverImageView.clipsToBounds = YES;
     }
     return _coverImageView;
 }

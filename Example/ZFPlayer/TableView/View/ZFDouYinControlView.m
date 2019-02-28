@@ -20,6 +20,8 @@
 @property (nonatomic, strong) ZFSliderView *sliderView;
 /// 加载loading
 @property (nonatomic, strong) ZFLoadingView *activity;
+@property (nonatomic, strong) UIImageView *bgImgView;
+@property (nonatomic, strong) UIView *effectView;
 
 @end
 
@@ -53,8 +55,8 @@
     self.activity.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.activity.center = self.center;
     
-    min_w = 44;
-    min_h = 44;
+    min_w = 100;
+    min_h = 100;
     self.playBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.playBtn.center = self.center;
     
@@ -63,6 +65,9 @@
     min_w = min_view_w;
     min_h = 1;
     self.sliderView.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    
+    self.bgImgView.frame = self.bounds;
+    self.effectView.frame = self.bgImgView.bounds;
 }
 
 - (void)resetControlView {
@@ -75,10 +80,11 @@
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state {
     if (state == ZFPlayerLoadStatePrepare) {
         self.coverImageView.hidden = NO;
-    } else if (state == ZFPlayerLoadStatePlaythroughOK) {
+    } else if (state == ZFPlayerLoadStatePlaythroughOK || state == ZFPlayerLoadStatePlayable) {
         self.coverImageView.hidden = YES;
+        self.effectView.hidden = NO;
     }
-    if (state == ZFPlayerLoadStateStalled) {
+    if (state == ZFPlayerLoadStateStalled && videoPlayer.currentPlayerManager.isPlaying) {
         [self.activity startAnimating];
     } else {
         [self.activity stopAnimating];
@@ -90,15 +96,16 @@
     self.sliderView.value = videoPlayer.progress;
 }
 
-///// 缓冲改变回调
-//- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime {
-//    self.sliderView.bufferValue = videoPlayer.bufferProgress;
-//}
-
 - (void)gestureSingleTapped:(ZFPlayerGestureControl *)gestureControl {
     if (self.player.currentPlayerManager.isPlaying) {
         [self.player.currentPlayerManager pause];
-         self.playBtn.hidden = NO;
+        self.playBtn.hidden = NO;
+        self.playBtn.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
+        [UIView animateWithDuration:0.2f delay:0
+                            options:UIViewAnimationOptionCurveEaseIn animations:^{
+                                self.playBtn.transform = CGAffineTransformIdentity;
+                            } completion:^(BOOL finished) {
+                            }];
     } else {
         [self.player.currentPlayerManager play];
         self.playBtn.hidden = YES;
@@ -107,11 +114,38 @@
 
 - (void)setPlayer:(ZFPlayerController *)player {
     _player = player;
-    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:0];
+    [player.currentPlayerManager.view insertSubview:self.bgImgView atIndex:0];
+    [self.bgImgView addSubview:self.effectView];
+    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:1];
 }
 
 - (void)showCoverViewWithUrl:(NSString *)coverUrl {
     [self.coverImageView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"loading_bgView"]];
+    [self.bgImgView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"loading_bgView"]];
+}
+
+#pragma mark - getter
+
+- (UIImageView *)bgImgView {
+    if (!_bgImgView) {
+        _bgImgView = [[UIImageView alloc] init];
+        _bgImgView.userInteractionEnabled = YES;
+    }
+    return _bgImgView;
+}
+
+- (UIView *)effectView {
+    if (!_effectView) {
+        if (@available(iOS 8.0, *)) {
+            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            _effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+        } else {
+            UIToolbar *effectView = [[UIToolbar alloc] init];
+            effectView.barStyle = UIBarStyleBlackTranslucent;
+            _effectView = effectView;
+        }
+    }
+    return _effectView;
 }
 
 - (ZFLoadingView *)activity {
@@ -128,7 +162,7 @@
     if (!_playBtn) {
         _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _playBtn.userInteractionEnabled = NO;
-        [_playBtn setImage:[UIImage imageNamed:@"new_allPlay_44x44_"] forState:UIControlStateNormal];
+        [_playBtn setImage:[UIImage imageNamed:@"icon_play_pause"] forState:UIControlStateNormal];
     }
     return _playBtn;
 }
@@ -149,7 +183,6 @@
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
-        _coverImageView.backgroundColor = [UIColor blackColor];
         _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _coverImageView;
