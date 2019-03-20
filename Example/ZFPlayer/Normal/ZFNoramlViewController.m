@@ -43,13 +43,15 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     [self.view addSubview:self.nextBtn];
     
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
-//    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
+    //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
+    //    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
+    
     /// 播放器相关
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player.controlView = self.controlView;
     /// 设置退到后台继续播放
     self.player.pauseWhenAppResignActive = NO;
+    
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
@@ -67,10 +69,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         } else {
             [self.player stop];
         }
-    };
-    
-    self.player.playerReadyToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
-        NSLog(@"======开始播放了");
     };
     
     self.assetURLs = @[[NSURL URLWithString:@"http://qq.tqqdm5.cn/7c5e5e2ac03e4c85b712a5ac61c00993/c33daa364a234baca448ee7f32807e58-489db4cdce408a958392a6f7db37d906-sd.mp4"],

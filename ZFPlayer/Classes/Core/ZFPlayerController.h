@@ -144,8 +144,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// default is YES.
 @property (nonatomic) BOOL pauseWhenAppResignActive;
 
-/// When the player is playing, it is paused by some event,not by user click to pause
-/// For example, when the player is playing, application goes into the background or pushes to another viewController
+/// When the player is playing, it is paused by some event,not by user click to pause.
+/// For example, when the player is playing, application goes into the background or pushed to another viewController
 @property (nonatomic, getter=isPauseByEvent) BOOL pauseByEvent;
 
 /// The current player controller is disappear, not dealloc
@@ -226,6 +226,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The statusbar hidden.
 @property (nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden;
+
+/// Use device orientation, default NO.
+@property (nonatomic, assign) BOOL forceDeviceOrientation;
 
 /// The current orientation of the player.
 /// Default is UIInterfaceOrientationPortrait.

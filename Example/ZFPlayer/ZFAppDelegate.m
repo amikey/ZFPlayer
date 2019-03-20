@@ -9,10 +9,11 @@
 #import "ZFAppDelegate.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <AVFoundation/AVFoundation.h>
+
 @implementation ZFAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    [ZFPlayerLogManager setLogEnable:YES];
+    [ZFPlayerLogManager setLogEnable:YES];
     return YES;
 }
 
@@ -20,20 +21,6 @@
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-    // *让app接受远程事件控制，及锁屏是控制版会出现播放按钮
-    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-    // *后台播放代码
-    AVAudioSession*session = [AVAudioSession sharedInstance];
-    [session setActive:YES error:nil];
-    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
-}
-
-//- (void)applicationWillResignActive:(UIApplication *)application {
-//    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-//    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-//}
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.

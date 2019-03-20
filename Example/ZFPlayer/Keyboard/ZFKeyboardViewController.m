@@ -35,10 +35,11 @@
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
 //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
 //    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
+    
     /// 播放器相关
-//    self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     self.player = [[ZFPlayerController alloc] initWithPlayerManager:playerManager containerView:self.containerView];
-
+    /// 适配横屏键盘，这里强制横屏处理
+    self.player.orientationObserver.forceDeviceOrientation = YES;
     self.player.controlView = self.controlView;
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
@@ -46,6 +47,7 @@
         [self.textField resignFirstResponder];
         [self setNeedsStatusBarAppearanceUpdate];
     };
+    
     NSString *URLString = [@"http://flv3.bn.netease.com/tvmrepo/2018/6/H/9/EDJTRBEH9/SD/EDJTRBEH9-mobile.mp4" stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     playerManager.assetURL = [NSURL URLWithString:URLString];
     
@@ -58,7 +60,6 @@
     CGRect frame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     NSLog(@"%@",NSStringFromCGRect(frame));
 }
-
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];

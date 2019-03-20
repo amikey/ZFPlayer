@@ -141,6 +141,9 @@
     self.currentPlayerManager.playerPlayStateChanged = ^(id  _Nonnull asset, ZFPlayerPlaybackState playState) {
         @strongify(self)
         if (self.playerPlayStateChanged) self.playerPlayStateChanged(asset, playState);
+        if (playState != ZFPlayerPlayStatePlaying && !self.customAudioSession) {
+            [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+        }
         if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
             [self.controlView videoPlayer:self playStateChanged:playState];
         }
@@ -218,6 +221,10 @@
             }
             if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = YES;
             [[UIApplication sharedApplication].keyWindow endEditing:YES];
+            if (!self.pauseWhenAppResignActive) {
+                [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+                [[AVAudioSession sharedInstance] setActive:YES error:nil];
+            }
         };
         _notification.didBecomeActive = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
@@ -597,7 +604,8 @@
     }
 }
 
-- (BOOL)isNeedAdaptiveiOS8Rotation {
+- (BOOL)shouldForceDeviceOrientation {
+    if (self.forceDeviceOrientation) return YES;
     NSArray<NSString *> *versionStrArr = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
     int firstVer = [[versionStrArr objectAtIndex:0] intValue];
     int secondVer = [[versionStrArr objectAtIndex:1] intValue];
@@ -662,7 +670,7 @@
 }
 
 - (BOOL)shouldAutorotate {
-    return [self isNeedAdaptiveiOS8Rotation];
+    return [self shouldForceDeviceOrientation];
 }
 
 - (BOOL)allowOrentitaionRotation {
@@ -670,6 +678,10 @@
     if (number) return number.boolValue;
     self.allowOrentitaionRotation = YES;
     return YES;
+}
+
+- (BOOL)forceDeviceOrientation {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 #pragma mark - setter
@@ -698,6 +710,11 @@
 - (void)setAllowOrentitaionRotation:(BOOL)allowOrentitaionRotation {
     objc_setAssociatedObject(self, @selector(allowOrentitaionRotation), @(allowOrentitaionRotation), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.orientationObserver.allowOrentitaionRotation = allowOrentitaionRotation;
+}
+
+- (void)setForceDeviceOrientation:(BOOL)forceDeviceOrientation {
+    objc_setAssociatedObject(self, @selector(forceDeviceOrientation), @(forceDeviceOrientation), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.orientationObserver.forceDeviceOrientation = forceDeviceOrientation;
 }
 
 @end
