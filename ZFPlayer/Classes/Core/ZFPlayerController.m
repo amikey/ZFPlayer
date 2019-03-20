@@ -550,6 +550,7 @@
 
 - (void)setViewControllerDisappear:(BOOL)viewControllerDisappear {
     objc_setAssociatedObject(self, @selector(isViewControllerDisappear), @(viewControllerDisappear), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    if (self.scrollView) self.scrollView.zf_viewControllerDisappear = viewControllerDisappear;
     if (!self.currentPlayerManager.isPreparedToPlay) return;
     if (viewControllerDisappear) {
         [self removeDeviceOrientationObserver];

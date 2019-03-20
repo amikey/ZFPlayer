@@ -515,6 +515,8 @@
     @weakify(self)
     [self zf_filterShouldPlayCellWhileScrolling:^(NSIndexPath *indexPath) {
         @strongify(self)
+        /// 如果当前控制器已经消失，直接return
+        if (self.zf_viewControllerDisappear) return;
         if ([ZFReachabilityManager sharedManager].isReachableViaWWAN && !self.zf_WWANAutoPlay) {
             /// 移动网络
             self.zf_shouldPlayIndexPath = indexPath;
@@ -746,6 +748,10 @@
     return [objc_getAssociatedObject(self, _cmd) floatValue];
 }
 
+- (BOOL)zf_viewControllerDisappear {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
 #pragma mark - setter
 
 - (void)setZf_playerDisappearingInScrollView:(void (^)(NSIndexPath * _Nonnull, CGFloat))zf_playerDisappearingInScrollView {
@@ -778,6 +784,10 @@
 
 - (void)setZf_playerDisapperaPercent:(CGFloat)zf_playerDisapperaPercent {
     objc_setAssociatedObject(self, @selector(zf_playerDisapperaPercent), @(zf_playerDisapperaPercent), OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_viewControllerDisappear:(BOOL)zf_viewControllerDisappear {
+    objc_setAssociatedObject(self, @selector(zf_viewControllerDisappear), @(zf_viewControllerDisappear), OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 @end

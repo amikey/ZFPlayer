@@ -157,6 +157,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
 /// 1.0 is the player did appear.
 @property (nonatomic) CGFloat zf_playerApperaPercent;
 
+/// The current player controller is disappear, not dealloc
+@property (nonatomic) BOOL zf_viewControllerDisappear;
+
 @end
 
 @interface UIScrollView (ZFPlayerDeprecated)

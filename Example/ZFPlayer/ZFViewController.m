@@ -33,9 +33,9 @@ static NSString *kIdentifier = @"kIdentifier";
                     @"列表明暗播放",
                     @"混合cell样式",
                     @"抖音样式",
+                    @"抖音个人主页",
                     @"竖向滚动CollectionView",
                     @"横向滚动CollectionView",
-                    @"瀑布流",
                     @"全屏播放"];
     
     self.viewControllers = @[@"ZFKeyboardViewController",
@@ -47,9 +47,9 @@ static NSString *kIdentifier = @"kIdentifier";
                              @"ZFLightTableViewController",
                              @"ZFMixViewController",
                              @"ZFDouYinViewController",
+                             @"ZFCollectionViewListController",
                              @"ZFCollectionViewController",
                              @"ZFHorizontalCollectionViewController",
-                             @"ZFCollectionViewListController",
                              @"ZFFullScreenViewController"];
 }
 

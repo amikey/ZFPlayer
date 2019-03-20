@@ -16,6 +16,7 @@
 #import "ZFUtilities.h"
 #import "ZFTableViewCell.h"
 #import "ZFTableData.h"
+#import "ZFAutoPlayerViewController.h"
 
 static NSString *kIdentifier = @"kIdentifier";
 
@@ -38,7 +39,10 @@ static NSString *kIdentifier = @"kIdentifier";
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.activity];
-    [self requestData];    
+    [self requestData];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStylePlain target:self action:@selector(pushNewVC)];
+    
     /// playerManager
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
 //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
@@ -47,7 +51,6 @@ static NSString *kIdentifier = @"kIdentifier";
     /// player的tag值必须在cell里设置
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];
     self.player.controlView = self.controlView;
-//    self.player.assetURLs = self.urls;
     /// 移动网络依然自动播放
     self.player.WWANAutoPlay = YES;
     
@@ -81,10 +84,16 @@ static NSString *kIdentifier = @"kIdentifier";
     self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.player.viewControllerDisappear = NO;
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 //    self.tableView.delegate = nil;
 //    [self.player stopCurrentPlayingCell];
+    self.player.viewControllerDisappear = YES;
 }
 
 - (void)viewWillLayoutSubviews {
@@ -107,7 +116,7 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.activity startAnimating];
     @weakify(self)
     /// 模拟网络请求
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.activity stopAnimating];
         NSString *path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"json"];
         NSData *data = [NSData dataWithContentsOfFile:path];
@@ -133,6 +142,11 @@ static NSString *kIdentifier = @"kIdentifier";
             [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
         }];
     });
+}
+
+- (void)pushNewVC {
+    ZFAutoPlayerViewController *autoVC = [[ZFAutoPlayerViewController alloc] init];
+    [self.navigationController pushViewController:autoVC animated:YES];
 }
 
 - (BOOL)shouldAutorotate {
