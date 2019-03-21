@@ -29,13 +29,12 @@
 #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
 #import <KSYMediaPlayer/KSYMediaPlayer.h>
 
-static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
+static float const kTimeRefreshInterval = 0.1;
 
-@interface KSMediaPlayerManager () {
-    ZFKVOController *_playerItemKVO;
-}
+@interface KSMediaPlayerManager ()
 @property (nonatomic, strong) KSYMoviePlayerController *player;
 @property (nonatomic, assign) BOOL isReadyToPlay;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -72,7 +71,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 
 - (void)destory {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_playerItemKVO safelyRemoveAllObservers];
     _isPlaying = NO;
     _isPreparedToPlay = NO;
 }
@@ -121,6 +119,8 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     self->_totalTime = 0;
     self->_bufferTime = 0;
     self.isReadyToPlay = NO;
+    [self.timer invalidate];
+    self.timer = nil;
 }
 
 - (void)replay {
@@ -215,35 +215,29 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
                                              selector:@selector(suggestReloadChange:)
                                                  name:MPMoviePlayerSuggestReloadNotification
                                                object:self.player];
-    
-    [_playerItemKVO safelyRemoveAllObservers];
-    _playerItemKVO = [[ZFKVOController alloc] initWithTarget:_player];
-    [_playerItemKVO safelyAddObserver:self
-                           forKeyPath:kCurrentPlaybackTime
-                              options:NSKeyValueObservingOptionNew
-                              context:nil];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([keyPath isEqualToString:kCurrentPlaybackTime]) {
-            if (self.player.currentPlaybackTime > 0 && !self.isReadyToPlay) {
-                self.isReadyToPlay = YES;
-                self.loadState = ZFPlayerLoadStatePlaythroughOK;
-            }
-            self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
-            self->_totalTime = self.player.duration;
-            self->_bufferTime = self.player.playableDuration;
-            if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self->_currentTime, self->_totalTime);
-            if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, self->_bufferTime);
-        }
-    });
+- (void)timerUpdate {
+    if (self.player.currentPlaybackTime > 0 && !self.isReadyToPlay) {
+        self.isReadyToPlay = YES;
+        self.loadState = ZFPlayerLoadStatePlaythroughOK;
+    }
+    self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
+    self->_totalTime = self.player.duration;
+    self->_bufferTime = self.player.playableDuration;
+    if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self->_currentTime, self->_totalTime);
+    if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, self->_bufferTime);
 }
 
 #pragma mark - Notification
 
 /// 播放器初始化视频文件完成通知
 - (void)videoPrepared:(NSNotification *)notify {
+    // 视频开始播放的时候开启计时器
+    if (!self.timer) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimeRefreshInterval target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
     self.player.shouldMute = self.muted;
     if (self.seekTime) {
         [self seekToTime:self.seekTime completionHandler:nil];
