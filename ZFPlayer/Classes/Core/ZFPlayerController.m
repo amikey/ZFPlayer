@@ -142,7 +142,9 @@
         @strongify(self)
         if (self.playerPlayStateChanged) self.playerPlayStateChanged(asset, playState);
         if (playState != ZFPlayerPlayStatePlaying && !self.customAudioSession) {
-            [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+            });
         }
         if ([self.controlView respondsToSelector:@selector(videoPlayer:playStateChanged:)]) {
             [self.controlView videoPlayer:self playStateChanged:playState];

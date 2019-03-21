@@ -67,7 +67,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 @synthesize presentationSizeChanged        = _presentationSizeChanged;
 
 - (void)dealloc {
-    [self destory];
+    [self stop];
 }
 
 - (void)destory {
@@ -153,6 +153,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 - (void)initializePlayer {
+    if (self.player) [self.player stop];
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
     [self.player prepareToPlay];
     self.player.shouldAutoplay = YES;
