@@ -330,26 +330,47 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
+/// Add the playerView to cell.
+- (void)updateScrollViewPlayerToCell;
+
+/// Add the playerView to containerView.
+- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
+
 /// stop the current playing video on cell.
 - (void)stopCurrentPlayingCell;
 
-/// Play the indexPath of url, while the `assetURLs` or `sectionAssetURLs` is not NULL.
-/// `scrollToTop` scroll the current cell to top with animations.
+/**
+ Play the indexPath of url, while the `assetURLs` or `sectionAssetURLs` is not NULL.
+
+ @param indexPath Play the indexPath of url.
+ */
+- (void)playTheIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
+ 
+ @param indexPath Play the indexPath of url
+ @param scrollToTop Scroll the current cell to top with animations.
+ */
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop;
 
-/// Play the indexPath with assetURL.
-/// `assetURL` is the player URL.
-/// `scrollToTop` scroll the current cell to top with animations.
+/**
+ Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
+ 
+ @param indexPath Play the indexPath of url
+ @param assetURL The player URL.
+ @param scrollToTop Scroll the current cell to top with animations.
+ */
 - (void)playTheIndexPath:(NSIndexPath *)indexPath assetURL:(NSURL *)assetURL scrollToTop:(BOOL)scrollToTop;
 
-/// Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
-/// `scrollToTop` scroll the current cell to top with animations.
-/// Scroll completion callback.
+/**
+ Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
+ 
+ @param indexPath Play the indexPath of url
+ @param scrollToTop scroll the current cell to top with animations.
+ @param completionHandler Scroll completion callback.
+ */
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
-
-- (void)updateScrollViewPlayerToCell;
-
-- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
 
 @end
 

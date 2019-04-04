@@ -101,6 +101,10 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
 /// Scroll to indexPath with animations.
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated completionHandler:(void (^ __nullable)(void))completionHandler;
 
+/// add in 3.2.8 version.
+/// Scroll to indexPath with animations duration.
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath animateWithDuration:(NSTimeInterval)duration completionHandler:(void (^ __nullable)(void))completionHandler;
+
 ///------------------------------------
 /// The following method must be implemented in UIScrollViewDelegate.
 ///------------------------------------

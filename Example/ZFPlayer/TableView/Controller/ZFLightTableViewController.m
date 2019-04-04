@@ -220,7 +220,15 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
+//    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
+    if (scrollToTop) {
+        /// 自定义滑动动画时间
+        [self.tableView zf_scrollToRowAtIndexPath:indexPath animateWithDuration:0.8 completionHandler:^{
+            [self.player playTheIndexPath:indexPath];
+        }];
+    } else {
+        [self.player playTheIndexPath:indexPath];
+    }
     ZFTableViewCellLayout *layout = self.dataSource[indexPath.row];
     [self.controlView showTitle:layout.data.title
                  coverURLString:layout.data.thumbnail_url

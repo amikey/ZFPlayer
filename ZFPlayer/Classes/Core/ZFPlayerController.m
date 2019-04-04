@@ -1090,7 +1090,16 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
-#pragma mark - Private method
+#pragma mark - Public method
+
+- (void)stopCurrentPlayingCell {
+    if (self.scrollView.zf_playingIndexPath) {
+        [self stop];
+        self.isSmallFloatViewShow = NO;
+        self.scrollView.zf_playingIndexPath = nil;
+        if (self.smallFloatView) self.smallFloatView.hidden = YES;
+    }
+}
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath {
     self.playingIndexPath = indexPath;
@@ -1102,17 +1111,6 @@
         self.currentPlayIndex = indexPath.row;
     }
     self.assetURL = assetURL;
-}
-
-#pragma mark - Public method
-
-- (void)stopCurrentPlayingCell {
-    if (self.scrollView.zf_playingIndexPath) {
-        [self stop];
-        self.isSmallFloatViewShow = NO;
-        self.scrollView.zf_playingIndexPath = nil;
-        if (self.smallFloatView) self.smallFloatView.hidden = YES;
-    }
 }
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ _Nullable)(void))completionHandler {
