@@ -110,7 +110,6 @@ static float const kTimeRefreshInterval = 0.1;
 }
 
 - (void)stop {
-    self.playState = ZFPlayerPlayStatePlayStopped;
     [self.player stop];
     [self.player.view removeFromSuperview];
     [self destory];
@@ -121,6 +120,7 @@ static float const kTimeRefreshInterval = 0.1;
     self.isReadyToPlay = NO;
     [self.timer invalidate];
     self.timer = nil;
+    self.playState = ZFPlayerPlayStatePlayStopped;
 }
 
 - (void)replay {

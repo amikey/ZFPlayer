@@ -166,7 +166,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
 
 - (void)stop {
     [_playerItemKVO safelyRemoveAllObservers];
-    self.playState = ZFPlayerPlayStatePlayStopped;
     self.loadState = ZFPlayerLoadStateUnknown;
     if (self.player.rate != 0) [self.player pause];
     [self.player removeTimeObserver:_timeObserver];
@@ -183,6 +182,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     self->_totalTime = 0;
     self->_bufferTime = 0;
     self.isReadyToPlay = NO;
+    self.playState = ZFPlayerPlayStatePlayStopped;
 }
 
 - (void)replay {

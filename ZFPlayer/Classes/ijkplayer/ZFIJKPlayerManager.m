@@ -107,7 +107,6 @@ static float const kTimeRefreshInterval = 0.1;
 
 - (void)stop {
     [self removeMovieNotificationObservers];
-    self.playState = ZFPlayerPlayStatePlayStopped;
     [self.player shutdown];
     [self.player.view removeFromSuperview];
     self.player = nil;
@@ -120,6 +119,7 @@ static float const kTimeRefreshInterval = 0.1;
     self->_totalTime = 0;
     self->_bufferTime = 0;
     self.isReadyToPlay = NO;
+    self.playState = ZFPlayerPlayStatePlayStopped;
 }
 
 - (void)replay {

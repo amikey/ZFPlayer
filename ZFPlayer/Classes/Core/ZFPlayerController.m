@@ -1,5 +1,5 @@
 //
-//  ZFPlayer.m
+//  ZFPlayerController.m
 //  ZFPlayer
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
