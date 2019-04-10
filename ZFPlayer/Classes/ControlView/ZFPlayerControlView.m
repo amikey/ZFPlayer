@@ -273,13 +273,19 @@
 
 /// 设置标题、封面、全屏模式
 - (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
+    UIImage *placeholder = [ZFUtilities imageWithColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1] size:self.bgImgView.bounds.size];
+    [self showTitle:title coverURLString:coverUrl placeholderImage:placeholder fullScreenMode:fullScreenMode];
+}
+
+/// 设置标题、封面、默认占位图、全屏模式
+- (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl placeholderImage:(UIImage *)placeholder fullScreenMode:(ZFFullScreenMode)fullScreenMode {
     [self resetControlView];
     [self layoutIfNeeded];
     [self setNeedsDisplay];
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
-    [self.coverImageView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
-    [self.bgImgView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
+    [self.coverImageView setImageWithURLString:coverUrl placeholder:placeholder];
+    [self.bgImgView setImageWithURLString:coverUrl placeholder:placeholder];
 }
 
 /// 设置标题、UIImage封面、全屏模式
@@ -302,10 +308,15 @@
         return NO;
     }
     if (self.player.isFullScreen) {
+        /// 不禁用滑动方向
         self.player.gestureControl.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
         return [self.landScapeControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     } else {
-        self.player.gestureControl.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionUpAndDown;
+        if (self.player.scrollView) {  /// 列表时候禁止左右滑动
+            self.player.gestureControl.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionVertical;
+        } else { /// 不禁用滑动方向
+            self.player.gestureControl.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+        }
         return [self.portraitControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     }
 }
@@ -752,13 +763,6 @@
         _volumeBrightnessView = [[ZFVolumeBrightnessView alloc] init];
     }
     return _volumeBrightnessView;
-}
-
-- (UIImage *)placeholderImage {
-    if (!_placeholderImage) {
-        _placeholderImage = [ZFUtilities imageWithColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1] size:CGSizeMake(1, 1)];
-    }
-    return _placeholderImage;
 }
 
 - (void)setBackBtnClickCallback:(void (^)(void))backBtnClickCallback {

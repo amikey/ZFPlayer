@@ -58,22 +58,14 @@
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+    if (gestureRecognizer == self.panGR) {
         CGPoint translation = [(UIPanGestureRecognizer *)gestureRecognizer translationInView:self.targetView];
         CGFloat x = fabs(translation.x);
         CGFloat y = fabs(translation.y);
-        ZFPlayerDisablePanMovingDirection disablePanMovingDirection = self.disablePanMovingDirection;
-        if (disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionAll) {
-            disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionUpAndDown | ZFPlayerDisablePanMovingDirectionLeftAndRight;
-        }
-        if (x < y) {  /// up and down moving direction.
-            if (disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionUpAndDown) {
-                return NO;
-            }
-        } else {  /// left and right moving direction.
-            if (disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionLeftAndRight) {
-                return NO;
-            }
+        if (x < y && self.disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionVertical) { /// up and down moving direction.
+            return NO;
+        } else if (x > y && self.disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionHorizontal) { /// left and right moving direction.
+            return NO;
         }
     }
     return YES;
@@ -92,32 +84,28 @@
         self.panLocation = ZFPanLocationLeft;
     }
     
-    ZFPlayerDisableGestureTypes disableTypes = self.disableTypes;
-    if (disableTypes & ZFPlayerDisableGestureTypesAll) {
-        disableTypes = ZFPlayerDisableGestureTypesPan | ZFPlayerDisableGestureTypesPinch | ZFPlayerDisableGestureTypesDoubleTap | ZFPlayerDisableGestureTypesSingleTap;
-    }
     switch (type) {
         case ZFPlayerGestureTypeUnknown: break;
         case ZFPlayerGestureTypePan: {
-            if (disableTypes & ZFPlayerDisableGestureTypesPan) {
+            if (self.disableTypes & ZFPlayerDisableGestureTypesPan) {
                 return NO;
             }
         }
             break;
         case ZFPlayerGestureTypePinch: {
-            if (disableTypes & ZFPlayerDisableGestureTypesPinch) {
+            if (self.disableTypes & ZFPlayerDisableGestureTypesPinch) {
                 return NO;
             }
         }
             break;
         case ZFPlayerGestureTypeDoubleTap: {
-            if (disableTypes & ZFPlayerDisableGestureTypesDoubleTap) {
+            if (self.disableTypes & ZFPlayerDisableGestureTypesDoubleTap) {
                 return NO;
             }
         }
             break;
         case ZFPlayerGestureTypeSingleTap: {
-            if (disableTypes & ZFPlayerDisableGestureTypesSingleTap) {
+            if (self.disableTypes & ZFPlayerDisableGestureTypesSingleTap) {
                 return NO;
             }
         }
@@ -134,6 +122,17 @@
         otherGestureRecognizer != self.doubleTap &&
         otherGestureRecognizer != self.panGR &&
         otherGestureRecognizer != self.pinchGR) return NO;
+    
+    if (gestureRecognizer == self.panGR) {
+        CGPoint translation = [(UIPanGestureRecognizer *)gestureRecognizer translationInView:self.targetView];
+        CGFloat x = fabs(translation.x);
+        CGFloat y = fabs(translation.y);
+        if (x < y && self.disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionVertical) {
+            return YES;
+        } else if (x > y && self.disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionHorizontal) {
+            return YES;
+        }
+    }
     if (gestureRecognizer.numberOfTouches >= 2) {
         return NO;
     }
@@ -203,8 +202,10 @@
             CGFloat y = fabs(velocity.y);
             if (x > y) {
                 self.panDirection = ZFPanDirectionH;
-            } else {
+            } else if (x < y) {
                 self.panDirection = ZFPanDirectionV;
+            } else {
+                self.panDirection = ZFPanDirectionUnknown;
             }
             
             if (self.beganPan) self.beganPan(self, self.panDirection, self.panLocation);
