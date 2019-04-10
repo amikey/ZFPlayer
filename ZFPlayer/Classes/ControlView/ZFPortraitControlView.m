@@ -264,9 +264,6 @@
     if (CGRectContainsPoint(sliderRect, point)) {
         return NO;
     }
-    if (type == ZFPlayerGestureTypePan && self.player.scrollView) {
-        return NO;
-    }
     return YES;
 }
 

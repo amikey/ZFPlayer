@@ -302,8 +302,10 @@
         return NO;
     }
     if (self.player.isFullScreen) {
+        self.player.gestureControl.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
         return [self.landScapeControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     } else {
+        self.player.gestureControl.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionUpAndDown;
         return [self.portraitControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     }
 }

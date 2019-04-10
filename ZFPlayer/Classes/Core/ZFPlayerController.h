@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) ZFPlayerNotification *notification;
 
 /*!
- @method            playerWithPlayerManager:
+ @method            playerWithPlayerManager:containerView:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerView to see the video frames must set the contrainerView.
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)playerWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(UIView *)containerView;
 
 /*!
- @method            playerWithPlayerManager:
+ @method            initWithPlayerManager:containerView:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerView to see the video frames must set the contrainerView.
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(UIView *)containerView;
 
 /*!
- @method            playerWithScrollView:playerManager:
+ @method            playerWithScrollView:playerManager:containerViewTag:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)playerWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag;
 
 /*!
- @method            playerWithScrollView:playerManager:
+ @method            initWithScrollView:playerManager:containerViewTag:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
@@ -264,6 +264,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The gesture types that the player not support.
 @property (nonatomic, assign) ZFPlayerDisableGestureTypes disableGestureTypes;
+
+/// The pan gesture moving direction that the player not support.
+@property (nonatomic) ZFPlayerDisablePanMovingDirection disablePanMovingDirection;
 
 @end
 

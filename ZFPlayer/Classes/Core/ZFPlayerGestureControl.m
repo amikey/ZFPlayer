@@ -57,6 +57,28 @@
     [view removeGestureRecognizer:self.pinchGR];
 }
 
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        CGPoint translation = [(UIPanGestureRecognizer *)gestureRecognizer translationInView:self.targetView];
+        CGFloat x = fabs(translation.x);
+        CGFloat y = fabs(translation.y);
+        ZFPlayerDisablePanMovingDirection disablePanMovingDirection = self.disablePanMovingDirection;
+        if (disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionAll) {
+            disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionUpAndDown | ZFPlayerDisablePanMovingDirectionLeftAndRight;
+        }
+        if (x < y) {  /// up and down moving direction.
+            if (disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionUpAndDown) {
+                return NO;
+            }
+        } else {  /// left and right moving direction.
+            if (disablePanMovingDirection & ZFPlayerDisablePanMovingDirectionLeftAndRight) {
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     ZFPlayerGestureType type = ZFPlayerGestureTypeUnknown;
     if (gestureRecognizer == self.singleTap) type = ZFPlayerGestureTypeSingleTap;

@@ -64,6 +64,14 @@ typedef NS_OPTIONS(NSUInteger, ZFPlayerDisableGestureTypes) {
     ZFPlayerDisableGestureTypesAll          = 1 << 4
 };
 
+/// This enumeration lists some of the pan gesture moving direction that the player not support.
+typedef NS_OPTIONS(NSUInteger, ZFPlayerDisablePanMovingDirection) {
+    ZFPlayerDisablePanMovingDirectionNone         = 0,       /// Not disable pan moving direction.
+    ZFPlayerDisablePanMovingDirectionUpAndDown    = 1 << 0,  /// Disable pan moving up and down direction.
+    ZFPlayerDisablePanMovingDirectionLeftAndRight = 1 << 1,  /// Disable pan moving left and right direction.
+    ZFPlayerDisablePanMovingDirectionAll          = 1 << 2,  /// Disable pan moving all direction.
+};
+
 @interface ZFPlayerGestureControl : NSObject
 
 @property (nonatomic, copy, nullable) BOOL(^triggerCondition)(ZFPlayerGestureControl *control, ZFPlayerGestureType type, UIGestureRecognizer *gesture, UITouch *touch);
@@ -96,7 +104,10 @@ typedef NS_OPTIONS(NSUInteger, ZFPlayerDisableGestureTypes) {
 
 @property (nonatomic) ZFPlayerDisableGestureTypes disableTypes;
 
+@property (nonatomic) ZFPlayerDisablePanMovingDirection disablePanMovingDirection;
+
 - (void)addGestureToView:(UIView *)view;
+
 - (void)removeGestureToView:(UIView *)view;
 
 @end
