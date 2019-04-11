@@ -33,6 +33,8 @@
 
 @property (nonatomic, strong, readonly) IJKFFOptions *options;
 
+@property (nonatomic, assign) NSTimeInterval timeRefreshInterval;
+
 @end
 
 #endif

@@ -24,7 +24,6 @@
 
 #import "ZFAVPlayerManager.h"
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import <ZFPlayer/ZFPlayer.h>
 
 #pragma clang diagnostic push
@@ -33,7 +32,6 @@
 /*!
  *  Refresh interval for timed observations of AVPlayer
  */
-static float const kTimeRefreshInterval          = 0.1;
 static NSString *const kStatus                   = @"status";
 static NSString *const kLoadedTimeRanges         = @"loadedTimeRanges";
 static NSString *const kPlaybackBufferEmpty      = @"playbackBufferEmpty";
@@ -87,9 +85,6 @@ static NSString *const kPresentationSize         = @"presentationSize";
     id _itemEndObserver;
     ZFKVOController *_playerItemKVO;
 }
-@property (nonatomic, strong, readonly) AVURLAsset *asset;
-@property (nonatomic, strong, readonly) AVPlayerItem *playerItem;
-@property (nonatomic, strong, readonly) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, assign) BOOL isBuffering;
 @property (nonatomic, assign) BOOL isReadyToPlay;
@@ -322,7 +317,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
                               options:NSKeyValueObservingOptionNew
                               context:nil];
     
-    CMTime interval = CMTimeMakeWithSeconds(kTimeRefreshInterval, NSEC_PER_SEC);
+    CMTime interval = CMTimeMakeWithSeconds(self.timeRefreshInterval > 0 ? self.timeRefreshInterval : 0.1, NSEC_PER_SEC);
     @weakify(self)
     _timeObserver = [self.player addPeriodicTimeObserverForInterval:interval queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         @strongify(self)

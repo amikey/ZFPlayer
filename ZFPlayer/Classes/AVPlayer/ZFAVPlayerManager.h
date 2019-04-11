@@ -24,7 +24,13 @@
 
 #import <Foundation/Foundation.h>
 #import <ZFPlayer/ZFPlayerMediaPlayback.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface ZFAVPlayerManager : NSObject <ZFPlayerMediaPlayback>
+
+@property (nonatomic, strong, readonly) AVURLAsset *asset;
+@property (nonatomic, strong, readonly) AVPlayerItem *playerItem;
+@property (nonatomic, strong, readonly) AVPlayer *player;
+@property (nonatomic, assign) NSTimeInterval timeRefreshInterval;
 
 @end

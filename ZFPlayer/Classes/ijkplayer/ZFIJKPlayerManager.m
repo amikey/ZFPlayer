@@ -26,8 +26,6 @@
 #import <ZFPlayer/ZFPlayer.h>
 #if __has_include(<IJKMediaFramework/IJKMediaFramework.h>)
 
-static float const kTimeRefreshInterval = 0.1;
-
 @interface ZFIJKPlayerManager ()
 @property (nonatomic, strong) IJKFFMoviePlayerController *player;
 @property (nonatomic, strong) IJKFFOptions *options;
@@ -298,7 +296,7 @@ static float const kTimeRefreshInterval = 0.1;
     if (self.player.playbackState == IJKMPMoviePlaybackStatePlaying) {
         // 视频开始播放的时候开启计时器
         if (!self.timer) {
-            self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimeRefreshInterval target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:self.timeRefreshInterval > 0 ? self.timeRefreshInterval : 0.1 target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
             [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
         }
     }

@@ -25,11 +25,7 @@
 #import "KSMediaPlayerManager.h"
 #import <ZFPlayer/ZFPlayerView.h>
 #import <ZFPlayer/ZFPlayer.h>
-
 #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
-#import <KSYMediaPlayer/KSYMediaPlayer.h>
-
-static float const kTimeRefreshInterval = 0.1;
 
 @interface KSMediaPlayerManager ()
 @property (nonatomic, strong) KSYMoviePlayerController *player;
@@ -235,7 +231,7 @@ static float const kTimeRefreshInterval = 0.1;
 - (void)videoPrepared:(NSNotification *)notify {
     // 视频开始播放的时候开启计时器
     if (!self.timer) {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimeRefreshInterval target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:self.timeRefreshInterval > 0 ? self.timeRefreshInterval : 0.1 target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
         [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     }
     self.player.shouldMute = self.muted;
