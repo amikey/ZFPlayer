@@ -67,9 +67,9 @@ typedef NS_OPTIONS(NSUInteger, ZFPlayerDisableGestureTypes) {
 /// This enumeration lists some of the pan gesture moving direction that the player not support.
 typedef NS_OPTIONS(NSUInteger, ZFPlayerDisablePanMovingDirection) {
     ZFPlayerDisablePanMovingDirectionNone         = 0,       /// Not disable pan moving direction.
-    ZFPlayerDisablePanMovingDirectionVertical    = 1 << 0,  /// Disable pan moving vertical direction.
-    ZFPlayerDisablePanMovingDirectionHorizontal = 1 << 1,  /// Disable pan moving horizontal direction.
-    ZFPlayerDisablePanMovingDirectionAll          = (ZFPlayerDisablePanMovingDirectionVertical | ZFPlayerDisablePanMovingDirectionHorizontal),  /// Disable pan moving all direction.
+    ZFPlayerDisablePanMovingDirectionVertical     = 1 << 0,  /// Disable pan moving vertical direction.
+    ZFPlayerDisablePanMovingDirectionHorizontal   = 1 << 1,  /// Disable pan moving horizontal direction.
+    ZFPlayerDisablePanMovingDirectionAll          = (ZFPlayerDisablePanMovingDirectionVertical | ZFPlayerDisablePanMovingDirectionHorizontal)  /// Disable pan moving all direction.
 };
 
 @interface ZFPlayerGestureControl : NSObject

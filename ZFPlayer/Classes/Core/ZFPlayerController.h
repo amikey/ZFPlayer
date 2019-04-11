@@ -104,7 +104,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// The player bufferProgress, 0...1
 @property (nonatomic, readonly) float bufferProgress;
 
-/// Use this method to seek to a specified time for the current player and to be notified when the seek operation is complete.
+/**
+ Use this method to seek to a specified time for the current player and to be notified when the seek operation is complete.
+
+ @param time seek time.
+ @param completionHandler completion handler.
+ */
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler;
 
 @end
@@ -182,16 +187,26 @@ NS_ASSUME_NONNULL_BEGIN
 // The block invoked when video size changed.
 @property (nonatomic, copy, nullable) void(^presentationSizeChanged)(id<ZFPlayerMediaPlayback> asset, CGSize size);
 
-/// Play the next url ,while the `assetURLs` is not NULL.
+/**
+ Play the next url ,while the `assetURLs` is not NULL.
+ */
 - (void)playTheNext;
 
-/// Play the previous url ,while the `assetURLs` is not NULL.
+/**
+  Play the previous url ,while the `assetURLs` is not NULL.
+ */
 - (void)playThePrevious;
 
-/// Play the index of url ,while the `assetURLs` is not NULL.
+/**
+ Play the index of url ,while the `assetURLs` is not NULL.
+
+ @param index play the index.
+ */
 - (void)playTheIndex:(NSInteger)index;
 
-/// Player stop and playerView remove from super view,remove other notification.
+/**
+ Player stop and playerView remove from super view,remove other notification.
+ */
 - (void)stop;
 
 /*!
@@ -240,19 +255,38 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked when player rotated.
 @property (nonatomic, copy, nullable) void(^orientationDidChanged)(ZFPlayerController *player, BOOL isFullScreen);
 
-/// Add the device orientation observer.
+/**
+ Add the device orientation observer.
+ */
 - (void)addDeviceOrientationObserver;
 
-/// Remove the device orientation observer.
+/**
+ Remove the device orientation observer.
+ */
 - (void)removeDeviceOrientationObserver;
 
-/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModeLandscape.
+/**
+ Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModeLandscape.
+
+ @param orientation UIInterfaceOrientation
+ @param animated is animated.
+ */
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
 
-/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
+/**
+ Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
+
+ @param fullScreen is fullscreen.
+ @param animated is animated.
+ */
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
 
-// FullScreen mode is determined by ZFFullScreenMode
+/**
+ FullScreen mode is determined by ZFFullScreenMode.
+
+ @param fullScreen is fullscreen.
+ @param animated is animated.
+ */
 - (void)enterFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
 
 @end
@@ -278,8 +312,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// The scrollView player should auto player, default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;
 
-/// WWAN network auto play, only support in scrollView mode when the `shouldAutoPlay` is YES.
-/// default is NO.
+/// WWAN network auto play, only support in scrollView mode when the `shouldAutoPlay` is YES, default is NO.
 @property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
 /// The current playing cell has out off the screen, the player add the small container view.
@@ -297,22 +330,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;
 
-/// The current player scroll slides off the screen percent.
-/// the property used when the `stopWhileNotVisible` is YES, stop the current playing player.
-/// the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view.
-/// 0.0~1.0, defalut is 0.5.
-/// 0.0 is the player will disappear.
-/// 1.0 is the player did disappear.
+/**
+ The current player scroll slides off the screen percent.
+ the property used when the `stopWhileNotVisible` is YES, stop the current playing player.
+ the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view.
+ The range is 0.0~1.0, defalut is 0.5.
+ 0.0 is the player will disappear.
+ 1.0 is the player did disappear.
+ */
 @property (nonatomic) CGFloat playerDisapperaPercent;
 
-/// The current player scroll to the screen percent.
-/// the property is only used when the `stopWhileNotVisible` is NO.
-/// 0.0~1.0, defalut is 0.0.
-/// 0.0 is the player will appear.
-/// 1.0 is the player did appear.
+/**
+ The current player scroll to the screen percent.
+ the property is only used when the `stopWhileNotVisible` is NO.
+ The range is 0.0~1.0, defalut is 0.0.
+ 0.0 is the player will appear.
+ 1.0 is the player did appear.
+ */
 @property (nonatomic) CGFloat playerApperaPercent;
 
-/// if tableView or collectionView has more section, use sectionAssetURLs.
+/// If tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
 
 /// The block invoked When the player appearing.
@@ -333,13 +370,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
-/// Add the playerView to cell.
+/**
+ Add the playerView to cell.
+ */
 - (void)updateScrollViewPlayerToCell;
 
-/// Add the playerView to containerView.
+/**
+ Add the playerView to containerView.
+
+ @param containerView The playerView containerView.
+ */
 - (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
 
-/// stop the current playing video on cell.
+/**
+ stop the current playing video on cell.
+ */
 - (void)stopCurrentPlayingCell;
 
 /**

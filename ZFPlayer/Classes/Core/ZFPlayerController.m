@@ -786,7 +786,11 @@
 }
 
 - (ZFPlayerDisableGestureTypes)disableGestureTypes {
-    return [objc_getAssociatedObject(self, _cmd) unsignedIntegerValue];
+    return [objc_getAssociatedObject(self, _cmd) integerValue];
+}
+
+- (ZFPlayerDisablePanMovingDirection)disablePanMovingDirection {
+    return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
 
 #pragma mark - setter
@@ -794,6 +798,11 @@
 - (void)setDisableGestureTypes:(ZFPlayerDisableGestureTypes)disableGestureTypes {
     objc_setAssociatedObject(self, @selector(disableGestureTypes), @(disableGestureTypes), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.gestureControl.disableTypes = disableGestureTypes;
+}
+
+- (void)setDisablePanMovingDirection:(ZFPlayerDisablePanMovingDirection)disablePanMovingDirection {
+    objc_setAssociatedObject(self, @selector(disablePanMovingDirection), @(disablePanMovingDirection), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.gestureControl.disablePanMovingDirection = disablePanMovingDirection;
 }
 
 @end

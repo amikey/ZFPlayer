@@ -13,7 +13,7 @@
 @implementation ZFAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [ZFPlayerLogManager setLogEnable:YES];
+//    [ZFPlayerLogManager setLogEnable:YES];
     return YES;
 }
 
