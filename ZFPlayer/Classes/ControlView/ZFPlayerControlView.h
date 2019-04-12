@@ -93,6 +93,12 @@
 /// 控制层显示、隐藏动画的时长，默认0.25秒
 @property (nonatomic, assign) NSTimeInterval autoFadeTimeInterval;
 
+/// 横向滑动控制播放进度时是否显示控制层,默认 YES.
+@property (nonatomic, assign) BOOL horizontalPanShowControlView;
+
+/// prepare时候是否显示loading,默认 NO.
+@property (nonatomic, assign) BOOL prepareShowLoading;
+
 /**
  设置标题、封面、全屏模式
 

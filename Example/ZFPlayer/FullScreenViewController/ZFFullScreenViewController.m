@@ -86,6 +86,8 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
         _controlView.fastViewAnimated = YES;
+        _controlView.effectViewShow = NO;
+        _controlView.prepareShowLoading = YES;
     }
     return _controlView;
 }

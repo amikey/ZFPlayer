@@ -87,6 +87,7 @@
         self.floatControlView.hidden = YES;
         self.seekToPlay = YES;
         self.effectViewShow = YES;
+        self.horizontalPanShowControlView = YES;
         self.autoFadeTimeInterval = 0.25;
         self.autoHiddenTimeInterval = 2.5;
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -390,7 +391,9 @@
             /// 左右滑动调节播放进度
             [self.portraitControlView sliderChangeEnded];
             [self.landScapeControlView sliderChangeEnded];
-            [self autoFadeOutControlView];
+            if (self.controlViewAppeared) {
+                [self autoFadeOutControlView];
+            }
         }];
         if (self.seekToPlay) {
             [self.player.currentPlayerManager play];
@@ -420,7 +423,9 @@
         [self.landScapeControlView playBtnSelectedState:YES];
         self.failBtn.hidden = YES;
         /// 开始播放时候判断是否显示loading
-        if (videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled) {
+        if (videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled && !self.prepareShowLoading) {
+            [self.activity startAnimating];
+        } else if ((videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled || videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStatePrepare) && self.prepareShowLoading) {
             [self.activity startAnimating];
         }
     } else if (state == ZFPlayerPlayStatePaused) {
@@ -448,7 +453,9 @@
             self.player.currentPlayerManager.view.backgroundColor = [UIColor blackColor];
         }
     }
-    if (state == ZFPlayerLoadStateStalled && videoPlayer.currentPlayerManager.isPlaying) {
+    if (state == ZFPlayerLoadStateStalled && videoPlayer.currentPlayerManager.isPlaying && !self.prepareShowLoading) {
+        [self.activity startAnimating];
+    } else if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.isPlaying && self.prepareShowLoading) {
         [self.activity startAnimating];
     } else {
         [self.activity stopAnimating];
@@ -531,11 +538,13 @@
 #pragma mark - Private Method
 
 - (void)sliderValueChangingValue:(CGFloat)value isForward:(BOOL)forward {
-    self.fastProgressView.value = value;
-    /// 显示控制层
-    [self showControlViewWithAnimated:NO];
-    [self cancelAutoFadeOutControlView];
+    if (self.horizontalPanShowControlView) {
+        /// 显示控制层
+        [self showControlViewWithAnimated:NO];
+        [self cancelAutoFadeOutControlView];
+    }
     
+    self.fastProgressView.value = value;
     self.fastView.hidden = NO;
     self.fastView.alpha = 1;
     if (forward) {

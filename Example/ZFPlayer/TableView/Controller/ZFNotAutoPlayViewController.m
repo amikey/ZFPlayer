@@ -232,6 +232,7 @@ static NSString *kIdentifier = @"kIdentifier";
 - (ZFPlayerControlView *)controlView {
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
+        _controlView.prepareShowLoading = YES;
     }
     return _controlView;
 }
