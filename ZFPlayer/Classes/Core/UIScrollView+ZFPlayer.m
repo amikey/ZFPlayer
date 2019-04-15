@@ -351,7 +351,7 @@
         NSIndexPath *indexPath = [self zf_getIndexPathForCell:cell];
         
         /// Play when the video playback section is visible.
-        if ((topSpacing >= -self.zf_playerDisapperaPercent * CGRectGetHeight(rect)) && (bottomSpacing >= -self.zf_playerDisapperaPercent * CGRectGetHeight(rect))) {
+        if ((topSpacing >= -(1 - self.zf_playerApperaPercent) * CGRectGetHeight(rect)) && (bottomSpacing >= -(1 - self.zf_playerApperaPercent) * CGRectGetHeight(rect))) {
             /// If you have a cell that is playing, stop the traversal.
             if (self.zf_playingIndexPath) {
                 indexPath = self.zf_playingIndexPath;
@@ -471,7 +471,7 @@
         NSIndexPath *indexPath = [self zf_getIndexPathForCell:cell];
         
         /// Play when the video playback section is visible.
-        if ((leftSpacing >= -self.zf_playerDisapperaPercent * CGRectGetWidth(rect)) && (rightSpacing >= -self.zf_playerDisapperaPercent * CGRectGetWidth(rect))) {
+        if ((leftSpacing >= -(1 - self.zf_playerApperaPercent) * CGRectGetWidth(rect)) && (rightSpacing >= -(1 - self.zf_playerApperaPercent) * CGRectGetWidth(rect))) {
             /// If you have a cell that is playing, stop the traversal.
             if (self.zf_playingIndexPath) {
                 indexPath = self.zf_playingIndexPath;
