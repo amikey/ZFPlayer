@@ -45,6 +45,7 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
     self.player.controlView = self.controlView;
     self.player.assetURLs = self.urls;
     self.player.shouldAutoPlay = YES;
+    self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionAll;
     /// 1.0是消失100%时候
     self.player.playerDisapperaPercent = 1.0;
     
@@ -53,6 +54,11 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
         @strongify(self)
         [self setNeedsStatusBarAppearanceUpdate];
         self.collectionView.scrollsToTop = !isFullScreen;
+        if (isFullScreen) {
+            self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+        } else {
+            self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionAll;
+        }
     };
     
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
@@ -212,6 +218,9 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
 - (ZFPlayerControlView *)controlView {
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
+        _controlView.fastViewAnimated = YES;
+        _controlView.effectViewShow = NO;
+        _controlView.customDisablePanMovingDirection = YES;
     }
     return _controlView;
 }

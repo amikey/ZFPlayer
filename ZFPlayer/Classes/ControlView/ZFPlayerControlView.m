@@ -309,14 +309,18 @@
         return NO;
     }
     if (self.player.isFullScreen) {
-        /// 不禁用滑动方向
-        self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+        if (!self.customDisablePanMovingDirection) {
+            /// 不禁用滑动方向
+            self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+        }
         return [self.landScapeControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     } else {
-        if (self.player.scrollView) {  /// 列表时候禁止左右滑动
-            self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionVertical;
-        } else { /// 不禁用滑动方向
-            self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+        if (!self.customDisablePanMovingDirection) {
+            if (self.player.scrollView) {  /// 列表时候禁止左右滑动
+                self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionVertical;
+            } else { /// 不禁用滑动方向
+                self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+            }
         }
         return [self.portraitControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     }

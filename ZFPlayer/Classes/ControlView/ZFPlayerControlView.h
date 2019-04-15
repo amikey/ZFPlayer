@@ -99,6 +99,9 @@
 /// prepare时候是否显示loading,默认 NO.
 @property (nonatomic, assign) BOOL prepareShowLoading;
 
+/// 是否自定义禁止pan手势，默认 NO.
+@property (nonatomic, assign) BOOL customDisablePanMovingDirection;
+
 /**
  设置标题、封面、全屏模式
 
