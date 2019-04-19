@@ -366,6 +366,8 @@
         _options = [IJKFFOptions optionsByDefault];
         /// 精准seek
         [_options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
+        /// 解决播放http是播放不了
+        [_options setOptionIntValue:1 forKey:@"dns_cache_clear" ofCategory:kIJKFFOptionCategoryFormat];
     }
     return _options;
 }
