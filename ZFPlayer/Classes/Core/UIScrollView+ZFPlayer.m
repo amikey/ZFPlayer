@@ -48,7 +48,6 @@
     [self zf_filterShouldPlayCellWhileScrolled:^(NSIndexPath * _Nonnull indexPath) {
         @strongify(self)
         if (self.zf_scrollViewDidStopScrollCallback) self.zf_scrollViewDidStopScrollCallback(indexPath);
-        if (self.scrollViewDidStopScroll) self.scrollViewDidStopScroll(indexPath);
     }];
 }
 
@@ -673,7 +672,6 @@
 - (void)setZf_shouldPlayIndexPath:(NSIndexPath *)zf_shouldPlayIndexPath {
     if (self.zf_shouldPlayIndexPathCallback) self.zf_shouldPlayIndexPathCallback(zf_shouldPlayIndexPath);
     objc_setAssociatedObject(self, @selector(zf_shouldPlayIndexPath), zf_shouldPlayIndexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    self.shouldPlayIndexPath = zf_shouldPlayIndexPath;
 }
 
 - (void)setZf_containerViewTag:(NSInteger)zf_containerViewTag {
@@ -794,30 +792,6 @@
 
 - (void)setZf_viewControllerDisappear:(BOOL)zf_viewControllerDisappear {
     objc_setAssociatedObject(self, @selector(zf_viewControllerDisappear), @(zf_viewControllerDisappear), OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-@end
-
-@implementation UIScrollView (ZFPlayerDeprecated)
-
-#pragma mark - getter
-
-- (NSIndexPath *)shouldPlayIndexPath {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
-- (void (^)(NSIndexPath * _Nonnull))scrollViewDidStopScroll {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
-#pragma mark - setter
-
-- (void)setShouldPlayIndexPath:(NSIndexPath *)shouldPlayIndexPath {
-    objc_setAssociatedObject(self, @selector(shouldPlayIndexPath), shouldPlayIndexPath, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (void)setScrollViewDidStopScroll:(void (^)(NSIndexPath * _Nonnull))scrollViewDidStopScroll {
-    objc_setAssociatedObject(self, @selector(scrollViewDidStopScroll), scrollViewDidStopScroll, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 @end

@@ -165,15 +165,4 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
 
 @end
 
-@interface UIScrollView (ZFPlayerDeprecated)
-
-@property (nonatomic, copy, nullable) void(^scrollViewDidStopScroll)(NSIndexPath *indexPath) __attribute__((deprecated("use `zf_scrollViewDidStopScrollCallback` instead.")));
-
-/// The indexPath that should play, the one that lights up.
-@property (nonatomic, strong, nullable) NSIndexPath *shouldPlayIndexPath __attribute__((deprecated("use `zf_shouldPlayIndexPath` instead.")));
-
-@end
-
-
-
 NS_ASSUME_NONNULL_END
