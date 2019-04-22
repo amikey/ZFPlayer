@@ -188,14 +188,13 @@ static NSString *const kPresentationSize         = @"presentationSize";
     }];
 }
 
-/// Replace the current playback address
-- (void)replaceCurrentAssetURL:(NSURL *)assetURL {
-    self.assetURL = assetURL;
-}
-
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
-    CMTime seekTime = CMTimeMake(time, 1);
-    [_player seekToTime:seekTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
+    if (self.totalTime > 0) {
+        CMTime seekTime = CMTimeMake(time, 1);
+        [_player seekToTime:seekTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
+    } else {
+        self.seekTime = time;
+    }
 }
 
 - (UIImage *)thumbnailImageAtCurrentTime {

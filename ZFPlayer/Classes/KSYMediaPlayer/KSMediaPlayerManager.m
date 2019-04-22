@@ -127,16 +127,13 @@
     }];
 }
 
-/// 更换当前的播放地址
-- (void)replaceCurrentAssetURL:(NSURL *)assetURL {
-    if (self.player) [self stop];
-    _assetURL = assetURL;
-    [self prepareToPlay];
-}
-
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
-    [self.player seekTo:time accurate:YES];
-    if (completionHandler) completionHandler(YES);
+    if (self.totalTime > 0) {
+        [self.player seekTo:time accurate:YES];
+        if (completionHandler) completionHandler(YES);
+    } else {
+        self.seekTime = time;
+    }
 }
 
 - (UIImage *)thumbnailImageAtCurrentTime {
@@ -338,8 +335,9 @@
 }
 
 - (void)setAssetURL:(NSURL *)assetURL {
+    if (self.player) [self stop];
     _assetURL = assetURL;
-    [self replaceCurrentAssetURL:assetURL];
+    [self prepareToPlay];
 }
 
 - (void)setRate:(float)rate {

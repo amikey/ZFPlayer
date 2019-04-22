@@ -128,14 +128,13 @@
     }];
 }
 
-/// Replace the current playback address
-- (void)replaceCurrentAssetURL:(NSURL *)assetURL {
-    self.assetURL = assetURL;
-}
-
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
-    self.player.currentPlaybackTime = time;
-    if (completionHandler) completionHandler(YES);
+    if (self.totalTime > 0) {
+        self.player.currentPlaybackTime = time;
+        if (completionHandler) completionHandler(YES);
+    } else {
+        self.seekTime = time;
+    }
 }
 
 - (UIImage *)thumbnailImageAtCurrentTime {
@@ -366,7 +365,7 @@
         _options = [IJKFFOptions optionsByDefault];
         /// 精准seek
         [_options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
-        /// 解决播放http是播放不了
+        /// 解决http播放不了
         [_options setOptionIntValue:1 forKey:@"dns_cache_clear" ofCategory:kIJKFFOptionCategoryFormat];
     }
     return _options;
