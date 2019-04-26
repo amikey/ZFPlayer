@@ -128,7 +128,7 @@
 }
 
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
-    if (self.totalTime > 0) {
+    if (self.player.duration > 0) {
         [self.player seekTo:time accurate:YES];
         if (completionHandler) completionHandler(YES);
     } else {
@@ -148,8 +148,8 @@
 - (void)initializePlayer {
     if (self.player) [self.player stop];
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
-    [self.player prepareToPlay];
     self.player.shouldAutoplay = YES;
+    [self.player prepareToPlay];
     [self addPlayerNotification];
     
     [self.view insertSubview:self.player.view atIndex:2];
@@ -232,13 +232,13 @@
         [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     }
     self.player.shouldMute = self.muted;
-    if (self.seekTime) {
+    if (self.seekTime > 0) {
         [self seekToTime:self.seekTime completionHandler:nil];
         self.seekTime = 0; // 滞空, 防止下次播放出错
     }
     [self play];
     self.player.shouldMute = self.muted;
-    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
+    if (self.playerReadyToPlay) self.playerReadyToPlay(self, self.assetURL);
 }
 
 /// 播放完成通知。视频正常播放完成时触发。
@@ -252,7 +252,7 @@
         NSString *error = [notify.userInfo valueForKey:@"error"];
         ZFPlayerLog(@"player Error : %@", error);
         if (self.playerPlayFailed) self.playerPlayFailed(self, error);
-    } else if (reason == MPMovieFinishReasonUserExited){
+    } else if (reason == MPMovieFinishReasonUserExited) {
         /// player userExited
     }
 }
@@ -275,7 +275,9 @@
         ZFPlayerLog(@"player start caching");
         self.loadState = ZFPlayerLoadStateStalled;
     } else {
-        self.loadState = ZFPlayerLoadStatePlayable;
+        if (self.player.currentPlaybackTime > 0) {
+            self.loadState = ZFPlayerLoadStatePlayable;
+        }
     }
 }
 

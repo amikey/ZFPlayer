@@ -132,7 +132,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     [self initializePlayer];
     [self play];
     self.loadState = ZFPlayerLoadStatePrepare;
-    if (_playerPrepareToPlay) _playerPrepareToPlay(self, self.assetURL);
+    if (self.playerPrepareToPlay) self.playerPrepareToPlay(self, self.assetURL);
 }
 
 - (void)reloadPlayer {
@@ -346,7 +346,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
             if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
                 /// 第一次初始化
                 if (self.loadState == ZFPlayerLoadStatePrepare) {
-                    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
+                    if (self.playerReadyToPlay) self.playerReadyToPlay(self, self.assetURL);
                 }
                 if (self.seekTime) {
                     [self seekToTime:self.seekTime completionHandler:nil];

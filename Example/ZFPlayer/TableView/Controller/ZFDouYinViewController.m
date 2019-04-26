@@ -93,7 +93,8 @@ static NSString *kIdentifier = @"kIdentifier";
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSDictionary *rootDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     
-    NSArray *videoList = [rootDict objectForKey:@"list"];
+    NSArray *videoList1 = [rootDict objectForKey:@"list"];
+    NSArray *videoList = @[videoList1.firstObject];
     for (NSDictionary *dataDic in videoList) {
         ZFTableData *data = [[ZFTableData alloc] init];
         [data setValuesForKeysWithDictionary:dataDic];
