@@ -1146,6 +1146,7 @@
 }
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
+    if ([indexPath compare:self.playingIndexPath] == NSOrderedSame) return;
     if (scrollToTop) {
         @weakify(self)
         [self.scrollView zf_scrollToRowAtIndexPath:indexPath completionHandler:^{

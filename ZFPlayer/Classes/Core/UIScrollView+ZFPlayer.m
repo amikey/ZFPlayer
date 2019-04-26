@@ -521,10 +521,8 @@
             self.zf_shouldPlayIndexPath = indexPath;
             return;
         }
-        if (!self.zf_playingIndexPath) {
-            if (handler) handler(indexPath);
-            self.zf_playingIndexPath = indexPath;
-        }
+        if (handler) handler(indexPath);
+        self.zf_playingIndexPath = indexPath;
     }];
 }
 
