@@ -25,16 +25,12 @@
 #import "KSMediaPlayerManager.h"
 #import <ZFPlayer/ZFPlayerView.h>
 #import <ZFPlayer/ZFPlayer.h>
-
 #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
-#import <KSYMediaPlayer/KSYMediaPlayer.h>
 
-static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
-
-@interface KSMediaPlayerManager () {
-    ZFKVOController *_playerItemKVO;
-}
+@interface KSMediaPlayerManager ()
 @property (nonatomic, strong) KSYMoviePlayerController *player;
+@property (nonatomic, assign) BOOL isReadyToPlay;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -66,12 +62,11 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 @synthesize presentationSizeChanged        = _presentationSizeChanged;
 
 - (void)dealloc {
-    [self destory];
+    [self stop];
 }
 
 - (void)destory {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_playerItemKVO safelyRemoveAllObservers];
     _isPlaying = NO;
     _isPreparedToPlay = NO;
 }
@@ -111,7 +106,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 - (void)stop {
-    self.playState = ZFPlayerPlayStatePlayStopped;
     [self.player stop];
     [self.player.view removeFromSuperview];
     [self destory];
@@ -119,6 +113,10 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
+    self.isReadyToPlay = NO;
+    [self.timer invalidate];
+    self.timer = nil;
+    self.playState = ZFPlayerPlayStatePlayStopped;
 }
 
 - (void)replay {
@@ -129,16 +127,13 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
     }];
 }
 
-/// 更换当前的播放地址
-- (void)replaceCurrentAssetURL:(NSURL *)assetURL {
-    if (self.player) [self stop];
-    _assetURL = assetURL;
-    [self prepareToPlay];
-}
-
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
-    [self.player seekTo:time accurate:YES];
-    if (completionHandler) completionHandler(YES);
+    if (self.player.duration > 0) {
+        [self.player seekTo:time accurate:YES];
+        if (completionHandler) completionHandler(YES);
+    } else {
+        self.seekTime = time;
+    }
 }
 
 - (UIImage *)thumbnailImageAtCurrentTime {
@@ -151,12 +146,14 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 - (void)initializePlayer {
+    if (self.player) [self.player stop];
     self.player = [[KSYMoviePlayerController alloc] initWithContentURL:_assetURL];
-    [self.player prepareToPlay];
     self.player.shouldAutoplay = YES;
+    [self.player prepareToPlay];
     [self addPlayerNotification];
     
-    [self.view insertSubview:self.player.view atIndex:1];
+    [self.view insertSubview:self.player.view atIndex:2];
+    self.player.view.backgroundColor = [UIColor clearColor];
     self.player.view.frame = self.view.bounds;
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.scalingMode = _scalingMode;
@@ -211,43 +208,37 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
                                              selector:@selector(suggestReloadChange:)
                                                  name:MPMoviePlayerSuggestReloadNotification
                                                object:self.player];
-    
-    [_playerItemKVO safelyRemoveAllObservers];
-    _playerItemKVO = [[ZFKVOController alloc] initWithTarget:_player];
-    [_playerItemKVO safelyAddObserver:self
-                           forKeyPath:kCurrentPlaybackTime
-                              options:NSKeyValueObservingOptionNew
-                              context:nil];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([keyPath isEqualToString:kCurrentPlaybackTime]) {
-            self->_currentTime = self.player.currentPlaybackTime > 0 ?: 0;
-            self->_totalTime = self.player.duration;
-            self->_bufferTime = self.player.playableDuration;
-            if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self->_currentTime, self->_totalTime);
-            if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, self->_bufferTime);
-        }
-    });
+- (void)timerUpdate {
+    if (self.player.currentPlaybackTime > 0 && !self.isReadyToPlay) {
+        self.isReadyToPlay = YES;
+        self.loadState = ZFPlayerLoadStatePlaythroughOK;
+    }
+    self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
+    self->_totalTime = self.player.duration;
+    self->_bufferTime = self.player.playableDuration;
+    if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self->_currentTime, self->_totalTime);
+    if (self.playerBufferTimeChanged) self.playerBufferTimeChanged(self, self->_bufferTime);
 }
 
 #pragma mark - Notification
 
 /// 播放器初始化视频文件完成通知
 - (void)videoPrepared:(NSNotification *)notify {
+    // 视频开始播放的时候开启计时器
+    if (!self.timer) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:self.timeRefreshInterval > 0 ? self.timeRefreshInterval : 0.1 target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
     self.player.shouldMute = self.muted;
-    if (self.seekTime) {
+    if (self.seekTime > 0) {
         [self seekToTime:self.seekTime completionHandler:nil];
         self.seekTime = 0; // 滞空, 防止下次播放出错
     }
     [self play];
     self.player.shouldMute = self.muted;
-    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
-    /// 需要延迟改为ok状态，不然显示会有一点问题。
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.loadState = ZFPlayerLoadStatePlaythroughOK;
-    });
+    if (self.playerReadyToPlay) self.playerReadyToPlay(self, self.assetURL);
 }
 
 /// 播放完成通知。视频正常播放完成时触发。
@@ -261,7 +252,7 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
         NSString *error = [notify.userInfo valueForKey:@"error"];
         ZFPlayerLog(@"player Error : %@", error);
         if (self.playerPlayFailed) self.playerPlayFailed(self, error);
-    } else if (reason == MPMovieFinishReasonUserExited){
+    } else if (reason == MPMovieFinishReasonUserExited) {
         /// player userExited
     }
 }
@@ -284,7 +275,9 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
         ZFPlayerLog(@"player start caching");
         self.loadState = ZFPlayerLoadStateStalled;
     } else {
-        self.loadState = ZFPlayerLoadStatePlayable;
+        if (self.player.currentPlaybackTime > 0) {
+            self.loadState = ZFPlayerLoadStatePlayable;
+        }
     }
 }
 
@@ -323,7 +316,6 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 - (ZFPlayerView *)view {
     if (!_view) {
         _view = [[ZFPlayerView alloc] init];
-        _view.backgroundColor = [UIColor blackColor];
     }
     return _view;
 }
@@ -345,8 +337,9 @@ static NSString *const kCurrentPlaybackTime = @"currentPlaybackTime";
 }
 
 - (void)setAssetURL:(NSURL *)assetURL {
+    if (self.player) [self stop];
     _assetURL = assetURL;
-    [self replaceCurrentAssetURL:assetURL];
+    [self prepareToPlay];
 }
 
 - (void)setRate:(float)rate {

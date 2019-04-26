@@ -123,6 +123,11 @@
 		D243FCA220C543D30014F533 /* ZFDouYinCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFDouYinCell.m; sourceTree = "<group>"; };
 		D24763D121A6964000D76AFE /* ZFHorizontalCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFHorizontalCollectionViewController.h; sourceTree = "<group>"; };
 		D24763D221A6964000D76AFE /* ZFHorizontalCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFHorizontalCollectionViewController.m; sourceTree = "<group>"; };
+		D24FA683221FD54B0010A2A2 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		D24FA685221FD56A0010A2A2 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D24FA687221FD5770010A2A2 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		D24FA689221FD5800010A2A2 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		D24FA68B221FD5C70010A2A2 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		D2B1EC542188315500FD94C3 /* ZFTableHeaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFTableHeaderViewController.h; sourceTree = "<group>"; };
 		D2B1EC552188315500FD94C3 /* ZFTableHeaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFTableHeaderViewController.m; sourceTree = "<group>"; };
 		D2B1EC57218831A300FD94C3 /* ZFTableHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFTableHeaderView.h; sourceTree = "<group>"; };
@@ -186,6 +191,11 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D24FA68B221FD5C70010A2A2 /* VideoToolbox.framework */,
+				D24FA689221FD5800010A2A2 /* libbz2.tbd */,
+				D24FA687221FD5770010A2A2 /* libiconv.tbd */,
+				D24FA685221FD56A0010A2A2 /* libz.tbd */,
+				D24FA683221FD54B0010A2A2 /* libc++.tbd */,
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
@@ -493,7 +503,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example-resources.sh",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/../../ZFPlayer/Classes/ControlView/ZFPlayer.bundle",
 			);
@@ -504,7 +514,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZFPlayer_Example/Pods-ZFPlayer_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8FEFB4EA80BE2D2420F5C74A /* [CP] Check Pods Manifest.lock */ = {
@@ -689,10 +699,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = R2U8SE68WE;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ZFPlayer",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZFPlayer/ZFPlayer-Prefix.pch";
 				INFOPLIST_FILE = "ZFPlayer/ZFPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = "";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.demo.ZFPlayer;
@@ -711,10 +726,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = R2U8SE68WE;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ZFPlayer",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZFPlayer/ZFPlayer-Prefix.pch";
 				INFOPLIST_FILE = "ZFPlayer/ZFPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = "";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.demo.ZFPlayer;

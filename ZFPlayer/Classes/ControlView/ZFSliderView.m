@@ -62,11 +62,6 @@ static const CGFloat kAnimate = 0.3;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
-/** 滑杆进度 */
-@property (nonatomic, assign) float value;
-/** 缓存进度 */
-@property (nonatomic, assign) float bufferValue;
-
 @end
 
 @implementation ZFSliderView

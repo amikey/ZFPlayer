@@ -70,6 +70,10 @@
 
 @property (nonatomic, strong) ZFVolumeBrightnessView *volumeBrightnessView;
 
+@property (nonatomic, strong) UIImageView *bgImgView;
+
+@property (nonatomic, strong) UIView *effectView;
+
 @end
 
 @implementation ZFPlayerControlView
@@ -82,6 +86,8 @@
         self.landScapeControlView.hidden = YES;
         self.floatControlView.hidden = YES;
         self.seekToPlay = YES;
+        self.effectViewShow = YES;
+        self.horizontalPanShowControlView = YES;
         self.autoFadeTimeInterval = 0.25;
         self.autoHiddenTimeInterval = 12.5;
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -106,7 +112,9 @@
     self.portraitControlView.frame = self.bounds;
     self.landScapeControlView.frame = self.bounds;
     self.floatControlView.frame = self.bounds;
-    self.coverImageView.frame = self.player.currentPlayerManager.view.bounds;
+    self.coverImageView.frame = self.bounds;
+    self.bgImgView.frame = self.bounds;
+    self.effectView.frame = self.bounds;
     
     min_w = 80;
     min_h = 80;
@@ -154,7 +162,6 @@
     min_h = 40;
     self.volumeBrightnessView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.volumeBrightnessView.center = self.center;
-    
 }
 
 - (void)dealloc {
@@ -167,10 +174,8 @@
     [self addSubview:self.portraitControlView];
     [self addSubview:self.landScapeControlView];
     [self addSubview:self.floatControlView];
-    
     [self addSubview:self.activity];
     [self addSubview:self.failBtn];
-    
     [self addSubview:self.fastView];
     [self.fastView addSubview:self.fastImageView];
     [self.fastView addSubview:self.fastTimeLabel];
@@ -269,12 +274,19 @@
 
 /// 设置标题、封面、全屏模式
 - (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl fullScreenMode:(ZFFullScreenMode)fullScreenMode {
+    UIImage *placeholder = [ZFUtilities imageWithColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1] size:self.bgImgView.bounds.size];
+    [self showTitle:title coverURLString:coverUrl placeholderImage:placeholder fullScreenMode:fullScreenMode];
+}
+
+/// 设置标题、封面、默认占位图、全屏模式
+- (void)showTitle:(NSString *)title coverURLString:(NSString *)coverUrl placeholderImage:(UIImage *)placeholder fullScreenMode:(ZFFullScreenMode)fullScreenMode {
     [self resetControlView];
     [self layoutIfNeeded];
     [self setNeedsDisplay];
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
-    [self.coverImageView setImageWithURLString:coverUrl placeholder:self.placeholderImage];
+    [self.coverImageView setImageWithURLString:coverUrl placeholder:placeholder];
+    [self.bgImgView setImageWithURLString:coverUrl placeholder:placeholder];
 }
 
 /// 设置标题、UIImage封面、全屏模式
@@ -285,6 +297,7 @@
     [self.portraitControlView showTitle:title fullScreenMode:fullScreenMode];
     [self.landScapeControlView showTitle:title fullScreenMode:fullScreenMode];
     self.coverImageView.image = image;
+    self.bgImgView.image = image;
 }
 
 #pragma mark - ZFPlayerControlViewDelegate
@@ -296,8 +309,19 @@
         return NO;
     }
     if (self.player.isFullScreen) {
+        if (!self.customDisablePanMovingDirection) {
+            /// 不禁用滑动方向
+            self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+        }
         return [self.landScapeControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     } else {
+        if (!self.customDisablePanMovingDirection) {
+            if (self.player.scrollView) {  /// 列表时候禁止左右滑动
+                self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionVertical;
+            } else { /// 不禁用滑动方向
+                self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
+            }
+        }
         return [self.portraitControlView shouldResponseGestureWithPoint:point withGestureType:gestureType touch:touch];
     }
 }
@@ -371,7 +395,9 @@
             /// 左右滑动调节播放进度
             [self.portraitControlView sliderChangeEnded];
             [self.landScapeControlView sliderChangeEnded];
-            [self autoFadeOutControlView];
+            if (self.controlViewAppeared) {
+                [self autoFadeOutControlView];
+            }
         }];
         if (self.seekToPlay) {
             [self.player.currentPlayerManager play];
@@ -401,7 +427,9 @@
         [self.landScapeControlView playBtnSelectedState:YES];
         self.failBtn.hidden = YES;
         /// 开始播放时候判断是否显示loading
-        if (videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled || videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStatePrepare) {
+        if (videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled && !self.prepareShowLoading) {
+            [self.activity startAnimating];
+        } else if ((videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStateStalled || videoPlayer.currentPlayerManager.loadState == ZFPlayerLoadStatePrepare) && self.prepareShowLoading) {
             [self.activity startAnimating];
         }
     } else if (state == ZFPlayerPlayStatePaused) {
@@ -420,10 +448,18 @@
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer loadStateChanged:(ZFPlayerLoadState)state {
     if (state == ZFPlayerLoadStatePrepare) {
         self.coverImageView.hidden = NO;
-    } else if (state == ZFPlayerLoadStatePlaythroughOK) {
+    } else if (state == ZFPlayerLoadStatePlaythroughOK || state == ZFPlayerLoadStatePlayable) {
         self.coverImageView.hidden = YES;
+        if (self.effectViewShow) {
+            self.effectView.hidden = NO;
+        } else {
+            self.effectView.hidden = YES;
+            self.player.currentPlayerManager.view.backgroundColor = [UIColor blackColor];
+        }
     }
-    if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.isPlaying) {
+    if (state == ZFPlayerLoadStateStalled && videoPlayer.currentPlayerManager.isPlaying && !self.prepareShowLoading) {
+        [self.activity startAnimating];
+    } else if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.isPlaying && self.prepareShowLoading) {
         [self.activity startAnimating];
     } else {
         [self.activity stopAnimating];
@@ -506,11 +542,13 @@
 #pragma mark - Private Method
 
 - (void)sliderValueChangingValue:(CGFloat)value isForward:(BOOL)forward {
-//    self.fastProgressView.value = value;
-    /// 显示控制层
-    [self showControlViewWithAnimated:NO];
-    [self cancelAutoFadeOutControlView];
+    if (self.horizontalPanShowControlView) {
+        /// 显示控制层
+        [self showControlViewWithAnimated:NO];
+        [self cancelAutoFadeOutControlView];
+    }
     
+    self.fastProgressView.value = value;
     self.fastView.hidden = NO;
     self.fastView.alpha = 1;
     if (forward) {
@@ -556,9 +594,15 @@
     _player = player;
     self.landScapeControlView.player = player;
     self.portraitControlView.player = player;
-    /// 封面图加到播放视图底部了，解决播放时候黑屏闪一下问题
-    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:0];
+    /// 解决播放时候黑屏闪一下问题
+    [player.currentPlayerManager.view insertSubview:self.bgImgView atIndex:0];
+    [self.bgImgView addSubview:self.effectView];
+    [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:1];
     self.coverImageView.frame = player.currentPlayerManager.view.bounds;
+    self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.bgImgView.frame = player.currentPlayerManager.view.bounds;
+    self.bgImgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.effectView.frame = self.bgImgView.bounds;
     self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
@@ -568,7 +612,38 @@
     self.landScapeControlView.seekToPlay = seekToPlay;
 }
 
+- (void)setEffectViewShow:(BOOL)effectViewShow {
+    _effectViewShow = effectViewShow;
+    if (effectViewShow) {
+        self.bgImgView.hidden = NO;
+    } else {
+        self.bgImgView.hidden = YES;
+    }
+}
+
 #pragma mark - getter
+
+- (UIImageView *)bgImgView {
+    if (!_bgImgView) {
+        _bgImgView = [[UIImageView alloc] init];
+        _bgImgView.userInteractionEnabled = YES;
+    }
+    return _bgImgView;
+}
+
+- (UIView *)effectView {
+    if (!_effectView) {
+        if (@available(iOS 8.0, *)) {
+            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            _effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+        } else {
+            UIToolbar *effectView = [[UIToolbar alloc] init];
+            effectView.barStyle = UIBarStyleBlackTranslucent;
+            _effectView = effectView;
+        }
+    }
+    return _effectView;
+}
 
 - (ZFPortraitControlView *)portraitControlView {
     if (!_portraitControlView) {
@@ -678,8 +753,7 @@
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _coverImageView.clipsToBounds = YES;
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _coverImageView;
 }
@@ -702,13 +776,6 @@
         _volumeBrightnessView = [[ZFVolumeBrightnessView alloc] init];
     }
     return _volumeBrightnessView;
-}
-
-- (UIImage *)placeholderImage {
-    if (!_placeholderImage) {
-        _placeholderImage = [ZFUtilities imageWithColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1] size:CGSizeMake(1, 1)];
-    }
-    return _placeholderImage;
 }
 
 - (void)setBackBtnClickCallback:(void (^)(void))backBtnClickCallback {

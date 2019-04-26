@@ -19,6 +19,10 @@
 @property (nonatomic, weak) id<ZFTableViewCellDelegate> delegate;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
+@property (nonatomic, strong) UIImageView *bgImgView;
+
+@property (nonatomic, strong) UIView *effectView;
+
 @end
 
 @implementation ZFTableViewCell
@@ -28,6 +32,8 @@
     if (self) {
         [self.contentView addSubview:self.headImageView];
         [self.contentView addSubview:self.nickNameLabel];
+        [self.contentView addSubview:self.bgImgView];
+        [self.bgImgView addSubview:self.effectView];
         [self.contentView addSubview:self.coverImageView];
         [self.coverImageView addSubview:self.playBtn];
         [self.contentView addSubview:self.titleLabel];
@@ -43,12 +49,15 @@
     self.headImageView.frame = layout.headerRect;
     self.nickNameLabel.frame = layout.nickNameRect;
     self.coverImageView.frame = layout.videoRect;
+    self.bgImgView.frame = layout.videoRect;
+    self.effectView.frame = self.bgImgView.bounds;
     self.titleLabel.frame = layout.titleLabelRect;
     self.playBtn.frame = layout.playBtnRect;
     self.fullMaskView.frame = layout.maskViewRect;
     
     [self.headImageView setImageWithURLString:layout.data.head placeholder:[UIImage imageNamed:@"defaultUserIcon"]];
     [self.coverImageView setImageWithURLString:layout.data.thumbnail_url placeholder:[UIImage imageNamed:@"loading_bgView"]];
+    [self.bgImgView setImageWithURLString:layout.data.thumbnail_url placeholder:[UIImage imageNamed:@"loading_bgView"]];
     self.nickNameLabel.text = layout.data.nick_name;
     self.titleLabel.text = layout.data.title;
 }
@@ -136,10 +145,31 @@
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
         _coverImageView.tag = 100;
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _coverImageView.clipsToBounds = YES;
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _coverImageView;
+}
+
+- (UIImageView *)bgImgView {
+    if (!_bgImgView) {
+        _bgImgView = [[UIImageView alloc] init];
+        _bgImgView.userInteractionEnabled = YES;
+    }
+    return _bgImgView;
+}
+
+- (UIView *)effectView {
+    if (!_effectView) {
+        if (@available(iOS 8.0, *)) {
+            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            _effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+        } else {
+            UIToolbar *effectView = [[UIToolbar alloc] init];
+            effectView.barStyle = UIBarStyleBlackTranslucent;
+            _effectView = effectView;
+        }
+    }
+    return _effectView;
 }
 
 @end

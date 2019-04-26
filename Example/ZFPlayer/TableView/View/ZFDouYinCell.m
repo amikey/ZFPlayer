@@ -27,6 +27,10 @@
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 
+@property (nonatomic, strong) UIImageView *bgImgView;
+
+@property (nonatomic, strong) UIView *effectView;
+
 @end
 
 @implementation ZFDouYinCell
@@ -35,6 +39,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        [self.contentView addSubview:self.bgImgView];
+        [self.bgImgView addSubview:self.effectView];
         [self.contentView addSubview:self.coverImageView];
         [self.contentView addSubview:self.titleLabel];
         [self.contentView addSubview:self.likeBtn];
@@ -47,6 +53,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.coverImageView.frame = self.contentView.bounds;
+    self.bgImgView.frame = self.contentView.bounds;
+    self.effectView.frame = self.bgImgView.bounds;
     
     CGFloat min_x = 0;
     CGFloat min_y = 0;
@@ -125,6 +133,7 @@
 - (void)setData:(ZFTableData *)data {
     _data = data;
     [self.coverImageView setImageWithURLString:data.thumbnail_url placeholder:[UIImage imageNamed:@"loading_bgView"]];
+    [self.bgImgView setImageWithURLString:data.thumbnail_url placeholder:[UIImage imageNamed:@"loading_bgView"]];
     self.titleLabel.text = data.title;
 }
 
@@ -133,10 +142,31 @@
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
         _coverImageView.tag = 100;
-        _coverImageView.backgroundColor = [UIColor blackColor];
         _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _coverImageView;
+}
+
+- (UIImageView *)bgImgView {
+    if (!_bgImgView) {
+        _bgImgView = [[UIImageView alloc] init];
+        _bgImgView.userInteractionEnabled = YES;
+    }
+    return _bgImgView;
+}
+
+- (UIView *)effectView {
+    if (!_effectView) {
+        if (@available(iOS 8.0, *)) {
+            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            _effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+        } else {
+            UIToolbar *effectView = [[UIToolbar alloc] init];
+            effectView.barStyle = UIBarStyleBlackTranslucent;
+            _effectView = effectView;
+        }
+    }
+    return _effectView;
 }
 
 @end

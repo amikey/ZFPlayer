@@ -30,7 +30,8 @@
 @property (nonatomic, strong) IJKFFMoviePlayerController *player;
 @property (nonatomic, strong) IJKFFOptions *options;
 @property (nonatomic, assign) CGFloat lastVolume;
-@property (nonatomic, weak) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, assign) BOOL isReadyToPlay;
 
 @end
 
@@ -104,19 +105,19 @@
 
 - (void)stop {
     [self removeMovieNotificationObservers];
-    self.playState = ZFPlayerPlayStatePlayStopped;
     [self.player shutdown];
     [self.player.view removeFromSuperview];
     self.player = nil;
     _assetURL = nil;
     [self.timer invalidate];
-    
     self.timer = nil;
     _isPlaying = NO;
     _isPreparedToPlay = NO;
     self->_currentTime = 0;
     self->_totalTime = 0;
     self->_bufferTime = 0;
+    self.isReadyToPlay = NO;
+    self.playState = ZFPlayerPlayStatePlayStopped;
 }
 
 - (void)replay {
@@ -127,14 +128,13 @@
     }];
 }
 
-/// Replace the current playback address
-- (void)replaceCurrentAssetURL:(NSURL *)assetURL {
-    self.assetURL = assetURL;
-}
-
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler {
-    self.player.currentPlaybackTime = time;
-    if (completionHandler) completionHandler(YES);
+    if (self.player.duration > 0) {
+        self.player.currentPlaybackTime = time;
+        if (completionHandler) completionHandler(YES);
+    } else {
+        self.seekTime = time;
+    }
 }
 
 - (UIImage *)thumbnailImageAtCurrentTime {
@@ -145,14 +145,14 @@
 
 - (void)initializePlayer {
     self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.assetURL withOptions:self.options];
+    self.player.shouldAutoplay = YES;
     [self.player prepareToPlay];
-    self.player.shouldAutoplay = NO;
     
     [self.view insertSubview:self.player.view atIndex:1];
     self.player.view.frame = self.view.bounds;
+    self.player.view.backgroundColor = [UIColor clearColor];
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.scalingMode = _scalingMode;
-    
+    self.scalingMode = self->_scalingMode;
     [self addPlayerNotificationObservers];
 }
 
@@ -203,8 +203,12 @@
                                                   object:_player];
 }
 
-- (void)update {
-    self->_currentTime = self.player.currentPlaybackTime > 0 ?: 0;
+- (void)timerUpdate {
+    if (self.player.currentPlaybackTime > 0 && !self.isReadyToPlay) {
+        self.isReadyToPlay = YES;
+        self.loadState = ZFPlayerLoadStatePlaythroughOK;
+    }
+    self->_currentTime = self.player.currentPlaybackTime > 0 ? self.player.currentPlaybackTime : 0;
     self->_totalTime = self.player.duration;
     self->_bufferTime = self.player.playableDuration;
     if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
@@ -245,24 +249,22 @@
 // 准备开始播放了
 - (void)mediaIsPreparedToPlayDidChange:(NSNotification *)notification {
     ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.loadState = ZFPlayerLoadStatePlaythroughOK;
-    });
+    // 视频开始播放的时候开启计时器
+    if (!self.timer) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:self.timeRefreshInterval > 0 ? self.timeRefreshInterval : 0.1 target:self selector:@selector(timerUpdate) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
+    
     if (self.isPlaying) {
         [self play];
         self.muted = self.muted;
-        if (self.seekTime) {
+        if (self.seekTime > 0) {
             [self seekToTime:self.seekTime completionHandler:nil];
             self.seekTime = 0; // 滞空, 防止下次播放出错
             [self play];
         }
     }
-//    else {
-//        [self pause];
-//    }
-    
-    ZFPlayerLog(@"mediaIsPrepareToPlayDidChange");
-    if (self.playerPrepareToPlay) self.playerReadyToPlay(self, self.assetURL);
+    if (self.playerReadyToPlay) self.playerReadyToPlay(self, self.assetURL);
 }
 
 
@@ -278,9 +280,10 @@
     IJKMPMovieLoadState loadState = self.player.loadState;
     if ((loadState & IJKMPMovieLoadStatePlayable)) {
         ZFPlayerLog(@"加载状态变成了缓存数据足够开始播放，但是视频并没有缓存完全");
-        self.loadState = ZFPlayerLoadStatePlayable;
+        if (self.player.currentPlaybackTime > 0) {
+            self.loadState = ZFPlayerLoadStatePlayable;
+        }
     } else if ((loadState & IJKMPMovieLoadStatePlaythroughOK)) {
-        self.loadState = ZFPlayerLoadStatePlaythroughOK;
         // 加载完成，即将播放，停止加载的动画，并将其移除
         ZFPlayerLog(@"加载状态变成了已经缓存完成，如果设置了自动播放, 会自动播放");
     } else if ((loadState & IJKMPMovieLoadStateStalled)) {
@@ -295,14 +298,6 @@
 
 // 播放状态改变
 - (void)moviePlayBackStateDidChange:(NSNotification *)notification {
-    if (self.player.playbackState == IJKMPMoviePlaybackStatePlaying) {
-        // 视频开始播放的时候开启计时器
-        if (!self.timer) {
-            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(update) userInfo:nil repeats:YES];
-            [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-        }
-    }
-    
     switch (self.player.playbackState) {
         case IJKMPMoviePlaybackStateStopped: {
             ZFPlayerLog(@"播放器的播放状态变了，现在是停止状态 %d: stoped", (int)_player.playbackState);
@@ -313,12 +308,6 @@
             
         case IJKMPMoviePlaybackStatePlaying: {
             ZFPlayerLog(@"播放器的播放状态变了，现在是播放状态 %d: playing", (int)_player.playbackState);
-//            self.playState = ZFPlayerPlayStatePlaying;
-//            if (self.seekTime) {
-//                [self seekToTime:self.seekTime completionHandler:nil];
-//                self.seekTime = 0; // 滞空, 防止下次播放出错
-//                [self play];
-//            }
         }
             break;
             
@@ -361,7 +350,6 @@
 - (UIView *)view {
     if (!_view) {
         _view = [[ZFPlayerView alloc] init];
-        _view.backgroundColor = [UIColor blackColor];
     }
     return _view;
 }
@@ -375,6 +363,8 @@
         _options = [IJKFFOptions optionsByDefault];
         /// 精准seek
         [_options setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
+        /// 解决http播放不了
+        [_options setOptionIntValue:1 forKey:@"dns_cache_clear" ofCategory:kIJKFFOptionCategoryFormat];
     }
     return _options;
 }

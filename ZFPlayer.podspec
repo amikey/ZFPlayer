@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'ZFPlayer'
-    s.version          = '3.2.3'
+    s.version          = '3.2.11'
     s.summary          = 'A good player made by renzifeng'
     s.homepage         = 'https://github.com/renzifeng/ZFPlayer'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -21,7 +21,6 @@ Pod::Spec.new do |s|
     s.default_subspec = 'Core'
     
     s.subspec 'Core' do |core|
-        #core.vendored_frameworks = 'ZFPlayer/Classes/Core/ZFPlayer.framework'
         core.source_files = 'ZFPlayer/Classes/Core/**/*'
         core.public_header_files = 'ZFPlayer/Classes/Core/**/*.h'
         core.frameworks = 'UIKit', 'MediaPlayer', 'AVFoundation'
@@ -52,7 +51,7 @@ Pod::Spec.new do |s|
         ksyMediaPlayer.source_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.{h,m}'
         ksyMediaPlayer.public_header_files = 'ZFPlayer/Classes/KSYMediaPlayer/*.h'
         ksyMediaPlayer.dependency 'ZFPlayer/Core'
-        ksyMediaPlayer.dependency 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod'
+        ksyMediaPlayer.dependency 'KSYMediaPlayer'
         ksyMediaPlayer.pod_target_xcconfig = {
             'ARCHS[sdk=iphonesimulator*]' => '$(ARCHS_STANDARD_64_BIT)'
         }

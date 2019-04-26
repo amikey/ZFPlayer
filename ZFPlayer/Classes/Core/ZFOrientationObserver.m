@@ -138,7 +138,7 @@
     
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     // Determine that if the current direction is the same as the direction you want to rotate, do nothing
-    if (_currentOrientation == currentOrientation && ![self isNeedAdaptiveiOS8Rotation]) return;
+    if (_currentOrientation == currentOrientation && ![self isNeedAdaptiveiOS8Rotation] && !self.forceDeviceOrientation) return;
     
     switch (_currentOrientation) {
         case UIInterfaceOrientationPortrait: {
@@ -168,7 +168,7 @@
     _currentOrientation = orientation;
     UIView *superview = nil;
     CGRect frame;
-    if ([self isNeedAdaptiveiOS8Rotation]) {
+    if ([self isNeedAdaptiveiOS8Rotation] || self.forceDeviceOrientation) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             if (self.fullScreen) return;
             superview = self.fullScreenContainerView;

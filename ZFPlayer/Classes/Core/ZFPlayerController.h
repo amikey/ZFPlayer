@@ -1,5 +1,5 @@
 //
-//  ZFPlayer.h
+//  ZFPlayerController.h
 //  ZFPlayer
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) ZFPlayerNotification *notification;
 
 /*!
- @method            playerWithPlayerManager:
+ @method            playerWithPlayerManager:containerView:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerView to see the video frames must set the contrainerView.
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)playerWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(UIView *)containerView;
 
 /*!
- @method            playerWithPlayerManager:
+ @method            initWithPlayerManager:containerView:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
  @param             containerView to see the video frames must set the contrainerView.
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithPlayerManager:(id<ZFPlayerMediaPlayback>)playerManager containerView:(UIView *)containerView;
 
 /*!
- @method            playerWithScrollView:playerManager:
+ @method            playerWithScrollView:playerManager:containerViewTag:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)playerWithScrollView:(UIScrollView *)scrollView playerManager:(id<ZFPlayerMediaPlayback>)playerManager containerViewTag:(NSInteger)containerViewTag;
 
 /*!
- @method            playerWithScrollView:playerManager:
+ @method            initWithScrollView:playerManager:containerViewTag:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item. Use in `tableView` or `collectionView`.
  @param             scrollView is `tableView` or `collectionView`.
  @param             playerManager must conform `ZFPlayerMediaPlayback` protocol.
@@ -104,7 +104,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// The player bufferProgress, 0...1
 @property (nonatomic, readonly) CGFloat bufferProgress;
 
-/// Use this method to seek to a specified time for the current player and to be notified when the seek operation is complete.
+/**
+ Use this method to seek to a specified time for the current player and to be notified when the seek operation is complete.
+
+ @param time seek time.
+ @param completionHandler completion handler.
+ */
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler;
 
 @end
@@ -144,8 +149,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// default is YES.
 @property (nonatomic) BOOL pauseWhenAppResignActive;
 
-/// When the player is playing, it is paused by some event,not by user click to pause
-/// For example, when the player is playing, application goes into the background or pushes to another viewController
+/// When the player is playing, it is paused by some event,not by user click to pause.
+/// For example, when the player is playing, application goes into the background or pushed to another viewController
 @property (nonatomic, getter=isPauseByEvent) BOOL pauseByEvent;
 
 /// The current player controller is disappear, not dealloc
@@ -182,16 +187,26 @@ NS_ASSUME_NONNULL_BEGIN
 // The block invoked when video size changed.
 @property (nonatomic, copy, nullable) void(^presentationSizeChanged)(id<ZFPlayerMediaPlayback> asset, CGSize size);
 
-/// Play the next url ,while the `assetURLs` is not NULL.
+/**
+ Play the next url ,while the `assetURLs` is not NULL.
+ */
 - (void)playTheNext;
 
-/// Play the previous url ,while the `assetURLs` is not NULL.
+/**
+  Play the previous url ,while the `assetURLs` is not NULL.
+ */
 - (void)playThePrevious;
 
-/// Play the index of url ,while the `assetURLs` is not NULL.
+/**
+ Play the index of url ,while the `assetURLs` is not NULL.
+
+ @param index play the index.
+ */
 - (void)playTheIndex:(NSInteger)index;
 
-/// Player stop and playerView remove from super view,remove other notification.
+/**
+ Player stop and playerView remove from super view,remove other notification.
+ */
 - (void)stop;
 
 /*!
@@ -227,6 +242,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The statusbar hidden.
 @property (nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden;
 
+/// Use device orientation, default NO.
+@property (nonatomic, assign) BOOL forceDeviceOrientation;
+
 /// The current orientation of the player.
 /// Default is UIInterfaceOrientationPortrait.
 @property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
@@ -237,19 +255,38 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked when player rotated.
 @property (nonatomic, copy, nullable) void(^orientationDidChanged)(ZFPlayerController *player, BOOL isFullScreen);
 
-/// Add the device orientation observer.
+/**
+ Add the device orientation observer.
+ */
 - (void)addDeviceOrientationObserver;
 
-/// Remove the device orientation observer.
+/**
+ Remove the device orientation observer.
+ */
 - (void)removeDeviceOrientationObserver;
 
-/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModeLandscape.
+/**
+ Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModeLandscape.
+
+ @param orientation UIInterfaceOrientation
+ @param animated is animated.
+ */
 - (void)enterLandscapeFullScreen:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
 
-/// Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
+/**
+ Enter the fullScreen while the ZFFullScreenMode is ZFFullScreenModePortrait.
+
+ @param fullScreen is fullscreen.
+ @param animated is animated.
+ */
 - (void)enterPortraitFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
 
-// FullScreen mode is determined by ZFFullScreenMode
+/**
+ FullScreen mode is determined by ZFFullScreenMode.
+
+ @param fullScreen is fullscreen.
+ @param animated is animated.
+ */
 - (void)enterFullScreen:(BOOL)fullScreen animated:(BOOL)animated;
 
 @end
@@ -262,6 +299,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The gesture types that the player not support.
 @property (nonatomic, assign) ZFPlayerDisableGestureTypes disableGestureTypes;
 
+/// The pan gesture moving direction that the player not support.
+@property (nonatomic) ZFPlayerDisablePanMovingDirection disablePanMovingDirection;
+
 @end
 
 @interface ZFPlayerController (ZFPlayerScrollView)
@@ -272,8 +312,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// The scrollView player should auto player, default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;
 
-/// WWAN network auto play, only support in scrollView mode when the `shouldAutoPlay` is YES.
-/// default is NO.
+/// WWAN network auto play, only support in scrollView mode when the `shouldAutoPlay` is YES, default is NO.
 @property (nonatomic, getter=isWWANAutoPlay) BOOL WWANAutoPlay;
 
 /// The current playing cell has out off the screen, the player add the small container view.
@@ -291,22 +330,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// The current playing cell stop playing when the cell has out off the screen，defalut is YES.
 @property (nonatomic) BOOL stopWhileNotVisible;
 
-/// The current player scroll slides off the screen percent.
-/// the property used when the `stopWhileNotVisible` is YES, the current playing player stop percent.
-/// the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view percent.
-/// 0.0~1.0, defalut is 0.5.
-/// 0.0 is the player will disappear.
-/// 1.0 is the player did disappear.
+/**
+ The current player scroll slides off the screen percent.
+ the property used when the `stopWhileNotVisible` is YES, stop the current playing player.
+ the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view.
+ The range is 0.0~1.0, defalut is 0.5.
+ 0.0 is the player will disappear.
+ 1.0 is the player did disappear.
+ */
 @property (nonatomic) CGFloat playerDisapperaPercent;
 
-/// The current player scroll to the screen percent.
-/// the property is only used when the `stopWhileNotVisible` is NO.
-/// 0.0~1.0, defalut is 0.0.
-/// 0.0 is the player will appear.
-/// 1.0 is the player did appear.
+/**
+ The current player scroll to the screen percent to play the video.
+ The range is 0.0~1.0, defalut is 0.0.
+ 0.0 is the player will appear.
+ 1.0 is the player did appear.
+ */
 @property (nonatomic) CGFloat playerApperaPercent;
 
-/// if tableView or collectionView has more section, use sectionAssetURLs.
+/// If tableView or collectionView has more section, use sectionAssetURLs.
 @property (nonatomic, copy, nullable) NSArray <NSArray <NSURL *>*>*sectionAssetURLs;
 
 /// The block invoked When the player appearing.
@@ -327,26 +369,55 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
-/// stop the current playing video on cell.
-- (void)stopCurrentPlayingCell;
-
-/// Play the indexPath of url, while the `assetURLs` or `sectionAssetURLs` is not NULL.
-/// `scrollToTop` scroll the current cell to top with animations.
-- (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop;
-
-/// Play the indexPath with assetURL.
-/// `assetURL` is the player URL.
-/// `scrollToTop` scroll the current cell to top with animations.
-- (void)playTheIndexPath:(NSIndexPath *)indexPath assetURL:(NSURL *)assetURL scrollToTop:(BOOL)scrollToTop;
-
-/// Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
-/// `scrollToTop` scroll the current cell to top with animations.
-/// Scroll completion callback.
-- (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
-
+/**
+ Add the playerView to cell.
+ */
 - (void)updateScrollViewPlayerToCell;
 
+/**
+ Add the playerView to containerView.
+
+ @param containerView The playerView containerView.
+ */
 - (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
+
+/**
+ stop the current playing video on cell.
+ */
+- (void)stopCurrentPlayingCell;
+
+/**
+ Play the indexPath of url, while the `assetURLs` or `sectionAssetURLs` is not NULL.
+
+ @param indexPath Play the indexPath of url.
+ */
+- (void)playTheIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
+ 
+ @param indexPath Play the indexPath of url
+ @param scrollToTop Scroll the current cell to top with animations.
+ */
+- (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop;
+
+/**
+ Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
+ 
+ @param indexPath Play the indexPath of url
+ @param assetURL The player URL.
+ @param scrollToTop Scroll the current cell to top with animations.
+ */
+- (void)playTheIndexPath:(NSIndexPath *)indexPath assetURL:(NSURL *)assetURL scrollToTop:(BOOL)scrollToTop;
+
+/**
+ Play the indexPath of url ,while the `assetURLs` or `sectionAssetURLs` is not NULL.
+ 
+ @param indexPath Play the indexPath of url
+ @param scrollToTop scroll the current cell to top with animations.
+ @param completionHandler Scroll completion callback.
+ */
+- (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
 
 @end
 

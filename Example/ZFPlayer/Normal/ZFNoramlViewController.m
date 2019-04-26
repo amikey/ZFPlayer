@@ -51,6 +51,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.player.controlView = self.controlView;
     /// 设置退到后台继续播放
     self.player.pauseWhenAppResignActive = NO;
+    
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
@@ -61,10 +62,13 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
         [self.player.currentPlayerManager replay];
-    };
-    
-    self.player.playerReadyToPlay = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSURL * _Nonnull assetURL) {
-        NSLog(@"======开始播放了");
+        [self.player playTheNext];
+        if (!self.player.isLastAssetURL) {
+            NSString *title = [NSString stringWithFormat:@"视频标题%zd",self.player.currentPlayIndex];
+            [self.controlView showTitle:title coverURLString:kVideoCover fullScreenMode:ZFFullScreenModeLandscape];
+        } else {
+            [self.player stop];
+        }
     };
     
     self.assetURLs = @[[NSURL URLWithString:@"https://www.apple.com/105/media/us/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-tpl-cc-us-20170912_1280x720h.mp4"],
@@ -181,6 +185,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         _controlView.fastViewAnimated = YES;
         _controlView.autoHiddenTimeInterval = 5;
         _controlView.autoFadeTimeInterval = 0.5;
+        _controlView.prepareShowLoading = YES;
     }
     return _controlView;
 }

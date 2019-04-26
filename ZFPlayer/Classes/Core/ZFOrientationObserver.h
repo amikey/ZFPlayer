@@ -76,6 +76,9 @@ typedef NS_OPTIONS(NSUInteger, ZFInterfaceOrientationMask) {
 /// If the full screen.
 @property (nonatomic, readonly, getter=isFullScreen) BOOL fullScreen;
 
+/// Use device orientation, default NO.
+@property (nonatomic, assign) BOOL forceDeviceOrientation;
+
 /// Lock screen orientation
 @property (nonatomic, getter=isLockedScreen) BOOL lockedScreen;
 
