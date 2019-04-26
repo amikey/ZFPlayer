@@ -32,5 +32,7 @@
 @property (nonatomic, strong, readonly) AVPlayerItem *playerItem;
 @property (nonatomic, strong, readonly) AVPlayer *player;
 @property (nonatomic, assign) NSTimeInterval timeRefreshInterval;
+/// 视频请求头
+@property (nonatomic, strong) NSDictionary *requestHeader;
 
 @end
