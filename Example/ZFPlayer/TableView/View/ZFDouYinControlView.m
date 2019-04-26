@@ -18,8 +18,6 @@
 @property (nonatomic, strong) UIImageView *coverImageView;
 @property (nonatomic, strong) UIButton *playBtn;
 @property (nonatomic, strong) ZFSliderView *sliderView;
-/// 加载loading
-@property (nonatomic, strong) ZFLoadingView *activity;
 @property (nonatomic, strong) UIImageView *bgImgView;
 @property (nonatomic, strong) UIView *effectView;
 
@@ -31,7 +29,6 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self addSubview:self.activity];
         [self addSubview:self.playBtn];
         [self addSubview:self.sliderView];
         [self resetControlView];
@@ -49,11 +46,6 @@
     CGFloat min_h = 0;
     CGFloat min_view_w = self.zf_width;
     CGFloat min_view_h = self.zf_height;
-    
-    min_w = 44;
-    min_h = 44;
-    self.activity.frame = CGRectMake(min_x, min_y, min_w, min_h);
-    self.activity.center = self.center;
     
     min_w = 100;
     min_h = 100;
@@ -84,10 +76,10 @@
         self.coverImageView.hidden = YES;
         self.effectView.hidden = NO;
     }
-    if (state == ZFPlayerLoadStateStalled && videoPlayer.currentPlayerManager.isPlaying) {
-        [self.activity startAnimating];
+    if ((state == ZFPlayerLoadStateStalled || state == ZFPlayerLoadStatePrepare) && videoPlayer.currentPlayerManager.isPlaying) {
+        [self.sliderView startAnimating];
     } else {
-        [self.activity stopAnimating];
+        [self.sliderView stopAnimating];
     }
 }
 
@@ -120,8 +112,8 @@
 }
 
 - (void)showCoverViewWithUrl:(NSString *)coverUrl {
-    [self.coverImageView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"loading_bgView"]];
-    [self.bgImgView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"loading_bgView"]];
+    [self.coverImageView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"img_video_loading"]];
+    [self.bgImgView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"img_video_loading"]];
 }
 
 #pragma mark - getter
@@ -146,16 +138,6 @@
         }
     }
     return _effectView;
-}
-
-- (ZFLoadingView *)activity {
-    if (!_activity) {
-        _activity = [[ZFLoadingView alloc] init];
-        _activity.lineWidth = 0.8;
-        _activity.duration = 1;
-        _activity.hidesWhenStopped = YES;
-    }
-    return _activity;
 }
 
 - (UIButton *)playBtn {

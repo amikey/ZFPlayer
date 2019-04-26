@@ -58,6 +58,9 @@
 /** 缓存进度颜色 */
 @property (nonatomic, strong) UIColor *bufferTrackTintColor;
 
+/** loading进度颜色 */
+@property (nonatomic, strong) UIColor *loadingTintColor;
+
 /** 默认滑杆的图片 */
 @property (nonatomic, strong) UIImage *maximumTrackImage;
 
@@ -66,7 +69,6 @@
 
 /** 缓存进度的图片 */
 @property (nonatomic, strong) UIImage *bufferTrackImage;
-
 
 /** 滑杆进度 */
 @property (nonatomic, assign) float value;
@@ -92,13 +94,22 @@
 /// 向前还是向后拖动
 @property (nonatomic, assign) BOOL isForward;
 
-//@property (nonatomic, assign) CGFloat ignoreMargin;
+@property (nonatomic, assign) CGSize thumbSize;
+
+/**
+ *  Starts animation of the spinner.
+ */
+- (void)startAnimating;
+
+/**
+ *  Stops animation of the spinnner.
+ */
+- (void)stopAnimating;
 
 // 设置滑块背景色
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state;
+
 // 设置滑块图片
 - (void)setThumbImage:(UIImage *)image forState:(UIControlState)state;
-
-
 
 @end
