@@ -64,6 +64,15 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
         [self.player.currentPlayerManager replay];
     };
+    
+    self.player.presentationSizeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, CGSize size) {
+        @strongify(self)
+        if (size.width >= size.height) {
+            self.player.currentPlayerManager.scalingMode = ZFPlayerScalingModeAspectFit;
+        } else {
+            self.player.currentPlayerManager.scalingMode = ZFPlayerScalingModeAspectFill;
+        }
+    };
 }
 
 - (void)viewWillLayoutSubviews {
@@ -195,7 +204,13 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
     [self.controlView resetControlView];
     ZFTableData *data = self.dataSource[indexPath.row];
-    [self.controlView showCoverViewWithUrl:data.thumbnail_url];
+    UIViewContentMode imageMode;
+    if (data.thumbnail_width >= data.thumbnail_height) {
+        imageMode = UIViewContentModeScaleAspectFit;
+    } else {
+        imageMode = UIViewContentModeScaleAspectFill;
+    }
+    [self.controlView showCoverViewWithUrl:data.thumbnail_url withImageMode:imageMode];
 }
 
 #pragma mark - getter
@@ -210,6 +225,7 @@ static NSString *kIdentifier = @"kIdentifier";
         _tableView.dataSource = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.scrollsToTop = NO;
         if (@available(iOS 11.0, *)) {
             _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         } else {

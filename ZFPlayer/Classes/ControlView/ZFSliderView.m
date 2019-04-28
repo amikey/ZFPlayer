@@ -256,7 +256,6 @@ static const CGFloat kAnimate = 0.3;
     self.isLoading = YES;
     self.bufferProgressView.hidden = YES;
     self.sliderProgressView.hidden = YES;
-    self.bgProgressView.hidden = YES;
     self.sliderBtn.hidden = YES;
     self.loadingBarView.hidden = NO;
     
@@ -288,7 +287,6 @@ static const CGFloat kAnimate = 0.3;
     self.isLoading = NO;
     self.bufferProgressView.hidden = NO;
     self.sliderProgressView.hidden = NO;
-    self.bgProgressView.hidden = NO;
     self.sliderBtn.hidden = self.isHideSliderBlock;
     self.loadingBarView.hidden = YES;
     [self.loadingBarView.layer removeAllAnimations];

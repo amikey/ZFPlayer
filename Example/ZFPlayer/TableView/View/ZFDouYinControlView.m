@@ -66,6 +66,7 @@
     self.playBtn.hidden = YES;
     self.sliderView.value = 0;
     self.sliderView.bufferValue = 0;
+    self.coverImageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 /// 加载状态改变
@@ -111,7 +112,8 @@
     [player.currentPlayerManager.view insertSubview:self.coverImageView atIndex:1];
 }
 
-- (void)showCoverViewWithUrl:(NSString *)coverUrl {
+- (void)showCoverViewWithUrl:(NSString *)coverUrl withImageMode:(UIViewContentMode)contentMode {
+    self.coverImageView.contentMode = contentMode;
     [self.coverImageView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"img_video_loading"]];
     [self.bgImgView setImageWithURLString:coverUrl placeholder:[UIImage imageNamed:@"img_video_loading"]];
 }
@@ -152,7 +154,7 @@
 - (ZFSliderView *)sliderView {
     if (!_sliderView) {
         _sliderView = [[ZFSliderView alloc] init];
-        _sliderView.maximumTrackTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
+        _sliderView.maximumTrackTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.2];
         _sliderView.minimumTrackTintColor = [UIColor whiteColor];
         _sliderView.bufferTrackTintColor  = [UIColor clearColor];
         _sliderView.sliderHeight = 1;
@@ -165,7 +167,7 @@
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _coverImageView.clipsToBounds = YES;
     }
     return _coverImageView;
 }
