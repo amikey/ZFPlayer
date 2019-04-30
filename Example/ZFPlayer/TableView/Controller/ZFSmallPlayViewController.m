@@ -27,7 +27,6 @@ static NSString *kIdentifier = @"kIdentifier";
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSMutableArray *urls;
-
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 
 @end
@@ -40,13 +39,10 @@ static NSString *kIdentifier = @"kIdentifier";
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.activity];
     [self requestData];
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Push" style:UIBarButtonItemStylePlain target:self action:@selector(pushNewVC)];
     
     /// playerManager
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-//    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
-//    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
     
     /// player的tag值必须在cell里设置
     self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];

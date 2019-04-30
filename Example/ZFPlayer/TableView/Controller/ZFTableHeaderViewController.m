@@ -16,6 +16,7 @@
 #import "ZFPlayerDetailViewController.h"
 #import "ZFTableData.h"
 #import "ZFOtherCell.h"
+#import "ZFUtilities.h"
 
 static NSString *kIdentifier = @"kIdentifier";
 
@@ -44,7 +45,16 @@ static NSString *kIdentifier = @"kIdentifier";
     /// playerManager
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
     /// player的tag值必须在cell里设置
-    self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.headerView.coverImageView];
+    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerView:self.headerView.coverImageView];
+    self.player.playerDisapperaPercent = 1.0;
+    self.player.playerApperaPercent = 0.0;
+    self.player.stopWhileNotVisible = NO;
+    CGFloat margin = 20;
+    CGFloat w = ZFPlayer_ScreenWidth/2;
+    CGFloat h = w * 9/16;
+    CGFloat x = ZFPlayer_ScreenWidth - w - margin;
+    CGFloat y = ZFPlayer_ScreenHeight - h - margin;
+    self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
     self.player.controlView = self.controlView;
     
     @weakify(self)
@@ -59,6 +69,8 @@ static NSString *kIdentifier = @"kIdentifier";
         @strongify(self)
         [self.player stopCurrentPlayingCell];
     };
+    
+    [self playTheIndex:0];
 }
 
 - (void)requestData {
@@ -109,6 +121,12 @@ static NSString *kIdentifier = @"kIdentifier";
     return UIStatusBarAnimationSlide;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [scrollView zf_scrollViewDidScroll];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -117,6 +135,7 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ZFOtherCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
+    cell.textLabel.text = [NSString stringWithFormat:@"点击播放第%zd个视频",indexPath.row + 1];
     return cell;
 }
 
@@ -131,6 +150,12 @@ static NSString *kIdentifier = @"kIdentifier";
     ZFTableData *data = self.dataSource[index];
     self.player.currentPlayerManager.assetURL = [NSURL URLWithString:data.video_url];
     [self.controlView showTitle:data.title coverURLString:data.thumbnail_url fullScreenMode:ZFFullScreenModeLandscape];
+    
+    if (self.tableView.contentOffset.y > self.headerView.frame.size.height) {
+        [self.player addPlayerViewToKeyWindow];
+    } else {
+        [self.player addPlayerViewToContainerView:self.headerView.coverImageView];
+    }
 }
 
 #pragma mark - getter
@@ -158,6 +183,7 @@ static NSString *kIdentifier = @"kIdentifier";
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
         _controlView.fastViewAnimated = YES;
+        _controlView.prepareShowLoading = YES;
     }
     return _controlView;
 }

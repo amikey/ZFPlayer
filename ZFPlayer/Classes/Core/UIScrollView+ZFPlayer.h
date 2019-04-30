@@ -45,6 +45,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
     ZFPlayerScrollViewDirectionHorizontal
 };
 
+/*
+ * The player container type
+ */
+typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
+    ZFPlayerContainerTypeCell,
+    ZFPlayerContainerTypeView
+};
+
 @interface UIScrollView (ZFPlayer)
 
 /// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical,the property has value.
@@ -76,8 +84,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
 /// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical，this value can only be ZFPlayerScrollDirectionLeft or ZFPlayerScrollDirectionRight.
 @property (nonatomic, readonly) ZFPlayerScrollDirection zf_scrollDirection;
 
+/// The video contrainerView type.
+@property (nonatomic, assign) ZFPlayerContainerType zf_containerType;
+
+/// The video contrainerView in normal model.
+@property (nonatomic, strong) UIView *zf_containerView;
+
 /// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
-@property (nonatomic) BOOL zf_stopWhileNotVisible;
+@property (nonatomic, assign) BOOL zf_stopWhileNotVisible;
+
+/// Has stopped playing
+@property (nonatomic, assign) BOOL zf_stopPlay;
 
 /// The block invoked When the player did stop scroll.
 @property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);

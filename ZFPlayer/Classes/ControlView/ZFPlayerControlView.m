@@ -539,6 +539,11 @@
     }
 }
 
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer floatViewShow:(BOOL)show {
+    self.floatControlView.hidden = !show;
+    self.portraitControlView.hidden = show;
+}
+
 #pragma mark - Private Method
 
 - (void)sliderValueChangingValue:(CGFloat)value isForward:(BOOL)forward {
@@ -764,7 +769,11 @@
         @weakify(self)
         _floatControlView.closeClickCallback = ^{
             @strongify(self)
-            [self.player stopCurrentPlayingCell];
+            if (self.player.containerType == ZFPlayerContainerTypeCell) {
+                [self.player stopCurrentPlayingCell];
+            } else if (self.player.containerType == ZFPlayerContainerTypeView) {
+                [self.player stopCurrentPlayingView];
+            }
             [self resetControlView];
         };
     }

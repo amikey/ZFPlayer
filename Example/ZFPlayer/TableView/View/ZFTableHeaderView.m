@@ -22,6 +22,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.tag = 100;
         [self addSubview:self.coverImageView];
         [self.coverImageView addSubview:self.playBtn];
         self.backgroundColor = [UIColor blackColor];
