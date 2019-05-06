@@ -261,20 +261,20 @@ static const CGFloat kAnimate = 0.3;
     
     [self.loadingBarView.layer removeAllAnimations];
     CAAnimationGroup *animationGroup = [[CAAnimationGroup alloc] init];
-    animationGroup.duration = 0.5;
-    animationGroup.beginTime = CACurrentMediaTime() + 0.5;
+    animationGroup.duration = 0.4;
+    animationGroup.beginTime = CACurrentMediaTime() + 0.4;
     animationGroup.repeatCount = MAXFLOAT;
-    animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     
     CABasicAnimation *scaleAnimation = [CABasicAnimation animation];
     scaleAnimation.keyPath = @"transform.scale.x";
-    scaleAnimation.fromValue = @(500.0f);
+    scaleAnimation.fromValue = @(1000.0f);
     scaleAnimation.toValue = @(self.zf_width * 10);
     
     CABasicAnimation *alphaAnimation = [CABasicAnimation animation];
     alphaAnimation.keyPath = @"opacity";
     alphaAnimation.fromValue = @(1.0f);
-    alphaAnimation.toValue = @(0.3f);
+    alphaAnimation.toValue = @(0.0f);
     
     [animationGroup setAnimations:@[scaleAnimation, alphaAnimation]];
     [self.loadingBarView.layer addAnimation:animationGroup forKey:@"loading"];

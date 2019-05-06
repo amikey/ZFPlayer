@@ -195,7 +195,7 @@ static NSString *kIdentifier = @"kIdentifier";
     /// 详情页返回的回调
     detailVC.detailVCPopCallback = ^{
         @strongify(self)
-        [self.player updateScrollViewPlayerToCell];
+        [self.player addPlayerViewToCell];
     };
     /// 详情页点击播放的回调
     detailVC.detailVCPlayCallback = ^{
@@ -220,7 +220,6 @@ static NSString *kIdentifier = @"kIdentifier";
 
 /// play the video
 - (void)playTheVideoAtIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop {
-//    [self.player playTheIndexPath:indexPath scrollToTop:scrollToTop];
     if (scrollToTop) {
         /// 自定义滑动动画时间
         [self.tableView zf_scrollToRowAtIndexPath:indexPath animateWithDuration:0.8 completionHandler:^{
@@ -264,7 +263,9 @@ static NSString *kIdentifier = @"kIdentifier";
         @weakify(self)
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+            if (!self.player.playingIndexPath) {
+                [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+            }
         };
         
         /// 明暗回调

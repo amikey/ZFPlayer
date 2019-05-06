@@ -176,7 +176,7 @@ static NSString *kIdentifier = @"kIdentifier";
         if (self.player.currentPlayerManager.playState == ZFPlayerPlayStatePlayStopped) {
             [self.player stopCurrentPlayingCell];
         } else {
-            [self.player updateScrollViewPlayerToCell];
+            [self.player addPlayerViewToCell];
         }
     };
     /// 详情页点击播放的回调

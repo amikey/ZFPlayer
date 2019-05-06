@@ -246,9 +246,29 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)replaceCurrentPlayerManager:(id<ZFPlayerMediaPlayback>)manager;
 
 /**
+ Add video to the cell.
+ */
+- (void)addPlayerViewToCell;
+
+/**
+ Add video to the container view.
+ */
+- (void)addPlayerViewToContainerView:(UIView *)containerView;
+
+/**
+ Add to the keyWindow.
+ */
+- (void)addPlayerViewToKeyWindow;
+
+/**
  Stop the current playing video and remove the playerView.
  */
 - (void)stopCurrentPlayingView;
+
+/**
+ stop the current playing video on cell.
+ */
+- (void)stopCurrentPlayingCell;
 
 @end
 
@@ -396,32 +416,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
-//// Add video to the cell
-- (void)addPlayerViewToCell;
-
-//// Add video to the container view
-- (void)addPlayerViewToContainerView:(UIView *)containerView;
-
-/// Add to the keyWindow
-- (void)addPlayerViewToKeyWindow;
-
-/**
- Add the playerView to cell.
- */
-- (void)updateScrollViewPlayerToCell;
-
-/**
- Add the playerView to containerView.
-
- @param containerView The playerView containerView.
- */
-- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView;
-
-/**
- stop the current playing video on cell.
- */
-- (void)stopCurrentPlayingCell;
-
 /**
  Play the indexPath of url, while the `assetURLs` or `sectionAssetURLs` is not NULL.
 
@@ -454,6 +448,22 @@ NS_ASSUME_NONNULL_BEGIN
  @param completionHandler Scroll completion callback.
  */
 - (void)playTheIndexPath:(NSIndexPath *)indexPath scrollToTop:(BOOL)scrollToTop completionHandler:(void (^ __nullable)(void))completionHandler;
+
+@end
+
+@interface ZFPlayerController (ZFPlayerDeprecated)
+
+/**
+ Add the playerView to cell.
+ */
+- (void)updateScrollViewPlayerToCell  __attribute__((deprecated("use `addPlayerViewToCell:` instead.")));
+
+/**
+ Add the playerView to containerView.
+ 
+ @param containerView The playerView containerView.
+ */
+- (void)updateNoramlPlayerWithContainerView:(UIView *)containerView __attribute__((deprecated("use `addPlayerViewToContainerView:` instead.")));
 
 @end
 

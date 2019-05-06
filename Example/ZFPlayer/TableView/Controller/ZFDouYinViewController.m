@@ -241,6 +241,7 @@ static NSString *kIdentifier = @"kIdentifier";
         @weakify(self)
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
+            if (self.player.playingIndexPath) return;
             if (indexPath.row == self.dataSource.count-1) {
                 /// 加载下一页数据
                 [self requestData];

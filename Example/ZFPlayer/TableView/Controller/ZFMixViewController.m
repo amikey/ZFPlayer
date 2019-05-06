@@ -179,7 +179,7 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
     /// 详情页返回的回调
     detailVC.detailVCPopCallback = ^{
         @strongify(self)
-        [self.player updateScrollViewPlayerToCell];
+        [self.player addPlayerViewToCell];
     };
     /// 详情页点击播放的回调
     detailVC.detailVCPlayCallback = ^{
@@ -237,7 +237,9 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
         @weakify(self)
         _tableView.zf_scrollViewDidStopScrollCallback = ^(NSIndexPath * _Nonnull indexPath) {
             @strongify(self)
-            [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+            if (!self.player.playingIndexPath) {
+                [self playTheVideoAtIndexPath:indexPath scrollToTop:NO];
+            }
         };
     }
     return _tableView;

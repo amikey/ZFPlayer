@@ -32,7 +32,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.containerView];
     [self.containerView addSubview:self.playBtn];
-    [self.player updateNoramlPlayerWithContainerView:self.containerView];
+    [self.player addPlayerViewToContainerView:self.containerView];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -62,7 +62,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     if (self.detailVCPlayCallback) {
         self.detailVCPlayCallback();
     }
-    [self.player updateNoramlPlayerWithContainerView:self.containerView];
+    [self.player addPlayerViewToContainerView:self.containerView];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

@@ -41,6 +41,8 @@
 @property (nonatomic, strong) ZFFloatView *smallFloatView;
 /// Whether the small window is displayed.
 @property (nonatomic, assign) BOOL isSmallFloatViewShow;
+/// The indexPath is playing.
+@property (nonatomic, nullable) NSIndexPath *playingIndexPath;
 
 @end
 
@@ -396,10 +398,61 @@
     self.currentPlayerManager = playerManager;
 }
 
+//// Add video to the cell
+- (void)addPlayerViewToCell {
+    self.isSmallFloatViewShow = NO;
+    self.smallFloatView.hidden = YES;
+    UIView *cell = [self.scrollView zf_getCellForIndexPath:self.playingIndexPath];
+    self.containerView = [cell viewWithTag:self.containerViewTag];
+    [self.containerView addSubview:self.currentPlayerManager.view];
+    self.currentPlayerManager.view.frame = self.containerView.bounds;
+    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
+    if ([self.controlView respondsToSelector:@selector(videoPlayer:floatViewShow:)]) {
+        [self.controlView videoPlayer:self floatViewShow:NO];
+    }
+}
+
+//// Add video to the container view
+- (void)addPlayerViewToContainerView:(UIView *)containerView {
+    self.isSmallFloatViewShow = NO;
+    self.smallFloatView.hidden = YES;
+    self.containerView = containerView;
+    [self.containerView addSubview:self.currentPlayerManager.view];
+    self.currentPlayerManager.view.frame = self.containerView.bounds;
+    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.containerView];
+    if ([self.controlView respondsToSelector:@selector(videoPlayer:floatViewShow:)]) {
+        [self.controlView videoPlayer:self floatViewShow:NO];
+    }
+}
+
+/// Add to the keyWindow
+- (void)addPlayerViewToKeyWindow {
+    self.isSmallFloatViewShow = YES;
+    self.smallFloatView.hidden = NO;
+    [self.smallFloatView addSubview:self.currentPlayerManager.view];
+    self.currentPlayerManager.view.frame = self.smallFloatView.bounds;
+    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.smallFloatView];
+    if ([self.controlView respondsToSelector:@selector(videoPlayer:floatViewShow:)]) {
+        [self.controlView videoPlayer:self floatViewShow:YES];
+    }
+}
+
 - (void)stopCurrentPlayingView {
     if (self.containerView) {
         [self stop];
         self.isSmallFloatViewShow = NO;
+        if (self.smallFloatView) self.smallFloatView.hidden = YES;
+    }
+}
+
+- (void)stopCurrentPlayingCell {
+    if (self.scrollView.zf_playingIndexPath) {
+        [self stop];
+        self.isSmallFloatViewShow = NO;
+        self.playingIndexPath = nil;
         if (self.smallFloatView) self.smallFloatView.hidden = YES;
     }
 }
@@ -885,48 +938,6 @@
     [self zf_dealloc];
 }
 
-//// Add video to the cell
-- (void)addPlayerViewToCell {
-    self.isSmallFloatViewShow = NO;
-    self.smallFloatView.hidden = YES;
-    UIView *cell = [self.scrollView zf_getCellForIndexPath:self.playingIndexPath];
-    self.containerView = [cell viewWithTag:self.containerViewTag];
-    [self.containerView addSubview:self.currentPlayerManager.view];
-    self.currentPlayerManager.view.frame = self.containerView.bounds;
-    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.orientationObserver cellModelRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
-    if ([self.controlView respondsToSelector:@selector(videoPlayer:floatViewShow:)]) {
-        [self.controlView videoPlayer:self floatViewShow:NO];
-    }
-}
-
-//// Add video to the container view
-- (void)addPlayerViewToContainerView:(UIView *)containerView {
-    self.isSmallFloatViewShow = NO;
-    self.smallFloatView.hidden = YES;
-    self.containerView = containerView;
-    [self.containerView addSubview:self.currentPlayerManager.view];
-    self.currentPlayerManager.view.frame = self.containerView.bounds;
-    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.containerView];
-    if ([self.controlView respondsToSelector:@selector(videoPlayer:floatViewShow:)]) {
-        [self.controlView videoPlayer:self floatViewShow:NO];
-    }
-}
-
-/// Add to the keyWindow
-- (void)addPlayerViewToKeyWindow {
-    self.isSmallFloatViewShow = YES;
-    self.smallFloatView.hidden = NO;
-    [self.smallFloatView addSubview:self.currentPlayerManager.view];
-    self.currentPlayerManager.view.frame = self.smallFloatView.bounds;
-    self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.orientationObserver cellOtherModelRotateView:self.currentPlayerManager.view containerView:self.smallFloatView];
-    if ([self.controlView respondsToSelector:@selector(videoPlayer:floatViewShow:)]) {
-        [self.controlView videoPlayer:self floatViewShow:YES];
-    }
-}
-
 #pragma mark - setter
 
 - (void)setScrollView:(UIScrollView *)scrollView {
@@ -1030,6 +1041,8 @@
         [self addDeviceOrientationObserver];
         self.scrollView.zf_playingIndexPath = playingIndexPath;
         [self layoutPlayerSubViews];
+    } else {
+        self.scrollView.zf_playingIndexPath = playingIndexPath;
     }
 }
 
@@ -1160,15 +1173,6 @@
 
 #pragma mark - Public method
 
-- (void)stopCurrentPlayingCell {
-    if (self.scrollView.zf_playingIndexPath) {
-        [self stop];
-        self.isSmallFloatViewShow = NO;
-        self.scrollView.zf_playingIndexPath = nil;
-        if (self.smallFloatView) self.smallFloatView.hidden = YES;
-    }
-}
-
 - (void)playTheIndexPath:(NSIndexPath *)indexPath {
     self.playingIndexPath = indexPath;
     NSURL *assetURL;
@@ -1224,6 +1228,10 @@
         [self.scrollView zf_scrollToRowAtIndexPath:indexPath completionHandler:nil];
     }
 }
+
+@end
+
+@implementation ZFPlayerController (ZFPlayerDeprecated)
 
 - (void)updateScrollViewPlayerToCell {
     if (self.currentPlayerManager.view && self.playingIndexPath && self.containerViewTag) {
