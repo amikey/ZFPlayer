@@ -18,7 +18,7 @@ Before this, you used ZFPlayer, are you worried about encapsulating avplayer ins
 
 在3.X之前，是不是在烦恼播放器SDK自定义、控制层自定义等问题。作者公司多个项目分别使用不同播放器SDK以及每个项目控制层都不一样，但是为了统一管理、统一调用，我特意写了这个播放器壳子。播放器SDK只要遵守`ZFPlayerMediaPlayback`协议，控制层只要遵守`ZFPlayerMediaControl`协议，完全可以实现自定义播放器和控制层。
 
-![ZFPlayer.png](https://upload-images.jianshu.io/upload_images/635942-5662bfec6d457cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![ZFPlayer思维导图](https://upload-images.jianshu.io/upload_images/635942-e99d76498cb01afb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## Requirements
 
